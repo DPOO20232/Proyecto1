@@ -1,6 +1,6 @@
 package alquiler;
 import java.time.LocalDate;
-public class Alquiler {
+public class Alquiler{
     private int Win;
     private boolean yes;
     private LocalDate fecha;
