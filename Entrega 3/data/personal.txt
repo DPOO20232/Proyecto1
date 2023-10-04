@@ -1,0 +1,10 @@
+j.alvarez;1234abcd;0;Admin
+m.acosta;martin12;1;AdminLocal
+n.perez;perez34;2;AdminLocal
+j.alvear;jose56;3;AdminLocal
+m.gonzalez;maria78;1;EmpleadoAtencion
+j.rodriguez;juan90;1;EmpleadoTecnico
+a.paredes;ana12;2;EmpleadoTecnico
+c.lopez;carlos34;2;EmpleadoAtencion
+l.lopez;laura56;3;EmpleadoAtencion
+a.sanchez;alejandro78;3;EmpleadoTecnico

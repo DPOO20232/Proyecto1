@@ -1,0 +1,5 @@
+1;1;Protección total del vehículo
+2;0.35;Protección contra robo y daños
+3;0.4;Protección contra pago deducible
+4;0.11;Seguro de neumáticos y parabrisas
+5;0.2;Asistencia 24 horas para carretera
