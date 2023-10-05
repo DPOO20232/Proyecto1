@@ -1,4 +1,4 @@
-package Inventario;
+package inventario;
 
 public class Seguro {
     private int idSeguro;
