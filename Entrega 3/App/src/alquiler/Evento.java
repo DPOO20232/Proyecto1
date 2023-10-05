@@ -17,23 +17,23 @@ public class Evento {
     }
 
     public int getFechaInicio() {
-        return fechaInicio;
+        return this.fechaInicio;
     }
 
     public int getFechaFin() {
-        return fechaFin;
+        return this.fechaFin;
     }
 
     public int getHoraInicio() {
-        return horaInicio;
+        return this.horaInicio;
     }
 
     public int getHoraFin() {
-        return horaFin;
+        return this.horaFin;
     }
 
     public String getDescripcion() {
-        return descripcion;
+        return this.descripcion;
     }
 
 
