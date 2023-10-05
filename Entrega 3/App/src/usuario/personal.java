@@ -1,15 +1,15 @@
 package usuario;
-//import Sede.java;
+import inventario.Sede;
 
 public class Personal {
     private Usuario usuario;
     private String tipoPersonal;
-    //private Sede sede;
+    private Sede sede;
 
-    public Personal(Usuario usuario, String tipoPersonal) {
+    public Personal(Usuario usuario, String tipoPersonal, Sede sede) {
         this.usuario = usuario;
         this.tipoPersonal = tipoPersonal;
-        //this.sede = sede
+        this.sede = sede
     }
     
 }
