@@ -66,9 +66,10 @@ public class Inventario {
                     String ubicacionSede= partes[2];
                     List<Integer> horarioSemana= new ArrayList<Integer>();
                     List<Integer> horarioFinSemana= new ArrayList<Integer>();
-                    stringHorarioSemana=partes[3];
-                    
-                    Sede sedeActual= new Sede(id, nombreSede, ubicacionSede);
+                    String stringHorarioSemana=partes[3];
+                    String stringHorarioFinSemana=partes[4];
+                    List<Personal> personal= new ArrayList<Personal>();
+                    Sede sedeActual= new Sede(id, nombreSede, ubicacionSede,horarioSemana,horarioFinSemana,personal);
                     sedeActual.setHorarioAtencionEnSemana(horarioSemana);
                     sedeActual.setHorarioAtencionFinSemana(horarioFinSemana);
                     listaSedes.add(id, sedeActual);
