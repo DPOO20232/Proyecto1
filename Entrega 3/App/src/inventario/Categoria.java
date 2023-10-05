@@ -3,16 +3,16 @@ package inventario;
 public class Categoria {
     private int idCategoria;
     private String nombreCategoria;
-    private int pctg_temporadaAlta;
-    private int pctg_temporadaBaja;
+    private double pctg_temporadaAlta;
+    private double pctg_temporadaBaja;
     private int costoAveriaLeve;
     private int costoAveriaModerada;
     private int costoAveriaTotal;
     private int tarifaDiaria;
     private int id_Padre;
     
-    public Categoria(String nombreCategoria, int pctg_temporadaAlta, int pctg_temporadaBaja,
-                     int costoAveriaLeve, int costoAveriaModerada, int costoAveriaTotal, int tarifaDiaria, int id_Padre) {
+    public Categoria(String nombreCategoria, double pctg_temporadaAlta, double pctg_temporadaBaja,
+                     int costoAveriaLeve, int costoAveriaModerada, int costoAveriaTotal, int tarifaDiaria) {
                         this.nombreCategoria = nombreCategoria;
                         this.pctg_temporadaAlta = pctg_temporadaAlta;
                         this.pctg_temporadaBaja = pctg_temporadaBaja;
@@ -20,7 +20,6 @@ public class Categoria {
                         this.costoAveriaModerada = costoAveriaModerada;
                         this.costoAveriaTotal = costoAveriaTotal;
                         this.tarifaDiaria = tarifaDiaria;
-                        this.id_Padre = id_Padre;
                      }
     
     public int getID() {
@@ -31,11 +30,11 @@ public class Categoria {
         return this.nombreCategoria;
     }
 
-    public int getpctg_temporadaAlta() {
+    public double getpctg_temporadaAlta() {
         return this.pctg_temporadaAlta;
     }
 
-    public int getpctg_temporadaBaja() {
+    public double getpctg_temporadaBaja() {
         return this.pctg_temporadaBaja;
     }
 

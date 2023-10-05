@@ -1,5 +1,5 @@
 package usuario;
 
-public class personal {
+public class personal{
     
 }
