@@ -59,32 +59,33 @@ public class Categoria {
         return Padre;
     }
 
-    public void setpctg_temporadaAlta(int pctg_temporadaAlta) {
-        this.pctg_temporadaAlta = pctg_temporadaAlta;
+    public void setpctg_temporadaAlta(int fechaInicio, int fechaFin) {
+        this.pctg_temporadaAlta = fechaInicio;
+    }
+    
+
+    public void setpctg_temporadaBaja(int fechaInicio, int fechaFin) {
+        this.pctg_temporadaBaja = fechaFin;
     }
 
-    public void setpctg_temporadaBaja(int pctg_temporadaBaja) {
-        this.pctg_temporadaBaja = pctg_temporadaBaja;
+    public void setcostoAveriaLeve(int costoALeve) {
+        this.costoAveriaLeve = costoALeve;
     }
 
-    public void setcostoAveriaLeve(int costoAveriaLeve) {
-        this.costoAveriaLeve = costoAveriaLeve;
+    public void setcostoAveriaModerada(int costoAModerada) {
+        this.costoAveriaModerada = costoAModerada;
     }
 
-    public void setcostoAveriaModerada(int costoAveriaModerada) {
-        this.costoAveriaModerada = costoAveriaModerada;
+    public void setcostoAveriaTotal(int costoATotal) {
+        this.costoAveriaTotal = costoATotal;
     }
 
-    public void setcostoAveriaTotal(int costoAveriaTotal) {
-        this.costoAveriaTotal = costoAveriaTotal;
+    public void settarifaDiaria(int costoTarifa) {
+        this.tarifaDiaria = costoTarifa;
     }
 
-    public void settarifaDiaria(int tarifaDiaria) {
-        this.tarifaDiaria = tarifaDiaria;
+    public void setPadre() {
     }
-
-    public void setPadre(Categoria categoriaPadre) {
-        this.Padre = categoriaPadre;
-    }
+    
 
 }
