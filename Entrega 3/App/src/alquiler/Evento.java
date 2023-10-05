@@ -16,19 +16,19 @@ public class Evento {
         this.descripcion = descripcion;
     }
 
-    public int getfechaInicio() {
+    public int getFechaInicio() {
         return fechaInicio;
     }
 
-    public int getfechaFin() {
+    public int getFechaFin() {
         return fechaFin;
     }
 
-    public int gethoraInicio() {
+    public int getHoraInicio() {
         return horaInicio;
     }
 
-    public int gethoraFin() {
+    public int getHoraFin() {
         return horaFin;
     }
 
@@ -37,21 +37,24 @@ public class Evento {
     }
 
 
-    public void setFechaInicio() {
+    public void setFechaInicio(int fechaInicio) {
+        this.fechaInicio = fechaInicio;
     }
 
-    public void setFechaFin() {
+    public void setFechaFin(int fechaFin) {
+        this.fechaFin = fechaFin;
     }
 
-    public void setHoraInicio() {
+    public void setHoraInicio(int horaInicio) {
+        this.horaInicio = horaInicio;
     }
 
-    public void setHoraFin() {
+    public void setHoraFin(int horaFin) {
+        this.horaFin = horaFin;
     }
 
-    public void setDescripcion() {
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
-
-
 
 }
