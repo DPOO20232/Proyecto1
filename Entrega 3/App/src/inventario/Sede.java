@@ -1,7 +1,7 @@
 package inventario;
 import java.util.List;
 import java.util.ArrayList;
-
+import usuario.Personal;;
 public class Sede {
     private int idSede;
     private String nombre;
@@ -21,6 +21,9 @@ public class Sede {
     }
 
     // Métodos getters
+    public int getID(){
+        return this.idSede;
+    }
     public String getNombre() {
         return this.nombre;
     }
@@ -41,6 +44,9 @@ public class Sede {
         return this.personalSede;}
 
     // Métodos setters
+    public void setID(int id){
+        this.idSede=id;
+    }
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }

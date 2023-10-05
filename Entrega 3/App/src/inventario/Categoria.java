@@ -10,9 +10,11 @@ public class Categoria {
     private int costoAveriaTotal;
     private int tarifaDiaria;
     private int id_Padre;
+    private Categoria Padre;
     
-    public Categoria(String nombreCategoria, double pctg_temporadaAlta, double pctg_temporadaBaja,
-                     int costoAveriaLeve, int costoAveriaModerada, int costoAveriaTotal, int tarifaDiaria) {
+    public Categoria(int id,String nombreCategoria, double pctg_temporadaAlta, double pctg_temporadaBaja,
+                     int costoAveriaLeve, int costoAveriaModerada, int costoAveriaTotal, int tarifaDiaria,int id_Padre) {
+                        this.idCategoria=id;
                         this.nombreCategoria = nombreCategoria;
                         this.pctg_temporadaAlta = pctg_temporadaAlta;
                         this.pctg_temporadaBaja = pctg_temporadaBaja;
@@ -20,6 +22,8 @@ public class Categoria {
                         this.costoAveriaModerada = costoAveriaModerada;
                         this.costoAveriaTotal = costoAveriaTotal;
                         this.tarifaDiaria = tarifaDiaria;
+                        this.id_Padre=id_Padre;
+                        this.Padre=null;
                      }
     
     public int getID() {
@@ -54,10 +58,17 @@ public class Categoria {
         return this.tarifaDiaria;
     }
 
-    public int getPadre() {
+    public int getid_Padre() {
         return this.id_Padre;
     }
-
+    public Categoria getPadre(Categoria i) {
+        if (i.getid_Padre()!=0){
+        return i.Padre;
+    }
+    else{
+        return i;
+    }
+    }
     public void setpctg_temporadaAlta(int fechaInicio, int fechaFin) {
         this.pctg_temporadaAlta = fechaInicio;
     }
@@ -87,5 +98,7 @@ public class Categoria {
         this.id_Padre=id_Padre;
     }
     
-
+    public void setPadre(Categoria Padre) {
+        this.Padre=Padre;
+    }
 }

@@ -6,8 +6,9 @@ public class Seguro {
     private String descripcion;
 
     // Constructor
-    public Seguro(int tarifaDiaria, String desc) {
-        this.pctg_tarifaDiaria = tarifaDiaria;
+    public Seguro(int id,double pctg_tarifaDiaria, String desc) {
+        this.idSeguro=id;
+        this.pctg_tarifaDiaria = pctg_tarifaDiaria;
         this.descripcion = desc;
     }
 
