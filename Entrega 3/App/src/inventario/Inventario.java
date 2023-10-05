@@ -6,9 +6,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import alquiler.Alquiler;
+
 public class Inventario {
-    private static List<Seguro> seguros;
+    private static List<Seguro> listaSeguros;
+    private static List<Sede> listaSedes;
     private static List<Vehiculo> listaVehiculos;
+    private static List<Categoria> listaCategorias;
     //Los usuarios guardarlos en una lista de usuario en clase Usuario
     public void loadSistema(){
     loadCategorias();
@@ -22,6 +26,72 @@ public class Inventario {
     //updateSeguros();
     //updateVehiculos();
     }
+        private void loadCategorias(){
+        try (BufferedReader br = new BufferedReader(new FileReader("./data/categorias.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+                if (partes.length == 9) {
+                    int id = Integer.parseInt(partes[0]);
+                    String nombreCategoria=partes[1];
+                    double pctg_temporadaAlta=Double.parseDouble(partes[2]);
+                    double pctg_temporadaBaja=Double.parseDouble(partes[3]);
+                    int costoAveriaLeve=Integer.parseInt(partes[4]);
+                    int costoAveriaModerada=Integer.parseInt(partes[5]);
+                    int costoAveriaTotal= Integer.parseInt(partes[6]);
+                    int tarifaDiaria= Integer.parseInt(partes[7]);
+                    int id_Padre= Integer.parseInt(partes[8]);
+                    Categoria categoriaActual= new Categoria(nombreCategoria, pctg_temporadaAlta, pctg_temporadaBaja,costoAveriaLeve, costoAveriaModerada, costoAveriaTotal, tarifaDiaria);
+                    if (id_Padre!=0){
+                        categoriaActual.setid_Padre(id_Padre);
+                    }
+                    listaCategorias.add(categoriaActual);
+                } else {
+                    System.out.println("Formato incorrecto en la línea: " + linea);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void loadSedes(){
+    //1;SedeChapinero;cra7 #70, Bogotá;[0630,1630];[0630,1230];[]
+        try (BufferedReader br = new BufferedReader(new FileReader("./data/sedes.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+                if (partes.length == 6) {
+                    int id = Integer.parseInt(partes[0]);
+                    String nombreSede= partes[1];
+                    String ubicacionSede= partes[2];
+                    List<Integer> horarioSemana= new ArrayList<Integer>();
+                    List<Integer> horarioFinSemana= new ArrayList<Integer>();
+                    String stringHorarioSemana=partes[3].substring(1, partes[3].length() - 1);
+                    String[] horarios1= stringHorarioSemana.split(",");
+                    String stringHorarioFinSemana=partes[4].substring(1, partes[4].length() - 1);;
+                    String[] horarios2= stringHorarioFinSemana.split(",");
+                    for(String i: horarios1){
+                        int i_to_int=Integer.parseInt(i);
+                        horarioSemana.add(i_to_int);
+                    }
+                    for(String i: horarios2){
+                        int i_to_int=Integer.parseInt(i);
+                        horarioFinSemana.add(i_to_int);
+                    }
+                    List<Personal> personal= new ArrayList<Personal>();
+                    Sede sedeActual= new Sede(id, nombreSede, ubicacionSede,horarioSemana,horarioFinSemana,personal);
+                    sedeActual.setHorarioAtencionEnSemana(horarioSemana);
+                    sedeActual.setHorarioAtencionFinSemana(horarioFinSemana);
+                    listaSedes.add(id, sedeActual);
+                } else {
+                    System.out.println("Formato incorrecto en la línea: " + linea);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadSeguros(){
         try (BufferedReader br = new BufferedReader(new FileReader("./data/seguros.txt"))) {
             String linea;
@@ -32,7 +102,7 @@ public class Inventario {
                     double pctg_tarifadiaria = Double.parseDouble(partes[1]);
                     String descripcion=partes[2];
                     Seguro seguroActual= new Seguro(id,pctg_tarifadiaria,descripcion);
-                    seguros.add(seguroActual);
+                    listaSeguros.add(seguroActual);
                 } else {
                     System.out.println("Formato incorrecto en la línea: " + linea);
                 }
@@ -46,7 +116,7 @@ public class Inventario {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
-                if (partes.length == 3) {
+                if (partes.length == 12) {
                     String placa=partes[0];
                     String marca=partes[1];
                     String modelo=partes[2];
@@ -93,8 +163,4 @@ public class Inventario {
             e.printStackTrace();
         }
     }
-    private void loadCategorias(){
-
-    }
-    private void loadSedes(){}
 }
