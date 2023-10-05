@@ -1,3 +1,4 @@
+package Inventario;
 
 
 public class Vehiculo {
@@ -71,5 +72,6 @@ public class Vehiculo {
     //public void checkUltimoEvento(list<Evento> historialEvento){
         //int indice= historialEvento.size()-1; 
         //Evento ultimoEvento=historialEvento(indice);}
+    
     
 }
