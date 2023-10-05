@@ -9,7 +9,7 @@ public class Personal {
     public Personal(Usuario usuario, String tipoPersonal, Sede sede) {
         this.usuario = usuario;
         this.tipoPersonal = tipoPersonal;
-        this.sede = sede
+        this.sede = sede;
     }
     
 }
