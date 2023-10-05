@@ -17,10 +17,10 @@ public class Inventario {
     loadVehiculos();
     }
     public void updateSistema(){
-    updateCategorias();
-    updateSedes();
-    updateSeguros();
-    updateVehiculos();
+    //updateCategorias();
+    //updateSedes();
+    //updateSeguros();
+    //updateVehiculos();
     }
     private void loadSeguros(){
         try (BufferedReader br = new BufferedReader(new FileReader("./data/seguros.txt"))) {
@@ -57,7 +57,7 @@ public class Inventario {
                     boolean averiado= Boolean.parseBoolean(partes[6]);
                     String id_categoria=partes[7];
                     String id_sede=partes[8];
-                    List<Evento> historialEvento= new ArrayList<Evento>;
+                    List<Evento> historialEvento= new ArrayList<Evento>();
                     String eventos=partes[9];
                     if(eventos!="[]"){
                         eventos= eventos.substring(1, eventos.length() - 1);
@@ -71,15 +71,19 @@ public class Inventario {
                             int horaFin=Integer.parseInt(i_partes[3]);
                             String descripcion=i_partes[4];
                             Evento i_evento= new Evento(fechaInicio,fechaFin,horaInicio,horaFin,descripcion);
-
+                            historialEvento.add(i_evento);
                         }
                     }
-
-                    int id = Integer.parseInt(partes[0]);
-                    int pctg_tarifadiaria = Integer.parseInt(partes[1]);
-                    String descripcion=partes[2];
-                    Seguro seguroActual= new Seguro(id,pctg_tarifadiaria,descripcion);
-                    seguros.add(seguroActual);
+                    List<Alquiler> historialAlquiler= new ArrayList<Alquiler>();
+                    String alquileres=partes[10];
+                    if (alquileres!="[]"){
+                        alquileres=alquileres.substring(1, alquileres.length() - 1);
+                        String[] listaAlquileres=alquileres.split(",");
+                        for (String i:listaAlquileres){
+                            //TODO
+                        }
+                    }
+                    Vehiculo vehiculoActual= new Vehiculo(placa, marca, modelo, color, alquileres, ubicacionGPS, estado, averiado, historialEvento, historialAlquiler);
                 } else {
                     System.out.println("Formato incorrecto en la línea: " + linea);
                 }
