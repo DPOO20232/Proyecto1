@@ -1,7 +1,7 @@
 package usuario;
 import inventario.Sede;
 
-public class Personal {
+public class Personal{
     private Usuario usuario;
     private String tipoPersonal;
     private Sede sede;
