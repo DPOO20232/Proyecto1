@@ -66,8 +66,18 @@ public class Inventario {
                     String ubicacionSede= partes[2];
                     List<Integer> horarioSemana= new ArrayList<Integer>();
                     List<Integer> horarioFinSemana= new ArrayList<Integer>();
-                    String stringHorarioSemana=partes[3];
-                    String stringHorarioFinSemana=partes[4];
+                    String stringHorarioSemana=partes[3].substring(1, partes[3].length() - 1);
+                    String[] horarios1= stringHorarioSemana.split(",");
+                    String stringHorarioFinSemana=partes[4].substring(1, partes[4].length() - 1);;
+                    String[] horarios2= stringHorarioFinSemana.split(",");
+                    for(String i: horarios1){
+                        int i_to_int=Integer.parseInt(i);
+                        horarioSemana.add(i_to_int);
+                    }
+                    for(String i: horarios2){
+                        int i_to_int=Integer.parseInt(i);
+                        horarioFinSemana.add(i_to_int);
+                    }
                     List<Personal> personal= new ArrayList<Personal>();
                     Sede sedeActual= new Sede(id, nombreSede, ubicacionSede,horarioSemana,horarioFinSemana,personal);
                     sedeActual.setHorarioAtencionEnSemana(horarioSemana);
