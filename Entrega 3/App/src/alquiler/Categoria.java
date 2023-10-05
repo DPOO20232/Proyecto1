@@ -9,10 +9,10 @@ public class Categoria {
     private int costoAveriaModerada;
     private int costoAveriaTotal;
     private int tarifaDiaria;
-    private Categoria Padre;
+    private int id_Padre;
     
     public Categoria(String nombreCategoria, int pctg_temporadaAlta, int pctg_temporadaBaja,
-                     int costoAveriaLeve, int costoAveriaModerada, int costoAveriaTotal, int tarifaDiaria) {
+                     int costoAveriaLeve, int costoAveriaModerada, int costoAveriaTotal, int tarifaDiaria, int id_Padre) {
                         this.nombreCategoria = nombreCategoria;
                         this.pctg_temporadaAlta = pctg_temporadaAlta;
                         this.pctg_temporadaBaja = pctg_temporadaBaja;
@@ -20,43 +20,43 @@ public class Categoria {
                         this.costoAveriaModerada = costoAveriaModerada;
                         this.costoAveriaTotal = costoAveriaTotal;
                         this.tarifaDiaria = tarifaDiaria;
-                        this.Padre = null;
+                        this.id_Padre = id_Padre;
                      }
     
     public int getID() {
-        return idCategoria;
+        return this.idCategoria;
     }
 
     public String getnombreCategoria() {
-        return nombreCategoria;
+        return this.nombreCategoria;
     }
 
     public int getpctg_temporadaAlta() {
-        return pctg_temporadaAlta;
+        return this.pctg_temporadaAlta;
     }
 
     public int getpctg_temporadaBaja() {
-        return pctg_temporadaBaja;
+        return this.pctg_temporadaBaja;
     }
 
     public int getcostoAveriaLeve() {
-        return costoAveriaLeve;
+        return this.costoAveriaLeve;
     }
 
     public int getcostoAveriaModerada() {
-        return costoAveriaModerada;
+        return this.costoAveriaModerada;
     }
 
     public int getcostoAveriaTotal() {
-        return costoAveriaTotal;
+        return this.costoAveriaTotal;
     }
 
     public int gettarifaDiaria() {
-        return tarifaDiaria;
+        return this.tarifaDiaria;
     }
 
-    public Categoria getPadre() {
-        return Padre;
+    public int getPadre() {
+        return this.id_Padre;
     }
 
     public void setpctg_temporadaAlta(int fechaInicio, int fechaFin) {
@@ -84,7 +84,8 @@ public class Categoria {
         this.tarifaDiaria = costoTarifa;
     }
 
-    public void setPadre() {
+    public void setid_Padre(int id_Padre) {
+        this.id_Padre=id_Padre;
     }
     
 
