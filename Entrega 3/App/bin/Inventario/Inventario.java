@@ -1,4 +1,4 @@
-package alquiler;
+package inventario;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,6 +16,12 @@ public class Inventario {
     loadSeguros();
     loadVehiculos();
     }
+    public void updateSistema(){
+    updateCategorias();
+    updateSedes();
+    updateSeguros();
+    updateVehiculos();
+    }
     private void loadSeguros(){
         try (BufferedReader br = new BufferedReader(new FileReader("./data/seguros.txt"))) {
             String linea;
@@ -23,7 +29,7 @@ public class Inventario {
                 String[] partes = linea.split(";");
                 if (partes.length == 3) {
                     int id = Integer.parseInt(partes[0]);
-                    int pctg_tarifadiaria = Integer.parseInt(partes[1]);
+                    double pctg_tarifadiaria = Double.parseDouble(partes[1]);
                     String descripcion=partes[2];
                     Seguro seguroActual= new Seguro(id,pctg_tarifadiaria,descripcion);
                     seguros.add(seguroActual);
@@ -51,7 +57,7 @@ public class Inventario {
                     boolean averiado= Boolean.parseBoolean(partes[6]);
                     String id_categoria=partes[7];
                     String id_sede=partes[8];
-                    List<Evento> eventosVehiculo= new ArrayList<Evento>;
+                    List<Evento> historialEvento= new ArrayList<Evento>;
                     String eventos=partes[9];
                     if(eventos!="[]"){
                         eventos= eventos.substring(1, eventos.length() - 1);

@@ -1,4 +1,8 @@
-package Inventario;
+package inventario;
+import java.util.ArrayList;
+import java.util.List;
+
+import alquiler.Alquiler;
 
 
 public class Vehiculo {
@@ -10,21 +14,24 @@ public class Vehiculo {
     private  String ubicacionGPS;
     private  String estado;
     private boolean averiado;
-    // private list<Evento> historialEvento;
-    // private list<Alquiler> historialAlquiler;
-    // private list<Reserva> reservasActivas;
+    private List<Evento> historialEvento;
+    private List<Alquiler> historialAlquiler;
+    // private List<Reserva> reservasActivas;
     // private  Sede sede;
     // private Categoria categoria;
 
 
-    public Vehiculo(String placa, String marca, String modelo, String color, String tipoTransmision, String ubicacionGPS){
+    public Vehiculo(String placa, String marca, String modelo, String color, String tipoTransmision, String ubicacionGPS,String estado,boolean averiado,List<Evento> historialEvento,List<Alquiler> historialAlquiler){
         this.placa=placa;
         this.marca=marca;
         this.modelo=modelo;
         this.color=color;
         this.tipoTransmision=tipoTransmision;
         this.ubicacionGPS=ubicacionGPS;
-
+        this.estado=estado;
+        this.averiado=averiado;
+        this.historialEvento=historialEvento;
+        this.historialAlquiler=historialAlquiler;
     }
     public String getPlaca(){
         return this.placa;

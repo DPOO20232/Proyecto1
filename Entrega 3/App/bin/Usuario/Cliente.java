@@ -1,4 +1,4 @@
-package Usuario;
+package usuario;
 public class Cliente{
     private int numeroCedula;
     private String nombre;
