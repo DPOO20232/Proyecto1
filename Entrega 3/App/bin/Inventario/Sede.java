@@ -12,6 +12,7 @@ public class Sede {
 
     // Constructor
     public Sede(String nombre, String ubicacion) {
+        this.idSede=idSede;
         this.nombre = nombre;
         this.ubicacion = ubicacion;
         this.horarioAtencionEnSemana = new ArrayList<>();
@@ -21,19 +22,19 @@ public class Sede {
 
     // Métodos getters
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
 
     public String getUbicacion() {
-        return ubicacion;
+        return this.ubicacion;
     }
 
     public List<Integer> getHorarioAtencionEnSemana() {
-        return horarioAtencionEnSemana;
+        return this.horarioAtencionEnSemana;
     }
 
     public List<Integer> getHorarioAtencionFinSemana() {
-        return horarioAtencionFinSemana;
+        return this.horarioAtencionFinSemana;
     }
 
     //public List<Personal> getPersonalSede() {
