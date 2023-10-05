@@ -11,7 +11,7 @@ public class Sede {
     //private List<Personal> personalSede; // Suponiendo que existe una clase Personal
 
     // Constructor
-    public Sede(String nombre, String ubicacion) {
+    public Sede(int idSede,String nombre, String ubicacion) {
         this.idSede=idSede;
         this.nombre = nombre;
         this.ubicacion = ubicacion;

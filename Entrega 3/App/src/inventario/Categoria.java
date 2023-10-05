@@ -1,4 +1,4 @@
-package alquiler;
+package inventario;
 
 public class Categoria {
     private int idCategoria;
