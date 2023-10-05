@@ -19,13 +19,7 @@ public class Cliente{
         this.nacionalidad = nacionalidad;
     }
 
-    // Getters y Setters
-    //public Licencia getLicencia() {
-    //    return this.licencia;}
-
-    //public void setLicencia(Licencia licencia) {
-    //    this.licencia = licencia;}
-
+ 
     //public Tarjeta getTarjeta() {
     //    return tarjeta;
     //}
@@ -35,11 +29,11 @@ public class Cliente{
     }
 
     public String getNombre() {
-        return nombre;
+        return this.nombre;
     }
 
     public String getMail() {
-        return mail;
+        return this.mail;
     }
 
     public void setMail(String mail) {
@@ -47,11 +41,7 @@ public class Cliente{
     }
 
     public int getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
+        return this.telefono;
     }
 
     public int getFechaNacimiento() {
@@ -59,8 +49,18 @@ public class Cliente{
     }
 
     public String getNacionalidad() {
-        return nacionalidad;
+        return this.nacionalidad;
+    }
+    //public Licencia getLicencia() {
+    //    return this.licencia;}
+
+    //public void setLicencia(Licencia licencia) {
+    //    this.licencia = licencia;}
+
+    public void setTelefono(int telefono) {
+        this.telefono = telefono;
     }
     //public void setTarjeta(Tarjeta tarjeta) {
     //    this.tarjeta = tarjeta;}
 }
+
