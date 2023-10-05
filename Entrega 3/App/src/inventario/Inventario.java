@@ -84,6 +84,7 @@ public class Inventario {
                         }
                     }
                     Vehiculo vehiculoActual= new Vehiculo(placa, marca, modelo, color, alquileres, ubicacionGPS, estado, averiado, historialEvento, historialAlquiler);
+                    listaVehiculos.add(vehiculoActual);
                 } else {
                     System.out.println("Formato incorrecto en la línea: " + linea);
                 }
