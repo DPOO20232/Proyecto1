@@ -158,7 +158,12 @@ public class Inventario {
 	}
     private static void loadVehiculos(){
         try (BufferedReader br = new BufferedReader(new FileReader("./data/vehiculos.txt"))) {
+            //PBM158;chevrolet;aveo;gris;manual;disponible;false;1;1;[[20240321,20240322,0800,1200,descripcion],[],[]];[];[]
+            listaVehiculos= new ArrayList<Vehiculo>();
             String linea;
+            int contadorEventos=0;
+            int contadorAlquileres=0;
+            int contadorReservasActivas=0;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
                 if (partes.length == 12) {
@@ -170,40 +175,57 @@ public class Inventario {
                     String ubicacionGPS="No disponible :c";
                     String estado= partes[5];
                     boolean averiado= Boolean.parseBoolean(partes[6]);
-                    String id_categoria=partes[7];
-                    String id_sede=partes[8];
-                    List<Evento> historialEvento= new ArrayList<Evento>();
-                    String eventos=partes[9];
-                    if(eventos!="[]"){
-                        eventos= eventos.substring(1, eventos.length() - 1);
-                        String[] listaEventos=eventos.split(",");
-                        for (String i:listaEventos){
-                            String i_sinCorchetes=i.substring(1, eventos.length() - 1);
-                            String[] i_partes=i_sinCorchetes.split(",");
-                            int fechaInicio=Integer.parseInt(i_partes[0]);
-                            int fechaFin=Integer.parseInt(i_partes[1]);
-                            int horaInicio=Integer.parseInt(i_partes[2]);
-                            int horaFin=Integer.parseInt(i_partes[3]);
-                            String descripcion=i_partes[4];
-                            Evento i_evento= new Evento(fechaInicio,fechaFin,horaInicio,horaFin,descripcion);
-                            historialEvento.add(i_evento);
+                    int id_categoria=Integer.parseInt(partes[7]);
+                    Categoria categoria=null;
+                    for(Categoria i: listaCategorias){
+                        if(i.getID()==id_categoria){
+                        categoria=i;
+                        break;
                         }
                     }
-                    List<Alquiler> historialAlquiler= new ArrayList<Alquiler>();
-                    String alquileres=partes[10];
-                    if (alquileres!="[]"){
-                        alquileres=alquileres.substring(1, alquileres.length() - 1);
-                        String[] listaAlquileres=alquileres.split(",");
-                        for (String i:listaAlquileres){
-                            //TODO
+                    int id_sede=Integer.parseInt(partes[8]);
+                    Sede sede=null;
+                    for(Sede i: listaSedes){
+                        if(i.getID()==id_sede){
+                        sede=i;
+                        break;
                         }
                     }
-                    Vehiculo vehiculoActual= new Vehiculo(placa, marca, modelo, color, alquileres, ubicacionGPS, estado, averiado, historialEvento, historialAlquiler);
+                    Vehiculo vehiculoActual= new Vehiculo(placa, marca, modelo, color, tipo_trasmicion, ubicacionGPS, estado, averiado,categoria,sede);
                     listaVehiculos.add(vehiculoActual);
+                    String stringEventos=partes[9].substring(1, partes[9].length() - 1);
+                    String [] listaEventos=stringEventos.split(",");
+                    String stringAlquileres=partes[10].substring(1, partes[10].length() - 1);
+                    String [] listaAlquileres=stringAlquileres.split(",");
+                    String stringReservasActivas=partes[11].substring(1, partes[11].length() - 1);
+                    String [] listaReservasActivas=stringReservasActivas.split(",");
+                    //[[20240321;20240322;0800;1200;descripcion],[],[]]
+                    if (stringEventos!=""){
+                    for (String i: listaEventos){
+                        String i_substring=i.substring(1,i.length()-1);
+                        String [] i_partes=i_substring.split(";");
+                        if(i_partes.length==5){
+                        int i_fechaInicio=Integer.parseInt(i_partes[0]);
+                        int i_fechaFin=Integer.parseInt(i_partes[1]);
+                        int i_horaInicio=Integer.parseInt(i_partes[2]);
+                        int i_horaFin=Integer.parseInt(i_partes[3]);
+                        String descripcion= i_partes[4];
+                        Evento i_evento=new Evento(i_fechaInicio, i_fechaFin, i_horaInicio, i_horaFin, descripcion);
+                        contadorEventos+=1;
+                        vehiculoActual.addEvento(i_evento);
+                        }}}
+                    if (stringAlquileres!=""){
+
+                    }
+                    if (stringReservasActivas!=""){
+
+                    }
                 } else {
                     System.out.println("Formato incorrecto en la línea: " + linea);
                 }
             }
+        System.out.println(">>> "+listaVehiculos.size()+" vehículos cargados.("+ Integer.toString(contadorEventos)+" eventos encontrados, "+Integer.toString(contadorAlquileres)+" alquileres registrados, "+Integer.toString(contadorReservasActivas)+" reservas activas.)");
+
         } catch (IOException e) {
             e.printStackTrace();
         }

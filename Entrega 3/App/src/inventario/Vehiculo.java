@@ -14,14 +14,15 @@ public class Vehiculo {
     private  String ubicacionGPS;
     private  String estado;
     private boolean averiado;
+    private  Sede sede;
+    private Categoria categoria;
     private List<Evento> historialEvento;
     private List<Alquiler> historialAlquiler;
-    // private List<Reserva> reservasActivas;
-    // private  Sede sede;
-    // private Categoria categoria;
+    private List<Reserva> reservasActivas;
 
 
-    public Vehiculo(String placa, String marca, String modelo, String color, String tipoTransmision, String ubicacionGPS,String estado,boolean averiado,List<Evento> historialEvento,List<Alquiler> historialAlquiler){
+
+    public Vehiculo(String placa, String marca, String modelo, String color, String tipoTransmision, String ubicacionGPS,String estado,boolean averiado, Categoria categoria,Sede sede){
         this.placa=placa;
         this.marca=marca;
         this.modelo=modelo;
@@ -30,8 +31,11 @@ public class Vehiculo {
         this.ubicacionGPS=ubicacionGPS;
         this.estado=estado;
         this.averiado=averiado;
-        this.historialEvento=historialEvento;
-        this.historialAlquiler=historialAlquiler;
+        this.sede=sede;
+        this.categoria=categoria;
+        this.historialEvento=new ArrayList<Evento>();
+        this.historialAlquiler=new ArrayList<Alquiler>();
+        this.reservasActivas=new ArrayList<Reserva>();
     }
     public String getPlaca(){
         return this.placa;
@@ -68,8 +72,12 @@ public class Vehiculo {
         this.averiado=averiado;
     }
     
-    //public void addEvento(Evento evento, list<Evento> historialEvento){
-        //historialEvento.add(evento);}
+    public void addEvento(Evento evento){
+        this.historialEvento.add(evento);}
+    public void addReservasActivas(Reserva reserva){
+        this.reservasActivas.add(reserva);}
+    public void addAlquiler(Alquiler alquiler){
+        this.historialAlquiler.add(alquiler);}
     //public void addAlquiler(Alquiler alquiler, list<Alquiler> historialAlquiler){
         //historialAlquiler.add(alquiler);}
     //public void addReservasActivas(Reserva reserva, list<Reserva> reservasActivas){
@@ -79,6 +87,4 @@ public class Vehiculo {
     //public void checkUltimoEvento(list<Evento> historialEvento){
         //int indice= historialEvento.size()-1; 
         //Evento ultimoEvento=historialEvento(indice);}
-    
-    
 }
