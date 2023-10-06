@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alquiler.Alquiler;
-import usuario.Personal;
+import usuario.personal;
 import usuario.Usuario;
 public class Inventario {
     private static List<Seguro> listaSeguros;
@@ -87,7 +87,7 @@ public class Inventario {
                         int i_to_int=Integer.parseInt(i);
                         horarioFinSemana.add(i_to_int);
                     }
-                    List<Personal> personal= new ArrayList<Personal>();
+                    List<personal> personal= new ArrayList<personal>();
                     Sede sedeActual= new Sede(id, nombreSede, ubicacionSede,horarioSemana,horarioFinSemana,personal);
                     listaSedes.add(sedeActual);
                 } else {
@@ -117,14 +117,14 @@ public class Inventario {
                         for (Sede i: listaSedes){
                         if (i.getID()==id_sede){
                             i_sede=i;
-                            Personal personalActual= new Personal(login, password, tipoUsuario, i_sede);
+                            personal personalActual= new personal(login, password, tipoUsuario, i_sede);
                             i.addPersonalSede(personalActual);
                             contador+=1;
                             break;
                         }}}
                     else{
                         Usuario adminActual=new Usuario(login, password);
-                        Personal.setAdmin(adminActual);
+                        personal.setAdmin(adminActual);
                         contador+=1;
                     }
                     
