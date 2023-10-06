@@ -5,6 +5,8 @@ import inventario.Categoria;
 import inventario.Vehiculo;
 import usuario.Cliente;
 import inventario.Sede;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Reserva {
     private int idReserva;
@@ -131,7 +133,6 @@ public class Reserva {
             dias=dias+1;
         }
         return dias;
-    
     }
 
     public int estimarPagoAlquiler(int fecha1, int hora1, int fecha2, int hora2) {
