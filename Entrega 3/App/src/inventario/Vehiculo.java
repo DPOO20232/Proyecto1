@@ -80,5 +80,6 @@ public class Vehiculo {
     public boolean estaDisponible(int fecha1, int hora1, int fecha2, int hora2){
         //implementacion: revisar todas las reservas para ver si esta ocupado en ese rango
     }
+    }
 
 }
