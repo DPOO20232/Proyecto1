@@ -21,7 +21,7 @@ public class Reserva {
     private Cliente cliente;
     private Categoria categoria;
     private Vehiculo vehiculoAsignado;
-    private int pagoReserva;
+    private double pagoReserva;
 
 
     // Constructor

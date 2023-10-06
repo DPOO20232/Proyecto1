@@ -8,11 +8,7 @@ public class Sede {
     private String ubicacion;
     private List<Integer> horarioAtencionEnSemana;
     private List<Integer> horarioAtencionFinSemana;
-<<<<<<< HEAD
-    private ArrayList<Personal> personalSede;
-=======
     private List<personal> personalSede;
->>>>>>> main
 
     // Constructor
     public Sede(int idSede,String nombre, String ubicacion,List<Integer> horario1, List<Integer> horario2) {
@@ -21,11 +17,7 @@ public class Sede {
         this.ubicacion = ubicacion;
         this.horarioAtencionEnSemana=horario1;
         this.horarioAtencionFinSemana=horario2;
-<<<<<<< HEAD
-        this.personalSede=new ArrayList<>();
-=======
         this.personalSede=new ArrayList<personal>();
->>>>>>> main
     }
 
     // Métodos getters
