@@ -1,11 +1,11 @@
 package usuario;
 import inventario.Sede;
 
-public class personal extends Usuario{
+public class Personal extends Usuario{
     private String tipoPersonal;
     private Sede sede;
     private static Usuario credencialAdmin;
-    public personal(String login, String password, String tipoPersonal, Sede sede) {
+    public Personal(String login, String password, String tipoPersonal, Sede sede) {
         super(login, password);
         this.tipoPersonal = tipoPersonal;
         this.sede = sede;
