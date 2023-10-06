@@ -20,9 +20,9 @@ public class Cliente{
     }
 
  
-    //public Tarjeta getTarjeta() {
-    //    return tarjeta;
-    //}
+    public Tarjeta getTarjeta() {
+        return tarjeta;
+    }
 
     public String getNumeroCedula() {
         return Integer.toString(numeroCedula);
@@ -51,16 +51,16 @@ public class Cliente{
     public String getNacionalidad() {
         return this.nacionalidad;
     }
-    //public Licencia getLicencia() {
-    //    return this.licencia;}
+    public Licencia getLicencia() {
+        return this.licencia;}
 
-    //public void setLicencia(Licencia licencia) {
-    //    this.licencia = licencia;}
+    public void setLicencia(Licencia licencia) {
+        this.licencia = licencia;}
 
     public void setTelefono(int telefono) {
         this.telefono = telefono;
     }
-    //public void setTarjeta(Tarjeta tarjeta) {
-    //    this.tarjeta = tarjeta;}
+    public void setTarjeta(Tarjeta tarjeta) {
+        this.tarjeta = tarjeta;}
 }
 

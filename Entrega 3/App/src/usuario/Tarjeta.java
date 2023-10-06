@@ -1,13 +1,24 @@
 package usuario;
 
 public class Tarjeta {
-    private int numeroTarjeta;
+    private long numeroTarjeta;
     private int fechaVencimiento;
     private String nombreTitular;
 
-    public Tarjeta(int numeroTarjeta, int fechaVencimiento, String nombreTitular) {
+    public Tarjeta(long numeroTarjeta, int fechaVencimiento, String nombreTitular) {
         this.numeroTarjeta = numeroTarjeta;
         this.fechaVencimiento = fechaVencimiento;
         this.nombreTitular = nombreTitular;
+    }
+    public long getNumeroTarjeta() {
+        return this.numeroTarjeta;
+    }
+
+    public int getFechaVencimiento() {
+        return this.fechaVencimiento;
+    }
+
+    public String getNombreTitular() {
+        return this.nombreTitular;
     }
 }
