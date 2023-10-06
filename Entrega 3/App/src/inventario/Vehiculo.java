@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alquiler.Alquiler;
+import alquiler.Reserva;
 
 
 public class Vehiculo {
