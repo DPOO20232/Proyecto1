@@ -1,4 +1,4 @@
-PBM158;chevrolet;aveo;gris;manual;disponible;false;1;1;[];[];[]
+PBM158;chevrolet;aveo;gris;manual;disponible;false;1;1;[[20240321;20240322;0800;1200;descripcion],[],[]];[];[]
 XNP957;kia;picanto;blanco;manual;disponible;true;1;2;[];[];[]
 DLV965;chevrolet;beat;roja;manual;disponible;false;1;3;[];[];[]
 RTM681;suzuki;swift;verde;automatica;disponible;false;2;1;[];[];[]
