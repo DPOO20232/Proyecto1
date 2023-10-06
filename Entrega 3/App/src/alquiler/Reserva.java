@@ -190,7 +190,7 @@ public class Reserva {
     public int estimarPagoAlquiler(int fecha1, int hora1, int fecha2, int hora2) {
         // Lógica para estimar el pago de alquiler
         Categoria categoria=this.getCategoria();
-        int tarifa=categoria.gettarifaDiaria();
+        int tarifa=categoria.getTarifaDiaria();
         int dias=this.calcularDuracionRenta(fecha1,hora1,fecha2,hora2);
         int precio= dias*tarifa;
         return precio;
