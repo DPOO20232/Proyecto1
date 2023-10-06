@@ -31,8 +31,12 @@ public class Inventario {
     loadSedes();
     loadPersonal();
     loadSeguros();
+    //loadLicencias();
     loadClientes();
     //  revisar tema logeos
+    //loadEventos();
+    //loadAlquileres();
+    //loadReservas();
     loadVehiculos();
     }
     public static List<Categoria> getListaCategorias(){
@@ -204,9 +208,13 @@ public class Inventario {
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
             if (partes.length == 3) {
-            //1023456789;Ana González;ana.gonzalez@email.com;3156789012;15071990;MÉXICO;[5555666677778888,15062020,Ana González];[1023456790,15062020,15062030,México]
-            
-                
+            //1023456789;Ana González;ana.gonzalez@email.com;3156789012;15071990;MÉXICO;[5555666677778888,15062020,Ana González];[1023456790]
+            //private long numeroTarjeta;
+            //private int fechaVencimiento;
+            //private String marcaTarjeta;
+            //private String nombreTitular;
+            //licencias en otro archivo
+
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}
             }  
         }
