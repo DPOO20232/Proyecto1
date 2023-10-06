@@ -33,6 +33,13 @@ public class alquiler{
         this.reserva=reserva;
     }
     
-    
-    
+    public void setConductores(Conductor conductor){
+        this.conductores.add(idAlquiler, conductor);;
+    }
+    public void setSeguros(Seguro seguro){
+        this.seguros.add(idAlquiler, seguro);
+    }
+    public String crearReciboAlquiler(){
+        return "Recibo creado correctamente";
+    }
 }
