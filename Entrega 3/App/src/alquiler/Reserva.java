@@ -8,6 +8,7 @@ import inventario.Sede;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+
 public class Reserva {
     private int idReserva;
     private int fechaRecoger;
@@ -178,11 +179,11 @@ public class Reserva {
                 fechaString2="0"+fechaString2;
         }
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate fechaT1 = LocalDate.parse(fecha1, formato);
-        LocalDate fechaT2 = LocalDate.parse(fecha2N, formato);
+        LocalDate fechaT1 = LocalDate.parse(fechaString1, formato);
+        LocalDate fechaT2 = LocalDate.parse(fechaString2, formato);
         long duracionEnDias = fechaT1.until(fechaT2).getDays();
         int valorInt=(int) duracionEnDias;
-        return valorInt
+        return valorInt;
         
     }
 
