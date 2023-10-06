@@ -10,10 +10,10 @@ import alquiler.Alquiler;
 import usuario.personal;
 import usuario.Usuario;
 public class Inventario {
-    private static List<Seguro> listaSeguros;
-    private static List<Sede> listaSedes;
-    private static List<Vehiculo> listaVehiculos;
     private static List<Categoria> listaCategorias;
+    private static List<Sede> listaSedes;
+    private static List<Seguro> listaSeguros;
+    private static List<Vehiculo> listaVehiculos;
     //Los usuarios guardarlos en una lista de usuario en clase Usuario
     public static void loadSistema(){
     loadCategorias();
@@ -22,6 +22,14 @@ public class Inventario {
     loadSeguros();
     loadVehiculos();
     }
+    public static List<Categoria> getListaCategorias(){
+        return listaCategorias;}
+    public static List<Seguro> getListaSeguros(){
+        return listaSeguros;}
+    public static List<Sede> getListaSedes(){
+        return listaSedes;}
+    public static List<Vehiculo> getListaVehiculos(){
+        return listaVehiculos;}
     public static void updateSistema(){
     //updateCategorias();
     //updateSedes();
@@ -87,8 +95,7 @@ public class Inventario {
                         int i_to_int=Integer.parseInt(i);
                         horarioFinSemana.add(i_to_int);
                     }
-                    List<personal> personal= new ArrayList<personal>();
-                    Sede sedeActual= new Sede(id, nombreSede, ubicacionSede,horarioSemana,horarioFinSemana,personal);
+                    Sede sedeActual= new Sede(id, nombreSede, ubicacionSede,horarioSemana,horarioFinSemana);
                     listaSedes.add(sedeActual);
                 } else {
                     System.out.println("Formato incorrecto en la línea: " + linea);
@@ -215,9 +222,14 @@ public class Inventario {
                         vehiculoActual.addEvento(i_evento);
                         }}}
                     if (stringAlquileres!=""){
-
+                    for (String i: listaAlquileres){
+                        String i_subString=i.substring(1, i.length()-1);
+                    }
+                        
                     }
                     if (stringReservasActivas!=""){
+                    for (String i: listaReservasActivas){
+                        String i_substring=i.substring(1,i.length()-1);
 
                     }
                 } else {
@@ -225,7 +237,7 @@ public class Inventario {
                 }
             }
         System.out.println(">>> "+listaVehiculos.size()+" vehículos cargados.("+ Integer.toString(contadorEventos)+" eventos encontrados, "+Integer.toString(contadorAlquileres)+" alquileres registrados, "+Integer.toString(contadorReservasActivas)+" reservas activas.)");
-
+        }
         } catch (IOException e) {
             e.printStackTrace();
         }

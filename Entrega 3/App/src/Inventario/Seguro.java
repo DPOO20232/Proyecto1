@@ -1,5 +1,7 @@
 package inventario;
 
+import java.util.List;
+
 public class Seguro {
     private int idSeguro;
     private double pctg_tarifaDiaria;
@@ -36,18 +38,17 @@ public class Seguro {
     public void setDescripcion(String desc) {
         this.descripcion = desc;
     }
-
-    // Método para agregar un ID a la lista de IDs de clase (implementación no proporcionada)
-    //public void addEnIDsClase(int id) {
-        // Implementar la lógica de agregado aquí}
-
-    // Método para eliminar un ID de la lista de IDs de clase (implementación no proporcionada)
-    //public void deleteEnIDsClase(int id) {
-        // Implementar la lógica de eliminación aquí}
-
-    // Método para eliminar un seguro (implementación no proporcionada)
-    //public void eliminarSeguro() {
-        // Implementar la lógica de eliminación aquí}
+    public void eliminarSeguro(){
+        List<Sede> sedes_inventario= Inventario.getListaSedes();
+        int idEliminar=this.getID();
+        for (int i = 0; i < sedes_inventario.size(); i++){
+            Sede i_sede= sedes_inventario.get(i);
+            if (i_sede.getID()==(idEliminar)){
+                sedes_inventario.remove(i);
+                break;
+            }
+        }
+}
 }
 
     

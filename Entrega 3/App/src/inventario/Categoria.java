@@ -1,5 +1,7 @@
 package inventario;
 
+import java.util.List;
+
 public class Categoria {
     private int idCategoria;
     private String nombreCategoria;
@@ -34,71 +36,85 @@ public class Categoria {
         return this.nombreCategoria;
     }
 
-    public double getpctg_temporadaAlta() {
+    public double getPctg_temporadaAlta() {
         return this.pctg_temporadaAlta;
     }
 
-    public double getpctg_temporadaBaja() {
+    public double getPctg_temporadaBaja() {
         return this.pctg_temporadaBaja;
     }
 
-    public int getcostoAveriaLeve() {
+    public int getCostoAveriaLeve() {
         return this.costoAveriaLeve;
     }
 
-    public int getcostoAveriaModerada() {
+    public int getCostoAveriaModerada() {
         return this.costoAveriaModerada;
     }
 
-    public int getcostoAveriaTotal() {
+    public int getCostoAveriaTotal() {
         return this.costoAveriaTotal;
     }
 
-    public int gettarifaDiaria() {
+    public int getTarifaDiaria() {
         return this.tarifaDiaria;
     }
 
-    public int getid_Padre() {
+    public int getId_Padre() {
         return this.id_Padre;
     }
     public Categoria getPadre(Categoria i) {
-        if (i.getid_Padre()!=0){
+        if (i.getId_Padre()!=0){
         return i.Padre;
     }
     else{
         return i;
     }
     }
-    public void setpctg_temporadaAlta(int fechaInicio, int fechaFin) {
+    public void setID(int id){
+        this.idCategoria=id;
+    }
+    public void setPctg_temporadaAlta(int fechaInicio, int fechaFin) {
         this.pctg_temporadaAlta = fechaInicio;
     }
     
 
-    public void setpctg_temporadaBaja(int fechaInicio, int fechaFin) {
+    public void setPctg_temporadaBaja(int fechaInicio, int fechaFin) {
         this.pctg_temporadaBaja = fechaFin;
     }
 
-    public void setcostoAveriaLeve(int costoALeve) {
+    public void setCostoAveriaLeve(int costoALeve) {
         this.costoAveriaLeve = costoALeve;
     }
 
-    public void setcostoAveriaModerada(int costoAModerada) {
+    public void setCostoAveriaModerada(int costoAModerada) {
         this.costoAveriaModerada = costoAModerada;
     }
 
-    public void setcostoAveriaTotal(int costoATotal) {
+    public void setCostoAveriaTotal(int costoATotal) {
         this.costoAveriaTotal = costoATotal;
     }
 
-    public void settarifaDiaria(int costoTarifa) {
+    public void setTarifaDiaria(int costoTarifa) {
         this.tarifaDiaria = costoTarifa;
     }
 
-    public void setid_Padre(int id_Padre) {
+    public void setId_Padre(int id_Padre) {
         this.id_Padre=id_Padre;
     }
     
     public void setPadre(Categoria Padre) {
         this.Padre=Padre;
+    }
+    public void eliminarCategoria(){
+        List<Categoria> categorias_inventario= Inventario.getListaCategorias();
+        int idEliminar=this.getID();
+        for (int i = 0; i < categorias_inventario.size(); i++){
+            Categoria i_categoria= categorias_inventario.get(i);
+            if (i_categoria.getID()==(idEliminar)){
+                categorias_inventario.remove(i);
+                break;
+            }
+        }
     }
 }
