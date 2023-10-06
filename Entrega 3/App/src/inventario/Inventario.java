@@ -15,6 +15,7 @@ import usuario.Cliente;
 import usuario.Usuario;
 import usuario.Admin;
 import usuario.Licencia;
+import usuario.Tarjeta;
 public class Inventario {
     private static String nombreCompania;
     private static int costoPorConductorAdicional;
@@ -235,6 +236,9 @@ public class Inventario {
             int telefono= Integer.parseInt(partes[3]);
             int fechaNacimiento= Integer.parseInt(partes[4]);
             String nacionalidad= partes[5];
+            Cliente clienteActual= new Cliente(numeroCedula, nombre, correo, telefono, fechaNacimiento, nacionalidad);
+            clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[7])));
+            //clienteActual.setTarjeta(new Tarjeta(, , , ));
 
             //private int fechaVencimiento;
             //private String marcaTarjeta;
