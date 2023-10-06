@@ -22,10 +22,13 @@ public class Reserva {
     private Categoria categoria;
     private Vehiculo vehiculoAsignado;
     private int pagoReserva;
+    private static int idCounter=0;
 
 
     // Constructor
-    public Reserva(int fechaRecoger, int fechaEntregar, int horaRecoger, int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar, Cliente cliente) {
+    public Reserva(int fechaRecoger, int fechaEntregar, int horaRecoger, int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar,Categoria categoria, Cliente cliente) {
+        idCounter+=1;
+        this.idReserva=idCounter;
         this.fechaRecoger = fechaRecoger;
         this.fechaEntregar = fechaEntregar;
         this.horaRecoger = horaRecoger;
@@ -35,6 +38,18 @@ public class Reserva {
         this.sedeEntregar = sedeEntregar;
         this.cliente = cliente;
     }
+    public Reserva(int idReserva,int fechaRecoger, int fechaEntregar, int horaRecoger, int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar,Categoria categoria, Cliente cliente) {
+        this.idReserva=idReserva;
+        this.fechaRecoger = fechaRecoger;
+        this.fechaEntregar = fechaEntregar;
+        this.horaRecoger = horaRecoger;
+        this.horaEntregar = horaEntregar;
+        this.reservaEnSede = reservaEnSede;
+        this.sedeRecoger = sedeRecoger;
+        this.sedeEntregar = sedeEntregar;
+        this.cliente = cliente;
+    }
+
 
     // Métodos getter
     public int getID() {

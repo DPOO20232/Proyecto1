@@ -1,10 +1,12 @@
 package usuario;
+import java.util.List;
 import inventario.Sede;
-
+import java.util.ArrayList;
 public class personal extends Usuario{
     private String tipoPersonal;
     private Sede sede;
-    private static Usuario credencialAdmin;
+    private static Admin credencialAdmin;
+    private static List<personal> credencialesPersonal;
     public personal(String login, String password, String tipoPersonal, Sede sede) {
         super(login, password);
         this.tipoPersonal = tipoPersonal;
@@ -16,7 +18,7 @@ public class personal extends Usuario{
         public void setSede(Sede sede){
         this.sede=sede;
     }
-    public static void setAdmin(Usuario admin){
+    public static void setAdmin(Admin admin){
         credencialAdmin=admin;
     }
     public boolean checkAdmin(String login,String password){
@@ -32,5 +34,13 @@ public class personal extends Usuario{
     }
     public Sede getSede(){
         return this.sede;
+    }
+    public static void addCredencialesPersonal(personal personal){
+        if (credencialesPersonal==null){
+            credencialesPersonal= new ArrayList<personal>();
+        }
+        credencialesPersonal.add(personal);
+
+
     }
 }

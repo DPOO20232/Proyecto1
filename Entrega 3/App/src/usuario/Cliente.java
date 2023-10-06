@@ -24,8 +24,8 @@ public class Cliente{
     //    return tarjeta;
     //}
 
-    public String getNumeroCedula() {
-        return Integer.toString(numeroCedula);
+    public int getNumeroCedula() {
+        return numeroCedula;
     }
 
     public String getNombre() {
