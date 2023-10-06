@@ -7,7 +7,8 @@ public class Usuario {
     private String login;
     private String password;
     private static List<Usuario> credenciales;
-    private static List<Cliente> clientes;
+    private static List<Cliente> ListaClientes;
+    private static List<Licencia> ListaLicencias;
     public Usuario(String login, String password) {
         this.login = login;
         this.password = password;
@@ -33,17 +34,33 @@ public class Usuario {
         }
         return retorno;
     }
-    public static void addClientes(Cliente cliente){
-        if (clientes==null){
-            clientes= new ArrayList<Cliente>();
+    public static List<Cliente> getListaClientes(){ return ListaClientes;}
+    public static List<Licencia> getListaLicencias(){ return ListaLicencias;}
+    public static void addCliente(Cliente cliente){
+        if (ListaClientes==null){
+            ListaClientes= new ArrayList<Cliente>();
         }
-        clientes.add(cliente);
+        ListaClientes.add(cliente);
     }
-    public static List<Cliente> getClientes(){ return clientes;}
+    public static void addLicencia(Licencia licencia){
+        if (ListaLicencias==null){
+            ListaLicencias= new ArrayList<Licencia>();
+        }
+        ListaLicencias.add(licencia);
+    }
     public static Cliente assignCliente(int cedula){
         Cliente retorno=null;
-        for(Cliente i: Usuario.getClientes()){
+        for(Cliente i: Usuario.getListaClientes()){
             if (i.getNumeroCedula()==cedula){
+                retorno=i;
+            }
+        }
+        return retorno;
+    }
+    public static Licencia assignLicencia(int num_licencia){
+        Licencia retorno=null;
+        for(Licencia i: Usuario.getListaLicencias()){
+            if (i.getNumeroLicencia()==num_licencia){
                 retorno=i;
             }
         }

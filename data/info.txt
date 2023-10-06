@@ -1,4 +1,4 @@
-nombreCompania;name
+nombreCompania;RentAcarSA
 costoPorConductorAdicional;100000
 costoPorTrasladoSedes;200000
 periodoTemporadaBaja;[1001,1130]

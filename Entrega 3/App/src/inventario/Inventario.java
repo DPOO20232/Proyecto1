@@ -14,6 +14,7 @@ import usuario.personal;
 import usuario.Cliente;
 import usuario.Usuario;
 import usuario.Admin;
+import usuario.Licencia;
 public class Inventario {
     private static String nombreCompania;
     private static int costoPorConductorAdicional;
@@ -31,7 +32,9 @@ public class Inventario {
     loadSedes();
     loadPersonal();
     loadSeguros();
-    //loadLicencias();
+    //desde aqui chequear 
+    //loadClientes -> asignar licencia y crear tarjeta de credito
+    loadLicencias();
     loadClientes();
     //  revisar tema logeos
     //loadEventos();
@@ -202,6 +205,23 @@ public class Inventario {
         System.out.println(">>> "+listaSeguros.size()+" seguros cargados.");
         } catch (IOException e) {e.printStackTrace();}
 	}
+    private static void loadLicencias(){
+        try (BufferedReader br = new BufferedReader(new FileReader("./data/licencias.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+            if (partes.length == 4) {
+                int numeroLicencia= Integer.parseInt(partes[0]);
+                int fechaExpedicion=Integer.parseInt(partes[1]);
+                int fechaVencimiento= Integer.parseInt(partes[2]);
+                String paisExpedicion= partes[3];
+                Licencia licenciaActual= new Licencia(numeroLicencia, fechaExpedicion, fechaVencimiento, paisExpedicion);
+                Usuario.addLicencia(licenciaActual);
+            }else {
+                    System.out.println("Formato incorrecto en la línea: " + linea);
+            }}}        
+        catch (IOException e) {e.printStackTrace();}
+    }
     private static void loadClientes(){
         try (BufferedReader br = new BufferedReader(new FileReader("./data/clientes.txt"))) {
             String linea;
@@ -209,7 +229,13 @@ public class Inventario {
                 String[] partes = linea.split(";");
             if (partes.length == 3) {
             //1023456789;Ana González;ana.gonzalez@email.com;3156789012;15071990;MÉXICO;[5555666677778888,15062020,Ana González];[1023456790]
-            //private long numeroTarjeta;
+            int numeroCedula= Integer.parseInt(partes[0]);
+            String nombre= partes[1];
+            String correo = partes[2];
+            int telefono= Integer.parseInt(partes[3]);
+            int fechaNacimiento= Integer.parseInt(partes[4]);
+            String nacionalidad= partes[5];
+
             //private int fechaVencimiento;
             //private String marcaTarjeta;
             //private String nombreTitular;
@@ -327,9 +353,9 @@ public class Inventario {
             }}
         return retorno;
     } 
-    private static Cliente assignCliente(String cedula_cliente){
+    private static Cliente assignCliente(int cedula_cliente){
         Cliente retorno = null;
-        for(Cliente i: Inventario.getListaClientes()){
+        for(Cliente i: Usuario.getClientes()){
             if(i.getNumeroCedula()==cedula_cliente){
             retorno= i;
             }}
