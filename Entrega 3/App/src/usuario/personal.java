@@ -1,11 +1,11 @@
 package usuario;
 import inventario.Sede;
 
-public class Personal extends Usuario{
+public class personal extends Usuario{
     private String tipoPersonal;
     private Sede sede;
     private static Usuario credencialAdmin;
-    public Personal(String login, String password, String tipoPersonal, Sede sede) {
+    public personal(String login, String password, String tipoPersonal, Sede sede) {
         super(login, password);
         this.tipoPersonal = tipoPersonal;
         this.sede = sede;
@@ -20,7 +20,7 @@ public class Personal extends Usuario{
         credencialAdmin=admin;
     }
     public boolean checkAdmin(String login,String password){
-        if ((login.equals(Personal.credencialAdmin.getLogin()))&&(password.equals(Personal.credencialAdmin.getPassword()))){
+        if ((login.equals(credencialAdmin.getLogin()))&&(password.equals(credencialAdmin.getPassword()))){
             return true;
         }
         else{
