@@ -5,6 +5,7 @@ import java.util.List;
 public class Categoria {
     private int idCategoria;
     private String nombreCategoria;
+    private int capacidadPersonas;
     private double pctg_temporadaAlta;
     private double pctg_temporadaBaja;
     private int costoAveriaLeve;
@@ -14,10 +15,11 @@ public class Categoria {
     private int id_Padre;
     private Categoria Padre;
     
-    public Categoria(int id,String nombreCategoria, double pctg_temporadaAlta, double pctg_temporadaBaja,
+    public Categoria(int id,String nombreCategoria, int capacidadPersonas,double pctg_temporadaAlta, double pctg_temporadaBaja,
                      int costoAveriaLeve, int costoAveriaModerada, int costoAveriaTotal, int tarifaDiaria,int id_Padre) {
                         this.idCategoria=id;
                         this.nombreCategoria = nombreCategoria;
+                        this.capacidadPersonas= capacidadPersonas;
                         this.pctg_temporadaAlta = pctg_temporadaAlta;
                         this.pctg_temporadaBaja = pctg_temporadaBaja;
                         this.costoAveriaLeve = costoAveriaLeve;
@@ -34,6 +36,9 @@ public class Categoria {
 
     public String getnombreCategoria() {
         return this.nombreCategoria;
+    }
+    public int getCapacidad() {
+        return this.capacidadPersonas;
     }
 
     public double getPctg_temporadaAlta() {
