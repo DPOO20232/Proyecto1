@@ -21,8 +21,12 @@ public class Reserva {
     private Cliente cliente;
     private Categoria categoria;
     private Vehiculo vehiculoAsignado;
+<<<<<<< HEAD
     private int pagoReserva;
     private static int idCounter=0;
+=======
+    private double pagoReserva;
+>>>>>>> NP
 
 
     // Constructor
