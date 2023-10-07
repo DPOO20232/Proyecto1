@@ -1,9 +1,7 @@
 package alquiler;
 import java.util.ArrayList;
 import inventario.Seguro;
-import usuario.Cliente;
 import usuario.Conductor;
-import usuario.Usuario;
 
 public class Alquiler{
     private int idAlquiler;

@@ -355,7 +355,7 @@ public class Inventario {
             for (String i: pagosExcedentes){
                 String [] i_partes= i.substring(1,i.length()-1).split("-");
                 PagoExcedente i_PagoExcedente= new PagoExcedente();
-                i_PagoExcedente.agregarPagoAdicional(i_partes[0],Integer.parseInt(i_partes[1]);
+                i_PagoExcedente.agregarPagoAdicional(i_partes[0],Integer.parseInt(i_partes[1]));
                 alquilerActual.addPagoExcedente(i_PagoExcedente);
             }}
             contador+=1;

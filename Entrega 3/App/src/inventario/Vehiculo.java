@@ -71,14 +71,13 @@ public class Vehiculo {
         this.historialAlquiler.add(alquiler);}
     public void eliminarReservaActiva(int idReserva){
         List<Reserva> reservas_activas= this.getReservasActivas();
-        int idEliminar=this.getID();
         for (int i = 0; i < reservas_activas.size(); i++){
             Reserva i_reserva= reservas_activas.get(i);
-            if (i_reserva.getID()==(idEliminar)){
+            if (i_reserva.getID()==(idReserva)){
                 reservas_activas.remove(i);
                 break;
             }
-        }
+        }}
     public boolean estaDisponible(int fecha1, int hora1, int fecha2, int hora2){
         return true;
         //implementacion: revisar todas las reservas para ver si esta ocupado en ese rango
