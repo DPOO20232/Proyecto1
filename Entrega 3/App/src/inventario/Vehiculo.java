@@ -1,18 +1,11 @@
 package inventario;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
-
-import alquiler.Alquiler;
-import alquiler.Reserva;
-
-=======
 import inventario.Evento;
-import alquiler.alquiler;
+import alquiler.Alquiler;
 import alquiler.Reserva;
 import inventario.Sede;
 import inventario.Categoria;
->>>>>>> NP
 
 public class Vehiculo {
     private  String placa;
@@ -23,16 +16,6 @@ public class Vehiculo {
     private  String ubicacionGPS;
     private  String estado;
     private boolean averiado;
-<<<<<<< HEAD
-    private ArrayList<Evento> historialEvento;
-    private ArrayList<alquiler> historialAlquiler;
-    private List<Reserva> reservasActivas;
-    private  Sede sede;
-    private Categoria categoria;
-
-
-    public Vehiculo(String placa, String marca, String modelo, String color, String tipoTransmision, String ubicacionGPS,String estado,boolean averiado,List<Evento> historialEvento,ArrayList<alquiler> historialAlquiler){
-=======
     private  Sede sede;
     private Categoria categoria;
     private List<Evento> historialEvento;
@@ -42,7 +25,6 @@ public class Vehiculo {
 
 
     public Vehiculo(String placa, String marca, String modelo, String color, String tipoTransmision, String ubicacionGPS,String estado,boolean averiado, Categoria categoria,Sede sede){
->>>>>>> main
         this.placa=placa;
         this.marca=marca;
         this.modelo=modelo;
@@ -51,16 +33,11 @@ public class Vehiculo {
         this.ubicacionGPS=ubicacionGPS;
         this.estado=estado;
         this.averiado=averiado;
-<<<<<<< HEAD
-        this.historialEvento=new ArrayList<>();
-        this.historialAlquiler=new ArrayList<>();
-=======
         this.sede=sede;
         this.categoria=categoria;
         this.historialEvento=new ArrayList<Evento>();
         this.historialAlquiler=new ArrayList<Alquiler>();
         this.reservasActivas=new ArrayList<Reserva>();
->>>>>>> main
     }
     public String getPlaca(){return this.placa;}
     public String getMarca(){return this.marca;}
@@ -103,31 +80,7 @@ public class Vehiculo {
             }
         }
     public boolean estaDisponible(int fecha1, int hora1, int fecha2, int hora2){
+        return true;
         //implementacion: revisar todas las reservas para ver si esta ocupado en ese rango
     }
-    }
-<<<<<<< HEAD
-    public void setEstado(){
-        this.estado=estado;
-    }
-    public void setAveriado(){
-        this.averiado=averiado;
-    }
-    
-    public void addEvento(Evento evento){
-        this.historialEvento.add(evento);}
-    public void addAlquiler(alquiler alquiler){
-        this.historialAlquiler.add(alquiler);}
-    public void addReservasActivas(Reserva reserva, list<Reserva> reservasActivas){
-        reservasActivas.add(reserva);}
-    //public void deleteEvento (Evento evento, list<Evento> historialEvento){
-        //historialEvento.remove(evento)}
-    //public void checkUltimoEvento(list<Evento> historialEvento){
-        //int indice= historialEvento.size()-1; 
-        //Evento ultimoEvento=historialEvento(indice);}
-    
-    
-=======
-
->>>>>>> main
 }

@@ -1,9 +1,9 @@
 package alquiler;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import alquiler.Reserva;
 import inventario.Seguro;
+import usuario.Cliente;
 import usuario.Conductor;
+import usuario.Usuario;
 
 public class Alquiler{
     private int idAlquiler;
@@ -12,6 +12,7 @@ public class Alquiler{
     private ArrayList<Conductor> conductores;
     private ArrayList<Seguro> seguros;
     private ArrayList<PagoExcedente> pagosExcedentes;
+    private static ArrayList<Alquiler> listaAlquileres;
     public Alquiler(Reserva reserva){
         this.idAlquiler= reserva.getID();
         this.pagoFinal=-1;
@@ -38,6 +39,9 @@ public class Alquiler{
     public Reserva getReserva(){
         return this.reserva;
     }
+    public static ArrayList<Alquiler> getListaAlquileres(){
+        return listaAlquileres;
+    }
     public void setPagoFinal(int valor){
         this.pagoFinal=valor;
     }
@@ -55,5 +59,18 @@ public class Alquiler{
     }
     public String crearReciboAlquiler(){
         return "Recibo creado correctamente";
+    }
+    public static void addAlquiler(Alquiler alquiler){
+        if (listaAlquileres==null){ listaAlquileres= new ArrayList<Alquiler>();}
+        listaAlquileres.add(alquiler);
+    }
+    public static Alquiler assignAlquiler(int id_alquiler){
+        Alquiler retorno = null;
+        for(Alquiler i: Alquiler.getListaAlquileres()){
+            if(i.getID()==id_alquiler){
+            retorno= i;
+            break;
+            }}
+        return retorno;
     }
 }
