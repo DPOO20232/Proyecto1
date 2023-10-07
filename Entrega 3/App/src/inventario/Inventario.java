@@ -387,10 +387,11 @@ public class Inventario {
                     listaVehiculos.add(vehiculoActual);
                     String stringIDsEventos=partes[9].substring(1, partes[9].length() - 1);
                     String [] listaIDsEventos=stringIDsEventos.split(",");
-                    String stringIDsAlquileres=partes[10].substring(1, partes[10].length() - 1);
-                    String [] listaIDsAlquileres=stringIDsAlquileres.split(",");
-                    String stringIDsReservasActivas=partes[11].substring(1, partes[11].length() - 1);
+                    String stringIDsReservasActivas=partes[10].substring(1, partes[11].length() - 1);
                     String [] listaIDsReservasActivas=stringIDsReservasActivas.split(",");
+                    String stringIDsAlquileres=partes[11].substring(1, partes[10].length() - 1);
+                    String [] listaIDsAlquileres=stringIDsAlquileres.split(",");
+
                     //[[20240321;20240322;0800;1200;descripcion],[],[]]
                     if (stringIDsEventos!=""){
                     for (String i: listaIDsEventos){
@@ -400,11 +401,12 @@ public class Inventario {
                     for (String i: listaIDsAlquileres){
                         vehiculoActual.addAlquiler(Alquiler.assignAlquiler(Integer.parseInt(i)));
                     }
-                    }
                     if (stringIDsReservasActivas!=""){
                     for (String i: listaIDsReservasActivas){
                         vehiculoActual.addReservaActiva(Reserva.assignReserva(Integer.parseInt(i)));
                     }
+                    }
+
                 } else {
                     System.out.println("Formato incorrecto en la línea: " + linea);
                 }
