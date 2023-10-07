@@ -2,6 +2,7 @@ package alquiler;
 import java.util.ArrayList;
 import java.util.List;
 import inventario.Categoria;
+import inventario.Inventario;
 import inventario.Vehiculo;
 import usuario.Cliente;
 import usuario.Licencia;
@@ -96,7 +97,7 @@ public class Reserva {
     public double getPagoReserva() {
         return this.pagoReserva;
     }
-    public List<Reserva> getListaReservas(){
+    public static List<Reserva> getListaReservas(){
         return listaReservas;
     }
 
@@ -150,6 +151,15 @@ public class Reserva {
         }
         listaReservas.add(reserva);
     }
+    public static Reserva assignReserva(int idReserva){
+        Reserva retorno = null;
+        for(Reserva i: Reserva.getListaReservas()){
+            if(i.getID()==idReserva){
+            retorno= i;
+            break;
+            }}
+        return retorno;
+    } 
 
     public int calcularDuracionRenta(int fecha1, int hora1, int fecha2, int hora2) {
         // Lógica para calcular la duración de la renta

@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import alquiler.Alquiler;
+import alquiler.PagoExcedente;
 import alquiler.Reserva;
 import usuario.personal;
 import usuario.Cliente;
+import usuario.Conductor;
 import usuario.Usuario;
 import usuario.Admin;
 import usuario.Licencia;
@@ -311,6 +313,54 @@ public class Inventario {
         }
         catch (IOException e) {e.printStackTrace();}
     }
+    private static void loadAlquileres(){
+        int contador=0;
+        try (BufferedReader br = new BufferedReader(new FileReader("./data/alquileres.txt"))) {
+            //private int idAlquiler;
+            //private double pagoFinal;
+            //private Reserva reserva;
+            //private ArrayList<Conductor> conductores;
+            //private ArrayList<Seguro> seguros;
+            //private ArrayList<PagoExcedente> pagosExcedentes;
+            //id,pagofinal,idreserva,[[nombre-cedula-assignLicencia(int num_licencia)],[]],[assignSeguro(id_seguro)],
+            //,[[string-valor],[]]
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+            if (partes.length == 6) {
+            int idAlquiler= Integer.parseInt(partes[0]);
+            double pagoFinal= Double.parseDouble(partes[1]);
+            int id_reserva= Integer.parseInt(partes[2]);
+            Reserva reserva= Reserva.assignReserva(id_reserva);
+            Alquiler alquilerActual= new Alquiler(reserva);
+            String stringConductores= partes[3].substring(1,partes[3].length()-1);
+            String [] conductores= stringConductores.split(",");
+            for (String i: conductores){
+                String [] i_partes= i.substring(1,i.length()-1).split("-");
+                Conductor i_conductor= new Conductor(i_partes[0],Integer.parseInt(i_partes[1]), Usuario.assignLicencia(Integer.parseInt(i_partes[2])));
+                alquilerActual.addConductor(i_conductor);
+            }
+            String stringIdsSeguros= partes[4].substring(1, partes[4].length()-1);
+            String [] IdsSeguros= stringIdsSeguros.split(",");
+            for(String i: IdsSeguros){
+                alquilerActual.addSeguro(Inventario.assignSeguro(Integer.parseInt(i)));
+            }
+            String stringPagosExcedentes= partes[5].substring(1, partes[5].length()-1);
+            String [] pagosExcedentes= stringPagosExcedentes.split(",");
+            for (String i: pagosExcedentes){
+                String [] i_partes= i.substring(1,i.length()-1).split("-");
+                PagoExcedente i_PagoExcedente= new PagoExcedente();
+                i_PagoExcedente.agregarPagoAdicional(i_partes[0],Integer.parseInt(i_partes[1]);
+                alquilerActual.addPagoExcedente(i_PagoExcedente);
+            }
+            contador+=1;
+            }else{System.out.println("Formato incorrecto en la línea: " + linea);}
+            }  
+            System.out.println(">>> " + Integer.toString(contador)+ " alquileres cargados.");
+
+        }
+        catch (IOException e) {e.printStackTrace();}
+    }
 
     private static void loadVehiculos(){
         try (BufferedReader br = new BufferedReader(new FileReader("./data/vehiculos.txt"))) {
@@ -407,6 +457,14 @@ public class Inventario {
         Categoria retorno = null;
         for(Categoria i: Inventario.getListaCategorias()){
             if(i.getID()==id_categoria){
+            retorno= i;
+            }}
+        return retorno;
+    }
+    private static Seguro assignSeguro(int id_seguro){
+        Seguro retorno = null;
+        for(Seguro i: Inventario.getListaSeguros()){
+            if(i.getID()==id_seguro){
             retorno= i;
             }}
         return retorno;
