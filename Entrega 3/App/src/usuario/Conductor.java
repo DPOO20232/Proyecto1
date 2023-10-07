@@ -1,5 +1,4 @@
 package usuario;
-import usuario.Licencia;
 
 public class Conductor {
     private String nombre;

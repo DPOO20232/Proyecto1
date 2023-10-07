@@ -26,18 +26,19 @@ public class Inventario {
     private static List<Sede> listaSedes;
     private static List<Seguro> listaSeguros;
     private static List<Vehiculo> listaVehiculos;
+    private static List<Evento> listaEventos;
     //Los usuarios guardarlos en una lista de usuario en clase Usuario
     public static void loadSistema(){
     loadInfo();
     loadCategorias();
     loadSedes();
     loadPersonal();
-    loadSeguros();
+    loadSeguros(); 
     loadLicencias();
     loadClientes();
-    //loadEventos();
-    //loadAlquileres();
-    //loadReservas();
+    loadEventos();
+    loadReservas();
+    loadAlquileres();
     loadVehiculos();
     }
     public static List<Categoria> getListaCategorias(){
@@ -254,6 +255,63 @@ public class Inventario {
         }
         catch (IOException e) {e.printStackTrace();}
     }
+    private static void loadEventos(){
+        listaEventos= new ArrayList<Evento>();
+        try (BufferedReader br = new BufferedReader(new FileReader("./data/eventos.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+            if (partes.length == 6) {
+            int idEvento= Integer.parseInt(partes[0]);
+            int fechaInicio= Integer.parseInt(partes[1]);
+            int fechaFin=Integer.parseInt(partes[2]);
+            int horaInicio= Integer.parseInt(partes[3]);
+            int horaFin= Integer.parseInt(partes[4]);
+            String descripcion= partes[5];
+            Evento eventoActual= new Evento(idEvento, fechaInicio, fechaFin, horaInicio, horaFin, descripcion);
+            listaEventos.add(eventoActual);
+            }else{System.out.println("Formato incorrecto en la línea: " + linea);}
+            }  
+            System.out.println(">>> " + listaEventos.size()+ " eventos cargados.");
+
+        }
+        catch (IOException e) {e.printStackTrace();}
+    }
+    private static void loadReservas(){
+        //    public Reserva(int idReserva,int fechaRecoger, int fechaEntregar, int horaRecoger,
+        // int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar,
+        //Categoria categoria, Cliente cliente) {
+        int contador=0;
+        try (BufferedReader br = new BufferedReader(new FileReader("./data/reservas.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";");
+            if (partes.length == 10) {
+            int idReserva= Integer.parseInt(partes[0]);
+            int fechaRecoger= Integer.parseInt(partes[1]);
+            int fechaEntregar=Integer.parseInt(partes[2]);
+            int horaRecoger= Integer.parseInt(partes[3]);
+            int horaEntregar= Integer.parseInt(partes[4]);
+            boolean reservaEnSede= Boolean.parseBoolean(partes[5]);
+            int id_sedeRecoger=Integer.parseInt(partes[6]);
+            Sede sedeRecoger=Inventario.assignSede(id_sedeRecoger);
+            int id_sedeEntregar=Integer.parseInt(partes[7]);
+            Sede sedeEntregar= Inventario.assignSede(id_sedeEntregar);
+            int id_categoria=Integer.parseInt(partes[8]);
+            Categoria categoria= Inventario.assignCategoria(id_categoria);
+            int cedula_cliente= Integer.parseInt(partes[9]);
+            Cliente cliente= Usuario.assignCliente(cedula_cliente);
+            Reserva reservaActual= new Reserva(idReserva, fechaRecoger, fechaEntregar, horaRecoger, horaEntregar, reservaEnSede, sedeRecoger, sedeEntregar, categoria, cliente);
+            Reserva.addReserva(reservaActual);
+            contador+=1;
+            }else{System.out.println("Formato incorrecto en la línea: " + linea);}
+            }  
+            System.out.println(">>> " +Integer.toString(contador)+ " reservas cargadas.");
+
+        }
+        catch (IOException e) {e.printStackTrace();}
+    }
+
     private static void loadVehiculos(){
         try (BufferedReader br = new BufferedReader(new FileReader("./data/vehiculos.txt"))) {
             //PBM158;chevrolet;aveo;gris;manual;disponible;false;1;1;[[20240321,20240322,0800,1200,descripcion],[],[]];[];[]

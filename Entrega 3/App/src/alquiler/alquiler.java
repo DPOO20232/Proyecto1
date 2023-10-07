@@ -5,13 +5,13 @@ import alquiler.Reserva;
 import inventario.Seguro;
 import usuario.Conductor;
 
-public class alquiler{
+public class Alquiler{
     private int idAlquiler;
     private double pagoFinal;
     private Reserva reserva;
     private ArrayList<Conductor> conductores;
     private ArrayList<Seguro> seguros;
-    public alquiler(Reserva reserva){
+    public Alquiler(Reserva reserva){
         this.reserva=reserva;
     }
     public int getID(){
