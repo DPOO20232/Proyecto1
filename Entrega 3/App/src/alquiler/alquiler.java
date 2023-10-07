@@ -40,7 +40,7 @@ public class Alquiler{
     public static ArrayList<Alquiler> getListaAlquileres(){
         return listaAlquileres;
     }
-    public void setPagoFinal(int valor){
+    public void setPagoFinal(double valor){
         this.pagoFinal=valor;
     }
     public double calcularTarifaFinal(){

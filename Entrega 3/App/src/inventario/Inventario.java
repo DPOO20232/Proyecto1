@@ -318,23 +318,16 @@ public class Inventario {
     private static void loadAlquileres(){
         int contador=0;
         try (BufferedReader br = new BufferedReader(new FileReader("./data/alquileres.txt"))) {
-            //private int idAlquiler;
-            //private double pagoFinal;
-            //private Reserva reserva;
-            //private ArrayList<Conductor> conductores;
-            //private ArrayList<Seguro> seguros;
-            //private ArrayList<PagoExcedente> pagosExcedentes;
-            //id,pagofinal,idreserva,[[nombre-cedula-assignLicencia(int num_licencia)],[]],[assignSeguro(id_seguro)],
-            //,[[string-valor],[]]
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
             if (partes.length == 6) {
-            int idAlquiler= Integer.parseInt(partes[0]);
+            //int idAlquiler= Integer.parseInt(partes[0]);
             double pagoFinal= Double.parseDouble(partes[1]);
             int id_reserva= Integer.parseInt(partes[2]);
             Reserva reserva= Reserva.assignReserva(id_reserva);
             Alquiler alquilerActual= new Alquiler(reserva);
+            alquilerActual.setPagoFinal(pagoFinal);
             String stringConductores= partes[3].substring(1,partes[3].length()-1);
             String [] conductores= stringConductores.split(",");
             if(!stringConductores.equals("")){
