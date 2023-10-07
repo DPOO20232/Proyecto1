@@ -2,6 +2,7 @@ package inventario;
 
 public class Evento {
     
+    private int idEvento;
     private int fechaInicio;
     private int fechaFin;
     private int horaInicio;

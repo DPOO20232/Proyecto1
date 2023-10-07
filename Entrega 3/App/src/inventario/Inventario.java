@@ -33,11 +33,8 @@ public class Inventario {
     loadSedes();
     loadPersonal();
     loadSeguros();
-    //desde aqui chequear 
-    //loadClientes -> asignar licencia y crear tarjeta de credito
     loadLicencias();
     loadClientes();
-    //  revisar tema logeos
     //loadEventos();
     //loadAlquileres();
     //loadReservas();
@@ -206,47 +203,54 @@ public class Inventario {
         System.out.println(">>> "+listaSeguros.size()+" seguros cargados.");
         } catch (IOException e) {e.printStackTrace();}
 	}
-    private static void loadLicencias(){
+    private static void loadLicencias() {
+        int contador = 0;
         try (BufferedReader br = new BufferedReader(new FileReader("./data/licencias.txt"))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
-            if (partes.length == 4) {
-                int numeroLicencia= Integer.parseInt(partes[0]);
-                int fechaExpedicion=Integer.parseInt(partes[1]);
-                int fechaVencimiento= Integer.parseInt(partes[2]);
-                String paisExpedicion= partes[3];
-                Licencia licenciaActual= new Licencia(numeroLicencia, fechaExpedicion, fechaVencimiento, paisExpedicion);
-                Usuario.addLicencia(licenciaActual);
-            }else {
+                if (partes.length == 4) {
+                    int numeroLicencia = Integer.parseInt(partes[0]);
+                    int fechaExpedicion = Integer.parseInt(partes[1]);
+                    int fechaVencimiento = Integer.parseInt(partes[2]);
+                    String paisExpedicion = partes[3];
+                    Licencia licenciaActual = new Licencia(numeroLicencia, fechaExpedicion, fechaVencimiento, paisExpedicion);
+                    Usuario.addLicencia(licenciaActual);
+                    contador += 1;
+                } else {
                     System.out.println("Formato incorrecto en la línea: " + linea);
-            }}}        
-        catch (IOException e) {e.printStackTrace();}
+                }
+            }
+            System.out.println(">>> " + Integer.toString(contador) + " licencias cargadas.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+    
     private static void loadClientes(){
+        int contador=0;
         try (BufferedReader br = new BufferedReader(new FileReader("./data/clientes.txt"))) {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
-            if (partes.length == 3) {
-            //1023456789;Ana González;ana.gonzalez@email.com;3156789012;15071990;MÉXICO;[5555666677778888,15062020,Ana González];[1023456790]
+            if (partes.length == 8) {
             int numeroCedula= Integer.parseInt(partes[0]);
             String nombre= partes[1];
             String correo = partes[2];
-            int telefono= Integer.parseInt(partes[3]);
+            long telefono= Long.parseLong(partes[3]);
             int fechaNacimiento= Integer.parseInt(partes[4]);
             String nacionalidad= partes[5];
             Cliente clienteActual= new Cliente(numeroCedula, nombre, correo, telefono, fechaNacimiento, nacionalidad);
             clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[7])));
-            //clienteActual.setTarjeta(new Tarjeta(, , , ));
-
-            //private int fechaVencimiento;
-            //private String marcaTarjeta;
-            //private String nombreTitular;
-            //licencias en otro archivo
-
+            String partesTarjeta=partes[6].substring(1, partes[6].length() - 1);
+            String [] listaTarjeta=partesTarjeta.split(",");
+            clienteActual.setTarjeta(new Tarjeta(Long.parseLong(listaTarjeta[0]), Integer.parseInt(listaTarjeta[1]), listaTarjeta[2], listaTarjeta[3]));
+            Usuario.addCliente(clienteActual);
+            contador+=1;
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}
             }  
+            System.out.println(">>> " + Integer.toString(contador) + " clientes cargados.");
+
         }
         catch (IOException e) {e.printStackTrace();}
     }
@@ -354,14 +358,16 @@ public class Inventario {
         for(Sede i: Inventario.getListaSedes()){
             if(i.getID()==id_sede){
             retorno= i;
+            break;
             }}
         return retorno;
     } 
     private static Cliente assignCliente(int cedula_cliente){
         Cliente retorno = null;
-        for(Cliente i: Usuario.getClientes()){
+        for(Cliente i: Usuario.getListaClientes()){
             if(i.getNumeroCedula()==cedula_cliente){
             retorno= i;
+            break;
             }}
         return retorno;
     } 

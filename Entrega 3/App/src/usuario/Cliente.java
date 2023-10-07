@@ -3,14 +3,14 @@ public class Cliente{
     private int numeroCedula;
     private String nombre;
     private String mail;
-    private int telefono;
+    private long telefono;
     private int fechaNacimiento;
     private String nacionalidad;
     private Licencia licencia;
     private Tarjeta tarjeta;
 
     // Constructor
-    public Cliente(int numeroCedula, String nombre, String mail, int telefono, int fechaNacimiento, String nacionalidad) {
+    public Cliente(int numeroCedula, String nombre, String mail, long telefono, int fechaNacimiento, String nacionalidad) {
         this.numeroCedula = numeroCedula;
         this.nombre = nombre;
         this.mail = mail;
@@ -40,7 +40,7 @@ public class Cliente{
         this.mail = mail;
     }
 
-    public int getTelefono() {
+    public long getTelefono() {
         return this.telefono;
     }
 
@@ -57,7 +57,7 @@ public class Cliente{
     public void setLicencia(Licencia licencia) {
         this.licencia = licencia;}
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(long telefono) {
         this.telefono = telefono;
     }
     public void setTarjeta(Tarjeta tarjeta) {

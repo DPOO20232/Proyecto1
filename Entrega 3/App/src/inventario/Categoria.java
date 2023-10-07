@@ -14,10 +14,11 @@ public class Categoria {
     private int tarifaDiaria;
     private int id_Padre;
     private Categoria Padre;
-    
+    private static int lastId;
     public Categoria(int id,String nombreCategoria, int capacidadPersonas,double pctg_temporadaAlta, double pctg_temporadaBaja,
                      int costoAveriaLeve, int costoAveriaModerada, int costoAveriaTotal, int tarifaDiaria,int id_Padre) {
                         this.idCategoria=id;
+                        if (id>lastId){lastId=id;}
                         this.nombreCategoria = nombreCategoria;
                         this.capacidadPersonas= capacidadPersonas;
                         this.pctg_temporadaAlta = pctg_temporadaAlta;
@@ -29,7 +30,20 @@ public class Categoria {
                         this.id_Padre=id_Padre;
                         this.Padre=null;
                      }
-    
+    public Categoria(String nombreCategoria, int capacidadPersonas,double pctg_temporadaAlta, double pctg_temporadaBaja,
+                     int costoAveriaLeve, int costoAveriaModerada, int costoAveriaTotal, int tarifaDiaria,int id_Padre) {
+                        this.setID();
+                        this.nombreCategoria = nombreCategoria;
+                        this.capacidadPersonas= capacidadPersonas;
+                        this.pctg_temporadaAlta = pctg_temporadaAlta;
+                        this.pctg_temporadaBaja = pctg_temporadaBaja;
+                        this.costoAveriaLeve = costoAveriaLeve;
+                        this.costoAveriaModerada = costoAveriaModerada;
+                        this.costoAveriaTotal = costoAveriaTotal;
+                        this.tarifaDiaria = tarifaDiaria;
+                        this.id_Padre=id_Padre;
+                        this.Padre=null;
+                     }
     public int getID() {
         return this.idCategoria;
     }
@@ -76,8 +90,10 @@ public class Categoria {
         return i;
     }
     }
-    public void setID(int id){
-        this.idCategoria=id;
+    public void setID(){
+        this.idCategoria=lastId+=1;
+        lastId=this.getID();
+
     }
     public void setPctg_temporadaAlta(int fechaInicio, int fechaFin) {
         this.pctg_temporadaAlta = fechaInicio;

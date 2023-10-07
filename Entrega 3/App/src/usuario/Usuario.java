@@ -62,6 +62,7 @@ public class Usuario {
         for(Licencia i: Usuario.getListaLicencias()){
             if (i.getNumeroLicencia()==num_licencia){
                 retorno=i;
+                break;
             }
         }
         return retorno;
