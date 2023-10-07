@@ -35,6 +35,7 @@ public class Reserva {
         this.reservaEnSede = reservaEnSede;
         this.sedeRecoger = sedeRecoger;
         this.sedeEntregar = sedeEntregar;
+        this.categoria=categoria;
         this.cliente = cliente;
     }
     public Reserva(int idReserva,int fechaRecoger, int fechaEntregar, int horaRecoger, int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar,Categoria categoria, Cliente cliente) {
@@ -47,6 +48,7 @@ public class Reserva {
         this.reservaEnSede = reservaEnSede;
         this.sedeRecoger = sedeRecoger;
         this.sedeEntregar = sedeEntregar;
+        this.categoria=categoria;
         this.cliente = cliente;
     }
 

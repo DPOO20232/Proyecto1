@@ -348,9 +348,10 @@ public class Inventario {
             for (String i: pagosExcedentes){
                 String [] i_partes= i.substring(1,i.length()-1).split("-");
                 PagoExcedente i_PagoExcedente= new PagoExcedente();
-                i_PagoExcedente.agregarPagoAdicional(i_partes[0],Integer.parseInt(i_partes[1]));
+                i_PagoExcedente.agregarPagoAdicional(i_partes[0],Double.parseDouble(i_partes[1]));
                 alquilerActual.addPagoExcedente(i_PagoExcedente);
             }}
+            Alquiler.addAlquiler(alquilerActual);
             contador+=1;
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}
             }  
@@ -361,13 +362,14 @@ public class Inventario {
     }
 
     private static void loadVehiculos(){
+        int contadorEventos=0;
+        int contadorAlquileres=0;
+        int contadorReservasActivas=0;
+        listaVehiculos= new ArrayList<Vehiculo>();
+
         try (BufferedReader br = new BufferedReader(new FileReader("./data/vehiculos.txt"))) {
             //PBM158;chevrolet;aveo;gris;manual;disponible;false;1;1;[[20240321,20240322,0800,1200,descripcion],[],[]];[];[]
-            listaVehiculos= new ArrayList<Vehiculo>();
             String linea;
-            int contadorEventos=0;
-            int contadorAlquileres=0;
-            int contadorReservasActivas=0;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
                 if (partes.length == 12) {
@@ -384,35 +386,35 @@ public class Inventario {
                     Categoria categoria=Inventario.assignCategoria(id_categoria);
                     Sede sede= Inventario.assignSede(id_sede);
                     Vehiculo vehiculoActual= new Vehiculo(placa, marca, modelo, color, tipo_trasmicion, ubicacionGPS, estado, averiado,categoria,sede);
-                    listaVehiculos.add(vehiculoActual);
                     String stringIDsEventos=partes[9].substring(1, partes[9].length() - 1);
-                    String [] listaIDsEventos=stringIDsEventos.split(",");
                     String stringIDsReservasActivas=partes[10].substring(1, partes[11].length() - 1);
-                    String [] listaIDsReservasActivas=stringIDsReservasActivas.split(",");
                     String stringIDsAlquileres=partes[11].substring(1, partes[10].length() - 1);
-                    String [] listaIDsAlquileres=stringIDsAlquileres.split(",");
-
-                    //[[20240321;20240322;0800;1200;descripcion],[],[]]
-                    if (stringIDsEventos!=""){
+                    if (!stringIDsEventos.equals("")){
+                    String [] listaIDsEventos=stringIDsEventos.split(",");
                     for (String i: listaIDsEventos){
                         vehiculoActual.addEvento(Inventario.assignEvento(Integer.parseInt(i)));
+                        contadorEventos+=1;
                         }}
-                    if (stringIDsAlquileres!=""){
+                    if (!stringIDsAlquileres.equals("")){
+                    String [] listaIDsAlquileres=stringIDsAlquileres.split(",");
                     for (String i: listaIDsAlquileres){
                         vehiculoActual.addAlquiler(Alquiler.assignAlquiler(Integer.parseInt(i)));
-                    }
-                    if (stringIDsReservasActivas!=""){
+                        contadorAlquileres+=1;
+                    }}
+                    if (!stringIDsReservasActivas.equals("")){
+                    String [] listaIDsReservasActivas=stringIDsReservasActivas.split(",");
                     for (String i: listaIDsReservasActivas){
                         vehiculoActual.addReservaActiva(Reserva.assignReserva(Integer.parseInt(i)));
-                    }
-                    }
+                        contadorReservasActivas+=1;
+                    }}
+                    listaVehiculos.add(vehiculoActual);
+
 
                 } else {
                     System.out.println("Formato incorrecto en la línea: " + linea);
                 }
             }
         System.out.println(">>> "+listaVehiculos.size()+" vehículos cargados.("+ Integer.toString(contadorEventos)+" eventos encontrados, "+Integer.toString(contadorAlquileres)+" alquileres registrados, "+Integer.toString(contadorReservasActivas)+" reservas activas.)");
-        }
         } catch (IOException e) {
             e.printStackTrace();
         }
