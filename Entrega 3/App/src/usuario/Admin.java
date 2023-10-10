@@ -1,11 +1,9 @@
 package usuario;
 
-public class Admin {
+public class Admin extends Usuario{
 
-    private Usuario usuario;
-
-    public Admin(Usuario usuario) {
-        this.usuario = usuario;
+    public Admin(String login, String password) {
+        super(login, password);
     }
     
 }

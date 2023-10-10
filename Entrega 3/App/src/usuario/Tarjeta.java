@@ -3,6 +3,7 @@ package usuario;
 public class Tarjeta {
     private long numeroTarjeta;
     private int fechaVencimiento;
+    private String marcaTarjeta;
     private String nombreTitular;
 
     public Tarjeta(long numeroTarjeta, int fechaVencimiento, String nombreTitular) {
@@ -16,6 +17,10 @@ public class Tarjeta {
 
     public int getFechaVencimiento() {
         return this.fechaVencimiento;
+    }
+
+    public String getMarcaTarjeta() {
+        return this.marcaTarjeta;
     }
 
     public String getNombreTitular() {
