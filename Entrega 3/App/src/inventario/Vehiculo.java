@@ -2,7 +2,7 @@ package inventario;
 import java.util.ArrayList;
 import java.util.List;
 import inventario.Evento;
-import alquiler.Alquiler;
+import alquiler.alquiler;
 import alquiler.Reserva;
 import inventario.Sede;
 import inventario.Categoria;
@@ -19,7 +19,7 @@ public class Vehiculo {
     private  Sede sede;
     private Categoria categoria;
     private List<Evento> historialEvento;
-    private List<Alquiler> historialAlquiler;
+    private List<alquiler> historialAlquiler;
     private List<Reserva> reservasActivas;
 
 
@@ -36,7 +36,7 @@ public class Vehiculo {
         this.sede=sede;
         this.categoria=categoria;
         this.historialEvento=new ArrayList<Evento>();
-        this.historialAlquiler=new ArrayList<Alquiler>();
+        this.historialAlquiler=new ArrayList<alquiler>();
         this.reservasActivas=new ArrayList<Reserva>();
     }
     public String getPlaca(){return this.placa;}
@@ -51,7 +51,7 @@ public class Vehiculo {
     public Categoria getCategoria(){return this.categoria;}
     public List<Evento> getHistorialEventos(){return this.historialEvento;}
     public Evento getUltimoEvento(){return this.historialEvento.get(historialEvento.size()-1);}
-    public List<Alquiler> getHistorialAlquileres(){return this.historialAlquiler;}
+    public List<alquiler> getHistorialAlquileres(){return this.historialAlquiler;}
     public List<Reserva> getReservasActivas(){return this.reservasActivas;}
 
     public void setPlaca(String placa){this.placa=placa;}
@@ -67,7 +67,7 @@ public class Vehiculo {
         this.historialEvento.add(evento);}
     public void addReservaActiva(Reserva reserva){
         this.reservasActivas.add(reserva);}
-    public void addAlquiler(Alquiler alquiler){
+    public void addAlquiler(alquiler alquiler){
         this.historialAlquiler.add(alquiler);}
     public void eliminarReservaActiva(int idReserva){
         List<Reserva> reservas_activas= this.getReservasActivas();

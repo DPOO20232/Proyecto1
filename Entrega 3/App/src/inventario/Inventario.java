@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import alquiler.Alquiler;
+import alquiler.alquiler;
 import alquiler.PagoExcedente;
 import alquiler.Reserva;
 import usuario.personal;
@@ -338,7 +338,7 @@ public class Inventario {
             double pagoFinal= Double.parseDouble(partes[1]);
             int id_reserva= Integer.parseInt(partes[2]);
             Reserva reserva= Reserva.assignReserva(id_reserva);
-            Alquiler alquilerActual= new Alquiler(reserva);
+            alquiler alquilerActual= new alquiler(reserva);
             alquilerActual.setPagoFinal(pagoFinal);
             String stringConductores= partes[3].substring(1,partes[3].length()-1);
             String [] conductores= stringConductores.split(",");
@@ -363,7 +363,7 @@ public class Inventario {
                 i_PagoExcedente.agregarPagoAdicional(i_partes[0],Double.parseDouble(i_partes[1]));
                 alquilerActual.addPagoExcedente(i_PagoExcedente);
             }}
-            Alquiler.addAlquiler(alquilerActual);
+            alquiler.addAlquiler(alquilerActual);
             contador+=1;
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}
             }  
@@ -410,7 +410,7 @@ public class Inventario {
                     if (!stringIDsAlquileres.equals("")){
                     String [] listaIDsAlquileres=stringIDsAlquileres.split(",");
                     for (String i: listaIDsAlquileres){
-                        vehiculoActual.addAlquiler(Alquiler.assignAlquiler(Integer.parseInt(i)));
+                        vehiculoActual.addAlquiler(alquiler.assignAlquiler(Integer.parseInt(i)));
                         contadorAlquileres+=1;
                     }}
                     if (!stringIDsReservasActivas.equals("")){

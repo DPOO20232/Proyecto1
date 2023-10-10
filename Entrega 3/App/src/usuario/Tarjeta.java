@@ -23,6 +23,10 @@ public class Tarjeta {
         return this.marcaTarjeta;
     }
 
+    public String getMarcaTarjeta() {
+        return this.marcaTarjeta;
+    }
+
     public String getNombreTitular() {
         return this.nombreTitular;
     }
