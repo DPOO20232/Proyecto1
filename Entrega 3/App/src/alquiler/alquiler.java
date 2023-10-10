@@ -3,15 +3,15 @@ import java.util.ArrayList;
 import inventario.Seguro;
 import usuario.Conductor;
 
-public class Alquiler{
+public class alquiler{
     private int idAlquiler;
     private double pagoFinal;
     private Reserva reserva;
     private ArrayList<Conductor> conductores;
     private ArrayList<Seguro> seguros;
     private ArrayList<PagoExcedente> pagosExcedentes;
-    private static ArrayList<Alquiler> listaAlquileres;
-    public Alquiler(Reserva reserva){
+    private static ArrayList<alquiler> listaAlquileres;
+    public alquiler(Reserva reserva){
         this.idAlquiler= reserva.getID();
         this.pagoFinal=-1;
         this.reserva=reserva;
@@ -37,7 +37,7 @@ public class Alquiler{
     public Reserva getReserva(){
         return this.reserva;
     }
-    public static ArrayList<Alquiler> getListaAlquileres(){
+    public static ArrayList<alquiler> getListaAlquileres(){
         return listaAlquileres;
     }
     public void setPagoFinal(double valor){
@@ -58,13 +58,13 @@ public class Alquiler{
     public String crearReciboAlquiler(){
         return "Recibo creado correctamente";
     }
-    public static void addAlquiler(Alquiler alquiler){
-        if (listaAlquileres==null){ listaAlquileres= new ArrayList<Alquiler>();}
+    public static void addAlquiler(alquiler alquiler){
+        if (listaAlquileres==null){ listaAlquileres= new ArrayList<alquiler>();}
         listaAlquileres.add(alquiler);
     }
-    public static Alquiler assignAlquiler(int id_alquiler){
-        Alquiler retorno = null;
-        for(Alquiler i: Alquiler.getListaAlquileres()){
+    public static alquiler assignAlquiler(int id_alquiler){
+        alquiler retorno = null;
+        for(alquiler i: alquiler.getListaAlquileres()){
             if(i.getID()==id_alquiler){
             retorno= i;
             break;
