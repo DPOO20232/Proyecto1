@@ -104,7 +104,7 @@ public class Inventario {
                     }
                  }
             }
-        System.out.println(">>> información inicial cargada.");
+        System.out.println("> información inicial cargada.");
         }catch (IOException e) {e.printStackTrace();}
 
     }
@@ -130,7 +130,7 @@ public class Inventario {
                     listaCategorias.add(categoriaActual);
                 }
             }
-            System.out.println(">>> "+listaCategorias.size()+" categorías cargadas.");
+            System.out.println("> "+listaCategorias.size()+" categorías cargadas.");
         } catch (IOException e) {e.printStackTrace();}
     }
     private static void loadSedes(){
@@ -164,7 +164,7 @@ public class Inventario {
                     System.out.println("Formato incorrecto en la línea: " + linea);
                 }
             }
-            System.out.println(">>> "+listaSedes.size()+" sedes cargadas.");
+            System.out.println("> "+listaSedes.size()+" sedes cargadas.");
 
         } catch (IOException e) {e.printStackTrace();}
     }
@@ -196,7 +196,7 @@ public class Inventario {
                     
                 }
             }
-            System.out.println(">>> "+Integer.toString(contador)+" perfiles de personal cargados.");
+            System.out.println("> "+Integer.toString(contador)+" perfiles de personal cargados.");
             } catch (IOException e) {e.printStackTrace();}
     }
     private static void loadSeguros(){
@@ -215,7 +215,7 @@ public class Inventario {
                     System.out.println("Formato incorrecto en la línea: " + linea);
                 }
             }
-        System.out.println(">>> "+listaSeguros.size()+" seguros cargados.");
+        System.out.println("> "+listaSeguros.size()+" seguros cargados.");
         } catch (IOException e) {e.printStackTrace();}
 	}
     private static void loadLicencias() {
@@ -236,7 +236,7 @@ public class Inventario {
                     System.out.println("Formato incorrecto en la línea: " + linea);
                 }
             }
-            System.out.println(">>> " + Integer.toString(contador) + " licencias cargadas.");
+            System.out.println("> " + Integer.toString(contador) + " licencias cargadas.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -266,7 +266,7 @@ public class Inventario {
             contador+=1;
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}
             }  
-            System.out.println(">>> " + Integer.toString(contador) + " clientes cargados.");
+            System.out.println("> " + Integer.toString(contador) + " clientes cargados.");
 
         }
         catch (IOException e) {e.printStackTrace();}
@@ -288,7 +288,7 @@ public class Inventario {
             listaEventos.add(eventoActual);
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}
             }  
-            System.out.println(">>> " + listaEventos.size()+ " eventos cargados.");
+            System.out.println("> " + listaEventos.size()+ " eventos cargados.");
 
         }
         catch (IOException e) {e.printStackTrace();}
@@ -322,7 +322,7 @@ public class Inventario {
             contador+=1;
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}
             }  
-            System.out.println(">>> " +Integer.toString(contador)+ " reservas cargadas.");
+            System.out.println("> " +Integer.toString(contador)+ " reservas cargadas.");
 
         }
         catch (IOException e) {e.printStackTrace();}
@@ -367,7 +367,7 @@ public class Inventario {
             contador+=1;
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}
             }  
-            System.out.println(">>> " + Integer.toString(contador)+ " alquileres cargados.");
+            System.out.println("> " + Integer.toString(contador)+ " alquileres cargados.");
 
         }
         catch (IOException e) {e.printStackTrace();}
@@ -426,7 +426,7 @@ public class Inventario {
                     System.out.println("Formato incorrecto en la línea: " + linea);
                 }
             }
-        System.out.println(">>> "+listaVehiculos.size()+" vehículos cargados.("+ Integer.toString(contadorEventos)+" eventos encontrados, "+Integer.toString(contadorAlquileres)+" alquileres registrados, "+Integer.toString(contadorReservasActivas)+" reservas activas.)");
+        System.out.println("> "+listaVehiculos.size()+" vehículos cargados.("+ Integer.toString(contadorEventos)+" eventos encontrados, "+Integer.toString(contadorAlquileres)+" alquileres registrados, "+Integer.toString(contadorReservasActivas)+" reservas activas.)");
         } catch (IOException e) {
             e.printStackTrace();
         }

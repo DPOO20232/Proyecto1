@@ -21,11 +21,11 @@ public class Consola {
             int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
             if (opcion_seleccionada==1) {
             String perfil;
-            String login = input("Usuario: ");
-            String password = input("Contraseña: ");
+            String login = input("Usuario");
+            String password = input("Contraseña");
             if (personal.checkLoginAdmin(login,password)==true){
                 perfil="Admin";
-                System.out.println("Bienvenido, Admin!");
+                System.out.println(">>>\n\t\tBienvenid@, Admin!");
             }
             else if (personal.checkLoginPersonal(login, password)!=null){
                 perfil=(personal.checkLoginPersonal(login, password)).getTipoPersonal();
@@ -37,16 +37,17 @@ public class Consola {
                 }
                 else {
                     //aqui va EmpleadoTecnico
+
                 }
             }
             else if (Usuario.checkLoginCliente(login, password)!=null){
                 Cliente cliente= Usuario.checkLoginCliente(login, password);
-                System.out.println("Bienvenido, "+cliente.getNombre());
+                System.out.println("\n\t>>>Bienvenid@, "+cliente.getNombre());
 
 
 
             }
-            else{System.out.println("Intentelo de nuevo.");}          
+            else{System.out.println("\n\t>>> Credenciales incorrectas, intentelo de nuevo.");}          
             }
             else if(opcion_seleccionada==2){
                 //chequear que nadie tenga ese login y usuario (en caso de cliente tampoco licencia)
@@ -75,6 +76,9 @@ public class Consola {
     ;
     
     public static void NuevoCliente(){
+        int cedula;
+        boolean existe=false;
+        
     //josé
     }
     public static String input(String mensaje)
@@ -94,8 +98,8 @@ public class Consola {
 	}
     public static void main(String[] args)
 	{
-			System.out.println("Bienvenido a "+Inventario.getNombreCompania()+" :).");    
     Inventario.loadSistema();
+	System.out.println("\n\t\t>>> Bienvenid@ a "+Inventario.getNombreCompania()+" :)");    
     MenuInicial();
     
 	}
