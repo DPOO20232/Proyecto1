@@ -21,11 +21,13 @@ public class Reserva {
     private Cliente cliente;
     private Categoria categoria;
     private Vehiculo vehiculoAsignado;
-    private int pagoReserva;
-
+    private double pagoReserva;
+    private static int lastId;
+    private static List<Reserva> listaReservas;
 
     // Constructor
-    public Reserva(int fechaRecoger, int fechaEntregar, int horaRecoger, int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar, Cliente cliente) {
+    public Reserva(int fechaRecoger, int fechaEntregar, int horaRecoger, int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar,Categoria categoria, Cliente cliente) {
+        this.setID();
         this.fechaRecoger = fechaRecoger;
         this.fechaEntregar = fechaEntregar;
         this.horaRecoger = horaRecoger;
@@ -33,8 +35,23 @@ public class Reserva {
         this.reservaEnSede = reservaEnSede;
         this.sedeRecoger = sedeRecoger;
         this.sedeEntregar = sedeEntregar;
+        this.categoria=categoria;
         this.cliente = cliente;
     }
+    public Reserva(int idReserva,int fechaRecoger, int fechaEntregar, int horaRecoger, int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar,Categoria categoria, Cliente cliente) {
+        this.idReserva=idReserva;
+        if (idReserva>lastId){lastId=idReserva;}
+        this.fechaRecoger = fechaRecoger;
+        this.fechaEntregar = fechaEntregar;
+        this.horaRecoger = horaRecoger;
+        this.horaEntregar = horaEntregar;
+        this.reservaEnSede = reservaEnSede;
+        this.sedeRecoger = sedeRecoger;
+        this.sedeEntregar = sedeEntregar;
+        this.categoria=categoria;
+        this.cliente = cliente;
+    }
+
 
     // Métodos getter
     public int getID() {
@@ -77,14 +94,17 @@ public class Reserva {
         return this.vehiculoAsignado;
     }
 
-    public int getPagoReserva() {
+    public double getPagoReserva() {
         return this.pagoReserva;
+    }
+    public static List<Reserva> getListaReservas(){
+        return listaReservas;
     }
 
     // Métodos setter
-    public void setID(int id) {
-        idReserva = id;
-    }
+    public void setID() {
+        this.idReserva=lastId+=1;
+        lastId=this.getID();    }
 
     public void setFechaRecoger(int fecha) {
         fechaRecoger = fecha;
@@ -125,6 +145,21 @@ public class Reserva {
     public void setPagoReserva(int pago) {
         pagoReserva = pago;
     }
+    public static void addReserva(Reserva reserva){
+        if (listaReservas==null){
+        listaReservas= new ArrayList<Reserva>();
+        }
+        listaReservas.add(reserva);
+    }
+    public static Reserva assignReserva(int idReserva){
+        Reserva retorno = null;
+        for(Reserva i: Reserva.getListaReservas()){
+            if(i.getID()==idReserva){
+            retorno= i;
+            break;
+            }}
+        return retorno;
+    } 
 
     public int calcularDuracionRenta(int fecha1, int hora1, int fecha2, int hora2) {
         // Lógica para calcular la duración de la renta

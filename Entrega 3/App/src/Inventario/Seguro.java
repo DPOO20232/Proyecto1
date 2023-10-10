@@ -6,14 +6,19 @@ public class Seguro {
     private int idSeguro;
     private double pctg_tarifaDiaria;
     private String descripcion;
-
+    private static int lastId;
     // Constructor
     public Seguro(int id,double pctg_tarifaDiaria, String desc) {
         this.idSeguro=id;
+        if (idSeguro>lastId){lastId=idSeguro;}
         this.pctg_tarifaDiaria = pctg_tarifaDiaria;
         this.descripcion = desc;
     }
-
+    public Seguro(double pctg_tarifaDiaria, String desc) {
+        this.setID();
+        this.pctg_tarifaDiaria = pctg_tarifaDiaria;
+        this.descripcion = desc;
+    }
     // Métodos para obtener valores
     public int getID() {
         return this.idSeguro;
@@ -27,10 +32,10 @@ public class Seguro {
         return this.descripcion;
     }
 
-    public void setID(int id) {
-        this.idSeguro = id;
+    public void setID(){
+        this.idSeguro=lastId+=1;
+        lastId=this.getID();
     }
-
     public void setPctg_TarifaDiaria(double tarifa) {
         this.pctg_tarifaDiaria = tarifa;
     }

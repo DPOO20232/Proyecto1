@@ -9,17 +9,25 @@ public class Sede {
     private List<Integer> horarioAtencionEnSemana;
     private List<Integer> horarioAtencionFinSemana;
     private List<personal> personalSede;
-
+    private static int lastId;
     // Constructor
     public Sede(int idSede,String nombre, String ubicacion,List<Integer> horario1, List<Integer> horario2) {
         this.idSede=idSede;
+        if (idSede>lastId){lastId=idSede;}
         this.nombre = nombre;
         this.ubicacion = ubicacion;
         this.horarioAtencionEnSemana=horario1;
         this.horarioAtencionFinSemana=horario2;
         this.personalSede=new ArrayList<personal>();
     }
-
+    public Sede(String nombre, String ubicacion,List<Integer> horario1, List<Integer> horario2) {
+        this.setID();
+        this.nombre = nombre;
+        this.ubicacion = ubicacion;
+        this.horarioAtencionEnSemana=horario1;
+        this.horarioAtencionFinSemana=horario2;
+        this.personalSede=new ArrayList<personal>();
+    }
     // Métodos getters
     public int getID(){
         return this.idSede;
@@ -44,8 +52,9 @@ public class Sede {
         return this.personalSede;}
 
     // Métodos setters
-    public void setID(int id){
-        this.idSede=id;
+    public void setID(){
+        this.idSede=lastId+=1;
+        lastId=this.getID();
     }
     public void setNombre(String nombre) {
         this.nombre = nombre;
