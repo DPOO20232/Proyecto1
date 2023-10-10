@@ -12,6 +12,9 @@ public class Consola {
     //cliente (24-27)
     ;
     }
+    public static void NuevoVehiculo(){
+        
+    }
     public static void NuevoCliente(){
     //josé
     }
