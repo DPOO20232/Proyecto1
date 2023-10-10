@@ -67,4 +67,13 @@ public class Usuario {
         }
         return retorno;
     }
+    public static Cliente checkLoginCliente(String login, String password){
+        Cliente retorno=null;
+        for (Cliente i: getListaClientes()){
+        if ((login.equals(i.getLogin()))&&(password.equals(i.getPassword()))){
+            retorno=i;
+            break;
+        }}
+        return retorno;
+    }
 }

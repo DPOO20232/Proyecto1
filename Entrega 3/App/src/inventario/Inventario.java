@@ -43,6 +43,16 @@ public class Inventario {
     loadAlquileres();
     loadVehiculos();
     }
+    public static String getNombreCompania(){
+        return nombreCompania;}
+    public static int getCostoPorConductorAdicional(){
+        return costoPorConductorAdicional;}
+    public static int getCostoPorTrasladoSedes(){
+        return costoPorTrasladoSedes;}
+    public static List<Integer> getPeriodoTemporadaBaja(){
+        return periodoTemporadaBaja;}
+    public static List<Integer> getPeriodoTemporadaAlta(){
+        return periodoTemporadaAlta;}
     public static List<Categoria> getListaCategorias(){
         return listaCategorias;}
     public static List<Seguro> getListaSeguros(){
@@ -53,7 +63,7 @@ public class Inventario {
         return listaEventos;}
     public static List<Vehiculo> getListaVehiculos(){
         return listaVehiculos;}
-    public static void updateSistema(){
+    public static void closeSistema(){
     //updateCategorias();
     //updateSedes();
     //updateSeguros();
@@ -238,18 +248,20 @@ public class Inventario {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
-            if (partes.length == 8) {
-            int numeroCedula= Integer.parseInt(partes[0]);
-            String nombre= partes[1];
-            String correo = partes[2];
-            long telefono= Long.parseLong(partes[3]);
-            int fechaNacimiento= Integer.parseInt(partes[4]);
-            String nacionalidad= partes[5];
-            Cliente clienteActual= new Cliente(numeroCedula, nombre, correo, telefono, fechaNacimiento, nacionalidad);
-            clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[7])));
-            String partesTarjeta=partes[6].substring(1, partes[6].length() - 1);
+            if (partes.length == 10) {
+            String login= partes[0];
+            String password= partes[1];
+            int numeroCedula= Integer.parseInt(partes[2]);
+            String nombre= partes[3];
+            String correo = partes[4];
+            long telefono= Long.parseLong(partes[5]);
+            int fechaNacimiento= Integer.parseInt(partes[6]);
+            String nacionalidad= partes[7];
+            Cliente clienteActual= new Cliente(login,password,numeroCedula, nombre, correo, telefono, fechaNacimiento, nacionalidad);
+            String partesTarjeta=partes[8].substring(1, partes[8].length() - 1);
             String [] listaTarjeta=partesTarjeta.split(",");
             clienteActual.setTarjeta(new Tarjeta(Long.parseLong(listaTarjeta[0]), Integer.parseInt(listaTarjeta[1]), listaTarjeta[2], listaTarjeta[3]));
+            clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
             Usuario.addCliente(clienteActual);
             contador+=1;
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}

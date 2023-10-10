@@ -18,16 +18,28 @@ public class personal extends Usuario{
         public void setSede(Sede sede){
         this.sede=sede;
     }
+    public String getTipoPersonal(){
+        return this.tipoPersonal;
+    }
     public static void setAdmin(Admin admin){
         credencialAdmin=admin;
     }
-    public boolean checkAdmin(String login,String password){
+    public static boolean checkLoginAdmin(String login,String password){
         if ((login.equals(credencialAdmin.getLogin()))&&(password.equals(credencialAdmin.getPassword()))){
             return true;
         }
         else{
             return false;
         }
+    }
+    public static personal checkLoginPersonal(String login, String password){
+        personal retorno=null;
+        for (personal i: getCredencialesPersonal()){
+        if ((login.equals(i.getLogin()))&&(password.equals(i.getPassword()))){
+            retorno=i;
+            break;
+        }}
+        return retorno;
     }
     public String tipoPersonal(){
         return this.tipoPersonal;
@@ -42,5 +54,8 @@ public class personal extends Usuario{
         credencialesPersonal.add(personal);
 
 
+    }
+    public static List<personal> getCredencialesPersonal(){
+        return credencialesPersonal;
     }
 }

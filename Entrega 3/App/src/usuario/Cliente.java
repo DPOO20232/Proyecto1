@@ -1,5 +1,5 @@
 package usuario;
-public class Cliente{
+public class Cliente extends Usuario{
     private int numeroCedula;
     private String nombre;
     private String mail;
@@ -10,7 +10,8 @@ public class Cliente{
     private Tarjeta tarjeta;
 
     // Constructor
-    public Cliente(int numeroCedula, String nombre, String mail, long telefono, int fechaNacimiento, String nacionalidad) {
+    public Cliente(String login, String password,int numeroCedula, String nombre, String mail, long telefono, int fechaNacimiento, String nacionalidad) {
+        super(login, password);
         this.numeroCedula = numeroCedula;
         this.nombre = nombre;
         this.mail = mail;
