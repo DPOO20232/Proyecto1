@@ -545,6 +545,8 @@ clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
         if (encontrado==true){
         System.out.println("Se eliminó del inventario el vehículo con placa "+placa+".");
         }
+        else{System.out.println("No se halló ningun vehículo con la placa "+placa+".");
+}
     }
 
 }
