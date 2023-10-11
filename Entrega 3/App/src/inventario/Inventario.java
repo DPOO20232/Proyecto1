@@ -490,17 +490,11 @@ public class Inventario {
             }}
         return retorno;
     } 
-<<<<<<< HEAD
-     public static void nuevoVehiculo(){
-        try{
-        String placa= input("Ingrese la placa del Vehiculo: "); 
-=======
     public static void NuevoVehiculo(){
     
 
     
         String placa= input("Ingrese la placa del Vehiculo: ");
->>>>>>> 1cc920915d8a31822213ead3b639bd4256576641
         boolean encontrado=false;
         for (Vehiculo i: getListaVehiculos()){
             if (i.getPlaca().equals(placa)){
@@ -544,7 +538,8 @@ public class Inventario {
             System.out.println("La placa ingresada ya existe en el inventario");
         }
         }
-        catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}
+        catch(NumberFormatException e){
+            System.out.println("Ingrese solo números en los campos correspondientes");}
     }
     public static void closeSistema() {
     }
@@ -587,7 +582,7 @@ public class Inventario {
 
 
 
-    }
+    
     public static void nuevoSeguro(){
     try{
     String desc = input("Ingrese una descripción del seguro");
@@ -622,7 +617,8 @@ public class Inventario {
     }
     else{System.out.println("Ingrese el id de un seguro válido ");}
 
-    }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
+    }
+    catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
     
     public static void eliminarSeguro(){
         try{
@@ -650,6 +646,56 @@ public class Inventario {
     }
     catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
 
+    public static void registrarAdminLocal(){
+        try {
+            String login=input("Ingrese el login del usuario");
+            String password=input("Ingrese la contraseña del usuario");
+            int Idsede=Integer.parseInt(input("ingrese el Id de la sede"));
+            Sede sede=null;
+            if (Idsede>=1&& Idsede<=listaSedes.size()){
+                sede= Inventario.assignSede(Idsede);
+            }
+            else{
+                System.out.println("Ingresó un ID de sede inválido");
+            }
+            if(sede!=null){
+                personal adminlocal=new personal(login, password, "AdminLocal", sede);
+            }
+            else{
+                System.out.println("La sede se encuentra vacia");
+            }
+
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+             System.out.println("Ingrese solo números en los campos correspondientes");
+        }
+    }
+    public static void actualizarAdminLocal(){
+        try {
+            String login=input("Ingrese el login del administrador");
+            List<personal> listpersonal= personal.getCredencialesPersonal();
+            for(personal i:listpersonal){
+                if (i.getLogin()==login && i.getTipoPersonal()=="AdminLocal"){
+                    int NidSede=Integer.parseInt(input("Ingrese el Id de la nueva sede"));
+                    Sede sede=null;
+                    if (NidSede>=1&& NidSede<=listaSedes.size()){
+                        sede= Inventario.assignSede(NidSede);
+                    }
+                    else{
+                        System.out.println("Ingresó un ID de sede inválido");
+
+                    }
+                    i.setSede(sede);
+                    break;
+                    }
+            }
+        } 
+        catch (Exception e) {
+            System.out.println("Ingrese solo números en los campos correspondientes");
+        }
+    }
+}
 
 
 
