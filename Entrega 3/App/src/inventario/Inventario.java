@@ -45,16 +45,26 @@ public class Inventario {
     loadAlquileres();
     loadVehiculos();
     }
-    public static List<Categoria> getListaCategorias(){
-        return listaCategorias;}
-    public static List<Seguro> getListaSeguros(){
-        return listaSeguros;}
-    public static List<Sede> getListaSedes(){
-        return listaSedes;}
-    public static List<Evento> getListaEventos(){
-        return listaEventos;}
-    public static List<Vehiculo> getListaVehiculos(){
-        return listaVehiculos;}
+    public static String getNombreCompania(){return nombreCompania;}
+    public static int getCostoPorConductorAdicional(){return costoPorConductorAdicional;}
+    public static int getCostoPorTrasladoSedes(){return costoPorTrasladoSedes;}
+    public static List<Integer> getPeriodoTemporadaAlta(){return periodoTemporadaAlta;}
+    public static List<Integer> getPeriodoTemporadaBaja(){return periodoTemporadaBaja;}
+    public static void setCostoPorConductorAdicional(int costo){costoPorConductorAdicional=costo;}
+    public static void setCostoPorTrasladoSedes(int costo){costoPorConductorAdicional=costo;}
+    public static void setPeriodoTemporadaAlta(List<Integer> newPeriodo){
+    List<Integer> periodo=getPeriodoTemporadaAlta();
+        periodo.clear();
+        periodo.addAll(newPeriodo);}
+    public static void setPeriodoTemporadaBaja(List<Integer> newPeriodo){
+        List<Integer> periodo=getPeriodoTemporadaBaja();
+        periodo.clear();
+        periodo.addAll(newPeriodo);}
+    public static List<Categoria> getListaCategorias(){return listaCategorias;}
+    public static List<Seguro> getListaSeguros(){return listaSeguros;}
+    public static List<Sede> getListaSedes(){return listaSedes;}
+    public static List<Evento> getListaEventos(){return listaEventos;}
+    public static List<Vehiculo> getListaVehiculos(){return listaVehiculos;}
     public static void updateSistema(){
     //updateCategorias();
     //updateSedes();
@@ -481,31 +491,15 @@ clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
         return retorno;
     } 
      public static void NuevoVehiculo(){
-        Scanner scanner = new Scanner(System.in);
-
-    
-        String placa= input("Ingrese la placa del Vehiculo: ");
-
-      
+        String placa= input("Ingrese la placa del Vehiculo: ");    
         String marca =input("Ingrese la marca del Vehiculo: ");
-
-        
-        String modelo =input("Ingrese el modelo del Vehiculo: ");
-
-      
+        String modelo =input("Ingrese el modelo del Vehiculo: ");      
         String color = input("Ingrese el color del Vehiculo: ");
-
         String tipoTransmision =input( "Ingrese el tipo de transmision del Vehiculo: ");
-
         String ubicacionGPS = input("Ingrese la ubicacion del Vehiculo");
-
-        String estado = input("Ingrese el estado del Vehiculo");
-
-       
+        String estado = input("Ingrese el estado del Vehiculo");     
         int IDcategoria = Integer.parseInt(input("Ingrese el ID categoria del Vehiculo"));
-
-        System.out.print("Ingrese el ID de la sede del Vehiculo");
-        int IDsede = scanner.nextInt();
+        int IDsede = Integer.parseInt(input("Ingrese el  ID sede del Vehiculo"));
         Categoria categoria=null;
         if ((IDcategoria>=1) && (IDcategoria<=listaCategorias.size())){
             categoria= Inventario.assignCategoria(IDcategoria);
@@ -519,13 +513,26 @@ clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
         }
         else{
             System.out.println("Ingresó un ID de sede inválido");
-        }
-        
-        scanner.close();
-     
+        }     
         Vehiculo vehiculo = new Vehiculo(placa, marca, modelo, color, tipoTransmision, ubicacionGPS, estado, false, categoria, sede);
+        listaVehiculos.add(vehiculo);
     }
     public static void closeSistema() {
+    }
+    public static void eliminarVehiculo(){
+        String placa = input("Ingrese la placa del vehículo"); 
+        boolean encontrado=false;
+        for (Vehiculo i: getListaVehiculos()){
+            if (i.getPlaca().equals(placa)){
+                listaVehiculos.remove(i);
+                encontrado=true;
+                break;
+
+            }
+        }
+        if (encontrado==true){
+        System.out.println("Se eliminó del inventario el vehículo con placa "+placa+".");
+        }
     }
 
 }

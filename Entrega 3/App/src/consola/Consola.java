@@ -26,25 +26,48 @@ public class Consola {
             if (personal.checkLoginAdmin(login,password)==true){
                 perfil="Admin";
                 System.out.println(">>>\n\t\tBienvenid@, Admin!");
-            System.out.println("\nOpciones\n");
-            System.out.println("1.Crear categoría de vehículo");
-			System.out.println("2. Añadir vehículo al inventario");
-			System.out.println("3. Eliminar vehículo al inventario");
-			System.out.println("4. Obtener historial de un vehículo");
-			System.out.println("5. Cambiar sede de un vehículo (traslado interno)");
-			System.out.println("6. Crear un seguro");
-			System.out.println("7. Modificar precio de un seguro");
-            System.out.println("8. Modificar descripción de un seguro");
-            System.out.println("9. Eliminar seguro");
-            System.out.println("10. Registrar una nueva sede");
-            System.out.println("11. Modificar nombre de una sede");
-            System.out.println("12. Modificar horario de atención de una sede");
-            System.out.println("13. Modificar dirección de una sede");
-            System.out.println("14. Actualizar información de  un administrador local");
-            System.out.println("15. Registrar un administrador local");
-            System.out.println("16. Actualizar periodo de temporada alta");
-            System.out.println("17. Actualizar periodo de temporada baja");
-            System.out.println("18. Salir de la aplicación\n");
+                System.out.println("\nOpciones\n");
+                System.out.println("1.Crear categoría de vehículo");
+                System.out.println("2. Añadir vehículo al inventario");
+                System.out.println("3. Eliminar vehículo al inventario");
+                System.out.println("4. Obtener historial de un vehículo");
+                System.out.println("5. Cambiar sede de un vehículo (traslado interno)");
+                System.out.println("6. Crear un seguro");
+                System.out.println("7. Modificar precio de un seguro");
+                System.out.println("8. Modificar descripción de un seguro");
+                System.out.println("9. Eliminar seguro");
+                System.out.println("10. Registrar una nueva sede");
+                System.out.println("11. Modificar nombre de una sede");
+                System.out.println("12. Modificar horario de atención de una sede");
+                System.out.println("13. Modificar dirección de una sede");
+                System.out.println("14. Actualizar información de  un administrador local");
+                System.out.println("15. Registrar un administrador local");
+                System.out.println("16. Actualizar costo por conductor adicional");
+                System.out.println("17. Actualizar costo por traslado de sedes para un alquiler");
+                System.out.println("18. Actualizar periodo de temporada alta");
+                System.out.println("19. Actualizar periodo de temporada baja");
+                System.out.println("20. Salir de la aplicación\n");
+                int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
+                if (opcion_admin==1){}
+                else if(opcion_admin==2){Inventario.NuevoVehiculo();}
+                else if(opcion_admin==3){Inventario.eliminarVehiculo();}
+                else if(opcion_admin==4){}
+                else if(opcion_admin==5){}
+                else if(opcion_admin==6){}
+                else if(opcion_admin==7){}
+                else if(opcion_admin==8){}
+                else if(opcion_admin==9){}
+                else if(opcion_admin==10){}
+                else if(opcion_admin==11){}
+                else if(opcion_admin==12){}
+                else if(opcion_admin==13){}
+                else if(opcion_admin==14){}
+                else if(opcion_admin==15){}
+                else if(opcion_admin==16){}
+                else if(opcion_admin==17){}
+                else if(opcion_admin==18){}
+                else if(opcion_admin==19){}
+                else if(opcion_admin==20){}
 
             }
             else if (personal.checkLoginPersonal(login, password)!=null){
@@ -96,15 +119,9 @@ public class Consola {
     
    
     public static void NuevoCliente(){
-<<<<<<< HEAD
-    int cedula;
-    boolean existe=false;
-        
-=======
         int cedula;
         boolean existe=false;
 
->>>>>>> 5036c82ee8a1dad3e6ac51c01376a6d0573371cf
     //josé
 }
     public static String input(String mensaje)
