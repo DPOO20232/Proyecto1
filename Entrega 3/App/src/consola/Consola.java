@@ -25,27 +25,24 @@ public class Consola {
             String password = input("Contraseña");
             if (personal.checkLoginAdmin(login,password)==true){
                 perfil="Admin";
+                //ESTAS CLASES HAY QUE PASARLAS A ADMIN
                 System.out.println(">>>\n\t\tBienvenid@, Admin!");
-
-                
                 System.out.println("2. Añadir vehículo al inventario");
                 System.out.println("3. Eliminar vehículo al inventario");
                 System.out.println("4. Obtener historial de un vehículo");
                 System.out.println("5. Cambiar sede de un vehículo (traslado interno)");
                 System.out.println("6. Crear un seguro");
-                System.out.println("7. Modificar un seguro");
+                System.out.println("7. Modificar informacion de un seguro");
                 System.out.println("8. Eliminar seguro");
                 System.out.println("9. Registrar una nueva sede");
-                System.out.println("10. Modificar nombre de una sede");
-                System.out.println("11. Modificar horario de atención de una sede");
-                System.out.println("12. Modificar dirección de una sede");
-                System.out.println("13. Actualizar información de  un administrador local");
-                System.out.println("14. Registrar un administrador local");
-                System.out.println("15. Actualizar costo por conductor adicional");
-                System.out.println("16. Actualizar costo por traslado de sedes para un alquiler");
-                System.out.println("17. Actualizar periodo de temporada alta");
-                System.out.println("18. Actualizar periodo de temporada baja");
-                System.out.println("19. Salir de la aplicación\n");
+                System.out.println("10. Modificar informacion de una sede");
+                System.out.println("11. Registrar un administrador local");
+                System.out.println("12. Actualizar información de  un administrador local");
+                System.out.println("13. Actualizar costo por conductor adicional");
+                System.out.println("14. Actualizar costo por traslado de sedes para un alquiler");
+                System.out.println("15. Actualizar periodo de temporada alta");
+                System.out.println("16. Actualizar periodo de temporada baja");
+                System.out.println("17. Salir de la aplicación\n");
                 int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
                 if (opcion_admin==1){
     
@@ -62,7 +59,7 @@ public class Consola {
                 else if(opcion_admin==7){Inventario.editarSeguro();}
                 else if(opcion_admin==8){Inventario.eliminarSeguro();}
                 else if(opcion_admin==9){Inventario.nuevaSede();}
-                else if(opcion_admin==10){}
+                else if(opcion_admin==10){Inventario.editarSede();}
                 else if(opcion_admin==11){}
                 else if(opcion_admin==12){}
                 else if(opcion_admin==13){}

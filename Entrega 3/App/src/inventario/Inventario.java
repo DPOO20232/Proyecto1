@@ -490,17 +490,9 @@ public class Inventario {
             }}
         return retorno;
     } 
-<<<<<<< HEAD
      public static void nuevoVehiculo(){
         try{
         String placa= input("Ingrese la placa del Vehiculo: "); 
-=======
-    public static void NuevoVehiculo(){
-    
-
-    
-        String placa= input("Ingrese la placa del Vehiculo: ");
->>>>>>> 1cc920915d8a31822213ead3b639bd4256576641
         boolean encontrado=false;
         for (Vehiculo i: getListaVehiculos()){
             if (i.getPlaca().equals(placa)){
@@ -584,10 +576,6 @@ public class Inventario {
             System.out.println("Ingrese solo números en los campos correspondientes");}
         }
 
-
-
-
-    }
     public static void nuevoSeguro(){
     try{
     String desc = input("Ingrese una descripción del seguro");
@@ -638,7 +626,6 @@ public class Inventario {
             }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
     
     public static void nuevaSede(){
-    //SedeSur;cra58 #2, Bogotá;[0730,1430];[0730,1530];[]
     try{
     String nombreSede = input("Ingrese el nombre de la nueva sede");
     String ubicacion = input("Ingrese la ubicación de la nueva sede");
@@ -657,6 +644,57 @@ public class Inventario {
     System.out.println("La nueva sede se guardo con el id"+ Integer.toString(sede.getID()));
     }
     catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
+
+    public static void editarSede(){
+    //SedeSur;cra58 #2, Bogotá;[0730,1430];[0730,1530];[]
+    try{
+    int id_sede= Integer.parseInt(input("Ingrese el ID de la sede que desea modificar"));
+    if ((id_sede>0) &&(id_sede<=Inventario.getListaSedes().size())){
+    System.out.println("\nDesea editar el nombre de la sede?\n");
+    System.out.println("1.Sí");
+    System.out.println("2.No(ó cualquier otro número)");
+    int opcion_nombre = Integer.parseInt(input("Por favor seleccione una opción"));    
+    if (opcion_nombre==1){
+        String nombre=input("Ingrese el nuevo nombre para la sede");
+        Inventario.assignSede(id_sede).setNombre(nombre);
+    }
+    System.out.println("\nDesea editar la ubicación de la sede?\n");
+    System.out.println("1.Sí");
+    System.out.println("2.No(ó cualquier otro número)");
+    int opcion_ubi = Integer.parseInt(input("Por favor seleccione una opción"));    
+    if (opcion_ubi==1){
+        String ubi=input("Ingrese la nueva ubicación");
+        Inventario.assignSede(id_sede).setUbicacion(ubi);;
+    }
+    System.out.println("\nDesea modificar el horario entre semana de la sede?\n");
+    System.out.println("1.Sí");
+    System.out.println("2.No(ó cualquier otro número)");
+    int opcion_hsemana = Integer.parseInt(input("Por favor seleccione una opción"));   
+    if (opcion_hsemana==1){
+        List<Integer> horario= new ArrayList<Integer>();
+        int hapertura=Integer.parseInt(input("Ingrese la nueva hora de entrada"));
+        int hcierre=Integer.parseInt(input("Ingrese la nueva hora de cierre"));
+        horario.add(hapertura);
+        horario.add(hcierre);
+        Inventario.assignSede(id_sede).setHorarioAtencionEnSemana(horario);;
+    }
+    System.out.println("\nDesea modificar el horario de fin de semana de la sede?\n");
+    System.out.println("1.Sí");
+    System.out.println("2.No(ó cualquier otro número)");
+    int opcion_hFinsemana = Integer.parseInt(input("Por favor seleccione una opción"));   
+    if (opcion_hFinsemana==1){
+        List<Integer> horario= new ArrayList<Integer>();
+        int hapertura=Integer.parseInt(input("Ingrese la nueva hora de entrada"));
+        int hcierre=Integer.parseInt(input("Ingrese la nueva hora de cierre"));
+        horario.add(hapertura);
+        horario.add(hcierre);
+        Inventario.assignSede(id_sede).setHorarioAtencionFinSemana(horario);
+    } 
+    }
+    else{System.out.println("Ingrese el id de un seguro válido ");}
+
+    }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
+ 
 }
 
 
