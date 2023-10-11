@@ -378,9 +378,7 @@ public class Inventario {
         int contadorAlquileres=0;
         int contadorReservasActivas=0;
         listaVehiculos= new ArrayList<Vehiculo>();
-
         try (BufferedReader br = new BufferedReader(new FileReader("./data/vehiculos.txt"))) {
-            //PBM158;chevrolet;aveo;gris;manual;disponible;false;1;1;[[20240321,20240322,0800,1200,descripcion],[],[]];[];[]
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
