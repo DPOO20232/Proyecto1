@@ -26,6 +26,23 @@ public class Consola {
             if (personal.checkLoginAdmin(login,password)==true){
                 perfil="Admin";
                 System.out.println(">>>\n\t\tBienvenid@, Admin!");
+            System.out.println("\nOpciones\n");
+            System.out.println("1.Crear categoría de vehículo");
+			System.out.println("2. Añadir vehículo al inventario");
+			System.out.println("3. Eliminar vehículo al inventario");
+			System.out.println("4. Cambiar sede de un vehículo (traslado interno)");
+			System.out.println("5. Crear un seguro");
+			System.out.println("6. Modificar precio de un seguro");
+            System.out.println("7. Modificar descripción de un seguro");
+            System.out.println("8. Eliminar seguro");
+            System.out.println("9. Registrar una nueva sede");
+            System.out.println("10. Modificar nombre de una sede");
+            System.out.println("11. Modificar horario de atención de una sede");
+            System.out.println("12. Modificar dirección de una sede");
+            System.out.println("14. Actualizar información de  un administrador local");
+            System.out.println("13. Registrar un administrador local");
+            System.out.println("3. Salir de la aplicación\n");
+
             }
             else if (personal.checkLoginPersonal(login, password)!=null){
                 perfil=(personal.checkLoginPersonal(login, password)).getTipoPersonal();
@@ -76,9 +93,15 @@ public class Consola {
     
    
     public static void NuevoCliente(){
+<<<<<<< HEAD
     int cedula;
     boolean existe=false;
         
+=======
+        int cedula;
+        boolean existe=false;
+
+>>>>>>> 5036c82ee8a1dad3e6ac51c01376a6d0573371cf
     //josé
 }
     public static String input(String mensaje)
