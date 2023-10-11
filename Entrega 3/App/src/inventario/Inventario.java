@@ -278,7 +278,7 @@ public class Inventario {
             String partesTarjeta=partes[8].substring(1, partes[8].length() - 1);
             String [] listaTarjeta=partesTarjeta.split(",");
             clienteActual.setTarjeta(new Tarjeta(Long.parseLong(listaTarjeta[0]), Integer.parseInt(listaTarjeta[1]), listaTarjeta[2], listaTarjeta[3]));
-clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
+            clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
             Usuario.addCliente(clienteActual);
             contador+=1;
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}
@@ -490,9 +490,17 @@ clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
             }}
         return retorno;
     } 
+<<<<<<< HEAD
      public static void nuevoVehiculo(){
         try{
         String placa= input("Ingrese la placa del Vehiculo: "); 
+=======
+    public static void NuevoVehiculo(){
+    
+
+    
+        String placa= input("Ingrese la placa del Vehiculo: ");
+>>>>>>> 1cc920915d8a31822213ead3b639bd4256576641
         boolean encontrado=false;
         for (Vehiculo i: getListaVehiculos()){
             if (i.getPlaca().equals(placa)){
@@ -502,11 +510,11 @@ clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
         }  
         if (encontrado==false){
         String marca =input("Ingrese la marca del Vehiculo: ");
-        String modelo =input("Ingrese el modelo del Vehiculo: ");      
+        String modelo =input("Ingrese el modelo del Vehiculo: ");
         String color = input("Ingrese el color del Vehiculo: ");
         String tipoTransmision =input( "Ingrese el tipo de transmision del Vehiculo: ");
         String ubicacionGPS = input("Ingrese la ubicacion del Vehiculo");
-        String estado = input("Ingrese el estado del Vehiculo");     
+        String estado = input("Ingrese el estado del Vehiculo");
         int IDcategoria = Integer.parseInt(input("Ingrese el ID categoria del Vehiculo"));
         int IDsede = Integer.parseInt(input("Ingrese el  ID sede del Vehiculo"));
         Categoria categoria=null;
@@ -522,9 +530,15 @@ clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
         }
         else{
             System.out.println("Ingresó un ID de sede inválido");
-        }     
-        Vehiculo vehiculo = new Vehiculo(placa, marca, modelo, color, tipoTransmision, ubicacionGPS, estado, false, categoria, sede);
-        listaVehiculos.add(vehiculo);
+        }
+        if(categoria!=null&&sede!=null){
+                Vehiculo vehiculo = new Vehiculo(placa, marca, modelo, color, tipoTransmision, ubicacionGPS, estado, false, categoria, sede);
+                listaVehiculos.add(vehiculo);
+        }
+        else{
+            System.out.println("La sede o categoria están vacías");
+        }
+
         }
         else{
             System.out.println("La placa ingresada ya existe en el inventario");
@@ -535,15 +549,44 @@ clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
     public static void closeSistema() {
     }
     public static void eliminarVehiculo(){
-        String placa = input("Ingrese la placa del vehículo"); 
-        boolean encontrado=false;
-        for (Vehiculo i: getListaVehiculos()){
-            if (i.getPlaca().equals(placa)){
-                listaVehiculos.remove(i);
-                encontrado=true;
-                break;}}
-        if (encontrado==true){System.out.println("Se eliminó del inventario el vehículo con placa "+placa+".");}
-        else{System.out.println("No se halló ningun vehículo con la placa "+placa+".");}
+            String placa = input("Ingrese la placa del vehículo"); 
+            boolean encontrado=false;
+            for (Vehiculo i: getListaVehiculos()){
+                if (i.getPlaca().equals(placa)){
+                    listaVehiculos.remove(i);
+                    encontrado=true;
+                    break;
+
+                }
+            }
+            if (encontrado==true){
+            System.out.println("Se eliminó del inventario el vehículo con placa "+placa+".");
+            }
+            else{System.out.println("No se halló ningun vehículo con la placa "+placa+".");
+            }
+    }
+    public static void NuevaCategoria(){
+       
+        try {
+            String nombre= input("Ingrese el nombre de la Ctaegoria del Vehiculo: ");
+            int capacidadPersonas = Integer.parseInt(input("Ingrese el ID categoria del Vehiculo"));
+            double pctg_temporadaAlta= Double.parseDouble(input("Ingrese el porcentaje de incremento para la categoria en temporada alta"));
+            double pctg_temporadaBaja= Double.parseDouble(input("Ingrese el porcentaje de descuento para la categoria en temporada baja"));
+            int costoAveriaLeve = Integer.parseInt(input("Ingrese el costo de averia leve del Vehiculo"));
+            int costoAveriaModerado = Integer.parseInt(input("Ingrese el costo de averia moderado del Vehiculo"));
+            int costoAveriaTotal = Integer.parseInt(input("Ingrese el costo de averia Total del Vehiculo"));
+            int TarifaDiaria = Integer.parseInt(input("Ingrese el costo de tarifa diaria del Vehiculo"));
+            int IdPadre = Integer.parseInt(input("Ingrese el Id padre del Vehiculo (En caso de que no tenga marque 0)"));
+            Categoria categoria = new Categoria(nombre, capacidadPersonas, pctg_temporadaAlta, pctg_temporadaBaja, costoAveriaLeve, costoAveriaModerado, costoAveriaTotal, TarifaDiaria, IdPadre);
+            listaCategorias.add(categoria);
+        } 
+        catch(NumberFormatException e){
+            System.out.println("Ingrese solo números en los campos correspondientes");}
+        }
+
+
+
+
     }
     public static void nuevoSeguro(){
     try{
@@ -607,5 +650,6 @@ clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
     }
     catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
 
-}
+
+
 
