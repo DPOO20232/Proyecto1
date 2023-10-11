@@ -23,7 +23,9 @@ public class Consola {
             String perfil;
             String login = input("Usuario");
             String password = input("Contraseña");
+            //MENU ADMIN
             if (personal.checkLoginAdmin(login,password)==true){
+                boolean continuarAdmin=true;
                 perfil="Admin";
                 //ESTAS CLASES HAY QUE PASARLAS A ADMIN
                 System.out.println(">>>\n\t\tBienvenid@, Admin!");
@@ -44,6 +46,8 @@ public class Consola {
                 System.out.println("16. Actualizar periodo de temporada baja");
                 System.out.println("17. Salir de la aplicación\n");
                 int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
+                while (continuarAdmin==true){
+                try{
                 if (opcion_admin==1){
     
                 }
@@ -62,15 +66,13 @@ public class Consola {
                 else if(opcion_admin==10){Inventario.editarSede();}
                 else if(opcion_admin==11){}
                 else if(opcion_admin==12){}
-                else if(opcion_admin==13){}
-                else if(opcion_admin==14){}
-                else if(opcion_admin==15){}
-                else if(opcion_admin==16){}
-                else if(opcion_admin==17){}
-                else if(opcion_admin==18){}
-                else if(opcion_admin==19){}
-
-            }
+                else if(opcion_admin==13){Inventario.setCostoPorConductorAdicional();}
+                else if(opcion_admin==14){Inventario.setCostoPorTrasladoSedes();}
+                else if(opcion_admin==15){Inventario.setPeriodoTemporadaAlta();}
+                else if(opcion_admin==16){Inventario.setPeriodoTemporadaBaja();}
+                else if(opcion_admin==17){continuarAdmin=false;}
+            }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
+            //MENU PERSONAL
             else if (personal.checkLoginPersonal(login, password)!=null){
                 perfil=(personal.checkLoginPersonal(login, password)).getTipoPersonal();
                 if (perfil.equals("AdminLocal")){
@@ -84,6 +86,7 @@ public class Consola {
 
                 }
             }
+            //MENU CLIENTE
             else if (Usuario.checkLoginCliente(login, password)!=null){
                 Cliente cliente= Usuario.checkLoginCliente(login, password);
                 System.out.println("\n\t>>>Bienvenid@, "+cliente.getNombre());
@@ -98,6 +101,7 @@ public class Consola {
             }
             else if(opcion_seleccionada==3){
                 Inventario.closeSistema();
+                continuar=false;
             }
             else{
                 System.out.println("Por favor seleccione una opción válida.");
