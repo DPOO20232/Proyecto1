@@ -491,7 +491,15 @@ clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
         return retorno;
     } 
      public static void NuevoVehiculo(){
-        String placa= input("Ingrese la placa del Vehiculo: ");    
+        String placa= input("Ingrese la placa del Vehiculo: "); 
+        boolean encontrado=false;
+        for (Vehiculo i: getListaVehiculos()){
+            if (i.getPlaca().equals(placa)){
+                encontrado=true;
+                break;
+            }
+        }  
+        if (encontrado==false){
         String marca =input("Ingrese la marca del Vehiculo: ");
         String modelo =input("Ingrese el modelo del Vehiculo: ");      
         String color = input("Ingrese el color del Vehiculo: ");
@@ -516,6 +524,10 @@ clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
         }     
         Vehiculo vehiculo = new Vehiculo(placa, marca, modelo, color, tipoTransmision, ubicacionGPS, estado, false, categoria, sede);
         listaVehiculos.add(vehiculo);
+        }
+        else{
+            System.out.println("La placa ingresada ya existe en el inventario");
+        }
     }
     public static void closeSistema() {
     }
