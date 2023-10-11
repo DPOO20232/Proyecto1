@@ -497,14 +497,14 @@ clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
 
         String tipoTransmision =input( "Ingrese el tipo de transmision del Vehiculo: ");
 
-        String ubicacionGPS = input("Ingrese la ubicacion del Vehiculo: ");
+        String ubicacionGPS = input("Ingrese la ubicacion del Vehiculo");
 
-        String estado = input("Ingrese el estado del Vehiculo: ");
+        String estado = input("Ingrese el estado del Vehiculo");
 
        
-        int IDcategoria = Integer.parseInt(input("Ingrese el ID categoria del Vehiculo: "));
+        int IDcategoria = Integer.parseInt(input("Ingrese el ID categoria del Vehiculo"));
 
-        System.out.print("Ingrese el ID de la sede del Vehiculo: ");
+        System.out.print("Ingrese el ID de la sede del Vehiculo");
         int IDsede = scanner.nextInt();
         Categoria categoria=null;
         if ((IDcategoria>=1) && (IDcategoria<=listaCategorias.size())){
