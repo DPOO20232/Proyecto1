@@ -73,14 +73,14 @@ public class Consola {
     //personalatencion(en reserva->21,25-27)
     //personalTecnico(20)
     //cliente (24-27)
-    ;
     
+   
     public static void NuevoCliente(){
-        int cedula;
-        boolean existe=false;
+    int cedula;
+    boolean existe=false;
         
     //josé
-    }
+}
     public static String input(String mensaje)
 	{
 		try
@@ -95,12 +95,13 @@ public class Consola {
 			e.printStackTrace();
 		}
 		return null;
-	}
+    }
     public static void main(String[] args)
 	{
     Inventario.loadSistema();
-	System.out.println("\n\t\t>>> Bienvenid@ a "+Inventario.getNombreCompania()+" :)");    
+    System.out.println("\n\t\t>>> Bienvenid@ a "+Inventario.getNombreCompania()+" :)");    
     MenuInicial();
     
 	}
 }
+
