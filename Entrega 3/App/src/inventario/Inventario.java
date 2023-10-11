@@ -642,13 +642,22 @@ public class Inventario {
     try{
     String nombreSede = input("Ingrese el nombre de la nueva sede");
     String ubicacion = input("Ingrese la ubicación de la nueva sede");
-    
-    int pctg_tarifadiaria= Integer.parseInt(input("Ingrese el porcentaje de la tarifa diaria que el seguro cuesta (ej: 90%->0.9)"));
+    List<Integer> horarioSemana= new ArrayList<Integer>();
+    List<Integer> horarioFinSemana= new ArrayList<Integer>();
+    int horaAperturaSemana= Integer.parseInt(input("Ingrese la hora de apertura entre semana"));
+    int horaCierreSemana= Integer.parseInt(input("Ingrese la hora de cierre entre semana"));    
+    int horaAperturaFinSemana= Integer.parseInt(input("Ingrese la hora de apertura para fin de semana"));
+    int horaCierreFinSemana= Integer.parseInt(input("Ingrese la hora de cierre para fin de semana")); 
+    horarioSemana.add(horaAperturaSemana);
+    horarioSemana.add(horaCierreSemana);
+    horarioFinSemana.add(horaAperturaFinSemana);
+    horarioFinSemana.add(horaCierreFinSemana);
     Sede sede= new Sede(nombreSede, ubicacion, horarioSemana, horarioFinSemana);
     listaSedes.add(sede);
-    System.out.println("El nuevo seguro se guardo con el id"+ Integer.toString(sede.getID()));
+    System.out.println("La nueva sede se guardo con el id"+ Integer.toString(sede.getID()));
     }
     catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
+}
 
 
 
