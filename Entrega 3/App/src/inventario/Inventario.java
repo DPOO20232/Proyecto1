@@ -3,11 +3,13 @@ package inventario;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Scanner;
+import inventario.Vehiculo;
 import alquiler.alquiler;
 import alquiler.PagoExcedente;
 import alquiler.Reserva;
@@ -43,16 +45,6 @@ public class Inventario {
     loadAlquileres();
     loadVehiculos();
     }
-    public static String getNombreCompania(){
-        return nombreCompania;}
-    public static int getCostoPorConductorAdicional(){
-        return costoPorConductorAdicional;}
-    public static int getCostoPorTrasladoSedes(){
-        return costoPorTrasladoSedes;}
-    public static List<Integer> getPeriodoTemporadaBaja(){
-        return periodoTemporadaBaja;}
-    public static List<Integer> getPeriodoTemporadaAlta(){
-        return periodoTemporadaAlta;}
     public static List<Categoria> getListaCategorias(){
         return listaCategorias;}
     public static List<Seguro> getListaSeguros(){
@@ -63,11 +55,26 @@ public class Inventario {
         return listaEventos;}
     public static List<Vehiculo> getListaVehiculos(){
         return listaVehiculos;}
-    public static void closeSistema(){
+    public static void updateSistema(){
     //updateCategorias();
     //updateSedes();
     //updateSeguros();
     //updateVehiculos();
+    }
+    public static String input(String mensaje)
+	{
+		try
+		{
+			System.out.print(mensaje + ": ");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+			return reader.readLine();
+		}
+		catch (IOException e)
+		{
+			System.out.println("Error leyendo de la consola");
+			e.printStackTrace();
+		}
+		return null;
     }
     private static void loadInfo(){
         try (BufferedReader br = new BufferedReader(new FileReader("./data/info.txt"))) {
@@ -261,7 +268,7 @@ public class Inventario {
             String partesTarjeta=partes[8].substring(1, partes[8].length() - 1);
             String [] listaTarjeta=partesTarjeta.split(",");
             clienteActual.setTarjeta(new Tarjeta(Long.parseLong(listaTarjeta[0]), Integer.parseInt(listaTarjeta[1]), listaTarjeta[2], listaTarjeta[3]));
-            clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
+clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
             Usuario.addCliente(clienteActual);
             contador+=1;
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}
@@ -473,5 +480,53 @@ public class Inventario {
             }}
         return retorno;
     } 
+     public static void NuevoVehiculo(){
+        Scanner scanner = new Scanner(System.in);
+
+    
+        String placa= input("Ingrese la placa del Vehiculo: ");
+
+      
+        String marca =input("Ingrese la marca del Vehiculo: ");
+
+        
+        String modelo =input("Ingrese el modelo del Vehiculo: ");
+
+      
+        String color = input("Ingrese el color del Vehiculo: ");
+
+        String tipoTransmision =input( "Ingrese el tipo de transmision del Vehiculo: ");
+
+        String ubicacionGPS = input("Ingrese la ubicacion del Vehiculo: ");
+
+        String estado = input("Ingrese el estado del Vehiculo: ");
+
+       
+        int IDcategoria = Integer.parseInt(input("Ingrese el ID categoria del Vehiculo: "));
+
+        System.out.print("Ingrese el ID de la sede del Vehiculo: ");
+        int IDsede = scanner.nextInt();
+        Categoria categoria=null;
+        if ((IDcategoria>=1) && (IDcategoria<=listaCategorias.size())){
+            categoria= Inventario.assignCategoria(IDcategoria);
+        }
+        else{
+            System.out.println("Ingreso un Id de Categoria inválido");
+        }
+        Sede sede=null;
+        if (IDsede>=1&& IDsede<=listaSedes.size()){
+            sede= Inventario.assignSede(IDsede);
+        }
+        else{
+            System.out.println("Ingresó un ID de sede inválido");
+        }
+        
+        scanner.close();
+     
+        Vehiculo vehiculo = new Vehiculo(placa, marca, modelo, color, tipoTransmision, ubicacionGPS, estado, false, categoria, sede);
+    }
+    public static void closeSistema() {
+    }
 
 }
+

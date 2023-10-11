@@ -93,14 +93,20 @@ public class Consola {
     //personalatencion(en reserva->21,25-27)
     //personalTecnico(20)
     //cliente (24-27)
-    ;
     
+   
     public static void NuevoCliente(){
+<<<<<<< HEAD
+    int cedula;
+    boolean existe=false;
+        
+=======
         int cedula;
         boolean existe=false;
 
+>>>>>>> 5036c82ee8a1dad3e6ac51c01376a6d0573371cf
     //josé
-    }
+}
     public static String input(String mensaje)
 	{
 		try
@@ -115,12 +121,13 @@ public class Consola {
 			e.printStackTrace();
 		}
 		return null;
-	}
+    }
     public static void main(String[] args)
 	{
     Inventario.loadSistema();
-	System.out.println("\n\t\t>>> Bienvenid@ a "+Inventario.getNombreCompania()+" :)");    
+    System.out.println("\n\t\t>>> Bienvenid@ a "+Inventario.getNombreCompania()+" :)");    
     MenuInicial();
     
 	}
 }
+
