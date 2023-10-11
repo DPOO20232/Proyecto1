@@ -124,11 +124,45 @@ public class Consola {
     
    
     public static void NuevoCliente(){
-        int cedula;
-        boolean existe=false;
+        //josé
+            System.out.println("\n¡Bienvenido a nuestro sistema!\n");
+            int cedula = Integer.parseInt(input("Por favor ingrese su número de documento de identidad"));
+            String nombre = input("Por favor ingrese su nombre completo");
+            String correo = input("Por favor ingrese su correo electrónico");
+            int telefono = Integer.parseInt(input("Por favor ingrese su número de teléfono celular"));
+            int anacimiento = Integer.parseInt(input("Por favor ingrese su año de nacimiento"));
+            int mnacimiento = Integer.parseInt(input("Por favor ingrese su mes de nacimiento"));
+            int dnacimiento = Integer.parseInt(input("Por favor ingrese su día de nacimiento"));
+            String nacionalidad = input("Por favor ingrese su nacionalidad");
+            //int fnacimiento = anacimiento + mnacimiento + dnacimiento;
+            boolean menor = esMayorDeEdad(anacimiento, mnacimiento);
+            if (menor) {
+                System.out.println("No es posible registrarlo como cliente porque es menor de edad.");
+            } else {
+                System.out.println("Ahora necesita crear su usuario y contraseña.")
+                String login = input("Por favor ingrese su nombre de usuario");
+                String password = input("Por favor ingrese una contraseña");
+    
+                Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, anacimiento, )
+                // Usuario.addCliente(cliente);
+            }
+    }
+    public static boolean esMayorDeEdad(int anho, int mes) {
+        boolean menor = false
+        Calendar fechaActual = Calendar.getInstance();
+        int mesactual = fechaActual.get(Calendar.MONTH) + 1;
+        int anhoactual = fechaActual.get(Calendar.YEAR);
 
-    //josé
-}
+        if (anho < (anhoactual - 18)) {
+            menor = true
+        }
+        if ((anho==(anhoactual-18) && mes < (mesactual - 18))) {
+            menor = true
+        }
+
+        return menor;
+    }
+
     public static String input(String mensaje)
 	{
 		try
@@ -152,4 +186,3 @@ public class Consola {
     
 	}
 }
-
