@@ -2,11 +2,15 @@ package consola;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
 import inventario.Inventario;
 import usuario.Cliente;
 import usuario.Usuario;
 import usuario.personal;
+import usuario.Licencia;
+import usuario.Tarjeta;
+
 public class Consola {
     public static void MenuInicial(){
     boolean continuar=true;
@@ -143,24 +147,41 @@ public class Consola {
                 String login = input("Por favor ingrese su nombre de usuario");
                 String password = input("Por favor ingrese una contraseña");
     
-                Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, anacimiento, )
+                Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, anacimiento, nacionalidad)
                 // Usuario.addCliente(cliente);
+                
+                System.out.println("A continuación hay tiene que ingresar una licencia de conducción y un medio de pago");
+
+                int numerolicencia = Integer.parseInt(input("Por favor ingrese el número de su licencia de conducción"));
+                int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato ddmmaaaa)"));
+                int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato ddmmaaaa)"));
+                String pais = input("Por favor ingrese el país de expedición de su licencia");
+                Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
+                // Licencia a lista de licencias
+                System.out.println("Nuestra página solamente acepta tarjetas de crédito como medio de pago");
+                Long numerotarjeta = Long.parseLong(input("Por favor ingrese el número de su tarjeta de crédito"));
+                int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su tarjeta de crédito(en formato mmaaaa)"));
+                String marca = input("Por favor ingrese la marca de su tarjeta");
+                String titular = input("Por favor ingrese el nombre de la persona o entidad titular de la tarjeta");
+                Tarjeta tarjeta = new Tarjeta(numerotarjeta, vencimiento, marca, titular)
+                // Tarjeta a tarjetas
+
             }
     }
     public static boolean esMayorDeEdad(int anho, int mes) {
-        boolean menor = false
+        boolean mayor = false
         Calendar fechaActual = Calendar.getInstance();
         int mesactual = fechaActual.get(Calendar.MONTH) + 1;
         int anhoactual = fechaActual.get(Calendar.YEAR);
 
         if (anho < (anhoactual - 18)) {
-            menor = true
+            mayor = true
         }
         if ((anho==(anhoactual-18) && mes < (mesactual - 18))) {
-            menor = true
+            mayor = true
         }
 
-        return menor;
+        return mayor;
     }
 
     public static String input(String mensaje)
