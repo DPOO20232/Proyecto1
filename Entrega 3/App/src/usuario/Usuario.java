@@ -10,6 +10,7 @@ public class Usuario {
     private static List<Cliente> ListaClientes;
     private static List<Licencia> ListaLicencias;
     private static List<String> ListaNombresLogins;
+    private static List<Integer> ListaNumCedulas;
     public Usuario(String login, String password) {
         this.login = login;
         this.password = password;
@@ -38,6 +39,7 @@ public class Usuario {
     public static List<Cliente> getListaClientes(){ return ListaClientes;}
     public static List<Licencia> getListaLicencias(){ return ListaLicencias;}
     public static List<String> getListaNombresLogins(){ return ListaNombresLogins;}
+    public static List<Integer> getListaNumCedulas(){ return ListaNumCedulas;}
 
     public static void addCliente(Cliente cliente){
         if (getListaClientes()==null){
@@ -56,6 +58,12 @@ public class Usuario {
             ListaNombresLogins= new ArrayList<String>();
         }
         ListaNombresLogins.add(nom);
+    }
+    public static void addNumCedulas(int cedula){
+        if (getListaNumCedulas()==null){
+            ListaNumCedulas= new ArrayList<Integer>();
+        }
+        ListaNumCedulas.add(cedula);
     }
     public static Cliente assignCliente(int cedula){
         Cliente retorno=null;
@@ -91,5 +99,30 @@ public class Usuario {
             if (i.equals(login)){encontrado=true;break;}
         }
         return encontrado;
+    }
+    public static boolean checkCedulas(int cedula){
+        boolean retorno=false;
+        for (int i: getListaNumCedulas()){
+            if (i==cedula){
+                retorno=true;
+                break;
+            }
+        }
+        return retorno;
+    }
+    public static boolean checkLicencia(int num_licencia){
+        boolean retorno=false;
+        for(Licencia i: getListaLicencias()){
+            if(i.getNumeroLicencia()==num_licencia){
+                retorno=true;
+                break;
+            }
+        }
+        return retorno;
+    }
+    public static boolean checkVencimientoLicencia(int num_licencia){
+        for (Licencia i: getListaLicencias()){
+            
+        }
     }
 }

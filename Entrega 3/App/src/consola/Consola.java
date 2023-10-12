@@ -12,7 +12,7 @@ import usuario.personal;
 import usuario.Licencia;
 import usuario.Tarjeta;
 public class Consola {
-    public static void MenuInicial(){
+    public static void MenuInicial() throws IOException{
     boolean continuar=true;
     while (continuar){
         try
@@ -32,7 +32,7 @@ public class Consola {
                 boolean continuarAdmin=true;
                 perfil="Admin";
                 while (continuarAdmin==true){
-                //ESTAS CLASES HAY QUE PASARLAS A ADMIN
+                //ESTOS METODOS HAY QUE PASARLOS A ADMIN
                 System.out.println("\n\t\t>>>Hola, Admin!");
                 System.out.println("1. Crear categoría");
                 System.out.println("2. Añadir vehículo al inventario");
@@ -119,10 +119,9 @@ public class Consola {
             }
             else if(opcion_seleccionada==2){
                 nuevoCliente();
-                //chequear que nadie tenga ese login y usuario (en caso de cliente tampoco licencia)
             }
             else if(opcion_seleccionada==3){
-                Inventario.closeSistema();
+                Inventario.updateSistema();
                 continuar=false;
             }
             else{
@@ -138,67 +137,123 @@ public class Consola {
         try {
             System.out.println("\n¡Bienvenido a nuestro sistema!\n");
             int cedula = Integer.parseInt(input("Por favor ingrese su número de documento de identidad"));
+            if (Usuario.checkCedulas(cedula)==false){
             String nombre = input("Por favor ingrese su nombre completo");
             String correo = input("Por favor ingrese su correo electrónico");
-            int telefono = Integer.parseInt(input("Por favor ingrese su número de teléfono celular"));
+            long telefono = Long.parseLong(input("Por favor ingrese su número de teléfono celular"));
             int anacimiento = Integer.parseInt(input("Por favor ingrese su año de nacimiento"));
             int mnacimiento = Integer.parseInt(input("Por favor ingrese su mes de nacimiento"));
             int dnacimiento = Integer.parseInt(input("Por favor ingrese su día de nacimiento"));
-            String nacionalidad = input("Por favor ingrese su nacionalidad");
+            String nacionalidad = input("Por favor ingrese su nacionalidad país de nacionalidad").toUpperCase();
             int fnacimiento = anacimiento + mnacimiento*10000 + dnacimiento*1000000;
             //ddmmaaaa
-            boolean menor = esMayorDeEdad(anacimiento, mnacimiento, dnacimiento);
-            if (menor) {
-                System.out.println("No es posible registrarlo como cliente porque es menor de edad.");
+            boolean mayor = esMayorDeEdad(anacimiento, mnacimiento, dnacimiento);
+            if (!mayor) {
+                System.out.println("\n>No es posible registrarlo como cliente porque es menor de edad.");
             } else {
-                System.out.println("Ahora necesita crear su usuario y contraseña.");
-                String login = input("Por favor ingrese su nombre de usuario");
+                System.out.println("\n>Ahora necesita crear su usuario y contraseña.");
                 boolean continuar=true;
                 while (continuar){
-                String password = input("Por favor ingrese una contraseña");
                 //COMPARACION
-                if(((Usuario.checkNombresLogins(login)==false))) {                    
-                    Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
-                    Usuario.addCliente(cliente);
-                    System.out.println("A continuación hay tiene que ingresar una licencia de conducción y un medio de pago");
+                String login = input("Por favor ingrese su nombre de usuario");
+                if(((Usuario.checkNombresLogins(login)==false))) {   
+                    String password = input("Por favor ingrese una contraseña");
+                    boolean continuar2=true;
+                    System.out.println("\n>A continuación tiene que ingresar una licencia de conducción y un medio de pago.");
+                    while(continuar2){
                     int numerolicencia = Integer.parseInt(input("Por favor ingrese el número de su licencia de conducción"));
+                    if (Usuario.checkLicencia(numerolicencia)==false){
                     int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato ddmmaaaa)"));
                     int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato ddmmaaaa)"));
+                    Calendar fechaActual = Calendar.getInstance();
+                    int diaActual = fechaActual.get(Calendar.DAY_OF_MONTH);
+                    int mesActual = fechaActual.get(Calendar.MONTH) + 1;
+                    int anhoActual = fechaActual.get(Calendar.YEAR);
+                    if(vencimiento>(anhoActual+mesActual*10000+diaActual*1000000)){
+
                     String pais = input("Por favor ingrese el país de expedición de su licencia");
                     Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
-                    cliente.setLicencia(licencia);
                     Usuario.addLicencia(licencia);
-                    System.out.println("Nuestra página solamente acepta tarjetas de crédito como medio de pago");
-                    Long numerotarjeta = Long.parseLong(input("Por favor ingrese el número de su tarjeta de crédito"));
+                    System.out.println("\n>Nuestro sistema solamente acepta tarjetas de crédito como medio de pago");
+                    Long numerotarjeta = Long.parseLong(input("Por favor ingrese el número de su tarjeta de crédito (en formato 1111222233334444)"));
+                    if(vencimiento>(anhoActual+mesActual*10000+diaActual*1000000)){
                     int vencimiento_2 = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su tarjeta de crédito(en formato mmaaaa)"));
                     String marca = input("Por favor ingrese la marca de su tarjeta");
                     String titular = input("Por favor ingrese el nombre de la persona o entidad titular de la tarjeta");
                     Tarjeta tarjeta = new Tarjeta(numerotarjeta, vencimiento_2, marca, titular);
+                    Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
+                    Usuario.addNombreLogin(login);
+                    Usuario.addNumCedulas(cedula);
+                    Usuario.addCliente(cliente);
+                    cliente.setLicencia(licencia);
                     cliente.setTarjeta(tarjeta);
+                    continuar2=false;
                     continuar=false;
-                } else {
-                    System.out.println("El nombre de usuario ya ha sido utilizado. Por favor, elija otro.");
-                }}}}catch(NumberFormatException e) {
-        System.out.println("Debe ingresar los datos requeridos para que la creación de la cuenta sea exitosa.");}}
+                    }
+                    else{
+                        System.out.println("\n>La licencia ingresada ya caducó, desea ingresar otra?");
+                        System.out.println("1.Sí");
+                        System.out.println("2.No(ó cualquier otro número)");
+                        int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
+                        if(opcion==2){
+                            continuar2=false;
+                            continuar=false;
+                        }  
+                    }
+                    }
+                    else{
+                        System.out.println("\n>Ese número de licencia esta asignado a otro cliente.");
+                        System.out.println(">Desea ingresar otra licencia?");
+                        System.out.println("1.Sí");
+                        System.out.println("2.No(ó cualquier otro número)");
+                        int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
+                        if(opcion==2){
+                            continuar2=false;
+                            continuar=false;
+                        }    
+                    }
+                    }
+                else {
+                    System.out.println("\n>El nombre de usuario ya ha sido utilizado. Por favor, elija otro.");
+                }
+                }
+                }
+            
+        else{
+                    System.out.println("\n>Ya existe una cuenta con esta cédula. ¿Desea cambiar su contraseña?");
+                    System.out.println("1.Sí");
+                    System.out.println("2.No(ó cualquier otro número)");
+                    int opcion = Integer.parseInt(input("Por favor seleccione una opción"));    
+                    if (opcion==1){
+                        int fechaNac_u=Integer.parseInt(input("Ingrese su fecha de nacimiento en el formato ddmmaaaa para verificar que es usted"));
+                        Cliente cliente= Inventario.assignCliente(cedula);
+                        if (cliente.getFechaNacimiento()==fechaNac_u){
+                        String new_password=input("Ingrese una nueva contraseña");
+                        cliente.setPassword(new_password);
+                        System.out.println("\n>Su contraseña se ha actualizado correctamente");
+                        }
+                        else{
+                        System.out.println("\n>Verificación fallida, contactese con soporte@rentacar.com para solicitar la actualización de su contraseña.");
+                        }
+                    }
+                }}
+            catch(NumberFormatException e) {
+        System.out.println("\n>Debe ingresar los datos requeridos en el formato adecuado para que la creación de la cuenta sea exitosa.");}}
 
     public static boolean esMayorDeEdad(int anho, int mes, int dia) {
-        boolean mayor = false;
         Calendar fechaActual = Calendar.getInstance();
-        int diaactual = fechaActual.get(Calendar.DAY_OF_MONTH);
-        int mesactual = fechaActual.get(Calendar.MONTH) + 1;
-        int anhoactual = fechaActual.get(Calendar.YEAR);
-
-        if (anho < (anhoactual - 18)) {
-            mayor = true;
+        int diaActual = fechaActual.get(Calendar.DAY_OF_MONTH);
+        int mesActual = fechaActual.get(Calendar.MONTH) + 1;
+        int anhoActual = fechaActual.get(Calendar.YEAR);
+    
+        if (anho + 18 < anhoActual) {
+            return true;
+        } else if (anho + 18 == anhoActual && mes < mesActual) {
+            return true;
+        } else if (anho + 18 == anhoActual && mes == mesActual && dia <= diaActual) {
+            return true;
         }
-        if ((anho==(anhoactual-18) && mes < mesactual)) {
-            mayor = true;
-        }
-        if ((anho==(anhoactual-18) && mes == mesactual && dia < diaactual)) {
-            mayor = true;
-        }
-
-        return mayor;
+        return false;
     }
 
     public static String input(String mensaje)
@@ -216,7 +271,7 @@ public class Consola {
 		}
 		return null;
     }
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
 	{
     Inventario.loadSistema();
     System.out.println("\n\t\t>>> Bienvenid@ a "+Inventario.getNombreCompania()+" :)");    

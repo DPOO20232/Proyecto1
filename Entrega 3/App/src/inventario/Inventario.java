@@ -1,12 +1,16 @@
 package inventario;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import inventario.Vehiculo;
@@ -87,12 +91,43 @@ public class Inventario {
     public static List<Evento> getListaEventos(){return listaEventos;}
     public static List<Vehiculo> getListaVehiculos(){return listaVehiculos;}
     
-    public static void updateSistema(){
+    public static void updateSistema() throws IOException{
     //updateInfo();
-    //updateCategorias();
+    updateCategorias();
     //updateSedes();
     //updateSeguros();
     //updateVehiculos();
+    }
+    public static void updateCategorias() throws IOException{
+        File archivo = new File("./data/categorias.txt");
+        FileWriter escritor = new FileWriter(archivo);
+        List <Categoria> lstcategorias=listaCategorias;
+        Collections.sort(lstcategorias, new Comparator<Categoria>() {
+		    public int compare(Categoria c1, Categoria c2) {
+                String tipo1=c1.getnombreCategoria().split("_")[1];
+                String tipo2=c2.getnombreCategoria().split("_")[1];
+                return tipo2.compareTo(tipo1);
+		    }
+		});
+            for(Categoria i: lstcategorias){
+                //ordenarlo segun premium/intermedio/economico
+                    String strid= Integer.toString(i.getID());
+                    String strnombreCategoria=i.getnombreCategoria();
+                    String strcapacidad= Integer.toString(i.getCapacidad());
+                    String strpctg_temporadaAlta= Double.toString(i.getPctg_temporadaAlta());
+                    String strpctg_temporadaBaja= Double.toString(i.getPctg_temporadaBaja());
+                    String strcostoAveriaLeve= Integer.toString(i.getCostoAveriaLeve());
+                    String strcostoAveriaModerada= Integer.toString(i.getCostoAveriaModerada());
+                    String strcostoAveriaTotal= Integer.toString(i.getCostoAveriaTotal());
+                    String strTarifaDiaria= Integer.toString(i.getTarifaDiaria());
+                    String strid_padre=Integer.toString(i.getId_Padre());
+                    String resultado = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s%n", strid, strnombreCategoria, strcapacidad, strpctg_temporadaAlta, strpctg_temporadaBaja, strcostoAveriaLeve, strcostoAveriaModerada, strcostoAveriaTotal, strTarifaDiaria, strid_padre);
+                    escritor.write(resultado);
+                    //escritor.write(System.lineSeparator());
+                    
+            }
+            escritor.close();
+
     }
     public static String input(String mensaje)
 	{
@@ -166,7 +201,8 @@ public class Inventario {
                     int tarifaDiaria= Integer.parseInt(partes[8]);
                     int id_Padre= Integer.parseInt(partes[9]);
                     Categoria categoriaActual= new Categoria(id,nombreCategoria,capacidad, pctg_temporadaAlta, pctg_temporadaBaja,costoAveriaLeve, costoAveriaModerada, costoAveriaTotal, tarifaDiaria,id_Padre);
-                    if (id_Padre!=0){categoriaActual.setPadre(Inventario.assignCategoria(id_Padre));}
+                    if (id_Padre!=0){
+                        categoriaActual.setPadre(Inventario.assignCategoria(id_Padre));}
                     listaCategorias.add(categoriaActual);
                 }
             }
@@ -295,9 +331,11 @@ public class Inventario {
             if (partes.length == 10) {
             String login= partes[0];
             //CHECK
-            Usuario.addNombreLogin(login);
+
             String password= partes[1];
             int numeroCedula= Integer.parseInt(partes[2]);
+            Usuario.addNombreLogin(login);
+            Usuario.addNumCedulas(numeroCedula);
             String nombre= partes[3];
             String correo = partes[4];
             long telefono= Long.parseLong(partes[5]);
@@ -568,8 +606,6 @@ public class Inventario {
         catch(NumberFormatException e){
             System.out.println(">Ingrese solo números en los campos correspondientes");}
     }
-    public static void closeSistema() {
-    }
     public static void eliminarVehiculo(){
             String placa = input("Ingrese la placa del vehículo"); 
             boolean encontrado=false;
@@ -592,7 +628,7 @@ public class Inventario {
         try {
         boolean continuar=true;
         String nombre= input("Ingrese el nombre de la Categoria del Vehiculo: ");
-        int capacidadPersonas = Integer.parseInt(input("Ingrese el ID categoria del Vehiculo"));
+        int capacidadPersonas = Integer.parseInt(input("Ingrese la capacidad de personas del Vehiculo"));
         double pctg_temporadaAlta= Double.parseDouble(input("Ingrese el porcentaje de incremento para la categoria en temporada alta"));
         double pctg_temporadaBaja= Double.parseDouble(input("Ingrese el porcentaje de descuento para la categoria en temporada baja"));
         int costoAveriaLeve = Integer.parseInt(input("Ingrese el costo de averia leve del Vehiculo"));
