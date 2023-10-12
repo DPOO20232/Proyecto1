@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import inventario.Vehiculo;
@@ -100,6 +102,13 @@ public class Inventario {
         File archivo = new File("./data/categorias.txt");
         FileWriter escritor = new FileWriter(archivo);
         List <Categoria> lstcategorias=listaCategorias;
+        Collections.sort(lstcategorias, new Comparator<Categoria>() {
+		    public int compare(Categoria c1, Categoria c2) {
+                String tipo1=c1.getnombreCategoria().split("_")[1];
+                String tipo2=c2.getnombreCategoria().split("_")[1];
+                return tipo1.compareTo(tipo2);
+		    }
+		});
             for(Categoria i: lstcategorias){
                 //ordenarlo segun premium/intermedio/economico
                     String strid= Integer.toString(i.getID());
