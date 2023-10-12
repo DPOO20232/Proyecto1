@@ -1,4 +1,8 @@
 package usuario;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cliente extends Usuario{
     private int numeroCedula;
     private String nombre;
@@ -63,5 +67,6 @@ public class Cliente extends Usuario{
     }
     public void setTarjeta(Tarjeta tarjeta) {
         this.tarjeta = tarjeta;}
+
 }
 

@@ -295,9 +295,11 @@ public class Inventario {
             if (partes.length == 10) {
             String login= partes[0];
             //CHECK
-            Usuario.addNombreLogin(login);
+
             String password= partes[1];
             int numeroCedula= Integer.parseInt(partes[2]);
+            Usuario.addNombreLogin(login);
+            Usuario.addNumCedulas(numeroCedula);
             String nombre= partes[3];
             String correo = partes[4];
             long telefono= Long.parseLong(partes[5]);

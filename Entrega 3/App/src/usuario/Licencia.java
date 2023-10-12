@@ -1,5 +1,6 @@
 package usuario;
 
+
 public class Licencia {
     private int numeroLicencia;
     private int fechaExpedicion;
