@@ -106,7 +106,7 @@ public class Inventario {
 		    public int compare(Categoria c1, Categoria c2) {
                 String tipo1=c1.getnombreCategoria().split("_")[1];
                 String tipo2=c2.getnombreCategoria().split("_")[1];
-                return tipo1.compareTo(tipo2);
+                return tipo2.compareTo(tipo1);
 		    }
 		});
             for(Categoria i: lstcategorias){
