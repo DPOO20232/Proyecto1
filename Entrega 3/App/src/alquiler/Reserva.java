@@ -7,6 +7,7 @@ import usuario.Cliente;
 import inventario.Sede;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 
 public class Reserva {
@@ -52,6 +53,108 @@ public class Reserva {
         this.cliente = cliente;
     }
 
+    //reservaEnSede es true cuando la hace el personal de atencion
+
+    public static void crearReserva(boolean reservaEnSede){
+        try { 
+            System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
+            int frecoger = Integer.parseInt(input("Por favor ingrese la fecha en la que desee recoger su vehículo(en formato ddmmaaaa o dmmaaaa)"));
+            int fentregar = Integer.parseInt(input("Por favor ingrese la fecha en la que desee entregar su vehículo(en formato ddmmaaaa o dmmaaaa)"));
+            int hrecoger = Integer.parseInt(input("Por favor ingrese la hora en la que desee recoger su vehículo(en formato hhmm)"));
+            int hentregar = Integer.parseInt(input("Por favor ingrese la hora en la que desee entregar su vehículo(en formato hhmm)"));
+            System.out.println("Lista de Sedes Disponibles:");
+            List<Sede> sedes = Inventario.getListaSedes();
+            for (int i = 0; i < sedes.size(); i++) {
+                System.out.println((i + 1) + ". " + sedes.get(i).getNombre());
+            }
+            int sedeRecogerIndex = Integer.parseInt(input("Seleccione una sede para recoger su vehículo(ingrese el número)"));
+            Sede sedeRecoger = sedes.get(sedeRecogerIndex - 1);
+            int sedeEntregaIndex = Integer.parseInt(input("Seleccione una sede para la entrega de su vehículo(ingrese el número)"));
+            Sede sedeEntrega = sedes.get(sedeEntregaIndex - 1);
+
+            System.out.println("\nLista de Categorías de Vehículos Disponibles:");
+            List<Categoria> categorias = Inventario.getListaCategorias();
+            for (int i = 0; i < categorias.size(); i++) {
+                System.out.println((i + 1) + ". " + categorias.get(i).getnombreCategoria());
+                System.out.println("   - Costo Diario: $" + categoria.getTarifaDiaria());
+                System.out.println("   - Capacidad: " + categoria.getCapacidad() + " personas");
+            }
+            int categoriaElegidaIndex = Integer.parseInt(input("Seleccione una categoría (ingrese el número): "));
+            Categoria categoriaElegida = categorias.get(categoriaElegidaIndex - 1);
+            //Clientee
+            boolean horaVrecoger = horaValida(hrecoger)
+            boolean horaVentrega = horaValida(hentregar)
+            boolean freserva = fechaValidaReserva(frecoger)
+            boolean fdevolucion = fechaValidaReserva(fentregar)
+            //if (){}
+
+
+            
+
+        } catch (NumberFormatException e) {
+            System.out.println("Debe ingresar los datos requeridos para que la creación de su reserva sea exitosa.");
+        }
+
+    }
+
+    public boolean horaValida(int hora) {
+        int horas = hora / 100; 
+        int minutos = hora % 100;
+        if (horas >= 0 && horas <= 23 && minutos >= 0 && minutos <= 59) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean fechaValidaReserva(int fecha) {
+        Calendar fechaActual = Calendar.getInstance();
+        int diaactual = fechaActual.get(Calendar.DAY_OF_MONTH);
+        int mesactual = fechaActual.get(Calendar.MONTH) + 1;
+        int anhoactual = fechaActual.get(Calendar.YEAR);
+
+        int dia = fecha / 1000000; 
+        int diames = fecha / 10000;
+        int mes = diames % 100;
+        int anio = fecha % 10000;
+        if (dia < 32 && mes < 13) {
+            if ((anio == anhoactual+1)) {
+                return true;
+            }
+            if ((anio == anhoactual && mes > mesactual)) {
+                return true;
+            }
+            if ((anio == anhoactual && mes == mesactual && dia > diaactual)) {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+    public boolean fechaValidaDevolucion(int entrega, int devolucion) {
+        int diae = entrega / 1000000; 
+        int diamese = entrega / 10000;
+        int mese = diamese % 100;
+        int anioe = entrega % 10000;
+
+        int diad = devolucion / 1000000; 
+        int diamesd = devolucion / 10000;
+        int mesd = diamesd % 100;
+        int aniod = devolucion % 10000;
+        if (diad < 32 && mesd < 13) {
+            if ((aniod == anioe+1)) {
+                return true;
+            }
+            if ((aniod == anioe && mesd > mese)) {
+                return true;
+            }
+            if ((aniod == anioe && mesd == mese && diad > diae)) {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
 
     // Métodos getter
     public int getID() {
