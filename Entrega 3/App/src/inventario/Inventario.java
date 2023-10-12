@@ -583,7 +583,7 @@ public class Inventario {
        
         try {
         boolean continuar=true;
-        String nombre= input("Ingrese el nombre de la Ctaegoria del Vehiculo: ");
+        String nombre= input("Ingrese el nombre de la Categoria del Vehiculo: ");
         int capacidadPersonas = Integer.parseInt(input("Ingrese el ID categoria del Vehiculo"));
         double pctg_temporadaAlta= Double.parseDouble(input("Ingrese el porcentaje de incremento para la categoria en temporada alta"));
         double pctg_temporadaBaja= Double.parseDouble(input("Ingrese el porcentaje de descuento para la categoria en temporada baja"));
@@ -592,7 +592,7 @@ public class Inventario {
         int TarifaDiaria = Integer.parseInt(input("Ingrese el costo de tarifa diaria del Vehiculo"));
         while(continuar){
             int IdPadre = Integer.parseInt(input("Ingrese el Id padre del Vehiculo (En caso de que no tenga marque 0)"));
-            if (((IdPadre>0) &&(IdPadre<=Inventario.getListaCategorias().size()))){
+            if (((IdPadre>=0) &&(IdPadre<=Inventario.getListaCategorias().size()))){
             Categoria categoria = new Categoria(nombre, capacidadPersonas, pctg_temporadaAlta, pctg_temporadaBaja, costoAveriaLeve, costoAveriaModerado, costoAveriaTotal, TarifaDiaria, IdPadre);
             categoria.setPadre(Inventario.assignCategoria(IdPadre));
             System.out.println(">La nueva categoria se guardo con el id"+ Integer.toString(categoria.getID()));
@@ -693,7 +693,7 @@ public class Inventario {
             Sede sede=null;
             boolean continuar2=true;
             while(continuar2){
-            int Idsede=Integer.parseInt(input("ingrese el ID de la sede"));
+                            int Idsede=Integer.parseInt(input("ingrese el ID de la sede"));
             if ((Idsede>=1&& Idsede<=listaSedes.size())){
                 sede= Inventario.assignSede(Idsede);
                 personal adminlocal=new personal(login, password, "AdminLocal", sede);
@@ -719,7 +719,7 @@ public class Inventario {
             Sede sede=null;
             for(personal i:listpersonal){
                 if (i.getLogin()==login && i.getTipoPersonal()=="AdminLocal"){
-                    {                    
+                    {
                         sede= Inventario.assignSede(NidSede);
                         i.setSede(sede);
                         System.out.println(">El admin ha sido asignado correctamente a la sede "+ Integer.toString(NidSede));
