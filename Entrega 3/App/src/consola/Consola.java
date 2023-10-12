@@ -5,12 +5,12 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 
 import inventario.Inventario;
+import inventario.Sede;
 import usuario.Cliente;
 import usuario.Usuario;
 import usuario.personal;
 import usuario.Licencia;
 import usuario.Tarjeta;
-import usuario.AdminLocal;
 public class Consola {
     public static void MenuInicial(){
     boolean continuar=true;
@@ -74,6 +74,7 @@ public class Consola {
                 else if(opcion_admin==15){Inventario.setPeriodoTemporadaAlta();}
                 else if(opcion_admin==16){Inventario.setPeriodoTemporadaBaja();}
                 else if(opcion_admin==17){continuarAdmin=false;}
+                else{System.out.println("Por favor seleccione una opción válida.");}
             }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
             //MENU PERSONAL
             else if (personal.checkLoginPersonal(login, password)!=null){
@@ -81,17 +82,23 @@ public class Consola {
                 personal adminlocal= personal.checkLoginPersonal(login, password);
                     if (perfil.equals("AdminLocal")){
                     boolean continuarAdminL=true;
+                    Sede adminSede=adminlocal.getSede();
+                    String nomSede= adminSede.getNombre();
                     while (continuarAdminL==true){
                     System.out.println("\n\t\t>>>Hola, Admin local!");
-                    System.out.println("1. Registrar empleado de atención categoría");
-                    System.out.println("2. Crear categoría");
-                    System.out.println("3. Crear categoría");
-
-                    int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
-                    }
-                //ESTAS CLASES HAY QUE PASARLAS A ADMIN
-
-                }
+                    System.out.println("1. Registrar empleado en la sede: "+nomSede);
+                    System.out.println("2. Actualizar información de un empleado de la sede: "+nomSede);
+                    System.out.println("3. Obtener registro de los empleados de la sede: "+nomSede);
+                    System.out.println("4. Salir de la aplicación\n");
+                    int opcion_adminL = Integer.parseInt(input("Por favor seleccione una opción"));
+                    try{
+                    if (opcion_adminL==1){personal.addPersonalSede(adminSede);}
+                    else if(opcion_adminL==2){personal.actualizarPersonal(adminSede);}
+                    else if(opcion_adminL==3){personal.printRegistroEmpleados(adminSede);}
+                    else if(opcion_adminL==4){continuarAdminL=false;}
+                    else{System.out.println("Por favor seleccione una opción válida.");}
+                }catch(NumberFormatException e){}}}
+                    //ESTAS CLASES HAY QUE PASARLAS A ADMIN
                 else if (perfil.equals("EmpleadoAtencion")){
 
                 }
@@ -149,8 +156,8 @@ public class Consola {
                 boolean continuar=true;
                 while (continuar){
                 String password = input("Por favor ingrese una contraseña");
-                if((personal.checkLoginPersonal(login, password).equals(null)&&(personal.checkLoginAdmin(login, password)==false)&&(personal.checkLoginCliente(login, password).equals(null)))) {                    
-        
+                //COMPARACION
+                if(((Usuario.checkNombresLogins(login)==false))) {                    
                     Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
                     Usuario.addCliente(cliente);
                     System.out.println("A continuación hay tiene que ingresar una licencia de conducción y un medio de pago");
@@ -161,14 +168,12 @@ public class Consola {
                     Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
                     cliente.setLicencia(licencia);
                     Usuario.addLicencia(licencia);
-                    // Licencia a lista de licencias
                     System.out.println("Nuestra página solamente acepta tarjetas de crédito como medio de pago");
                     Long numerotarjeta = Long.parseLong(input("Por favor ingrese el número de su tarjeta de crédito"));
                     int vencimiento_2 = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su tarjeta de crédito(en formato mmaaaa)"));
                     String marca = input("Por favor ingrese la marca de su tarjeta");
                     String titular = input("Por favor ingrese el nombre de la persona o entidad titular de la tarjeta");
                     Tarjeta tarjeta = new Tarjeta(numerotarjeta, vencimiento_2, marca, titular);
-                    // Tarjeta a tarjetas
                     cliente.setTarjeta(tarjeta);
                     continuar=false;
                 } else {
