@@ -9,6 +9,13 @@
             "name": "Consola",
             "request": "launch",
             "mainClass": "consola.Consola",
+            "projectName": "Proyecto1_ee0a6b93"
+        },
+        {
+            "type": "java",
+            "name": "Consola",
+            "request": "launch",
+            "mainClass": "consola.Consola",
             "projectName": "Proyecto1_76c48379"
         },
         {
