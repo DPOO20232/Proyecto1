@@ -12,7 +12,7 @@ import usuario.personal;
 import usuario.Licencia;
 import usuario.Tarjeta;
 public class Consola {
-    public static void MenuInicial(){
+    public static void MenuInicial() throws IOException{
     boolean continuar=true;
     while (continuar){
         try
@@ -121,7 +121,7 @@ public class Consola {
                 nuevoCliente();
             }
             else if(opcion_seleccionada==3){
-                Inventario.closeSistema();
+                Inventario.updateSistema();
                 continuar=false;
             }
             else{
@@ -271,7 +271,7 @@ public class Consola {
 		}
 		return null;
     }
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
 	{
     Inventario.loadSistema();
     System.out.println("\n\t\t>>> Bienvenid@ a "+Inventario.getNombreCompania()+" :)");    
