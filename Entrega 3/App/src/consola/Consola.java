@@ -10,7 +10,7 @@ import usuario.Usuario;
 import usuario.personal;
 import usuario.Licencia;
 import usuario.Tarjeta;
-
+import usuario.AdminLocal;
 public class Consola {
     public static void MenuInicial(){
     boolean continuar=true;
@@ -33,7 +33,7 @@ public class Consola {
                 perfil="Admin";
                 while (continuarAdmin==true){
                 //ESTAS CLASES HAY QUE PASARLAS A ADMIN
-                System.out.println("\n\t\t>>>Bienvenid@, Admin!");
+                System.out.println("\n\t\t>>>Hola, Admin!");
                 System.out.println("1. Crear categoría");
                 System.out.println("2. Añadir vehículo al inventario");
                 System.out.println("3. Eliminar vehículo al inventario");
@@ -78,7 +78,18 @@ public class Consola {
             //MENU PERSONAL
             else if (personal.checkLoginPersonal(login, password)!=null){
                 perfil=(personal.checkLoginPersonal(login, password)).getTipoPersonal();
-                if (perfil.equals("AdminLocal")){
+                personal adminlocal= personal.checkLoginPersonal(login, password);
+                    if (perfil.equals("AdminLocal")){
+                    boolean continuarAdminL=true;
+                    while (continuarAdminL==true){
+                    System.out.println("\n\t\t>>>Hola, Admin local!");
+                    System.out.println("1. Registrar empleado de atención categoría");
+                    System.out.println("2. Crear categoría");
+                    System.out.println("3. Crear categoría");
+
+                    int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
+                    }
+                //ESTAS CLASES HAY QUE PASARLAS A ADMIN
 
                 }
                 else if (perfil.equals("EmpleadoAtencion")){
@@ -100,6 +111,7 @@ public class Consola {
             else{System.out.println("\n\t>>> Credenciales incorrectas, intentelo de nuevo.");}          
             }
             else if(opcion_seleccionada==2){
+                nuevoCliente();
                 //chequear que nadie tenga ese login y usuario (en caso de cliente tampoco licencia)
             }
             else if(opcion_seleccionada==3){
@@ -115,7 +127,7 @@ public class Consola {
 			}
 		}
     }
-    public static void NuevoCliente(){
+    public static void nuevoCliente(){
         try {
             System.out.println("\n¡Bienvenido a nuestro sistema!\n");
             int cedula = Integer.parseInt(input("Por favor ingrese su número de documento de identidad"));

@@ -592,13 +592,14 @@ public class Inventario {
         int TarifaDiaria = Integer.parseInt(input("Ingrese el costo de tarifa diaria del Vehiculo"));
         while(continuar){
             int IdPadre = Integer.parseInt(input("Ingrese el Id padre del Vehiculo (En caso de que no tenga marque 0)"));
-            if (((IdPadre>0) &&(IdPadre<=Inventario.getListaCategorias().size()))){}
+            if (((IdPadre>0) &&(IdPadre<=Inventario.getListaCategorias().size()))){
             Categoria categoria = new Categoria(nombre, capacidadPersonas, pctg_temporadaAlta, pctg_temporadaBaja, costoAveriaLeve, costoAveriaModerado, costoAveriaTotal, TarifaDiaria, IdPadre);
             categoria.setPadre(Inventario.assignCategoria(IdPadre));
             System.out.println(">La nueva categoria se guardo con el id"+ Integer.toString(categoria.getID()));
 
             listaCategorias.add(categoria);
-            continuar=false;
+            continuar=false;}
+            else{System.out.println(">Elija un ID padre del Vehículo válido");}
         }}
         catch(NumberFormatException e){
             System.out.println(">Ingrese solo números en los campos correspondientes");}
