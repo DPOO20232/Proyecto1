@@ -94,7 +94,7 @@ public class Inventario {
     public static void updateSistema() throws IOException{
     //updateInfo();
     updateCategorias();
-    //updateSedes();
+    updateSedes();
     //updateSeguros();
     //updateVehiculos();
     }
@@ -106,7 +106,7 @@ public class Inventario {
 		    public int compare(Categoria c1, Categoria c2) {
                 String tipo1=c1.getnombreCategoria().split("_")[1];
                 String tipo2=c2.getnombreCategoria().split("_")[1];
-                return tipo1.compareTo(tipo2);
+                return tipo2.compareTo(tipo1);
 		    }
 		});
             for(Categoria i: lstcategorias){
@@ -127,8 +127,37 @@ public class Inventario {
                     
             }
             escritor.close();
-
+        }
+    public static void updateSedes() throws IOException{
+        File archivo = new File("./data/sedes.txt");
+        FileWriter escritor = new FileWriter(archivo);
+        List<Sede>lstsedes=listaSedes;
+        for(Sede i: lstsedes){
+            String strid = Integer.toString(i.getID());
+            String nombreSede= i.getNombre();
+            String ubicacionSede= i.getUbicacion();
+            List<Integer> horarioSemana= new ArrayList<Integer>();
+            StringBuilder strhorarioSemana = new StringBuilder();
+            strhorarioSemana.append("[");
+            strhorarioSemana.append(horarioSemana.get(0));
+            strhorarioSemana.append(",");
+            strhorarioSemana.append(horarioSemana.get(1));
+            strhorarioSemana.append("]");
+            strhorarioSemana.toString();
+            List<Integer> horarioFinSemana= new ArrayList<Integer>();
+            StringBuilder strhorarioFinSemana = new StringBuilder();
+            strhorarioFinSemana.append("[");
+            strhorarioFinSemana.append(horarioFinSemana.get(0));
+            strhorarioFinSemana.append(",");
+            strhorarioFinSemana.append(horarioFinSemana.get(1));
+            strhorarioFinSemana.append("]");
+            strhorarioFinSemana.toString();
+            String resultado = String.format("%s;%s;%s;%s;%s%n", strid, nombreSede, ubicacionSede, strhorarioSemana, strhorarioFinSemana);
+            escritor.write(resultado);
+        }
+        escritor.close();
     }
+    
     public static String input(String mensaje)
 	{
 		try
