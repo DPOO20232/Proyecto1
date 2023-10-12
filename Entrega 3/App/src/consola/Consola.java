@@ -116,6 +116,7 @@ public class Consola {
 		}
     }
     public static void NuevoCliente(){
+        try {
             System.out.println("\n¡Bienvenido a nuestro sistema!\n");
             int cedula = Integer.parseInt(input("Por favor ingrese su número de documento de identidad"));
             String nombre = input("Por favor ingrese su nombre completo");
@@ -125,9 +126,9 @@ public class Consola {
             int mnacimiento = Integer.parseInt(input("Por favor ingrese su mes de nacimiento"));
             int dnacimiento = Integer.parseInt(input("Por favor ingrese su día de nacimiento"));
             String nacionalidad = input("Por favor ingrese su nacionalidad");
-            int fnacimiento = anacimiento + mnacimiento*10000 + dnacimiento*1;
+            int fnacimiento = anacimiento + mnacimiento*10000 + dnacimiento*1000000;
             //ddmmaaaa
-            boolean menor = esMayorDeEdad(anacimiento, mnacimiento);
+            boolean menor = esMayorDeEdad(anacimiento, mnacimiento, dnacimiento);
             if (menor) {
                 System.out.println("No es posible registrarlo como cliente porque es menor de edad.");
             } else {
@@ -156,17 +157,24 @@ public class Consola {
                 cliente.setTarjeta(tarjeta);
 
             }
+    } catch(NumberFormatException e) {
+        System.out.println("Debe ingresar los datos requeridos para que la creación de la cuenta sea exitosa.");
     }
-    public static boolean esMayorDeEdad(int anho, int mes) {
+    }
+    public static boolean esMayorDeEdad(int anho, int mes, int dia) {
         boolean mayor = false;
         Calendar fechaActual = Calendar.getInstance();
+        int diaactual = fechaActual.get(Calendar.DAY_OF_MONTH);
         int mesactual = fechaActual.get(Calendar.MONTH) + 1;
         int anhoactual = fechaActual.get(Calendar.YEAR);
 
         if (anho < (anhoactual - 18)) {
             mayor = true;
         }
-        if ((anho==(anhoactual-18) && mes < (mesactual - 18))) {
+        if ((anho==(anhoactual-18) && mes < mesactual)) {
+            mayor = true;
+        }
+        if ((anho==(anhoactual-18) && mes == mesactual && dia < diaactual)) {
             mayor = true;
         }
 

@@ -606,15 +606,17 @@ public class Inventario {
 
 
     
+    
     public static void nuevoSeguro(){
     try{
-    String desc = input("Ingrese una descripción del seguro");
-    int pctg_tarifadiaria= Integer.parseInt(input("Ingrese el porcentaje de la tarifa diaria que el seguro cuesta (ej: 90%->0.9)"));
-    Seguro seguro= new Seguro(pctg_tarifadiaria,desc );
-    listaSeguros.add(seguro);
-    System.out.println(">El nuevo seguro se guardo con el id"+ Integer.toString(seguro.getID()));
+        String desc = input("Ingrese una descripción del seguro");
+        int pctg_tarifadiaria= Integer.parseInt(input("Ingrese el porcentaje de la tarifa diaria que el seguro cuesta (ej: 90%->0.9)"));
+        Seguro seguro= new Seguro(pctg_tarifadiaria,desc );
+        listaSeguros.add(seguro);
+        System.out.println(">El nuevo seguro se guardo con el id"+ Integer.toString(seguro.getID()));
     }
-    catch(NumberFormatException e){System.out.println(">Ingrese solo números en los campos correspondientes");}}
+    catch(NumberFormatException e){
+        System.out.println(">Ingrese solo números en los campos correspondientes");}}
     
     public static void editarSeguro(){
     try{
@@ -776,9 +778,10 @@ public class Inventario {
     System.out.println("\n> Información actualizada.");
  
     }
-    else{System.out.println("Ingrese el id de un seguro válido ");}
+    else{System.out.println("Ingrese el id de un seguro válido ");}}
 
-    }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
+    catch(NumberFormatException e){
+        System.out.println("Ingrese solo números en los campos correspondientes");}}
  
 }
 
