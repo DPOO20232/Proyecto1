@@ -134,27 +134,31 @@ public class Consola {
             } else {
                 System.out.println("Ahora necesita crear su usuario y contraseña.");
                 String login = input("Por favor ingrese su nombre de usuario");
-                String password = input("Por favor ingrese una contraseña");
-    
-                Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
-                Usuario.addCliente(cliente);
-                System.out.println("A continuación hay tiene que ingresar una licencia de conducción y un medio de pago");
-                int numerolicencia = Integer.parseInt(input("Por favor ingrese el número de su licencia de conducción"));
-                int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato ddmmaaaa)"));
-                int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato ddmmaaaa)"));
-                String pais = input("Por favor ingrese el país de expedición de su licencia");
-                Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
-                cliente.setLicencia(licencia);
-                Usuario.addLicencia(licencia);
-                // Licencia a lista de licencias
-                System.out.println("Nuestra página solamente acepta tarjetas de crédito como medio de pago");
-                Long numerotarjeta = Long.parseLong(input("Por favor ingrese el número de su tarjeta de crédito"));
-                int vencimiento_2 = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su tarjeta de crédito(en formato mmaaaa)"));
-                String marca = input("Por favor ingrese la marca de su tarjeta");
-                String titular = input("Por favor ingrese el nombre de la persona o entidad titular de la tarjeta");
-                Tarjeta tarjeta = new Tarjeta(numerotarjeta, vencimiento_2, marca, titular);
-                // Tarjeta a tarjetas
-                cliente.setTarjeta(tarjeta);
+                if((personal.checkLoginPersonal(login, password).equals(null)&&(personal.checkLoginAdmin(login, password)==false)&&(personal.checkLoginCliente(login, password).equals(null)))) {                    
+                    String password = input("Por favor ingrese una contraseña");
+        
+                    Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
+                    Usuario.addCliente(cliente);
+                    System.out.println("A continuación hay tiene que ingresar una licencia de conducción y un medio de pago");
+                    int numerolicencia = Integer.parseInt(input("Por favor ingrese el número de su licencia de conducción"));
+                    int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato ddmmaaaa)"));
+                    int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato ddmmaaaa)"));
+                    String pais = input("Por favor ingrese el país de expedición de su licencia");
+                    Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
+                    cliente.setLicencia(licencia);
+                    Usuario.addLicencia(licencia);
+                    // Licencia a lista de licencias
+                    System.out.println("Nuestra página solamente acepta tarjetas de crédito como medio de pago");
+                    Long numerotarjeta = Long.parseLong(input("Por favor ingrese el número de su tarjeta de crédito"));
+                    int vencimiento_2 = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su tarjeta de crédito(en formato mmaaaa)"));
+                    String marca = input("Por favor ingrese la marca de su tarjeta");
+                    String titular = input("Por favor ingrese el nombre de la persona o entidad titular de la tarjeta");
+                    Tarjeta tarjeta = new Tarjeta(numerotarjeta, vencimiento_2, marca, titular);
+                    // Tarjeta a tarjetas
+                    cliente.setTarjeta(tarjeta);
+                } else {
+                    System.out.println("El nombre de usuario ya ha sido utilizado. Por favor, elija otro.");
+                }
 
             }
     } catch(NumberFormatException e) {
