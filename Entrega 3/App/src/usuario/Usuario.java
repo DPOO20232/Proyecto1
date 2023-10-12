@@ -9,6 +9,7 @@ public class Usuario {
     private static List<Usuario> credenciales;
     private static List<Cliente> ListaClientes;
     private static List<Licencia> ListaLicencias;
+    private static List<String> ListaNombresLogins;
     public Usuario(String login, String password) {
         this.login = login;
         this.password = password;
@@ -36,17 +37,25 @@ public class Usuario {
     }
     public static List<Cliente> getListaClientes(){ return ListaClientes;}
     public static List<Licencia> getListaLicencias(){ return ListaLicencias;}
+    public static List<String> getListaNombresLogins(){ return ListaNombresLogins;}
+
     public static void addCliente(Cliente cliente){
-        if (ListaClientes==null){
+        if (getListaClientes()==null){
             ListaClientes= new ArrayList<Cliente>();
         }
         ListaClientes.add(cliente);
     }
     public static void addLicencia(Licencia licencia){
-        if (ListaLicencias==null){
+        if (getListaLicencias()==null){
             ListaLicencias= new ArrayList<Licencia>();
         }
         ListaLicencias.add(licencia);
+    }
+    public static void addNombreLogin(String nom){
+        if (getListaNombresLogins()==null){
+            ListaNombresLogins= new ArrayList<String>();
+        }
+        ListaNombresLogins.add(nom);
     }
     public static Cliente assignCliente(int cedula){
         Cliente retorno=null;
@@ -75,5 +84,12 @@ public class Usuario {
             break;
         }}
         return retorno;
+    }
+    public static boolean checkNombresLogins(String login){
+        boolean encontrado=false;
+        for(String i: getListaNombresLogins()){
+            if (i.equals(login)){encontrado=true;break;}
+        }
+        return encontrado;
     }
 }

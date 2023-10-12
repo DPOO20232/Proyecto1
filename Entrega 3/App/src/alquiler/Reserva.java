@@ -241,8 +241,8 @@ public class Reserva {
         this.categoria = categoria;
     }
 
-    public void setVehiculoAsignado(Vehiculo vehiculo) {
-        vehiculoAsignado = vehiculo;
+    public void setVehiculoAsignado(int IDcategoria) {
+        //TODO;
     }
 
     public void setPagoReserva(int pago) {
