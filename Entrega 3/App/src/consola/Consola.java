@@ -50,7 +50,7 @@ public class Consola {
                 System.out.println("14. Actualizar costo por traslado de sedes para un alquiler");
                 System.out.println("15. Actualizar periodo de temporada alta");
                 System.out.println("16. Actualizar periodo de temporada baja");
-                System.out.println("17. Salir de la aplicación\n");
+                System.out.println("17. Cerrar sesión\n");
                 int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
                 try{
                 if (opcion_admin==1){Inventario.NuevaCategoria();}
@@ -89,7 +89,7 @@ public class Consola {
                     System.out.println("1. Registrar empleado en la sede: "+nomSede);
                     System.out.println("2. Actualizar información de un empleado de la sede: "+nomSede);
                     System.out.println("3. Obtener registro de los empleados de la sede: "+nomSede);
-                    System.out.println("4. Salir de la aplicación\n");
+                    System.out.println("4. Cerrar sesión\n");
                     int opcion_adminL = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
                     if (opcion_adminL==1){personal.addPersonalSede(adminSede);}
@@ -144,7 +144,7 @@ public class Consola {
             int anacimiento = Integer.parseInt(input("Por favor ingrese su año de nacimiento"));
             int mnacimiento = Integer.parseInt(input("Por favor ingrese su mes de nacimiento"));
             int dnacimiento = Integer.parseInt(input("Por favor ingrese su día de nacimiento"));
-            String nacionalidad = input("Por favor ingrese su nacionalidad país de nacionalidad").toUpperCase();
+            String nacionalidad = input("Por favor ingrese su pais de nacionalidad").toUpperCase();
             int fnacimiento = anacimiento + mnacimiento*10000 + dnacimiento*1000000;
             //ddmmaaaa
             boolean mayor = esMayorDeEdad(anacimiento, mnacimiento, dnacimiento);
@@ -163,33 +163,43 @@ public class Consola {
                     while(continuar2){
                     int numerolicencia = Integer.parseInt(input("Por favor ingrese el número de su licencia de conducción"));
                     if (Usuario.checkLicencia(numerolicencia)==false){
-                    int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato ddmmaaaa)"));
-                    int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato ddmmaaaa)"));
-                    Calendar fechaActual = Calendar.getInstance();
-                    int diaActual = fechaActual.get(Calendar.DAY_OF_MONTH);
-                    int mesActual = fechaActual.get(Calendar.MONTH) + 1;
-                    int anhoActual = fechaActual.get(Calendar.YEAR);
-                    if(vencimiento>(anhoActual+mesActual*10000+diaActual*1000000)){
-
+                    int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato aaaammdd)"));
+                    int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato aaaammdd)"));
                     String pais = input("Por favor ingrese el país de expedición de su licencia");
                     Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
+                    if(Usuario.checkVencimientoLicencia(licencia,0,0,0)==false){
                     Usuario.addLicencia(licencia);
+                    boolean continuar3=false;
                     System.out.println("\n>Nuestro sistema solamente acepta tarjetas de crédito como medio de pago");
+                    while(continuar3){
                     Long numerotarjeta = Long.parseLong(input("Por favor ingrese el número de su tarjeta de crédito (en formato 1111222233334444)"));
-                    if(vencimiento>(anhoActual+mesActual*10000+diaActual*1000000)){
-                    int vencimiento_2 = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su tarjeta de crédito(en formato mmaaaa)"));
+                    int vencimiento_2 = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su tarjeta de crédito(en formato aaaammdd)"));
                     String marca = input("Por favor ingrese la marca de su tarjeta");
                     String titular = input("Por favor ingrese el nombre de la persona o entidad titular de la tarjeta");
                     Tarjeta tarjeta = new Tarjeta(numerotarjeta, vencimiento_2, marca, titular);
+                    if (tarjeta.checkVencimientoTarjeta(0,0,0)==false){
                     Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
                     Usuario.addNombreLogin(login);
                     Usuario.addNumCedulas(cedula);
                     Usuario.addCliente(cliente);
                     cliente.setLicencia(licencia);
                     cliente.setTarjeta(tarjeta);
+                    continuar3=false;
                     continuar2=false;
                     continuar=false;
                     }
+                    else{
+                        System.out.println("\n>La tarjeta ingresada ya caducó, desea ingresar otra?");
+                        System.out.println("1.Sí");
+                        System.out.println("2.No(ó cualquier otro número)");
+                        int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
+                        if(opcion==2){
+                            continuar3=false;
+                            continuar2=false;
+                            continuar=false;
+                    }
+                    }
+                    }}
                     else{
                         System.out.println("\n>La licencia ingresada ya caducó, desea ingresar otra?");
                         System.out.println("1.Sí");

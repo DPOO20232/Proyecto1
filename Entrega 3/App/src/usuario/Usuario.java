@@ -1,6 +1,7 @@
 package usuario;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Usuario {
@@ -120,9 +121,18 @@ public class Usuario {
         }
         return retorno;
     }
-    public static boolean checkVencimientoLicencia(int num_licencia){
-        for (Licencia i: getListaLicencias()){
-            
-        }
+    public static boolean checkVencimientoLicencia(Licencia licencia ,int dia, int mes, int anio){
+        boolean vence=true;
+        if (dia==0 && mes==0 && anio==0){
+        Calendar fechaActual = Calendar.getInstance();
+        dia = fechaActual.get(Calendar.DAY_OF_MONTH);
+        mes = fechaActual.get(Calendar.MONTH) + 1;
+        anio = fechaActual.get(Calendar.YEAR);}
+        String fechaString = String.format("%04d%02d%02d", anio, mes, dia);
+        int fechaTope = Integer.parseInt(fechaString);
+        if (licencia.getFechaVencimiento()>= fechaTope) {
+            vence= false;
+    }
+        return vence;
     }
 }
