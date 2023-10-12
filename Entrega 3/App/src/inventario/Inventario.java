@@ -1,7 +1,9 @@
 package inventario;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
@@ -92,6 +94,30 @@ public class Inventario {
     //updateSeguros();
     //updateVehiculos();
     }
+    public static void updateCategorias() throws IOException{
+        File archivo = new File("./data/categorias.txt");
+        FileWriter escritor = new FileWriter(archivo);
+        List <Categoria> lstcategorias=listaCategorias;
+            for(Categoria i: lstcategorias){
+                //ordenarlo segun premium/intermedio/economico
+                    String strid= Integer.toString(i.getID());
+                    String strnombreCategoria=i.getnombreCategoria();
+                    String strcapacidad= Integer.toString(i.getCapacidad());
+                    String strpctg_temporadaAlta= Double.toString(i.getPctg_temporadaAlta());
+                    String strpctg_temporadaBaja= Double.toString(i.getPctg_temporadaBaja());
+                    String strcostoAveriaLeve= Integer.toString(i.getCostoAveriaLeve());
+                    String strcostoAveriaModerada= Integer.toString(i.getCostoAveriaModerada());
+                    String strcostoAveriaTotal= Integer.toString(i.getCostoAveriaTotal());
+                    String strTarifaDiaria= Integer.toString(i.getTarifaDiaria());
+                    String strid_padre=Integer.toString(i.getId_Padre());
+                    String resultado = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s%n", strid, strnombreCategoria, strcapacidad, strpctg_temporadaAlta, strpctg_temporadaBaja, strcostoAveriaLeve, strcostoAveriaModerada, strcostoAveriaTotal, strTarifaDiaria, strid_padre);
+                    escritor.write(resultado);
+                    escritor.write(System.lineSeparator());
+                    
+            }
+            escritor.close();
+
+    }
     public static String input(String mensaje)
 	{
 		try
@@ -164,7 +190,8 @@ public class Inventario {
                     int tarifaDiaria= Integer.parseInt(partes[8]);
                     int id_Padre= Integer.parseInt(partes[9]);
                     Categoria categoriaActual= new Categoria(id,nombreCategoria,capacidad, pctg_temporadaAlta, pctg_temporadaBaja,costoAveriaLeve, costoAveriaModerada, costoAveriaTotal, tarifaDiaria,id_Padre);
-                    if (id_Padre!=0){categoriaActual.setPadre(Inventario.assignCategoria(id_Padre));}
+                    if (id_Padre!=0){
+                        categoriaActual.setPadre(Inventario.assignCategoria(id_Padre));}
                     listaCategorias.add(categoriaActual);
                 }
             }
