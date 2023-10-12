@@ -134,8 +134,10 @@ public class Consola {
             } else {
                 System.out.println("Ahora necesita crear su usuario y contraseña.");
                 String login = input("Por favor ingrese su nombre de usuario");
+                boolean continuar=true;
+                while (continuar){
+                String password = input("Por favor ingrese una contraseña");
                 if((personal.checkLoginPersonal(login, password).equals(null)&&(personal.checkLoginAdmin(login, password)==false)&&(personal.checkLoginCliente(login, password).equals(null)))) {                    
-                    String password = input("Por favor ingrese una contraseña");
         
                     Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
                     Usuario.addCliente(cliente);
@@ -156,15 +158,12 @@ public class Consola {
                     Tarjeta tarjeta = new Tarjeta(numerotarjeta, vencimiento_2, marca, titular);
                     // Tarjeta a tarjetas
                     cliente.setTarjeta(tarjeta);
+                    continuar=false;
                 } else {
                     System.out.println("El nombre de usuario ya ha sido utilizado. Por favor, elija otro.");
-                }
+                }}}}catch(NumberFormatException e) {
+        System.out.println("Debe ingresar los datos requeridos para que la creación de la cuenta sea exitosa.");}}
 
-            }
-    } catch(NumberFormatException e) {
-        System.out.println("Debe ingresar los datos requeridos para que la creación de la cuenta sea exitosa.");
-    }
-    }
     public static boolean esMayorDeEdad(int anho, int mes, int dia) {
         boolean mayor = false;
         Calendar fechaActual = Calendar.getInstance();
