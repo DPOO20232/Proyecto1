@@ -214,6 +214,8 @@ public class Inventario {
                 String[] partes = linea.split(";");
                 if (partes.length == 4) {
                     String login=partes[0];
+                    //CHECK
+                    Usuario.addNombreLogin(login);
                     String password=partes[1];
                     int id_sede= Integer.parseInt(partes[2]);
                     Sede sede=null;
@@ -288,6 +290,8 @@ public class Inventario {
                 String[] partes = linea.split(";");
             if (partes.length == 10) {
             String login= partes[0];
+            //CHECK
+            Usuario.addNombreLogin(login);
             String password= partes[1];
             int numeroCedula= Integer.parseInt(partes[2]);
             String nombre= partes[3];
@@ -689,7 +693,7 @@ public class Inventario {
             boolean continuar=true;
             while(continuar){
             String password=input("Ingrese la contraseña del usuario");
-            if((personal.checkLoginPersonal(login, password).equals(null)&&(personal.checkLoginAdmin(login, password)==false)&&(personal.checkLoginCliente(login, password).equals(null)))){ 
+            if(((Usuario.checkNombresLogins(login)==false)&&(personal.checkLoginPersonal(login, password).equals(null))&&(personal.checkLoginAdmin(login, password)==false)&&(personal.checkLoginCliente(login, password).equals(null)))) {                    
             Sede sede=null;
             boolean continuar2=true;
             while(continuar2){
