@@ -156,6 +156,7 @@ public class Inventario {
             escritor.write(resultado);
         }
         escritor.close();
+        //cambios
     }
     
     public static String input(String mensaje)
