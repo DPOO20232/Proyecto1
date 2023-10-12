@@ -33,6 +33,7 @@ public class Consola {
                 perfil="Admin";
                 //ESTAS CLASES HAY QUE PASARLAS A ADMIN
                 System.out.println(">>>\n\t\tBienvenid@, Admin!");
+                System.out.println("1. Crear categoría");
                 System.out.println("2. Añadir vehículo al inventario");
                 System.out.println("3. Eliminar vehículo al inventario");
                 System.out.println("4. Obtener historial de un vehículo");
@@ -52,9 +53,7 @@ public class Consola {
                 int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
                 while (continuarAdmin==true){
                 try{
-                if (opcion_admin==1){
-    
-                }
+                if (opcion_admin==1){Inventario.NuevaCategoria();}
                 else if(opcion_admin==2){Inventario.nuevoVehiculo();}
                 else if(opcion_admin==3){Inventario.eliminarVehiculo();}
                 else if(opcion_admin==4){
@@ -68,8 +67,8 @@ public class Consola {
                 else if(opcion_admin==8){Inventario.eliminarSeguro();}
                 else if(opcion_admin==9){Inventario.nuevaSede();}
                 else if(opcion_admin==10){Inventario.editarSede();}
-                else if(opcion_admin==11){}
-                else if(opcion_admin==12){}
+                else if(opcion_admin==11){Inventario.registrarAdminLocal();}
+                else if(opcion_admin==12){Inventario.actualizarAdminLocal();}
                 else if(opcion_admin==13){Inventario.setCostoPorConductorAdicional();}
                 else if(opcion_admin==14){Inventario.setCostoPorTrasladoSedes();}
                 else if(opcion_admin==15){Inventario.setPeriodoTemporadaAlta();}
