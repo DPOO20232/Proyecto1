@@ -222,12 +222,12 @@ public class Consola {
                             continuar=false;
                         }    
                     }
-                    }
+                    }}
                 else {
                     System.out.println("\n>El nombre de usuario ya ha sido utilizado. Por favor, elija otro.");
                 }
                 }
-                }
+            }}
             
         else{
                     System.out.println("\n>Ya existe una cuenta con esta cédula. ¿Desea cambiar su contraseña?");
