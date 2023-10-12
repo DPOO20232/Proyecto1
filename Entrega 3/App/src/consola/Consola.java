@@ -31,8 +31,9 @@ public class Consola {
             if (personal.checkLoginAdmin(login,password)==true){
                 boolean continuarAdmin=true;
                 perfil="Admin";
+                while (continuarAdmin==true){
                 //ESTAS CLASES HAY QUE PASARLAS A ADMIN
-                System.out.println(">>>\n\t\tBienvenid@, Admin!");
+                System.out.println("\n\t\t>>>Bienvenid@, Admin!");
                 System.out.println("1. Crear categoría");
                 System.out.println("2. Añadir vehículo al inventario");
                 System.out.println("3. Eliminar vehículo al inventario");
@@ -51,7 +52,6 @@ public class Consola {
                 System.out.println("16. Actualizar periodo de temporada baja");
                 System.out.println("17. Salir de la aplicación\n");
                 int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
-                while (continuarAdmin==true){
                 try{
                 if (opcion_admin==1){Inventario.NuevaCategoria();}
                 else if(opcion_admin==2){Inventario.nuevoVehiculo();}
@@ -115,18 +115,8 @@ public class Consola {
 			}
 		}
     }
-    
-    //1) crear usuario tipo cliente
-    //2) iniciar sesion   
-    //admin (rf 1-14) (nico)
-    //admin local(15-17)
-    //cliente - personalatencion(19-20)
-    //personalatencion(en reserva->21,25-27)
-    //personalTecnico(20)
-    //cliente (24-27)
-    
-   
     public static void NuevoCliente(){
+        try {
             System.out.println("\n¡Bienvenido a nuestro sistema!\n");
             int cedula = Integer.parseInt(input("Por favor ingrese su número de documento de identidad"));
             String nombre = input("Por favor ingrese su nombre completo");
@@ -136,48 +126,59 @@ public class Consola {
             int mnacimiento = Integer.parseInt(input("Por favor ingrese su mes de nacimiento"));
             int dnacimiento = Integer.parseInt(input("Por favor ingrese su día de nacimiento"));
             String nacionalidad = input("Por favor ingrese su nacionalidad");
-            int fnacimiento = anacimiento + mnacimiento*10000 + dnacimiento*1;
+            int fnacimiento = anacimiento + mnacimiento*10000 + dnacimiento*1000000;
             //ddmmaaaa
-            boolean menor = esMayorDeEdad(anacimiento, mnacimiento,dnacimiento);
+            boolean menor = esMayorDeEdad(anacimiento, mnacimiento, dnacimiento);
             if (menor) {
                 System.out.println("No es posible registrarlo como cliente porque es menor de edad.");
             } else {
                 System.out.println("Ahora necesita crear su usuario y contraseña.");
                 String login = input("Por favor ingrese su nombre de usuario");
-                String password = input("Por favor ingrese una contraseña");
-    
-                Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
-                Usuario.addCliente(cliente);
-                System.out.println("A continuación hay tiene que ingresar una licencia de conducción y un medio de pago");
-                int numerolicencia = Integer.parseInt(input("Por favor ingrese el número de su licencia de conducción"));
-                int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato ddmmaaaa)"));
-                int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato ddmmaaaa)"));
-                String pais = input("Por favor ingrese el país de expedición de su licencia");
-                Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
-                cliente.setLicencia(licencia);
-                Usuario.addLicencia(licencia);
-                // Licencia a lista de licencias
-                System.out.println("Nuestra página solamente acepta tarjetas de crédito como medio de pago");
-                Long numerotarjeta = Long.parseLong(input("Por favor ingrese el número de su tarjeta de crédito"));
-                int vencimiento_2 = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su tarjeta de crédito(en formato mmaaaa)"));
-                String marca = input("Por favor ingrese la marca de su tarjeta");
-                String titular = input("Por favor ingrese el nombre de la persona o entidad titular de la tarjeta");
-                Tarjeta tarjeta = new Tarjeta(numerotarjeta, vencimiento_2, marca, titular);
-                // Tarjeta a tarjetas
-                cliente.setTarjeta(tarjeta);
+                if((personal.checkLoginPersonal(login, password).equals(null)&&(personal.checkLoginAdmin(login, password)==false)&&(personal.checkLoginCliente(login, password).equals(null)))) {                    
+                    String password = input("Por favor ingrese una contraseña");
+        
+                    Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
+                    Usuario.addCliente(cliente);
+                    System.out.println("A continuación hay tiene que ingresar una licencia de conducción y un medio de pago");
+                    int numerolicencia = Integer.parseInt(input("Por favor ingrese el número de su licencia de conducción"));
+                    int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato ddmmaaaa)"));
+                    int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato ddmmaaaa)"));
+                    String pais = input("Por favor ingrese el país de expedición de su licencia");
+                    Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
+                    cliente.setLicencia(licencia);
+                    Usuario.addLicencia(licencia);
+                    // Licencia a lista de licencias
+                    System.out.println("Nuestra página solamente acepta tarjetas de crédito como medio de pago");
+                    Long numerotarjeta = Long.parseLong(input("Por favor ingrese el número de su tarjeta de crédito"));
+                    int vencimiento_2 = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su tarjeta de crédito(en formato mmaaaa)"));
+                    String marca = input("Por favor ingrese la marca de su tarjeta");
+                    String titular = input("Por favor ingrese el nombre de la persona o entidad titular de la tarjeta");
+                    Tarjeta tarjeta = new Tarjeta(numerotarjeta, vencimiento_2, marca, titular);
+                    // Tarjeta a tarjetas
+                    cliente.setTarjeta(tarjeta);
+                } else {
+                    System.out.println("El nombre de usuario ya ha sido utilizado. Por favor, elija otro.");
+                }
 
             }
+    } catch(NumberFormatException e) {
+        System.out.println("Debe ingresar los datos requeridos para que la creación de la cuenta sea exitosa.");
     }
-    public static boolean esMayorDeEdad(int anho, int mes) {
+    }
+    public static boolean esMayorDeEdad(int anho, int mes, int dia) {
         boolean mayor = false;
         Calendar fechaActual = Calendar.getInstance();
+        int diaactual = fechaActual.get(Calendar.DAY_OF_MONTH);
         int mesactual = fechaActual.get(Calendar.MONTH) + 1;
         int anhoactual = fechaActual.get(Calendar.YEAR);
 
         if (anho < (anhoactual - 18)) {
             mayor = true;
         }
-        if ((anho==(anhoactual-18) && mes < (mesactual - 18))) {
+        if ((anho==(anhoactual-18) && mes < mesactual)) {
+            mayor = true;
+        }
+        if ((anho==(anhoactual-18) && mes == mesactual && dia < diaactual)) {
             mayor = true;
         }
 
