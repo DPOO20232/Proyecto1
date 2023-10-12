@@ -89,9 +89,9 @@ public class Inventario {
     public static List<Evento> getListaEventos(){return listaEventos;}
     public static List<Vehiculo> getListaVehiculos(){return listaVehiculos;}
     
-    public static void updateSistema(){
+    public static void updateSistema() throws IOException{
     //updateInfo();
-    //updateCategorias();
+    updateCategorias();
     //updateSedes();
     //updateSeguros();
     //updateVehiculos();
@@ -114,7 +114,7 @@ public class Inventario {
                     String strid_padre=Integer.toString(i.getId_Padre());
                     String resultado = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s%n", strid, strnombreCategoria, strcapacidad, strpctg_temporadaAlta, strpctg_temporadaBaja, strcostoAveriaLeve, strcostoAveriaModerada, strcostoAveriaTotal, strTarifaDiaria, strid_padre);
                     escritor.write(resultado);
-                    escritor.write(System.lineSeparator());
+                    //escritor.write(System.lineSeparator());
                     
             }
             escritor.close();
@@ -595,8 +595,6 @@ public class Inventario {
         catch(NumberFormatException e){
             System.out.println(">Ingrese solo números en los campos correspondientes");}
     }
-    public static void closeSistema() {
-    }
     public static void eliminarVehiculo(){
             String placa = input("Ingrese la placa del vehículo"); 
             boolean encontrado=false;
@@ -619,7 +617,7 @@ public class Inventario {
         try {
         boolean continuar=true;
         String nombre= input("Ingrese el nombre de la Categoria del Vehiculo: ");
-        int capacidadPersonas = Integer.parseInt(input("Ingrese el ID categoria del Vehiculo"));
+        int capacidadPersonas = Integer.parseInt(input("Ingrese la capacidad de personas del Vehiculo"));
         double pctg_temporadaAlta= Double.parseDouble(input("Ingrese el porcentaje de incremento para la categoria en temporada alta"));
         double pctg_temporadaBaja= Double.parseDouble(input("Ingrese el porcentaje de descuento para la categoria en temporada baja"));
         int costoAveriaLeve = Integer.parseInt(input("Ingrese el costo de averia leve del Vehiculo"));
