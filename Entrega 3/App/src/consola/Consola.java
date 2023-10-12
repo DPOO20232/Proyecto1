@@ -127,6 +127,7 @@ public class Consola {
     
    
     public static void NuevoCliente(){
+        try {
             System.out.println("\n¡Bienvenido a nuestro sistema!\n");
             int cedula = Integer.parseInt(input("Por favor ingrese su número de documento de identidad"));
             String nombre = input("Por favor ingrese su nombre completo");
@@ -167,6 +168,9 @@ public class Consola {
                 cliente.setTarjeta(tarjeta);
 
             }
+    } catch(NumberFormatException e) {
+        System.out.println("Debe ingresar los datos requeridos para que la creación de la cuenta sea exitosa.");
+    }
     }
     public static boolean esMayorDeEdad(int anho, int mes, int dia) {
         boolean mayor = false;
