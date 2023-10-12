@@ -31,8 +31,9 @@ public class Consola {
             if (personal.checkLoginAdmin(login,password)==true){
                 boolean continuarAdmin=true;
                 perfil="Admin";
+                while (continuarAdmin==true){
                 //ESTAS CLASES HAY QUE PASARLAS A ADMIN
-                System.out.println(">>>\n\t\tBienvenid@, Admin!");
+                System.out.println("\n\t\t>>>Bienvenid@, Admin!");
                 System.out.println("1. Crear categoría");
                 System.out.println("2. Añadir vehículo al inventario");
                 System.out.println("3. Eliminar vehículo al inventario");
@@ -51,7 +52,6 @@ public class Consola {
                 System.out.println("16. Actualizar periodo de temporada baja");
                 System.out.println("17. Salir de la aplicación\n");
                 int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
-                while (continuarAdmin==true){
                 try{
                 if (opcion_admin==1){Inventario.NuevaCategoria();}
                 else if(opcion_admin==2){Inventario.nuevoVehiculo();}
@@ -115,17 +115,6 @@ public class Consola {
 			}
 		}
     }
-    
-    //1) crear usuario tipo cliente
-    //2) iniciar sesion   
-    //admin (rf 1-14) (nico)
-    //admin local(15-17)
-    //cliente - personalatencion(19-20)
-    //personalatencion(en reserva->21,25-27)
-    //personalTecnico(20)
-    //cliente (24-27)
-    
-   
     public static void NuevoCliente(){
             System.out.println("\n¡Bienvenido a nuestro sistema!\n");
             int cedula = Integer.parseInt(input("Por favor ingrese su número de documento de identidad"));
@@ -138,7 +127,7 @@ public class Consola {
             String nacionalidad = input("Por favor ingrese su nacionalidad");
             int fnacimiento = anacimiento + mnacimiento*10000 + dnacimiento*1;
             //ddmmaaaa
-            boolean menor = esMayorDeEdad(anacimiento, mnacimiento,dnacimiento);
+            boolean menor = esMayorDeEdad(anacimiento, mnacimiento);
             if (menor) {
                 System.out.println("No es posible registrarlo como cliente porque es menor de edad.");
             } else {
