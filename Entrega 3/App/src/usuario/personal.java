@@ -65,11 +65,11 @@ public class personal extends Usuario{
         return credencialesPersonal;
     }
     public static void addPersonalSede(Sede sede){
-        String login= input("Asigne un login al empleado de formato inicial nombre.apellido (Ej: Ana Luz -> a.luz)");
         boolean continuar=true;
         while(continuar){
-        String password= input("Asigne una contraseña");
-        if(((Usuario.checkNombresLogins(login)==false)&&(personal.checkLoginPersonal(login, password).equals(null))&&(personal.checkLoginAdmin(login, password)==false)&&(personal.checkLoginCliente(login, password).equals(null)))) {                    
+        String login= input("Asigne un login al empleado de formato inicial nombre.apellido (Ej: Ana Luz -> a.luz)");
+        if(((Usuario.checkNombresLogins(login)==false))) {
+            String password= input("Asigne una contraseña");                 
             Usuario.addNombreLogin(login);
             boolean continuar2=true;
             while(continuar2){
@@ -81,22 +81,30 @@ public class personal extends Usuario{
                 EmpleadoAtencion empleado= new EmpleadoAtencion(login, password, "EmpleadoAtencion", sede);
                 sede.addPersonalSede(empleado);
                 personal.addCredencialesPersonal(empleado);
+                continuar2=false;
+                System.out.println("> Información guardada.");
+
             }
             else if(opcion==2){
                 EmpleadoTecnico empleado= new EmpleadoTecnico(login, password, "EmpleadoTecnico", sede);
                 sede.addPersonalSede(empleado);
                 personal.addCredencialesPersonal(empleado);
+                continuar2=false;
+                System.out.println("> Información guardada.");
             }
             else{System.out.println("> Seleccione una opción valida.");}
             }
-        }}}
+            continuar=false;
+        }
+        else{System.out.println("> Ingrese otro login válido.");}
+        }}
 
     public static void actualizarPersonal(Sede sede){
         String login= input("Ingrese el login del usuario al que desea modificar la clave");
         if(checkNombresLogins(login)==true){
             personal empleado=null;
             for(personal i: getCredencialesPersonal()){
-                if ((i.getLogin()==login)&&(i.getSede().equals(sede))){
+                if ((i.getLogin().equals(login))&&(i.getSede().equals(sede))){
                     empleado=i;
                     break;
                 }}
@@ -132,13 +140,31 @@ public class personal extends Usuario{
         }}
 
     public static void printRegistroEmpleados(Sede sede){
+        String inicio="> ";
         int cantidadPersonalAtencion=0;
-        int cantidadPersonalTecnico=1;
-        String printeo="";
-        for(personal i: sede.getPersonalSede()){
-            if(i.getTipoPersonal().equals("PersonalAtencion")){ cantidadPersonalAtencion+=1;}
-            else if{cantidadPersonalTecnico+=1}
+        int cantidadPersonalTecnico=0;
+        String key1 = "0 empleados de atención. ";
+        String key2 = "0 empleados técnicos. ";
+        String value1 = "";
+        String value2 = "";
+    
+        if (sede.getAdminLocal() != null) {
+            inicio = "1 Administrador Local: " + sede.getAdminLocal().getLogin() + ". ";
+        } else {
+            inicio = "0 Administradores Locales. ";
         }
+    
+        for (personal i : sede.getPersonalSede()) {
+            if (i.getTipoPersonal().equals("PersonalAtencion")) {
+                key1 = cantidadPersonalAtencion + " Empleado(s) de atención: ";
+                value1 += i.getLogin() + ", ";
+            } else if (i.getTipoPersonal().equals("PersonalTecnico")) {
+                key2 = cantidadPersonalTecnico + " Empleado(s) técnico(s): ";
+                value2 += i.getLogin() + ", ";
+            }
+        }
+    
+        System.out.println(inicio + key1 + value1.substring(0, value1.length() - 2) + key2 + value2.substring(0, value2.length() - 2) + ".");
     }
         public static String input(String mensaje)
 	{

@@ -226,7 +226,9 @@ public class Inventario {
                     if (id_sede>0){
                         sede= Inventario.assignSede(id_sede);
                         personal personalActual= new personal(login, password, tipoUsuario, sede);
-                        sede.addPersonalSede(personalActual);
+                        //CHECK
+                        if (tipoUsuario.equals("AdminLocal")){sede.setAdminLocal(personalActual);}
+                        else{sede.addPersonalSede(personalActual);}
                         personal.addCredencialesPersonal(personalActual);
                         contador+=1;
                         }
@@ -700,17 +702,20 @@ public class Inventario {
             boolean continuar2=true;
             while(continuar2){
             int Idsede=Integer.parseInt(input("ingrese el ID de la sede"));
-            if(!Inventario.assignSede(Idsede).getAdminLocal().equals(null)){
             if ((Idsede>=1&& Idsede<=listaSedes.size())){
+                if(Inventario.assignSede(Idsede).getAdminLocal()!=null){
                 sede= Inventario.assignSede(Idsede);
                 personal adminlocal=new personal(login, password, "AdminLocal", sede);
                 personal.addCredencialesPersonal(adminlocal);
-                System.out.println(">El nuevo admin de la sede con ID "+ Integer.toString(Idsede)+" ha sido creado.");
+                sede.setAdminLocal(adminlocal);
+                System.out.println(">El nuevo admin local de la sede con ID "+ Integer.toString(Idsede)+" ha sido creado.");
                 continuar2=false;
                 continuar=false;
-
-            }            else{System.out.println(">Ingresó un ID de sede inválido");}
-            }
+            }else{
+                System.out.println(">La sede ya tiene un administrador local asignado");
+                continuar2=false;
+                continuar=false;}
+            }else{System.out.println(">Ingresó un ID de sede inválido");}
             }}
             else{System.out.println(">El password no es válido, digite otro");}}
         } catch (Exception e) {
@@ -725,7 +730,7 @@ public class Inventario {
             if (NidSede>=1&& NidSede<=listaSedes.size()){
             Sede sede=null;
             for(personal i:listpersonal){
-                if (i.getLogin()==login && i.getTipoPersonal()=="AdminLocal"){
+                if (i.getLogin().equals(login) && i.getTipoPersonal().equals("AdminLocal")){
                     {
                         sede= Inventario.assignSede(NidSede);
                         i.setSede(sede);

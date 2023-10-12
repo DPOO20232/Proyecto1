@@ -11,7 +11,6 @@ import usuario.Usuario;
 import usuario.personal;
 import usuario.Licencia;
 import usuario.Tarjeta;
-import usuario.AdminLocal;
 public class Consola {
     public static void MenuInicial(){
     boolean continuar=true;

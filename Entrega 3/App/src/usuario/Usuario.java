@@ -88,7 +88,7 @@ public class Usuario {
     public static boolean checkNombresLogins(String login){
         boolean encontrado=false;
         for(String i: getListaNombresLogins()){
-            if (i==login){encontrado=true;break;}
+            if (i.equals(login)){encontrado=true;break;}
         }
         return encontrado;
     }
