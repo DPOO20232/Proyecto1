@@ -136,7 +136,7 @@ public class Inventario {
             String strid = Integer.toString(i.getID());
             String nombreSede= i.getNombre();
             String ubicacionSede= i.getUbicacion();
-            List<Integer> horarioSemana= new ArrayList<Integer>();
+            List<Integer> horarioSemana= i.getHorarioAtencionEnSemana();
             StringBuilder strhorarioSemana = new StringBuilder();
             strhorarioSemana.append("[");
             strhorarioSemana.append(horarioSemana.get(0));
@@ -144,7 +144,7 @@ public class Inventario {
             strhorarioSemana.append(horarioSemana.get(1));
             strhorarioSemana.append("]");
             strhorarioSemana.toString();
-            List<Integer> horarioFinSemana= new ArrayList<Integer>();
+            List<Integer> horarioFinSemana= i.getHorarioAtencionFinSemana();
             StringBuilder strhorarioFinSemana = new StringBuilder();
             strhorarioFinSemana.append("[");
             strhorarioFinSemana.append(horarioFinSemana.get(0));
