@@ -86,7 +86,9 @@ public class Inventario {
     public static List<Sede> getListaSedes(){return listaSedes;}
     public static List<Evento> getListaEventos(){return listaEventos;}
     public static List<Vehiculo> getListaVehiculos(){return listaVehiculos;}
+    
     public static void updateSistema(){
+    //updateInfo();
     //updateCategorias();
     //updateSedes();
     //updateSeguros();
@@ -471,7 +473,7 @@ public class Inventario {
             e.printStackTrace();
         }
     }
-    private static Categoria assignCategoria(int id_categoria){
+    public static Categoria assignCategoria(int id_categoria){
         Categoria retorno = null;
         for(Categoria i: Inventario.getListaCategorias()){
             if(i.getID()==id_categoria){
@@ -487,7 +489,7 @@ public class Inventario {
             }}
         return retorno;
     } 
-    private static Sede assignSede(int id_sede){
+    public static Sede assignSede(int id_sede){
         Sede retorno = null;
         for(Sede i: Inventario.getListaSedes()){
             if(i.getID()==id_sede){
@@ -496,7 +498,7 @@ public class Inventario {
             }}
         return retorno;
     } 
-    private static Evento assignEvento(int id_evento){
+    public static Evento assignEvento(int id_evento){
         Evento retorno = null;
         for(Evento i: Inventario.getListaEventos()){
             if(i.getID()==id_evento){
@@ -506,7 +508,7 @@ public class Inventario {
         return retorno;
     }
 
-    private static Cliente assignCliente(int cedula_cliente){
+    public static Cliente assignCliente(int cedula_cliente){
         Cliente retorno = null;
         for(Cliente i: Usuario.getListaClientes()){
             if(i.getNumeroCedula()==cedula_cliente){
@@ -693,11 +695,12 @@ public class Inventario {
             boolean continuar=true;
             while(continuar){
             String password=input("Ingrese la contraseña del usuario");
-            if(((Usuario.checkNombresLogins(login)==false)&&(personal.checkLoginPersonal(login, password).equals(null))&&(personal.checkLoginAdmin(login, password)==false)&&(personal.checkLoginCliente(login, password).equals(null)))) {                    
+            if(((Usuario.checkNombresLogins(login)==false))) {                    
             Sede sede=null;
             boolean continuar2=true;
             while(continuar2){
-                            int Idsede=Integer.parseInt(input("ingrese el ID de la sede"));
+            int Idsede=Integer.parseInt(input("ingrese el ID de la sede"));
+            if(!Inventario.assignSede(Idsede).getAdminLocal().equals(null)){
             if ((Idsede>=1&& Idsede<=listaSedes.size())){
                 sede= Inventario.assignSede(Idsede);
                 personal adminlocal=new personal(login, password, "AdminLocal", sede);
@@ -706,8 +709,8 @@ public class Inventario {
                 continuar2=false;
                 continuar=false;
 
+            }            else{System.out.println(">Ingresó un ID de sede inválido");}
             }
-            else{System.out.println(">Ingresó un ID de sede inválido");}
             }}
             else{System.out.println(">El password no es válido, digite otro");}}
         } catch (Exception e) {

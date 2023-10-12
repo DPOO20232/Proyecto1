@@ -94,8 +94,8 @@ public class Consola {
                     int opcion_adminL = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
                     if (opcion_adminL==1){personal.addPersonalSede(adminSede);}
-                    else if(opcion_adminL==2){personal.actualizarPersonal();}
-                    else if(opcion_adminL==3){;}
+                    else if(opcion_adminL==2){personal.actualizarPersonal(adminSede);}
+                    else if(opcion_adminL==3){personal.printRegistroEmpleados(adminSede);}
                     else if(opcion_adminL==4){continuarAdminL=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
                 }catch(NumberFormatException e){}}}
@@ -158,7 +158,7 @@ public class Consola {
                 while (continuar){
                 String password = input("Por favor ingrese una contraseña");
                 //COMPARACION
-                if(((Usuario.checkNombresLogins(login)==false)&&(personal.checkLoginPersonal(login, password).equals(null))&&(personal.checkLoginAdmin(login, password)==false)&&(personal.checkLoginCliente(login, password).equals(null)))) {                    
+                if(((Usuario.checkNombresLogins(login)==false))) {                    
                     Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
                     Usuario.addCliente(cliente);
                     System.out.println("A continuación hay tiene que ingresar una licencia de conducción y un medio de pago");

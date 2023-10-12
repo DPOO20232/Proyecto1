@@ -1,5 +1,7 @@
 package usuario;
 import java.util.List;
+
+import inventario.Inventario;
 import inventario.Sede;
 
 import java.io.BufferedReader;
@@ -88,8 +90,55 @@ public class personal extends Usuario{
             else{System.out.println("> Seleccione una opción valida.");}
             }
         }}}
-    public static void actualizarPersonal(){
+
+    public static void actualizarPersonal(Sede sede){
         String login= input("Ingrese el login del usuario al que desea modificar la clave");
+        if(checkNombresLogins(login)==true){
+            personal empleado=null;
+            for(personal i: getCredencialesPersonal()){
+                if ((i.getLogin()==login)&&(i.getSede().equals(sede))){
+                    empleado=i;
+                    break;
+                }}
+            if (empleado!=null){
+            System.out.println("\nDesea cambiar la clave del empleado?\n");
+            System.out.println("1.Sí");
+            System.out.println("2.No(ó cualquier otro número)");
+            int opcion1 = Integer.parseInt(input("Por favor seleccione una opción")); 
+            if(opcion1==1){
+            String password= input("Ingrese la nueva contraseña");
+            empleado.setPassword(password);
+            }
+            System.out.println("\nDesea cambiar la sede del empleado?\n");
+            System.out.println("1.Sí");
+            System.out.println("2.No(ó cualquier otro número)");
+            int opcion2 = Integer.parseInt(input("Por favor seleccione una opción")); 
+            if(opcion2==1){
+            boolean continuar=true;
+            while(continuar){
+            int idNuevaSede= Integer.parseInt(input("Ingrese el ID de la sede"));
+            if ((idNuevaSede>0)&&(idNuevaSede<=Inventario.getListaSedes().size())){
+            empleado.setSede(Inventario.assignSede(idNuevaSede));
+            sede.getPersonalSede().remove(empleado);
+            continuar=false;}
+            else{System.out.println("> Ingrese un ID de sede válido.");}
+            }}
+            System.out.println("> Información actualizada.");
+            }
+            else{System.out.println("> El usuario ingresado no pertenece a su sede.");}
+
+        }
+        else{System.out.println("> Ingrese un login válido.");
+        }}
+
+    public static void printRegistroEmpleados(Sede sede){
+        int cantidadPersonalAtencion=0;
+        int cantidadPersonalTecnico=1;
+        String printeo="";
+        for(personal i: sede.getPersonalSede()){
+            if(i.getTipoPersonal().equals("PersonalAtencion")){ cantidadPersonalAtencion+=1;}
+            else if{cantidadPersonalTecnico+=1}
+        }
     }
         public static String input(String mensaje)
 	{
