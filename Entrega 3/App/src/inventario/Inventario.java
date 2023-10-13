@@ -700,7 +700,7 @@ public class Inventario {
     public static void nuevoSeguro(){
     try{
         String desc = input("Ingrese una descripción del seguro");
-        int pctg_tarifadiaria= Integer.parseInt(input("Ingrese el porcentaje de la tarifa diaria que el seguro cuesta (ej: 90%->0.9)"));
+        double pctg_tarifadiaria= Double.parseDouble(input("Ingrese el porcentaje de la tarifa diaria que el seguro cuesta (ej: 90%->0.9)"));
         Seguro seguro= new Seguro(pctg_tarifadiaria,desc );
         listaSeguros.add(seguro);
         System.out.println(">El nuevo seguro se guardo con el id"+ Integer.toString(seguro.getID()));
