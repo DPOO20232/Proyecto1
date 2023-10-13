@@ -61,7 +61,7 @@ public class Reserva {
 
     //reservaEnSede es true cuando la hace el personal de atencion
 
-    public static void crearReserva(Cliente cliente, boolean reservaEnSede){
+    public static void crearReserva(boolean reservaEnSede, Cliente cliente){
         try { 
             System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
             int frecoger = Integer.parseInt(input("Por favor ingrese la fecha en la que desee recoger su vehículo(en formato aaaammdd)"));
@@ -178,6 +178,9 @@ public class Reserva {
         }
         return retorno;
     }
+
+
+
 
     // Métodos getter
     public int getID() {
