@@ -1,5 +1,8 @@
 package inventario;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import inventario.Evento;
 import alquiler.alquiler;
@@ -79,7 +82,58 @@ public class Vehiculo {
             }
         }}
     public boolean estaDisponible(int fecha1, int hora1, int fecha2, int hora2){
-        return true;
+        boolean reservaInPeriodoReserva=false;
+        boolean eventoInPeriodoReserva=false;
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+        Date fhInicioReserva= new Date();
+        Date fhFinReserva= new Date();
+        try {
+            fhInicioReserva = dateFormat.parse(String.format("%08d%04d", fecha1,hora1));
+            fhFinReserva = dateFormat.parse(String.format("%08d%04d",fecha2,hora2));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int numReservasActivas=this.getReservasActivas().size();
+        int numEventos=this.getHistorialEventos().size();
+        if (numEventos>1){
+            Evento ultimoEvento= this.getHistorialEventos().get(numEventos-1);
+            Date fhInicioEvento= new Date();
+            Date fhFinEvento= new Date();
+            try {
+                fhInicioEvento = dateFormat.parse(String.format("%08d%04d", ultimoEvento.getFechaInicio(), ultimoEvento.getHoraInicio()));
+                fhFinEvento = dateFormat.parse(String.format("%08d%04d", ultimoEvento.getFechaFin(), ultimoEvento.getHoraFin()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            eventoInPeriodoReserva=(fhFinEvento.before(fhInicioReserva) || fhInicioEvento.after(fhFinReserva));
+        }
+
+        if(numReservasActivas==0){
+            reservaInPeriodoReserva=false;
+        }
+        else{
+            for (Reserva i: this.getReservasActivas()){
+                Date i_inicioReserva= new Date();
+                Date i_finReserva= new Date();
+                try {
+                    i_inicioReserva = dateFormat.parse(String.format("%08d%04d", i.getFechaRecoger(), i.getHoraRecoger()));
+                    i_finReserva = dateFormat.parse(String.format("%08d%04d", i.getFechaEntregar(),i.getHoraEntregar()));
+                    if (i_finReserva.before(fhInicioReserva) || i_inicioReserva.after(fhFinReserva)){
+                        reservaInPeriodoReserva=true;
+                        break;
+                    }
+                } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            }
+        }
+        if ((reservaInPeriodoReserva==false) && (eventoInPeriodoReserva==false)){
+            return true;
+        }
+        else{
+            return false;
+        }
         //implementacion: revisar todas las reservas para ver si esta ocupado en ese rango
     }
 }

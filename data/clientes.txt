@@ -1,5 +1,5 @@
-a.gonzalez;ana12;1023456789;Ana González;ana.gonzalez@email.com;3156789012;15071990;MÉXICO;[5555666677778888,15062020,Visa,Ana González];1023456790
-l.perez;luis34;1034567890;Luis Pérez;luis.perez@email.com;3209876543;22121985;ARGENTINA;[9999888877776666,22122019,MasterCard,Luis Pérez];1034567891
-m.rodriguez;maria56;1045678901;María Rodriguez;maria.rodriguez@email.com;3101234567;04041997;ESPAÑA;[7777666655554444,04042018,American Express,María Rodriguez];1045678902
-c.lopez;carlos78;1056789012;Carlos López;carlos.lopez@email.com;3178901234;28011988;CHILE;[3333222211110000,28012020,Discover,Carlos López];1056789013
-l.fernandez;laura90;1067890123;Laura Fernández;laura.fernandez@email.com;3189012345;10051992;PERÚ;[4444555566667777,10052019,Diners Club,Laura Fernández];1067890124
+a.gonzalez;ana12;1023456789;Ana González;ana.gonzalez@email.com;3156789012;19900701;MÉXICO;[5555666677778888,15062020,Visa,Ana González];1023456790
+l.perez;luis34;1034567890;Luis Pérez;luis.perez@email.com;3209876543;19851222;ARGENTINA;[9999888877776666,22122019,MasterCard,Luis Pérez];1034567891
+m.rodriguez;maria56;1045678901;María Rodriguez;maria.rodriguez@email.com;3101234567;19970404;ESPAÑA;[7777666655554444,04042018,American Express,María Rodriguez];1045678902
+c.lopez;carlos78;1056789012;Carlos López;carlos.lopez@email.com;3178901234;19880128;CHILE;[3333222211110000,28012020,Discover,Carlos López];1056789013
+l.fernandez;laura90;1067890123;Laura Fernández;laura.fernandez@email.com;3189012345;19920510;PERÚ;[4444555566667777,10052019,Diners Club,Laura Fernández];1067890124

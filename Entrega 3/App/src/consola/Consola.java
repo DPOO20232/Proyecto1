@@ -17,7 +17,6 @@ public class Consola {
     while (continuar){
         try
 			{
-            System.out.println("\nOpciones de la aplicación\n");
 			System.out.println("1. Iniciar sesión");
 			System.out.println("2. Crear cuenta");
 			System.out.println("3. Salir de la aplicación\n");
@@ -31,9 +30,10 @@ public class Consola {
             if (personal.checkLoginAdmin(login,password)==true){
                 boolean continuarAdmin=true;
                 perfil="Admin";
-                while (continuarAdmin==true){
-                //ESTOS METODOS HAY QUE PASARLOS A ADMIN
                 System.out.println("\n\t\t>>>Hola, Admin!");
+                while (continuarAdmin==true){
+            System.out.println("\nOpciones de la aplicación\n");
+                //ESTOS METODOS HAY QUE PASARLOS A ADMIN
                 System.out.println("1. Crear categoría");
                 System.out.println("2. Añadir vehículo al inventario");
                 System.out.println("3. Eliminar vehículo al inventario");
@@ -84,8 +84,9 @@ public class Consola {
                     boolean continuarAdminL=true;
                     Sede adminSede=adminlocal.getSede();
                     String nomSede= adminSede.getNombre();
-                    while (continuarAdminL==true){
                     System.out.println("\n\t\t>>>Hola, Admin local!");
+                    while (continuarAdminL==true){
+                    System.out.println("\nOpciones de la aplicación\n");
                     System.out.println("1. Registrar empleado en la sede: "+nomSede);
                     System.out.println("2. Actualizar información de un empleado de la sede: "+nomSede);
                     System.out.println("3. Obtener registro de los empleados de la sede: "+nomSede);
@@ -100,6 +101,23 @@ public class Consola {
                 }catch(NumberFormatException e){}}}
                     //ESTAS CLASES HAY QUE PASARLAS A ADMIN
                 else if (perfil.equals("EmpleadoAtencion")){
+                    boolean continuarPersonal1=true;
+                    System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área de atención!");
+                    while (continuarPersonal1==true){
+                    System.out.println("\nOpciones de la aplicación\n");
+                    System.out.println("1. Registrar empleado en la sede: ");
+                    System.out.println("2. Actualizar información de un empleado de la sede: ");
+                    System.out.println("3. Obtener registro de los empleados de la sede: ");
+                    System.out.println("4. Cerrar sesión\n");
+                    int opcion_adminL = Integer.parseInt(input("Por favor seleccione una opción"));
+                    try{
+                    if (opcion_adminL==1){}
+                    else if(opcion_adminL==2){}
+                    else if(opcion_adminL==3){}
+                    else if(opcion_adminL==4){continuarPersonal1=false;}
+                    else{System.out.println("Por favor seleccione una opción válida.");}
+                }catch(NumberFormatException e){}}
+
 
                 }
                 else {
