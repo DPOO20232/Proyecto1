@@ -93,7 +93,7 @@ public class Sede {
     String horarioAtencion2="Hora de apertura de sabado a domingo: "+Integer.toString(horario2.get(0))+" - "+Integer.toString(horario2.get(1)) +".";
     
     System.out.println("Información Sede: "+this.getNombre()+" ("+this.getUbicacion()+").");
-    System.out.println(horarioAtencion1+" "+horarioAtencion2);
+    System.out.println(horarioAtencion1+" "+horarioAtencion2+"\n");
     }
     public boolean estaAbierta(int fecha, int hora){
     boolean retorno=false;

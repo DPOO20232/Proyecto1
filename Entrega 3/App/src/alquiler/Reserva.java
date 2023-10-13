@@ -71,10 +71,15 @@ public class Reserva {
                 for (int i = 0; i < sedes.size(); i++) {
                     System.out.println((i + 1) + ". " + sedes.get(i).getNombre()+" ("+sedes.get(i).getUbicacion()+").");
                 }
+            Sede sedeRecoger=null;
+            Sede sedeEntrega=null;
+
             int sedeRecogerIndex = Integer.parseInt(input("\nSeleccione una sede para recoger su vehículo(ingrese el número)"));
-            Sede sedeRecoger = sedes.get(sedeRecogerIndex - 1);
             int sedeEntregaIndex = Integer.parseInt(input("Seleccione una sede para la entrega de su vehículo(ingrese el número)"));
-            Sede sedeEntrega = sedes.get(sedeEntregaIndex - 1);
+            if(sedeRecogerIndex<=sedes.size()&& sedeEntregaIndex<=sedes.size()){
+            sedeRecoger = sedes.get(sedeRecogerIndex - 1);
+            sedeEntrega = sedes.get(sedeEntregaIndex - 1);
+            }
             if(sedeRecoger!=null&&sedeEntrega!=null){
             System.out.println("\n\t>Información Sede donde se recogerá el vehículo:");
             sedeRecoger.printInfo();
@@ -112,7 +117,7 @@ public class Reserva {
                     if (reserva.getVehiculoAsignado()!=null){
                         addReserva(reserva);
                         reserva.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar );
-                        System.out.println("¡Reserva creada exitosamente!");
+                        System.out.println("Reserva creada exitosamente, el id de su reserva es: ");
                     }
 
                 }
@@ -124,7 +129,7 @@ public class Reserva {
                 }
             }
             else{
-                System.out.println(">Elija opciones de sede válidas.");
+                System.out.println(">Elija opciones de sede válidas.\n");
 
             }
 
@@ -151,9 +156,8 @@ public class Reserva {
         int diaactual = fechaActual.get(Calendar.DAY_OF_MONTH);
         int mesactual = fechaActual.get(Calendar.MONTH) + 1;
         int anhoactual = fechaActual.get(Calendar.YEAR);
-        int aaaamm = fecha / 10000;
         int dia = fecha % 100;
-        int mes = (aaaamm % 10000) / 100;
+        int mes = (fecha % 10000) / 100;
         int anio = fecha / 10000;
         boolean retorno=false;
         if (dia < 32 && mes < 13) {
@@ -170,14 +174,12 @@ public class Reserva {
         return retorno;
     }
     public static boolean fechaValidaDevolucion(int entrega, int devolucion) {
-        int aaaamm1 = entrega / 10000;
         int diae = entrega % 100;
-        int mese = (aaaamm1 % 10000) / 100;
+        int mese = (entrega % 10000) / 100;
         int anioe = entrega / 10000;
 
-        int aaaamm2 = devolucion / 10000;
         int diad = devolucion % 100;
-        int mesd = (aaaamm2 % 10000) / 100;
+        int mesd = (devolucion % 10000) / 100;
         int aniod = devolucion / 10000;
         boolean retorno=false;
         if (diad < 32 && mesd < 13) {
