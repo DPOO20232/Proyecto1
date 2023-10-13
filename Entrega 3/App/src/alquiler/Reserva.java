@@ -130,6 +130,7 @@ public class Reserva {
                         if (numTarjeta== (cliente.getTarjeta().getNumeroTarjeta())%10000){
                         addReserva(reserva);
                         reserva.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar );
+                        System.out.println(">Se debitaron $"+ Double.toString(reserva.getPagoReserva())+".");
                         System.out.println(">Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva.getID()));
                             continuar2=false;
                                 continuar1=false;
