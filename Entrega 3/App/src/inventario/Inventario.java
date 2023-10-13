@@ -1,6 +1,7 @@
 package inventario;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -876,7 +877,97 @@ public class Inventario {
 
     catch(NumberFormatException e){
         System.out.println("Ingrese solo números en los campos correspondientes");}}
- 
+
+    public static void obtenerHistorial(List<Vehiculo> vehiculos, String placa){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Información del vehiculo: " + placa))) {
+            for (Vehiculo vehiculo : vehiculos) {
+                if (vehiculo.getPlaca().equals(placa)) {
+                    writer.write("Placa: " + vehiculo.getPlaca());
+                    writer.newLine();
+                    writer.write("Marca: " + vehiculo.getMarca());
+                    writer.newLine();
+                    writer.write("Modelo: " + vehiculo.getModelo());
+                    writer.newLine();
+                    writer.write("Color: " + vehiculo.getColor());
+                    writer.newLine();
+                    writer.write("Tipo de Transmisión: " + vehiculo.getTipoTransmision());
+                    writer.newLine();
+                    writer.write("Ubicación GPS: " + vehiculo.getUbicacionGPS());
+                    writer.newLine();
+                    writer.write("Estado: " + vehiculo.getEstado());
+                    writer.newLine();
+                    writer.write("Averiado: " + vehiculo.isAveriado());
+                    writer.newLine();
+                    writer.write("Sede: " + vehiculo.getSede().getNombre());
+                    writer.newLine();
+                    writer.write("Categoría: " + vehiculo.getCategoria().getnombreCategoria());
+                    writer.newLine();
+                    List<Evento> historialEvento = vehiculo.getHistorialEventos();
+                    if (!historialEvento.isEmpty()) {
+                        writer.write("Historial de Eventos:");
+                        writer.newLine();
+                        for (Evento evento : historialEvento) {
+                            writer.write("Fecha del inicio del evento: " + evento.getFechaInicio());
+                            writer.newLine();
+                            writer.write("Fecha del fin del evento: " + evento.getFechaFin());
+                            writer.newLine();
+                            writer.write("Descripción: " + evento.getDescripcion());
+                            writer.newLine();                            
+                        }
+                    } else {
+                        writer.write("Este vehículo no cuenta con historial de Eventos:");
+                        writer.newLine();
+                    }
+                    List<alquiler> historialAlquiler = vehiculo.getHistorialAlquileres();
+                    if (!historialAlquiler.isEmpty()) {
+                        writer.write("Historial de Alquileres:");
+                        writer.newLine();
+                        for (Alquiler alquiler : historialAlquiler) {
+                            writer.write("Pago Final: $" + alquiler.getPagoFinal());
+                            writer.newLine();
+                            writer.write("Conductores:");
+                            writer.newLine();
+                            writer.newLine();
+                            for (Conductor conductor : alquiler.getConductores()) {
+                                writer.write("- " + conductor.getNombre()); //
+                                writer.newLine();
+                            }
+                            writer.write("Pagos Excedentes:");
+                            writer.newLine();
+                            for (PagoExcedente pagoExcedente : alquiler.getPagosExcedentes()) {
+                                writer.write("- Detalle del pago excedente");
+                                writer.newLine();
+                            }
+                            writer.newLine();
+                        }
+                    } else {
+                        writer.write("Este vehículo no cuenta con historial de Alquileres:");
+                        writer.newLine();
+                    }
+                    List<Reserva> reservasActivas = vehiculo.getReservasActivas();
+                    if (!reservasActivas.isEmpty()) {
+                        writer.write("Reservas Activas:");
+                        writer.newLine();
+                        for (Reserva reserva : reservasActivas) {
+                            writer.write("Fecha para recoger el vehículo: " + reserva.getFechaRecoger());
+                            writer.newLine(); 
+                            writer.write("Sede de recogida: " + reserva.getSedeRecoger().getNombre());
+                            writer.newLine();
+                            writer.write("Categoría: " + reserva.getCategoria().getnombreCategoria());
+                            writer.newLine();
+                            //cliente
+
+                        } 
+                    } else {
+                        writer.write("Este vehículo no cuenta con Reservas Activas:");
+                        writer.newLine();
+                    } 
+                } 
+            }
+        } catch (IOException e) {
+            System.err.println("Error al escribir en el archivo: " + e.getMessage());
+        }
+    }
 }
 
 

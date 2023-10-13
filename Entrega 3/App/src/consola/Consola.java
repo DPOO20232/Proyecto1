@@ -58,7 +58,9 @@ public class Consola {
                 else if(opcion_admin==2){Inventario.nuevoVehiculo();}
                 else if(opcion_admin==3){Inventario.eliminarVehiculo();}
                 else if(opcion_admin==4){
-                    //TODO
+                    String placa = input("Ingrese la placa del vehículo que desee consultar");
+                    List<Vehiculo> lista = Inventario.getListaVehiculos();
+                    Inventario.obtenerHistorial(lista, placa);
                 }
                 else if(opcion_admin==5){
                     //TODO

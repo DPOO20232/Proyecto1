@@ -10,5 +10,9 @@ public class Conductor {
         this.cedula=cedula;
         this.licencia=licencia;
     }
+
+    public String getNombre(){return this.nombre;}
+    public String getCedula(){return this.cedula;}
+    public String getLicencia(){return this.licencia;}
     
 }
