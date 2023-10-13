@@ -118,23 +118,24 @@ public class Reserva {
                 while(continuar1){
                 if (categoriaElegidaIndex>=1 && categoriaElegidaIndex<=(categorias.size())){
                     Categoria categoriaElegida = categorias.get(categoriaElegidaIndex - 1);
-                    Reserva reserva = new Reserva(frecoger, fentregar, hrecoger, hentregar, reservaEnSede, sedeRecoger, sedeEntrega, categoriaElegida, cliente);
+                    Reserva reserva_u = new Reserva(frecoger, fentregar, hrecoger, hentregar, reservaEnSede, sedeRecoger, sedeEntrega, categoriaElegida, cliente);
                     // AÑADIR SOLO SI ENCONTRAMOS CARRO 
-                    reserva.setVehiculoAsignado();
-                    if (reserva.getVehiculoAsignado()!=null){
+                    reserva_u.setVehiculoAsignado();
+                    if (reserva_u.getVehiculoAsignado()!=null){
                         boolean continuar2=true;
                         System.out.println("> Encontramos un vehículo para tí!");
 
                         while(continuar2){
                         int numTarjeta = Integer.parseInt(input("Para debitar el 30% del alquiler de su cuenta, por favor ingrese los últimos 4 dígitos de la tarjeta que tiene registrada"));
                         if (numTarjeta== (cliente.getTarjeta().getNumeroTarjeta())%10000){
-                        addReserva(reserva);
-                        reserva.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar );
-                        System.out.println(">Se debitaron $"+ Double.toString(reserva.getPagoReserva())+".");
-                        System.out.println(">Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva.getID()));
-                            continuar2=false;
+                        addReserva(reserva_u);
+                        reserva_u.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar );
+                        System.out.println(">Se debitaron $"+ Double.toString(reserva_u.getPagoReserva())+".");
+                        System.out.println(">Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_u.getID()));
+                                continuar2=false;
                                 continuar1=false;
                                 continuar=false;
+                                Reserva.addReserva(reserva_u);
                         }
                         else{
                             System.out.println("\n>Los últimos 4 dígitos ingresados no corresponden a los últimos 4 dígitos de su tarjeta, desea intentarlo nuevamente?");
@@ -384,7 +385,7 @@ public class Reserva {
         else if((vehiculoAsignado!=null)&&(esUpgrade==true)){
             vehiculoAsignado.addReservaActiva(this);
             this.vehiculoAsignado=vehiculoAsignado;
-            System.out.println("\n\t>Accederás a un Upgrade de vehiculo sin costo adicional!");
+            System.out.println("\n\t>Accederás a un Upgrade de vehiculo sin costo adicional!\n");
 
         }
         else{
