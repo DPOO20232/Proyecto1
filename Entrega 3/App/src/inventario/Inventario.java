@@ -96,7 +96,8 @@ public class Inventario {
     //updateInfo();
     updateCategorias();
     updateSedes();
-    //updateSeguros();
+    updateSeguros();
+    updateReserva();
     //updateVehiculos();
     }
     public static void updateCategorias() throws IOException{
@@ -161,13 +162,37 @@ public class Inventario {
     }
     public static void updateSeguros() throws IOException{
         File archivo = new File("./data/seguros.txt");
-        FileWriter escritor = new FileWriter(archivo);
+        FileWriter escritor2= new FileWriter(archivo);
         List<Seguro> lstseguros=listaSeguros;
         for (Seguro i: lstseguros){
             String strid = Integer.toString(i.getID());
             String strpctg_tarifadiaria = Double.toString(i.getPctg_TarifaDiaria());
             String descripcion=i.getDescripcion();
             String resultado = String.format("%s;%s;%s%n", strid, strpctg_tarifadiaria, descripcion);
+            escritor2.write(resultado);
+        }
+        escritor2.close();
+    }
+    public static void updateReserva() throws IOException{
+        File archivo = new File("./data/reservas.txt");
+        FileWriter escritor= new FileWriter(archivo);
+        List<Reserva> lstreserva= Reserva.getListaReservas();
+        for(Reserva i: lstreserva){
+            String stridReserva= Integer.toString(i.getID());
+            String strfechaRecoger= Integer.toString(i.getFechaRecoger());
+            String strfechaEntregar=Integer.toString(i.getFechaEntregar());
+            String strhoraRecoger= Integer.toString(i.getHoraRecoger());
+            String strhoraEntregar= Integer.toString(i.getHoraEntregar());
+            String strreservaEnSede= Boolean.toString(i.getReservaEnSede());
+            Sede sede=i.getSedeRecoger();
+            String strid_sedeRecoger=Integer.toString(sede.getID());
+            Sede sedeE=i.getSedeEntregar();
+            String strid_sedeEntregar=Integer.toString(sedeE.getID());
+            Categoria categoria=i.getCategoria();
+            String strid_categoria=Integer.toString(categoria.getID());
+            Cliente cliente= i.getCliente();
+            String strcedula_cliente= Integer.toString(cliente.getNumeroCedula());
+            String resultado = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s%n", stridReserva, strfechaRecoger, strfechaEntregar, strhoraRecoger, strhoraEntregar, strreservaEnSede, strid_sedeRecoger, strid_sedeEntregar, strid_categoria, strcedula_cliente);
             escritor.write(resultado);
         }
         escritor.close();
@@ -422,9 +447,9 @@ public class Inventario {
         catch (IOException e) {e.printStackTrace();}
     }
     private static void loadReservas(){
-        //    public Reserva(int idReserva,int fechaRecoger, int fechaEntregar, int horaRecoger,
+        // public Reserva(int idReserva,int fechaRecoger, int fechaEntregar, int horaRecoger,
         // int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar,
-        //Categoria categoria, Cliente cliente) {
+        // Categoria categoria, Cliente cliente) {
         int contador=0;
         try (BufferedReader br = new BufferedReader(new FileReader("./data/reservas.txt"))) {
             String linea;
@@ -692,19 +717,13 @@ public class Inventario {
         catch(NumberFormatException e){
             System.out.println(">Ingrese solo números en los campos correspondientes");}
         }
-
-
-
-
-    
-    
     public static void nuevoSeguro(){
     try{
         String desc = input("Ingrese una descripción del seguro");
         double pctg_tarifadiaria= Double.parseDouble(input("Ingrese el porcentaje de la tarifa diaria que el seguro cuesta (ej: 90%->0.9)"));
         Seguro seguro= new Seguro(pctg_tarifadiaria,desc );
         listaSeguros.add(seguro);
-        System.out.println(">El nuevo seguro se guardo con el id"+ Integer.toString(seguro.getID()));
+        System.out.println(">El nuevo seguro se guardo con el id "+ Integer.toString(seguro.getID()));
     }
     catch(NumberFormatException e){
         System.out.println(">Ingrese solo números en los campos correspondientes");}}

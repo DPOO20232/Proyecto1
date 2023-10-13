@@ -1,5 +1,8 @@
 package inventario;
 import java.util.List;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import usuario.personal;;
 public class Sede {
@@ -82,5 +85,41 @@ public class Sede {
 
     public void addPersonalSede(personal personal) {
        this.personalSede.add(personal);
+    }
+    public void printInfo(){
+    List <Integer> horario1= this.getHorarioAtencionEnSemana();
+    List <Integer> horario2= this.getHorarioAtencionFinSemana();
+    String num1=Integer.toString((horario1.get(0))/100);
+    String num2=Integer.toString((horario1.get(0))%100);
+    String num3=Integer.toString((horario1.get(1))/100);
+    String num4=Integer.toString((horario1.get(1))%100);
+    String num5=Integer.toString((horario2.get(0))/100);
+    String num6=Integer.toString((horario2.get(0))%100);
+    String num7=Integer.toString((horario2.get(1))/100);
+    String num8=Integer.toString((horario2.get(1))%100);
+    String horarioAtencion1="Hora de apertura de lunes a viernes: "+num1+":"+num2+" - "+num3+":"+num4+".";
+    String horarioAtencion2="Hora de apertura de sabado a domingo: "+num5+":"+num6+" - "+num7+":"+num8+".";
+    
+    System.out.println("Información Sede: "+this.getNombre()+" ("+this.getUbicacion()+").");
+    System.out.println(horarioAtencion1+" "+horarioAtencion2+"\n");
+    }
+    public boolean estaAbierta(int fecha, int hora){
+    boolean retorno=false;
+    DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+    LocalDateTime fecha_u = LocalDateTime.parse(String.format("%08d%04d", fecha, hora), formatter);
+    DayOfWeek diaSemana = fecha_u.getDayOfWeek();
+    boolean esDiaSemana = ((diaSemana != DayOfWeek.SATURDAY) && (diaSemana != DayOfWeek.SUNDAY));
+    if (esDiaSemana){
+        List <Integer> horario1= this.getHorarioAtencionEnSemana();
+        if(horario1.get(0) < hora && hora < horario1.get(1)){
+            retorno=true;
+        }}
+    else{
+        List <Integer> horario1= this.getHorarioAtencionFinSemana();
+        if(horario1.get(0) < hora && hora < horario1.get(1)){
+            retorno=true;
+    }
+    }
+        return retorno;
     }
 }

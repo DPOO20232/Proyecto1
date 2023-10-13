@@ -1,8 +1,5 @@
 package inventario;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import inventario.Evento;
 import alquiler.alquiler;
@@ -11,6 +8,7 @@ import inventario.Sede;
 import inventario.Categoria;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Vehiculo {
     private  String placa;
@@ -83,32 +81,21 @@ public class Vehiculo {
                 break;
             }
         }}
+
     public boolean estaDisponible(int fecha1, int hora1, int fecha2, int hora2){
         boolean reservaInPeriodoReserva=false;
         boolean eventoInPeriodoReserva=false;
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-        Date fhInicioReserva= new Date();
-        Date fhFinReserva= new Date();
-        try {
-            fhInicioReserva = dateFormat.parse(String.format("%08d%04d", fecha1,hora1));
-            fhFinReserva = dateFormat.parse(String.format("%08d%04d",fecha2,hora2));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        LocalDateTime fhInicioReserva = LocalDateTime.parse(String.format("%08d%04d", fecha1, hora1), formatter);
+        LocalDateTime fhFinReserva = LocalDateTime.parse(String.format("%08d%04d", fecha2, hora2), formatter);
         int numReservasActivas=this.getReservasActivas().size();
         int numEventos=this.getHistorialEventos().size();
         if (numEventos>1){
             Evento ultimoEvento= this.getHistorialEventos().get(numEventos-1);
-            Date fhInicioEvento= new Date();
-            Date fhFinEvento= new Date();
-            try {
-                fhInicioEvento = dateFormat.parse(String.format("%08d%04d", ultimoEvento.getFechaInicio(), ultimoEvento.getHoraInicio()));
-                fhFinEvento = dateFormat.parse(String.format("%08d%04d", ultimoEvento.getFechaFin(), ultimoEvento.getHoraFin()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            eventoInPeriodoReserva=(fhFinEvento.before(fhInicioReserva) || fhInicioEvento.after(fhFinReserva));
+            LocalDateTime fhInicioEvento= LocalDateTime.parse(String.format("%08d%04d", ultimoEvento.getFechaInicio(), ultimoEvento.getHoraInicio()), formatter);
+            LocalDateTime fhFinEvento= LocalDateTime.parse(String.format("%08d%04d", ultimoEvento.getFechaInicio(), ultimoEvento.getHoraInicio()), formatter);
+
+            eventoInPeriodoReserva=(fhFinEvento.isBefore(fhInicioReserva) || fhInicioEvento.isAfter(fhFinReserva));
         }
 
         if(numReservasActivas==0){
@@ -116,18 +103,12 @@ public class Vehiculo {
         }
         else{
             for (Reserva i: this.getReservasActivas()){
-                Date i_inicioReserva= new Date();
-                Date i_finReserva= new Date();
-                try {
-                    i_inicioReserva = dateFormat.parse(String.format("%08d%04d", i.getFechaRecoger(), i.getHoraRecoger()));
-                    i_finReserva = dateFormat.parse(String.format("%08d%04d", i.getFechaEntregar(),i.getHoraEntregar()));
-                    if (i_finReserva.before(fhInicioReserva) || i_inicioReserva.after(fhFinReserva)){
+                LocalDateTime i_inicioReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaRecoger(), i.getHoraRecoger()), formatter);
+                LocalDateTime i_finReserva = (LocalDateTime.parse(String.format("%08d%04d",  i.getFechaEntregar(), i.getHoraEntregar()), formatter)).plusDays(1);
+                if (!i_finReserva.isBefore(fhInicioReserva) || i_inicioReserva.isAfter(fhFinReserva)){
                         reservaInPeriodoReserva=true;
                         break;
                     }
-                } catch (ParseException e) {
-                e.printStackTrace();
-            }
             }
         }
         if ((reservaInPeriodoReserva==false) && (eventoInPeriodoReserva==false)){
