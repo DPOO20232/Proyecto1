@@ -84,6 +84,7 @@ public class Vehiculo {
                 break;
             }
         }}
+
     public boolean estaDisponible(int fecha1, int hora1, int fecha2, int hora2){
         boolean reservaInPeriodoReserva=false;
         boolean eventoInPeriodoReserva=false;
@@ -96,11 +97,8 @@ public class Vehiculo {
             Evento ultimoEvento= this.getHistorialEventos().get(numEventos-1);
             LocalDateTime fhInicioEvento= LocalDateTime.parse(String.format("%08d%04d", ultimoEvento.getFechaInicio(), ultimoEvento.getHoraInicio()), formatter);
             LocalDateTime fhFinEvento= LocalDateTime.parse(String.format("%08d%04d", ultimoEvento.getFechaInicio(), ultimoEvento.getHoraInicio()), formatter);
-            
-                fhInicioEvento = dateFormat.parse(String.format("%08d%04d", , ));
-                fhFinEvento = dateFormat.parse(String.format("%08d%04d", ultimoEvento.getFechaFin(), ultimoEvento.getHoraFin()));
 
-            eventoInPeriodoReserva=(fhFinEvento.before(fhInicioReserva) || fhInicioEvento.after(fhFinReserva));
+            eventoInPeriodoReserva=(fhFinEvento.isBefore(fhInicioReserva) || fhInicioEvento.isAfter(fhFinReserva));
         }
 
         if(numReservasActivas==0){
@@ -108,18 +106,12 @@ public class Vehiculo {
         }
         else{
             for (Reserva i: this.getReservasActivas()){
-                Date i_inicioReserva= new Date();
-                Date i_finReserva= new Date();
-                try {
-                    i_inicioReserva = dateFormat.parse(String.format("%08d%04d", i.getFechaRecoger(), i.getHoraRecoger()));
-                    i_finReserva = dateFormat.parse(String.format("%08d%04d", i.getFechaEntregar(),i.getHoraEntregar()));
-                    if (i_finReserva.before(fhInicioReserva) || i_inicioReserva.after(fhFinReserva)){
+                LocalDateTime i_inicioReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaRecoger(), i.getHoraRecoger()), formatter);
+                LocalDateTime i_finReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaEntregar(), i.getHoraEntregar()), formatter);
+                if (i_finReserva.isBefore(fhInicioReserva) || i_inicioReserva.isAfter(fhFinReserva)){
                         reservaInPeriodoReserva=true;
                         break;
                     }
-                } catch (ParseException e) {
-                e.printStackTrace();
-            }
             }
         }
         if ((reservaInPeriodoReserva==false) && (eventoInPeriodoReserva==false)){

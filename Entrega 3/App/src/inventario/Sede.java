@@ -1,5 +1,8 @@
 package inventario;
 import java.util.List;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import usuario.personal;;
 public class Sede {
@@ -82,5 +85,33 @@ public class Sede {
 
     public void addPersonalSede(personal personal) {
        this.personalSede.add(personal);
+    }
+    public void printInfo(){
+    List <Integer> horario1= this.getHorarioAtencionEnSemana();
+    List <Integer> horario2= this.getHorarioAtencionFinSemana();
+    String horarioAtencion1="Hora de apertura de lunes a viernes: "+Integer.toString(horario1.get(0))+" - "+Integer.toString(horario1.get(1)) +".";
+    String horarioAtencion2="Hora de apertura de sabado a domingo: "+Integer.toString(horario2.get(0))+" - "+Integer.toString(horario2.get(1)) +".";
+    
+    System.out.println("Información Sede: "+this.getNombre()+" ("+this.getUbicacion()+").");
+    System.out.println(horarioAtencion1+" "+horarioAtencion2);
+    }
+    public boolean estaAbierta(int fecha, int hora){
+    boolean retorno=false;
+    DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+    LocalDateTime fecha_u = LocalDateTime.parse(String.format("%08d%04d", fecha, hora), formatter);
+    DayOfWeek diaSemana = fecha_u.getDayOfWeek();
+    boolean esDiaSemana = ((diaSemana != DayOfWeek.SATURDAY) && (diaSemana != DayOfWeek.SUNDAY));
+    if (esDiaSemana){
+        List <Integer> horario1= this.getHorarioAtencionEnSemana();
+        if(horario1.get(0) < hora && hora < horario1.get(1)){
+            retorno=true;
+        }}
+    else{
+        List <Integer> horario1= this.getHorarioAtencionFinSemana();
+        if(horario1.get(0) < hora && hora < horario1.get(1)){
+            retorno=true;
+    }
+    }
+        return retorno;
     }
 }
