@@ -118,19 +118,18 @@ public class Consola {
                     System.out.println("3. Cancelar reserva");
                     System.out.println("4. Modificar mis datos");
                     System.out.println("5. Salir de la aplicación\n");
-                    int opcion_adminL = Integer.parseInt(input("Por favor seleccione una opción"));
+                    int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
-                    boolean ensede = False
+                    boolean ensede = false
                     if (opcion_adminL==1){Reserva.crearReserva(ensede, cliente);}
                     //else if(opcion_adminL==2){}
                     //else if(opcion_adminL==3){}
                     //else if(opcion_adminL==4){}
-                    else if(opcion_adminL==5){continuarAdminL=false;}
+                    else if(opcion_cliente==5){continuarAdminL=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
-
-
-
+                    }catch(NumberFormatException e){}}
             }
+
             else{System.out.println("\n\t>>> Credenciales incorrectas, intentelo de nuevo.");}          
             }
             else if(opcion_seleccionada==2){
