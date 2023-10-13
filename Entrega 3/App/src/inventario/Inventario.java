@@ -602,8 +602,9 @@ public class Inventario {
                     Sede sede= Inventario.assignSede(id_sede);
                     Vehiculo vehiculoActual= new Vehiculo(placa, marca, modelo, color, tipo_trasmicion, ubicacionGPS, estado, averiado,categoria,sede);
                     String stringIDsEventos=partes[9].substring(1, partes[9].length() - 1);
-                    String stringIDsReservasActivas=partes[10].substring(1, partes[11].length() - 1);
-                    String stringIDsAlquileres=partes[11].substring(1, partes[10].length() - 1);
+                    String stringIDsAlquileres=partes[10].substring(1, partes[10].length() - 1);
+                    String stringIDsReservasActivas=partes[11].substring(1, partes[11].length() - 1);
+
                     if (!stringIDsEventos.equals("")){
                     String [] listaIDsEventos=stringIDsEventos.split(",");
                     for (String i: listaIDsEventos){
