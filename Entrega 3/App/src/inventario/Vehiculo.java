@@ -1,8 +1,5 @@
 package inventario;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import inventario.Evento;
 import alquiler.alquiler;
@@ -89,8 +86,8 @@ public class Vehiculo {
         boolean reservaInPeriodoReserva=false;
         boolean eventoInPeriodoReserva=false;
         DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-        LocalDateTime fhInicioReserva = LocalDateTime.parse(String.format("%08d%04d", fecha1, hora2), formatter);
-        LocalDateTime fhFinReserva = LocalDateTime.parse(String.format("%08d%04d", fecha1, hora2), formatter);
+        LocalDateTime fhInicioReserva = LocalDateTime.parse(String.format("%08d%04d", fecha1, hora1), formatter);
+        LocalDateTime fhFinReserva = LocalDateTime.parse(String.format("%08d%04d", fecha2, hora2), formatter);
         int numReservasActivas=this.getReservasActivas().size();
         int numEventos=this.getHistorialEventos().size();
         if (numEventos>1){
@@ -108,7 +105,7 @@ public class Vehiculo {
             for (Reserva i: this.getReservasActivas()){
                 LocalDateTime i_inicioReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaRecoger(), i.getHoraRecoger()), formatter);
                 LocalDateTime i_finReserva = (LocalDateTime.parse(String.format("%08d%04d",  i.getFechaEntregar(), i.getHoraEntregar()), formatter)).plusDays(1);
-                if (i_finReserva.isBefore(fhInicioReserva) || i_inicioReserva.isAfter(fhFinReserva)){
+                if (!i_finReserva.isBefore(fhInicioReserva) || i_inicioReserva.isAfter(fhFinReserva)){
                         reservaInPeriodoReserva=true;
                         break;
                     }

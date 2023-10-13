@@ -59,14 +59,15 @@ public class Reserva {
         this.cliente = cliente;
     }
 
-    //reservaEnSede es true cuando la hace el personal de atencion
 
     public static void crearReserva(Cliente cliente, boolean reservaEnSede){
+        //reservaEnSede es true cuando la hace el personal de atencion
+
         try { 
             System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
             boolean continuar=true;
             while(continuar){
-            System.out.println("Lista de Sedes Disponibles:");
+            System.out.println(">Lista de Sedes Disponibles:");
                 List<Sede> sedes = Inventario.getListaSedes();
                 for (int i = 0; i < sedes.size(); i++) {
                     System.out.println((i + 1) + ". " + sedes.get(i).getNombre()+" ("+sedes.get(i).getUbicacion()+").");
@@ -94,11 +95,11 @@ public class Reserva {
             boolean horaVdevolucion = horaValida(hentregar);
             boolean fVrecoger = fechaValidaReserva(frecoger);
             boolean fVdevolucion = fechaValidaReserva(fentregar);
-            boolean posibleEntregar=sedeRecoger.estaAbierta(frecoger,hrecoger);
-            boolean posibleRecoger=sedeEntrega.estaAbierta(fentregar,hentregar);
+            boolean posibleRecoger=sedeRecoger.estaAbierta(frecoger,hrecoger);
+            boolean posibleEntregar=sedeEntrega.estaAbierta(fentregar,hentregar);
 
             if (horaVrecoger && horaVdevolucion && fVrecoger && fVdevolucion &&posibleEntregar&&posibleRecoger ){
-                System.out.println("\nLista de Categorías de Vehículos Disponibles:");
+                System.out.println("\nLista de Categorías de Vehículos Disponibles:\n");
                 List<Categoria> categorias = Inventario.getListaCategorias();
                 for (int i = 0; i < categorias.size(); i++) {
                     Categoria i_categoria=categorias.get(i);
@@ -117,7 +118,11 @@ public class Reserva {
                     if (reserva.getVehiculoAsignado()!=null){
                         addReserva(reserva);
                         reserva.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar );
-                        System.out.println("Reserva creada exitosamente, el id de su reserva es: ");
+                        System.out.println(">Reserva creada exitosamente, el id de su reserva es: ");
+                    }
+                    else{
+                        System.out.println(">No se encontraron vehículos disponibles para la categoría dada en el rango de fechas requerido.");
+
                     }
 
                 }

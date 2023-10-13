@@ -89,8 +89,16 @@ public class Sede {
     public void printInfo(){
     List <Integer> horario1= this.getHorarioAtencionEnSemana();
     List <Integer> horario2= this.getHorarioAtencionFinSemana();
-    String horarioAtencion1="Hora de apertura de lunes a viernes: "+Integer.toString(horario1.get(0))+" - "+Integer.toString(horario1.get(1)) +".";
-    String horarioAtencion2="Hora de apertura de sabado a domingo: "+Integer.toString(horario2.get(0))+" - "+Integer.toString(horario2.get(1)) +".";
+    String num1=Integer.toString((horario1.get(0))/100);
+    String num2=Integer.toString((horario1.get(0))%100);
+    String num3=Integer.toString((horario1.get(1))/100);
+    String num4=Integer.toString((horario1.get(1))%100);
+    String num5=Integer.toString((horario2.get(0))/100);
+    String num6=Integer.toString((horario2.get(0))%100);
+    String num7=Integer.toString((horario2.get(1))/100);
+    String num8=Integer.toString((horario2.get(1))%100);
+    String horarioAtencion1="Hora de apertura de lunes a viernes: "+num1+":"+num2+" - "+num3+":"+num4+".";
+    String horarioAtencion2="Hora de apertura de sabado a domingo: "+num5+":"+num6+" - "+num7+":"+num8+".";
     
     System.out.println("Información Sede: "+this.getNombre()+" ("+this.getUbicacion()+").");
     System.out.println(horarioAtencion1+" "+horarioAtencion2+"\n");
