@@ -6,6 +6,9 @@ import inventario.Evento;
 import inventario.Inventario;
 import inventario.Vehiculo;
 import usuario.Cliente;
+import usuario.Licencia;
+import usuario.Tarjeta;
+import usuario.Usuario;
 import inventario.Sede;
 
 import java.io.BufferedReader;
@@ -62,9 +65,10 @@ public class Reserva {
 
     public static void crearReserva(Cliente cliente, boolean reservaEnSede){
         //reservaEnSede es true cuando la hace el personal de atencion
-
-        try { 
             System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
+        try { 
+            //primero checkear que la licencia y tarjeta esten vigente
+
             boolean continuar=true;
             while(continuar){
             System.out.println(">Lista de Sedes Disponibles:");
@@ -90,15 +94,17 @@ public class Reserva {
             sedeEntrega.printInfo();
             int fentregar = Integer.parseInt(input("Por favor ingrese la fecha en la que desee entregar su vehículo(en formato aaaammdd)"));
             int hentregar = Integer.parseInt(input("Considerando los horarios de atención de la sede, ingrese la hora en la que desee entregar su vehículo(en formato hhmm)"));
-            
             boolean horaVrecoger = horaValida(hrecoger);
             boolean horaVdevolucion = horaValida(hentregar);
             boolean fVrecoger = fechaValidaReserva(frecoger);
             boolean fVdevolucion = fechaValidaReserva(fentregar);
             boolean posibleRecoger=sedeRecoger.estaAbierta(frecoger,hrecoger);
             boolean posibleEntregar=sedeEntrega.estaAbierta(fentregar,hentregar);
-
             if (horaVrecoger && horaVdevolucion && fVrecoger && fVdevolucion &&posibleEntregar&&posibleRecoger ){
+                Licencia licencia_act= cliente.getLicencia();
+                Tarjeta tarjeta_act= cliente.getTarjeta();
+                if(Usuario.checkVencimientoLicencia(licencia_act, fentregar / 10000, (fentregar / 100) % 100, fentregar % 100)==false){
+                if (tarjeta_act.checkVencimientoTarjeta(fentregar / 10000, (fentregar / 100) % 100, fentregar % 100)==false){
                 System.out.println("\nLista de Categorías de Vehículos Disponibles:\n");
                 List<Categoria> categorias = Inventario.getListaCategorias();
                 for (int i = 0; i < categorias.size(); i++) {
@@ -116,9 +122,31 @@ public class Reserva {
                     // AÑADIR SOLO SI ENCONTRAMOS CARRO 
                     reserva.setVehiculoAsignado();
                     if (reserva.getVehiculoAsignado()!=null){
+                        boolean continuar2=true;
+                        System.out.println("> Encontramos un vehículo para tí!");
+
+                        while(continuar2){
+                        int numTarjeta = Integer.parseInt(input("Para debitar el 30% del alquiler de su cuenta, por favor ingrese los últimos 4 dígitos de la tarjeta que tiene registrada"));
+                        if (numTarjeta== (cliente.getTarjeta().getNumeroTarjeta())%10000){
                         addReserva(reserva);
                         reserva.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar );
                         System.out.println(">Reserva creada exitosamente, el id de su reserva es: ");
+                            continuar2=false;
+                                continuar1=false;
+                                continuar=false;
+                        }
+                        else{
+                            System.out.println("\n>Los últimos 4 dígitos ingresados no corresponden a los últimos 4 dígitos de su tarjeta, desea intentarlo nuevamente?");
+                            System.out.println("1.Sí");
+                            System.out.println("2.No(ó cualquier otro número)");
+                            int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
+                            if(opcion>1){
+                                continuar2=false;
+                                continuar1=false;
+                                continuar=false;
+                        }
+                        }
+                    }
                     }
                     else{
                         System.out.println(">No se encontraron vehículos disponibles para la categoría dada en el rango de fechas requerido.");
@@ -129,7 +157,34 @@ public class Reserva {
                 else{
                 System.out.println(">Elija una categoría de las opciones mostradas.");
                 }
-            }} else {
+            }
+            } 
+            else{
+                System.out.println("\n>Su tarjeta caducará/caducó, desea actualizar su licencia?");
+                System.out.println("1.Sí");
+                System.out.println("2.No(ó cualquier otro número)");
+                int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
+                if(opcion==1){
+                    cliente.setTarjeta();
+                }
+                else{
+                continuar=false;
+                }
+            }
+            }
+            else{
+                System.out.println("\n>Su licencia caducará/caducó, desea actualizar su licencia?");
+                System.out.println("1.Sí");
+                System.out.println("2.No(ó cualquier otro número)");
+                int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
+                if(opcion==1){
+                    cliente.setLicencia();
+                }
+                else{
+                continuar=false;
+                }
+            }
+            } else {
                 System.out.println(">Las fechas u horas ingresadas no son válidas. Por favor, inténtelo nuevamente.");
                 }
             }
@@ -322,9 +377,11 @@ public class Reserva {
         }
         
         if ((vehiculoAsignado!=null)&&(esUpgrade==false)){
+            vehiculoAsignado.addReservaActiva(this);
             this.vehiculoAsignado=vehiculoAsignado;
         }
         else if((vehiculoAsignado!=null)&&(esUpgrade==true)){
+            vehiculoAsignado.addReservaActiva(this);
             this.vehiculoAsignado=vehiculoAsignado;
             System.out.println("\n\t>Accederás a un Upgrade de vehiculo sin costo adicional!");
 

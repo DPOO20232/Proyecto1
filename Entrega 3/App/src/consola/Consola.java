@@ -136,11 +136,12 @@ public class Consola {
                 boolean continuarCliente=true;
                 System.out.println("\n\t>>>Bienvenid@, "+cliente.getNombre());
                 while (continuarCliente){
-                    System.out.println("1. Crear una reserva");
-                    System.out.println("2. Modificar datos de mi reserva");
-                    System.out.println("3. Cancelar reserva");
-                    System.out.println("4. Modificar mis datos");
-                    System.out.println("5. Salir de la aplicación\n");
+                    System.out.println("1. Actualizar datos");
+                    System.out.println("2. Crear una reserva");
+                    System.out.println("3. Modificar datos de mi reserva");
+                    System.out.println("4. Cancelar reserva");
+                    System.out.println("5. Modificar mis datos");
+                    System.out.println("6. Cerrar sesión\n");
                     int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
                     boolean ensede = false;
@@ -148,7 +149,8 @@ public class Consola {
                     //else if(opcion_cliente==2){}
                     //else if(opcion_cliente==3){}
                     //else if(opcion_cliente==4){}
-                    else if(opcion_cliente==5){continuarCliente=false;}
+                    //else if(opcion_cliente==5){}
+                    else if(opcion_cliente==6){continuarCliente=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
                     }catch(NumberFormatException e){}}
             }
@@ -196,92 +198,40 @@ public class Consola {
                 String login = input("Por favor ingrese su nombre de usuario");
                 if(((Usuario.checkNombresLogins(login)==false))) {   
                     String password = input("Por favor ingrese una contraseña");
-                    boolean continuar2=true;
-                    System.out.println("\n>A continuación tiene que ingresar una licencia de conducción y un medio de pago.");
-                    while(continuar2){
-                    int numerolicencia = Integer.parseInt(input("Por favor ingrese el número de su licencia de conducción"));
-                    if (Usuario.checkLicencia(numerolicencia)==false){
-                    int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato aaaammdd)"));
-                    int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato aaaammdd)"));
-                    String pais = input("Por favor ingrese el país de expedición de su licencia");
-                    Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
-                    if(Usuario.checkVencimientoLicencia(licencia,0,0,0)==false){
-                    Usuario.addLicencia(licencia);
-                    boolean continuar3=false;
-                    System.out.println("\n>Nuestro sistema solamente acepta tarjetas de crédito como medio de pago");
-                    while(continuar3){
-                    Long numerotarjeta = Long.parseLong(input("Por favor ingrese el número de su tarjeta de crédito (en formato 1111222233334444)"));
-                    int vencimiento_2 = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su tarjeta de crédito(en formato aaaammdd)"));
-                    String marca = input("Por favor ingrese la marca de su tarjeta");
-                    String titular = input("Por favor ingrese el nombre de la persona o entidad titular de la tarjeta");
-                    Tarjeta tarjeta = new Tarjeta(numerotarjeta, vencimiento_2, marca, titular);
-                    if (tarjeta.checkVencimientoTarjeta(0,0,0)==false){
                     Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
+                    System.out.println("\n>A continuación tiene que ingresar una licencia de conducción y un medio de pago.");
+                    cliente.setLicencia();
+                    if(cliente.getLicencia()!=null){
+                    System.out.println("\n>Nuestro sistema solamente acepta tarjetas de crédito como medio de pago");
+                    cliente.setTarjeta();
+                    if (cliente.getTarjeta()!=null){
                     Usuario.addNombreLogin(login);
                     Usuario.addNumCedulas(cedula);
                     Usuario.addCliente(cliente);
-                    cliente.setLicencia(licencia);
-                    cliente.setTarjeta(tarjeta);
-                    continuar3=false;
-                    continuar2=false;
+                    Usuario.addLicencia(cliente.getLicencia());
                     continuar=false;
                     }
-                    else{
-                        System.out.println("\n>La tarjeta ingresada ya caducó, desea ingresar otra?");
-                        System.out.println("1.Sí");
-                        System.out.println("2.No(ó cualquier otro número)");
-                        int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
-                        if(opcion==2){
-                            continuar3=false;
-                            continuar2=false;
-                            continuar=false;
-                    }
-                    }
-                    }}
-                    else{
-                        System.out.println("\n>La licencia ingresada ya caducó, desea ingresar otra?");
-                        System.out.println("1.Sí");
-                        System.out.println("2.No(ó cualquier otro número)");
-                        int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
-                        if(opcion==2){
-                            continuar2=false;
-                            continuar=false;
-                        }  
-                    }
-                    }
-                    else{
-                        System.out.println("\n>Ese número de licencia esta asignado a otro cliente.");
-                        System.out.println(">Desea ingresar otra licencia?");
-                        System.out.println("1.Sí");
-                        System.out.println("2.No(ó cualquier otro número)");
-                        int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
-                        if(opcion==2){
-                            continuar2=false;
-                            continuar=false;
-                        }    
-                    }
-                    }}
-                else {
-                    System.out.println("\n>El nombre de usuario ya ha sido utilizado. Por favor, elija otro.");
+                    else{continuar=false;}                    
                 }
+                    else{continuar=false;}
                 }
-            }}
-            
+                else{System.out.println("\n>El nombre de usuario ya ha sido utilizado. Por favor, elija otro.");}
+                }}}
         else{
                     System.out.println("\n>Ya existe una cuenta con esta cédula. ¿Desea cambiar su contraseña?");
                     System.out.println("1.Sí");
                     System.out.println("2.No(ó cualquier otro número)");
                     int opcion = Integer.parseInt(input("Por favor seleccione una opción"));    
                     if (opcion==1){
+                        Cliente cliente=Usuario.assignCliente(cedula);
                         int fechaNac_u=Integer.parseInt(input("Ingrese su fecha de nacimiento en el formato ddmmaaaa para verificar que es usted"));
-                        Cliente cliente= Inventario.assignCliente(cedula);
                         if (cliente.getFechaNacimiento()==fechaNac_u){
                         String new_password=input("Ingrese una nueva contraseña");
                         cliente.setPassword(new_password);
-                        System.out.println("\n>Su contraseña se ha actualizado correctamente");
+                        System.out.println("\n>Su contraseña se ha actualizado correctamente.");
                         }
                         else{
-                        System.out.println("\n>Verificación fallida, contactese con soporte@rentacar.com para solicitar la actualización de su contraseña.");
+                        System.out.println("\n>Verificación fallida.");
                         }
                     }
                 }}

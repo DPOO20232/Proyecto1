@@ -12,7 +12,7 @@ public class Conductor {
     }
 
     public String getNombre(){return this.nombre;}
-    public String getCedula(){return this.cedula;}
-    public String getLicencia(){return this.licencia;}
+    public int getCedula(){return this.cedula;}
+    public Licencia getLicencia(){return this.licencia;}
     
 }
