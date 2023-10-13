@@ -236,7 +236,9 @@ public class Reserva {
     public Vehiculo getVehiculoAsignado() {
         return this.vehiculoAsignado;
     }
-
+    public Cliente getCliente(){
+        return this.cliente;
+    }
     public double getPagoReserva() {
         return this.pagoReserva;
     }
