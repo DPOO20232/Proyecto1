@@ -373,7 +373,7 @@ public class Reserva {
         else{
             System.out.println("Ingrese una fecha válida");
         }
-        }
+        
         String fechaString2="";
         if (fechaStr2.length() == 8) {
             // Extrae el día, mes y año de la cadena
@@ -395,8 +395,9 @@ public class Reserva {
         long duracionEnDias = fechaT1.until(fechaT2).getDays();
         int valorInt=(int) duracionEnDias;
         return valorInt;
-        
     }
+        
+
 
     public String crearMensajeConfirmacionReserva() {
         // Lógica para crear un mensaje de confirmación de reserva
