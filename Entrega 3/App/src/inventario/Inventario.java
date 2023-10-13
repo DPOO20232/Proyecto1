@@ -236,7 +236,7 @@ public class Inventario {
                 idsReserva.append(",");
             }
             if (idsReserva.length()>=3){
-                 idsevento.setLength(idsReserva.length() - 1);
+                 idsReserva.setLength(idsReserva.length() - 1);
             }
             idsReserva.append("]");
             String lstidReserva=idsReserva.toString();
