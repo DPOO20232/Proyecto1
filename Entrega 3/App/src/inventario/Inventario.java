@@ -94,7 +94,7 @@ public class Inventario {
     public static void updateSistema() throws IOException{
     //updateInfo();
     updateCategorias();
-    //updateSedes();
+    updateSedes();
     //updateSeguros();
     //updateVehiculos();
     }
@@ -127,8 +127,51 @@ public class Inventario {
                     
             }
             escritor.close();
-
+        }
+    public static void updateSedes() throws IOException{
+        File archivo = new File("./data/sedes.txt");
+        FileWriter escritor = new FileWriter(archivo);
+        List<Sede>lstsedes=listaSedes;
+        for(Sede i: lstsedes){
+            String strid = Integer.toString(i.getID());
+            String nombreSede= i.getNombre();
+            String ubicacionSede= i.getUbicacion();
+            List<Integer> horarioSemana= i.getHorarioAtencionEnSemana();
+            StringBuilder strhorarioSemana = new StringBuilder();
+            strhorarioSemana.append("[");
+            strhorarioSemana.append(horarioSemana.get(0));
+            strhorarioSemana.append(",");
+            strhorarioSemana.append(horarioSemana.get(1));
+            strhorarioSemana.append("]");
+            strhorarioSemana.toString();
+            List<Integer> horarioFinSemana= i.getHorarioAtencionFinSemana();
+            StringBuilder strhorarioFinSemana = new StringBuilder();
+            strhorarioFinSemana.append("[");
+            strhorarioFinSemana.append(horarioFinSemana.get(0));
+            strhorarioFinSemana.append(",");
+            strhorarioFinSemana.append(horarioFinSemana.get(1));
+            strhorarioFinSemana.append("]");
+            strhorarioFinSemana.toString();
+            String resultado = String.format("%s;%s;%s;%s;%s%n", strid, nombreSede, ubicacionSede, strhorarioSemana, strhorarioFinSemana);
+            escritor.write(resultado);
+        }
+        escritor.close();
+        //cambios
     }
+    public static void updateSeguros() throws IOException{
+        File archivo = new File("./data/seguros.txt");
+        FileWriter escritor = new FileWriter(archivo);
+        List<Seguro> lstseguros=listaSeguros;
+        for (Seguro i: lstseguros){
+            String strid = Integer.toString(i.getID());
+            String strpctg_tarifadiaria = Double.toString(i.getPctg_TarifaDiaria());
+            String descripcion=i.getDescripcion();
+            String resultado = String.format("%s;%s;%s%n", strid, strpctg_tarifadiaria, descripcion);
+            escritor.write(resultado);
+        }
+        escritor.close();
+    }
+    
     public static String input(String mensaje)
 	{
 		try
