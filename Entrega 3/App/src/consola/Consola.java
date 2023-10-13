@@ -129,8 +129,9 @@ public class Consola {
             //MENU CLIENTE
             else if (Usuario.checkLoginCliente(login, password)!=null){
                 Cliente cliente= Usuario.checkLoginCliente(login, password);
+                boolean continuarCliente=true;
                 System.out.println("\n\t>>>Bienvenid@, "+cliente.getNombre());
-                while (continuarAdminL==true){
+                while (continuarCliente){
                     System.out.println("1. Crear una reserva");
                     System.out.println("2. Modificar datos de mi reserva");
                     System.out.println("3. Cancelar reserva");
@@ -138,12 +139,12 @@ public class Consola {
                     System.out.println("5. Salir de la aplicación\n");
                     int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
-                    boolean ensede = false
-                    if (opcion_adminL==1){Reserva.crearReserva(ensede, cliente);}
-                    //else if(opcion_adminL==2){}
-                    //else if(opcion_adminL==3){}
-                    //else if(opcion_adminL==4){}
-                    else if(opcion_cliente==5){continuarAdminL=false;}
+                    boolean ensede = false;
+                    if (opcion_cliente==1){Reserva.crearReserva(cliente,ensede);}
+                    //else if(opcion_cliente==2){}
+                    //else if(opcion_cliente==3){}
+                    //else if(opcion_cliente==4){}
+                    else if(opcion_cliente==5){continuarCliente=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
                     }catch(NumberFormatException e){}}
             }

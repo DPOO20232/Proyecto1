@@ -9,6 +9,8 @@ import alquiler.alquiler;
 import alquiler.Reserva;
 import inventario.Sede;
 import inventario.Categoria;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Vehiculo {
     private  String placa;
