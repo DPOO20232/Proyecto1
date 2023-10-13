@@ -3,10 +3,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Calendar;
+import java.util.List;
 
 import alquiler.Reserva;
 import inventario.Inventario;
 import inventario.Sede;
+import inventario.Vehiculo;
 import usuario.Cliente;
 import usuario.Usuario;
 import usuario.personal;

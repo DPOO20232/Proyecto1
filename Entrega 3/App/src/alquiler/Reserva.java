@@ -360,9 +360,9 @@ public class Reserva {
         String fechaString1="";
         if (fechaStr1.length() == 8) {
             // Extrae el día, mes y año de la cadena
-            String dia = fechaStr1.substring(0, 2);
-            String mes = fechaStr1.substring(2, 4);
-            String año = fechaStr1.substring(4);
+            String dia = fechaStr1.substring(6 );
+            String mes = fechaStr1.substring(4, 6);
+            String año = fechaStr1.substring(0,4);
 
             // Formatea la fecha en el formato deseado (DD/MM/YYYY)
             StringBuilder fechaFormateada1 = new StringBuilder();
@@ -371,22 +371,15 @@ public class Reserva {
            
         }
         else{
-            String dia = fechaStr1.substring(0, 1);
-            String mes = fechaStr1.substring(1, 3);
-            String año = fechaStr1.substring(3);
-
-            // Formatea la fecha en el formato deseado (DD/MM/YYYY)
-            StringBuilder fechaFormateada1 = new StringBuilder();
-            fechaFormateada1.append(dia).append("/").append(mes).append("/").append(año);
-            fechaString1=fechaFormateada1.toString();
-            fechaString1="0"+fechaString1;
+            System.out.println("Ingrese una fecha válida");
+        }
         }
         String fechaString2="";
         if (fechaStr2.length() == 8) {
             // Extrae el día, mes y año de la cadena
-            String dia2 = fechaStr2.substring(0, 2);
-            String mes2 = fechaStr2.substring(2, 4);
-            String año2 = fechaStr2.substring(4);
+            String dia2 = fechaStr2.substring(6);
+            String mes2 = fechaStr2.substring(4, 6);
+            String año2 = fechaStr2.substring(0,4);
 
             // Formatea la fecha en el formato deseado (DD/MM/YYYY)
             StringBuilder fechaFormateada2 = new StringBuilder();
@@ -394,16 +387,7 @@ public class Reserva {
             fechaString2=fechaFormateada2.toString();
         }
         else{
-                // Extrae el día, mes y año de la cadena
-                String dia2 = fechaStr2.substring(0, 1);
-                String mes2 = fechaStr2.substring(1, 3);
-                String año2 = fechaStr2.substring(3);
-    
-                // Formatea la fecha en el formato deseado (DD/MM/YYYY)
-                StringBuilder fechaFormateada2 = new StringBuilder();
-                fechaFormateada2.append(dia2).append("/").append(mes2).append("/").append(año2);
-                fechaString2=fechaFormateada2.toString();
-                fechaString2="0"+fechaString2;
+            System.out.println("Ingrese una fecha válida");
         }
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate fechaT1 = LocalDate.parse(fechaString1, formato);
