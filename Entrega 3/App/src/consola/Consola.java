@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 
+import alquiler.Reserva;
 import inventario.Inventario;
 import inventario.Sede;
 import usuario.Cliente;
@@ -111,6 +112,21 @@ public class Consola {
             else if (Usuario.checkLoginCliente(login, password)!=null){
                 Cliente cliente= Usuario.checkLoginCliente(login, password);
                 System.out.println("\n\t>>>Bienvenid@, "+cliente.getNombre());
+                while (continuarAdminL==true){
+                    System.out.println("1. Crear una reserva");
+                    System.out.println("2. Modificar datos de mi reserva");
+                    System.out.println("3. Cancelar reserva");
+                    System.out.println("4. Modificar mis datos");
+                    System.out.println("5. Salir de la aplicación\n");
+                    int opcion_adminL = Integer.parseInt(input("Por favor seleccione una opción"));
+                    try{
+                    boolean ensede = False
+                    if (opcion_adminL==1){Reserva.crearReserva(ensede, cliente);}
+                    //else if(opcion_adminL==2){}
+                    //else if(opcion_adminL==3){}
+                    //else if(opcion_adminL==4){}
+                    else if(opcion_adminL==5){continuarAdminL=false;}
+                    else{System.out.println("Por favor seleccione una opción válida.");}
 
 
 
