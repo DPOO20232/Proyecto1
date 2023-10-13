@@ -164,10 +164,10 @@ public class Reserva {
             if ((anio == anhoactual+1)) {
                 retorno= true;
             }
-            if ((anio == anhoactual && mes > mesactual)) {
+            else if ((anio == anhoactual && mes > mesactual)) {
                 retorno= true;
             }
-            if ((anio == anhoactual && mes == mesactual && dia > diaactual)) {
+            else if ((anio == anhoactual && mes == mesactual && dia > diaactual)) {
                 retorno= true;
             }
         } 
@@ -186,10 +186,10 @@ public class Reserva {
             if ((aniod == anioe+1)) {
                 retorno= true;
             }
-            if ((aniod == anioe && mesd > mese)) {
+            else if ((aniod == anioe && mesd > mese)) {
                 retorno= true;
             }
-            if ((aniod == anioe && mesd == mese && diad > diae)) {
+            else if ((aniod == anioe && mesd == mese && diad > diae)) {
                 retorno= true;
             }
         }

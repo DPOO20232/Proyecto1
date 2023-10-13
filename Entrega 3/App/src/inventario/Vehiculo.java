@@ -107,7 +107,7 @@ public class Vehiculo {
         else{
             for (Reserva i: this.getReservasActivas()){
                 LocalDateTime i_inicioReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaRecoger(), i.getHoraRecoger()), formatter);
-                LocalDateTime i_finReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaEntregar(), i.getHoraEntregar()), formatter);
+                LocalDateTime i_finReserva = (LocalDateTime.parse(String.format("%08d%04d",  i.getFechaEntregar(), i.getHoraEntregar()), formatter)).plusDays(1);
                 if (i_finReserva.isBefore(fhInicioReserva) || i_inicioReserva.isAfter(fhFinReserva)){
                         reservaInPeriodoReserva=true;
                         break;
