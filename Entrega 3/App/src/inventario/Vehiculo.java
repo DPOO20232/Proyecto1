@@ -11,6 +11,7 @@ import inventario.Sede;
 import inventario.Categoria;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Vehiculo {
     private  String placa;
@@ -86,28 +87,19 @@ public class Vehiculo {
     public boolean estaDisponible(int fecha1, int hora1, int fecha2, int hora2){
         boolean reservaInPeriodoReserva=false;
         boolean eventoInPeriodoReserva=false;
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-        Date fhInicioReserva= new Date();
-        Date fhFinReserva= new Date();
-        try {
-            fhInicioReserva = dateFormat.parse(String.format("%08d%04d", fecha1,hora1));
-            fhFinReserva = dateFormat.parse(String.format("%08d%04d",fecha2,hora2));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        LocalDateTime fhInicioReserva = LocalDateTime.parse(String.format("%08d%04d", fecha1, hora2), formatter);
+        LocalDateTime fhFinReserva = LocalDateTime.parse(String.format("%08d%04d", fecha1, hora2), formatter);
         int numReservasActivas=this.getReservasActivas().size();
         int numEventos=this.getHistorialEventos().size();
         if (numEventos>1){
             Evento ultimoEvento= this.getHistorialEventos().get(numEventos-1);
-            Date fhInicioEvento= new Date();
-            Date fhFinEvento= new Date();
-            try {
-                fhInicioEvento = dateFormat.parse(String.format("%08d%04d", ultimoEvento.getFechaInicio(), ultimoEvento.getHoraInicio()));
+            LocalDateTime fhInicioEvento= LocalDateTime.parse(String.format("%08d%04d", ultimoEvento.getFechaInicio(), ultimoEvento.getHoraInicio()), formatter);
+            LocalDateTime fhFinEvento= LocalDateTime.parse(String.format("%08d%04d", ultimoEvento.getFechaInicio(), ultimoEvento.getHoraInicio()), formatter);
+            
+                fhInicioEvento = dateFormat.parse(String.format("%08d%04d", , ));
                 fhFinEvento = dateFormat.parse(String.format("%08d%04d", ultimoEvento.getFechaFin(), ultimoEvento.getHoraFin()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+
             eventoInPeriodoReserva=(fhFinEvento.before(fhInicioReserva) || fhInicioEvento.after(fhFinReserva));
         }
 
