@@ -909,13 +909,13 @@ public class Inventario {
                     writer.newLine();
                     writer.write("Color: " + vehiculo.getColor());
                     writer.newLine();
-                    writer.write("Tipo de Transmisión: " + vehiculo.getTipoTransmision());
+                    writer.write("Tipo de Transmisión: " + vehiculo.getTipoTransmicion());
                     writer.newLine();
                     writer.write("Ubicación GPS: " + vehiculo.getUbicacionGPS());
                     writer.newLine();
                     writer.write("Estado: " + vehiculo.getEstado());
                     writer.newLine();
-                    writer.write("Averiado: " + vehiculo.isAveriado());
+                    writer.write("Averiado: " + vehiculo.getAveriado());
                     writer.newLine();
                     writer.write("Sede: " + vehiculo.getSede().getNombre());
                     writer.newLine();
@@ -941,7 +941,7 @@ public class Inventario {
                     if (!historialAlquiler.isEmpty()) {
                         writer.write("Historial de Alquileres:");
                         writer.newLine();
-                        for (Alquiler alquiler : historialAlquiler) {
+                        for (alquiler alquiler : historialAlquiler) {
                             writer.write("Pago Final: $" + alquiler.getPagoFinal());
                             writer.newLine();
                             writer.write("Conductores:");
