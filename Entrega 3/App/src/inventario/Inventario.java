@@ -160,16 +160,16 @@ public class Inventario {
     }
     public static void updateSeguros() throws IOException{
         File archivo = new File("./data/seguros.txt");
-        FileWriter escritor = new FileWriter(archivo);
+        FileWriter escritor2= new FileWriter(archivo);
         List<Seguro> lstseguros=listaSeguros;
         for (Seguro i: lstseguros){
             String strid = Integer.toString(i.getID());
             String strpctg_tarifadiaria = Double.toString(i.getPctg_TarifaDiaria());
             String descripcion=i.getDescripcion();
             String resultado = String.format("%s;%s;%s%n", strid, strpctg_tarifadiaria, descripcion);
-            escritor.write(resultado);
+            escritor2.write(resultado);
         }
-        escritor.close();
+        escritor2.close();
     }
     
     public static String input(String mensaje)
