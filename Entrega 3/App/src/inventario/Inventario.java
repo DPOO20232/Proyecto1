@@ -136,7 +136,7 @@ public class Inventario {
             String strid = Integer.toString(i.getID());
             String nombreSede= i.getNombre();
             String ubicacionSede= i.getUbicacion();
-            List<Integer> horarioSemana= new ArrayList<Integer>();
+            List<Integer> horarioSemana= i.getHorarioAtencionEnSemana();
             StringBuilder strhorarioSemana = new StringBuilder();
             strhorarioSemana.append("[");
             strhorarioSemana.append(horarioSemana.get(0));
@@ -144,7 +144,7 @@ public class Inventario {
             strhorarioSemana.append(horarioSemana.get(1));
             strhorarioSemana.append("]");
             strhorarioSemana.toString();
-            List<Integer> horarioFinSemana= new ArrayList<Integer>();
+            List<Integer> horarioFinSemana= i.getHorarioAtencionFinSemana();
             StringBuilder strhorarioFinSemana = new StringBuilder();
             strhorarioFinSemana.append("[");
             strhorarioFinSemana.append(horarioFinSemana.get(0));
@@ -157,6 +157,19 @@ public class Inventario {
         }
         escritor.close();
         //cambios
+    }
+    public static void updateSeguros() throws IOException{
+        File archivo = new File("./data/seguros.txt");
+        FileWriter escritor = new FileWriter(archivo);
+        List<Seguro> lstseguros=listaSeguros;
+        for (Seguro i: lstseguros){
+            String strid = Integer.toString(i.getID());
+            String strpctg_tarifadiaria = Double.toString(i.getPctg_TarifaDiaria());
+            String descripcion=i.getDescripcion();
+            String resultado = String.format("%s;%s;%s%n", strid, strpctg_tarifadiaria, descripcion);
+            escritor.write(resultado);
+        }
+        escritor.close();
     }
     
     public static String input(String mensaje)
