@@ -221,7 +221,10 @@ public class Inventario {
                 idsevento.append(IdEvento);
                 idsevento.append(",");
             }
-            idsevento.setLength(idsevento.length() - 1);
+            if (idsevento.length()>=3){
+                 idsevento.setLength(idsevento.length() - 1);
+            }
+           
             idsevento.append("]");
             String lstidEvento=idsevento.toString();
             List<Reserva> stringIDsReservasActivas=i.getReservasActivas();
@@ -232,7 +235,9 @@ public class Inventario {
                 idsReserva.append(IdReserva);
                 idsReserva.append(",");
             }
-            idsReserva.setLength(idsReserva.length() - 1);
+            if (idsReserva.length()>=3){
+                 idsevento.setLength(idsReserva.length() - 1);
+            }
             idsReserva.append("]");
             String lstidReserva=idsReserva.toString();
             List<alquiler> stringIDsAlquileres=i.getHistorialAlquileres();
@@ -243,7 +248,9 @@ public class Inventario {
                 idsAlquiler.append(IdAlquiler);
                 idsAlquiler.append(",");
             }
-            idsAlquiler.setLength(idsAlquiler.length() - 1);
+            if (idsAlquiler.length()>=3){
+                 idsAlquiler.setLength(idsAlquiler.length() - 1);
+            }
             idsAlquiler.append("]");
             String lstidAlquiler=idsAlquiler.toString();
             String resultado = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s%n", placa, marca, modelo, color, tipo_trasmicion, estado, averiado,strid_categoria, id_sede, lstidEvento, lstidReserva,lstidAlquiler);
