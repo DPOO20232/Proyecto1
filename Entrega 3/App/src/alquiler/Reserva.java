@@ -2,7 +2,6 @@ package alquiler;
 import java.util.ArrayList;
 import java.util.List;
 import inventario.Categoria;
-import inventario.Evento;
 import inventario.Inventario;
 import inventario.Vehiculo;
 import usuario.Cliente;
@@ -124,7 +123,7 @@ public class Reserva {
 
     public static void crearReserva(Cliente cliente, boolean reservaEnSede){
         //reservaEnSede es true cuando la hace el personal de atencion
-            System.out.println("\n¡Bienvenido a nuestro sistema de reservas!");
+        System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
         try { 
             boolean continuar=true;
             while(continuar){
@@ -261,6 +260,11 @@ public class Reserva {
     
     public static void modificarReserva(Cliente cliente){
         Reserva reservaPorModificar=encontrarReserva(cliente);
+        //Se desasigna el vehículo dado que caulquier modificacion puede alterar su disponibilidad
+        Vehiculo vehiculoActual= reservaPorModificar.getVehiculoAsignado();
+        reservaPorModificar.vehiculoAsignado=null;
+        vehiculoActual.eliminarReservaActiva(reservaPorModificar.getID());
+        //Se realiza una copia de la reserva en caso de que el usuario no complete la modificación de la reserva
         Reserva copiaReserva= new Reserva(reservaPorModificar.getID(),reservaPorModificar.getFechaRecoger(),reservaPorModificar.getFechaEntregar(),reservaPorModificar.getHoraRecoger(),reservaPorModificar.getHoraEntregar(),reservaPorModificar.getReservaEnSede(),reservaPorModificar.getSedeRecoger(),reservaPorModificar.getSedeEntregar(),reservaPorModificar.getCategoria(),reservaPorModificar.getCliente());
         boolean encontroNuevoCarro=false;
         try{
