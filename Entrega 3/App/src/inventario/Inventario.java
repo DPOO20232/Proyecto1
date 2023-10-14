@@ -91,7 +91,6 @@ public class Inventario {
     public static List<Sede> getListaSedes(){return listaSedes;}
     public static List<Evento> getListaEventos(){return listaEventos;}
     public static List<Vehiculo> getListaVehiculos(){return listaVehiculos;}
-    
     public static void updateSistema() throws IOException{
     //updateInfo();
     updateCategorias();
@@ -101,6 +100,41 @@ public class Inventario {
     updateVehiculo();
     updateAlquiler();
     updateCliente();
+    }
+    public static void updateInfo() throws IOException{
+        File archivo = new File("./data/info.txt");
+        FileWriter escritor = new FileWriter(archivo);
+        String nombrecompania=nombreCompania;
+        String costoConductor=Integer.toString(costoPorConductorAdicional);
+        String costoTraslado=Integer.toString(costoPorTrasladoSedes);
+        List<Integer> periodoBaja=periodoTemporadaBaja;
+        StringBuilder temporadaBaja=new StringBuilder();
+        temporadaBaja.append("[");
+        for (Integer i: periodoBaja){
+            temporadaBaja.append(Integer.toString(i));
+            temporadaBaja.append(",");
+        }
+        if (temporadaBaja.length()>=3){
+                 temporadaBaja.setLength(temporadaBaja.length() - 1);
+            }
+        temporadaBaja.append("]");
+        String PeriodoTempBaja=temporadaBaja.toString();
+        List<Integer> periodoAlta=periodoTemporadaAlta;
+        StringBuilder temporadaAlta=new StringBuilder();
+        temporadaAlta.append("[");
+        for (Integer i: periodoAlta){
+            temporadaAlta.append(Integer.toString(i));
+            temporadaAlta.append(",");
+        }
+        if (temporadaAlta.length()>=3){
+                 temporadaAlta.setLength(temporadaAlta.length() - 1);
+            }
+        temporadaAlta.append("]");
+        String PeriodoTempAlta= temporadaAlta.toString();
+        String resultado = String.format("%s;%s%n%s;%s%n%s;%s%n%s;%s%n%s;%s%n", "nombreCompania", nombrecompania, "costoPorConductorAdicional", costoConductor, "costoPorTrasladoSedes", costoTraslado, "periodoTemporadaBaja", PeriodoTempBaja, "periodoTemporadaAlta", PeriodoTempAlta);
+        escritor.write(resultado);
+        escritor.close();
+
     }
     public static void updateCategorias() throws IOException{
         File archivo = new File("./data/categorias.txt");
