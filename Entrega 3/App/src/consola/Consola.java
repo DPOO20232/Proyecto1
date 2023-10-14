@@ -116,31 +116,31 @@ public class Consola {
                     System.out.println("6. Cerrar sesión\n");
                     int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
-                    if (opcion_empleadoA==1){
-                        int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
-                        Cliente reservante=Usuario.assignCliente(cedulaCliente);
-                        if(reservante!=null){
-                            //Alquiler.crearAlquiler(reservante);
+                        if (opcion_empleadoA==1){
+                            int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
+                            Cliente reservante=Usuario.assignCliente(cedulaCliente);
+                            if(reservante!=null){
+                                //Alquiler.crearAlquiler(reservante);
+                            }
+                            else{
+                                System.out.println("No fue posible hallar al cliente");
+                            }
                         }
-                        else{
-                            System.out.println("No fue posible hallar al cliente");
+                        else if(opcion_empleadoA==2){}
+                        else if(opcion_empleadoA==3){
+                            int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
+                            Cliente reservante=Usuario.assignCliente(cedulaCliente);
+                            if(reservante!=null){
+                                Reserva.crearReserva(reservante, true);
+                            }
+                            else{
+                                System.out.println("No fue posible hallar al cliente");
+                            }
                         }
-                    }
-                    else if(opcion_empleadoA==2){}
-                    else if(opcion_empleadoA==3){
-                        int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
-                        Cliente reservante=Usuario.assignCliente(cedulaCliente);
-                        if(reservante!=null){
-                            Reserva.crearReserva(reservante, true);
-                        }
-                        else{
-                            System.out.println("No fue posible hallar al cliente");
-                        }
-                    }
-                    else if(opcion_empleadoA==4){}
-                    else if(opcion_empleadoA==5){}
-                    else if(opcion_empleadoA==6){continuarPersonal1=false;}
-                    else{System.out.println("Por favor seleccione una opción válida.");}
+                        else if(opcion_empleadoA==4){}
+                        else if(opcion_empleadoA==5){}
+                        else if(opcion_empleadoA==6){continuarPersonal1=false;}
+                        else{System.out.println("Por favor seleccione una opción válida.");}
                     } catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}
                     }
                 }
@@ -198,7 +198,7 @@ public class Consola {
                         cliente.setPassword(nueva_contraseña);}
                     if (opcion_cliente==2){cliente.actualizarCliente();}
                     else if(opcion_cliente==3){Reserva.crearReserva(cliente,false);}
-                    else if(opcion_cliente==4){}
+                    else if(opcion_cliente==4){Reserva.modificarReserva(cliente);}
                     else if(opcion_cliente==5){}
                     else if(opcion_cliente==6){continuarCliente=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}

@@ -97,9 +97,10 @@ public class Reserva {
                     esUpgrade=false;
                     break;}}
                 else if(encontreUpgrade==false && i.getCategoria().getID()==categoriaPadre && i.getSede().getID()==this.getSedeRecoger().getID()){
+                    if(i.estaDisponible(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar)){
                     vehiculoAsignado=i;
                     encontreUpgrade=true;
-                }
+                }}
             }
         if ((vehiculoAsignado!=null)&&(esUpgrade==false)){
             vehiculoAsignado.addReservaActiva(this);
@@ -117,8 +118,18 @@ public class Reserva {
         Categoria categoria=this.getCategoria();
         int tarifa=categoria.getTarifaDiaria();
         int dias=this.calcularDuracionRenta(fecha1,hora1,fecha2,hora2);
-        double precio= dias*tarifa*0.3;
-        this.pagoReserva= precio;
+        //TODO VERIFICAR TEMPORADA ALTA Y TEMPORADA BAJA
+        double precio_inicial= dias*tarifa*0.3;
+        double pctg_temporada=1;
+        //int mmdd = fechaCompleta % 10000;
+        int mmdd1=fecha1%10000;
+        int mmdd2=fecha2%10000;
+        boolean esTempAlta=Inventario.esTemporadaAlta(mmdd1,mmdd2);
+        boolean esTempBaja=Inventario.esTemporadaBaja(mmdd1,mmdd2);
+        if(esTempAlta){pctg_temporada=categoria.getPctg_temporadaAlta();}
+        else if(esTempBaja){pctg_temporada=categoria.getPctg_temporadaBaja();}
+        double precio_final=precio_inicial*pctg_temporada;
+        this.pagoReserva= precio_final;
     }
 
     public static void crearReserva(Cliente cliente, boolean reservaEnSede){
@@ -183,11 +194,10 @@ public class Reserva {
                     reserva_u.setVehiculoAsignado();
                     if (reserva_u.getVehiculoAsignado()!=null){
                         boolean continuar5=true;
-                        System.out.println("> Encontramos un vehículo para tí!");
+                        System.out.println("\n>Encontramos un vehículo para tí!");
                         while(continuar5){
                         int numTarjeta = Integer.parseInt(input("Para debitar el 30% del alquiler de su cuenta, por favor ingrese los últimos 4 dígitos de la tarjeta que tiene registrada"));
                         if (numTarjeta== (cliente.getTarjeta().getNumeroTarjeta())%10000){
-                        addReserva(reserva_u);
                         reserva_u.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar );
                         System.out.println(">Se debitaron $"+ Double.toString(reserva_u.getPagoReserva())+".");
                         System.out.println(">Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_u.getID()));
@@ -261,14 +271,17 @@ public class Reserva {
     public static void modificarReserva(Cliente cliente){
         Reserva reservaPorModificar=encontrarReserva(cliente);
         //Se desasigna el vehículo dado que caulquier modificacion puede alterar su disponibilidad
-        Vehiculo vehiculoActual= reservaPorModificar.getVehiculoAsignado();
-        reservaPorModificar.vehiculoAsignado=null;
-        vehiculoActual.eliminarReservaActiva(reservaPorModificar.getID());
-        //Se realiza una copia de la reserva en caso de que el usuario no complete la modificación de la reserva
-        Reserva copiaReserva= new Reserva(reservaPorModificar.getID(),reservaPorModificar.getFechaRecoger(),reservaPorModificar.getFechaEntregar(),reservaPorModificar.getHoraRecoger(),reservaPorModificar.getHoraEntregar(),reservaPorModificar.getReservaEnSede(),reservaPorModificar.getSedeRecoger(),reservaPorModificar.getSedeEntregar(),reservaPorModificar.getCategoria(),reservaPorModificar.getCliente());
-        boolean encontroNuevoCarro=false;
+        //Al vehiculo se le desasigna la reserva
+        //Se elimina la reserva de la lista de reservas general
         try{
         if(reservaPorModificar!=null){
+            Vehiculo vehiculoActual= reservaPorModificar.getVehiculoAsignado();
+            reservaPorModificar.vehiculoAsignado=null;
+            vehiculoActual.eliminarReservaActiva(reservaPorModificar.getID());
+            listaReservas.remove(reservaPorModificar);
+            //Se realiza una copia de la reserva en caso de que el usuario no complete la modificación de la reserva
+            Reserva copiaReserva= new Reserva(reservaPorModificar.getID(),reservaPorModificar.getFechaRecoger(),reservaPorModificar.getFechaEntregar(),reservaPorModificar.getHoraRecoger(),reservaPorModificar.getHoraEntregar(),reservaPorModificar.getReservaEnSede(),reservaPorModificar.getSedeRecoger(),reservaPorModificar.getSedeEntregar(),reservaPorModificar.getCategoria(),reservaPorModificar.getCliente());
+            boolean encontroNuevoCarro=false;
             boolean continuar=true;
             while(continuar){
             Sede sedeRecoger=reservaPorModificar.getSedeRecoger();
@@ -384,6 +397,7 @@ public class Reserva {
                 reservaPorModificar.setVehiculoAsignado();
                 System.out.println("\n>Categoría actualizada.");
                 if(reservaPorModificar.getVehiculoAsignado()!=null){
+                    addReserva(reservaPorModificar);
                     encontroNuevoCarro=true;
                 }
 
@@ -422,12 +436,18 @@ public class Reserva {
             continuar2=false;
             reservaPorModificar=new Reserva(copiaReserva.getID(),copiaReserva.getFechaRecoger(),copiaReserva.getFechaEntregar(),copiaReserva.getHoraRecoger(),copiaReserva.getHoraEntregar(),copiaReserva.getReservaEnSede(),copiaReserva.getSedeRecoger(),copiaReserva.getSedeEntregar(),copiaReserva.getCategoria(),copiaReserva.getCliente());;
         System.out.println("\n>No se pudo completar la modificación de la reserva, por lo que los cambios realizados no se reflejarán en la reserva.\n");
+        addReserva(reservaPorModificar);
+        reservaPorModificar.vehiculoAsignado= copiaReserva.getVehiculoAsignado();
+        reservaPorModificar.vehiculoAsignado.addReservaActiva(reservaPorModificar);
         }
         }
         }}
         else{
         System.out.println("\n>No se encontró un vehículo disponible para las nuevas modificaciones, intente modificar la reserva con modificaciones disntintas.\n");
         reservaPorModificar=new Reserva(copiaReserva.getID(),copiaReserva.getFechaRecoger(),copiaReserva.getFechaEntregar(),copiaReserva.getHoraRecoger(),copiaReserva.getHoraEntregar(),copiaReserva.getReservaEnSede(),copiaReserva.getSedeRecoger(),copiaReserva.getSedeEntregar(),copiaReserva.getCategoria(),copiaReserva.getCliente());;
+        addReserva(reservaPorModificar);
+        reservaPorModificar.vehiculoAsignado= copiaReserva.getVehiculoAsignado();
+        reservaPorModificar.vehiculoAsignado.addReservaActiva(reservaPorModificar);
         }
 
             
@@ -461,10 +481,14 @@ public class Reserva {
     public static List<Integer> desplegarReservasActivas(Cliente cliente){
         List<Reserva> reservas= getListaReservas();
         List<Integer> idsReservas= new ArrayList<Integer>();
+        boolean inicio=false;
         if (reservas.size()>0){
-        System.out.println("Tiene las siguientes Reservas activas:");
         for (int i = 0; i < reservas.size(); i++) {
             if (reservas.get(i).getCliente().equals(cliente)){
+            if (inicio==false){
+                System.out.println("Tiene las siguientes Reservas activas:");
+                inicio=true;
+            }
             Reserva i_reserva=reservas.get(i);
             idsReservas.add(i_reserva.getID());
             System.out.println("IDreserva: " + Integer.toString(i_reserva.getID()));
@@ -476,7 +500,7 @@ public class Reserva {
             System.out.println(" Tipo de vehículo reservado: "+ categoria+ ". Fecha Inicio: " + fecha1+"-> Fecha Final: "+ fecha2);
             System.out.println("------------------------------------------------------------------------------------------------------------");
             }}}
-            else{ System.out.println("\n>No tiene reservas activas ");}
+            else if (inicio==false){ System.out.println("\n>No tiene reservas activas ");}
             return idsReservas;
     }
 
