@@ -5,6 +5,7 @@ import alquiler.alquiler;
 import alquiler.Reserva;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Vehiculo {
     private  String placa;
@@ -79,6 +80,7 @@ public class Vehiculo {
         }}
 
     public boolean estaDisponible(int fecha1, int hora1, int fecha2, int hora2){
+        try{
         boolean reservaInPeriodoReserva=false;
         boolean eventoInPeriodoReserva=false;
         DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyyMMddHHmm");
@@ -90,8 +92,8 @@ public class Vehiculo {
         else{
             for (Evento i: this.getHistorialEventos()){
             LocalDateTime fhInicioEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaInicio(), i.getHoraInicio()), formatter);
-            LocalDateTime fhFinEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaInicio(), i.getHoraInicio()), formatter);
-            if (!fhFinEvento.isBefore(fhInicioReserva) || fhInicioEvento.isAfter(fhFinReserva)){
+            LocalDateTime fhFinEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaFin(), i.getHoraFin()), formatter);
+            if (!fhFinEvento.isBefore(fhInicioReserva) && !fhInicioEvento.isAfter(fhFinReserva)) {
                 eventoInPeriodoReserva=true;
                 break;
             }
@@ -105,10 +107,10 @@ public class Vehiculo {
                 //A i_finReserva se le suma 1 para prevenir el periodo de 24h en el que el vehículo será EnLimpieza
                 LocalDateTime i_inicioReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaRecoger(), i.getHoraRecoger()), formatter);
                 LocalDateTime i_finReserva = (LocalDateTime.parse(String.format("%08d%04d",  i.getFechaEntregar(), i.getHoraEntregar()), formatter)).plusDays(1);
-                if (!i_finReserva.isBefore(fhInicioReserva) || i_inicioReserva.isAfter(fhFinReserva)){
+                if (!i_finReserva.isBefore(fhInicioReserva) && !i_inicioReserva.isAfter(fhFinReserva)) {
                         reservaInPeriodoReserva=true;
                         break;
-                    }
+                }
             }
         }
         if ((reservaInPeriodoReserva==false) && (eventoInPeriodoReserva==false)){
@@ -117,5 +119,9 @@ public class Vehiculo {
         else{
             return false;
         }
+    }catch(DateTimeParseException e){
+        System.out.println("\n>Se presentó un error al verificar la disponibilidad");
+        return false;
+    }
     }
 }
