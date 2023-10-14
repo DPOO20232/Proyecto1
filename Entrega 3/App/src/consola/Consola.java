@@ -112,23 +112,30 @@ public class Consola {
                     System.out.println("2. Modificar un alquiler: ");
                     System.out.println("3. Registrar una reserva: ");
                     System.out.println("4. Registrar evento de un vehículo: ");
-                    System.out.println("5. Registrar un conductor adicional a un alquiler: ");
                     System.out.println("6. Cerrar sesión\n");
                     int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
-                    if (opcion_empleadoA==1){}
-                    else if(opcion_empleadoA==2){}
-                    else if(opcion_empleadoA==3){
-                        boolean buscandoCliente=true;
-                        while(buscandoCliente){
+                    if (opcion_empleadoA==1){
                         int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
-                        List<Cliente> clientes = Usuario.getListaClientes();
                         Cliente reservante=Usuario.assignCliente(cedulaCliente);
                         if(reservante!=null){
-                            buscandoCliente=false;
+                            //Alquiler.crearAlquiler(reservante);
+                        }
+                        else{
+                            System.out.println("No fue posible hallar al cliente");
+                        }
+                    }
+                    else if(opcion_empleadoA==2){}
+                    else if(opcion_empleadoA==3){
+                        int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
+                        Cliente reservante=Usuario.assignCliente(cedulaCliente);
+                        if(reservante!=null){
                             Reserva.crearReserva(reservante, true);
                         }
-                    }}
+                        else{
+                            System.out.println("No fue posible hallar al cliente");
+                        }
+                    }
                     else if(opcion_empleadoA==4){}
                     else if(opcion_empleadoA==5){}
                     else if(opcion_empleadoA==6){continuarPersonal1=false;}
