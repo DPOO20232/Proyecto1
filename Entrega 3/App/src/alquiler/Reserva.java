@@ -115,11 +115,10 @@ public class Reserva {
         pagoReserva = pago;
     }
         public void setPagoReserva(int fecha1, int hora1, int fecha2, int hora2) {
-        // Lógica para estimar el pago de alquiler
         Categoria categoria=this.getCategoria();
         int tarifa=categoria.getTarifaDiaria();
         int dias=this.calcularDuracionRenta(fecha1,hora1,fecha2,hora2);
-        int precio= dias*tarifa;
+        double precio= dias*tarifa*0.3;
         this.pagoReserva= precio;
     }
 

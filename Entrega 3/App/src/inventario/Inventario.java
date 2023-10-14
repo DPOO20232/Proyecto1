@@ -100,6 +100,7 @@ public class Inventario {
     updateReserva();
     updateVehiculo();
     updateAlquiler();
+    updateCliente();
     }
     public static void updateCategorias() throws IOException{
         File archivo = new File("./data/categorias.txt");
