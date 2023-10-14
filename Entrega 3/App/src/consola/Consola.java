@@ -113,33 +113,30 @@ public class Consola {
                     System.out.println("2. Modificar un alquiler: ");
                     System.out.println("3. Registrar una reserva: ");
                     System.out.println("4. Registrar evento de un vehículo: ");
-                    System.out.println("5. Registrar un conductor adicional a un alquiler: ");
                     System.out.println("6. Cerrar sesión\n");
                     int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
                     if (opcion_empleadoA==1){
-                        int cedula = Integer.parseInt(input("Ingrese la cédula del cliente"));
-                        reservasdelCliente= new ArrayList<Reserva>();
-                        for(Reserva i: getListaReservas()){
-                            if(cedula == i.getCliente().getNumeroCedula()){
-                                reservasdelCliente.add(i)
-                            }
+                        int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
+                        Cliente reservante=Usuario.assignCliente(cedulaCliente);
+                        if(reservante!=null){
+                            //Alquiler.crearAlquiler(reservante);
                         }
-                        alquiler.crearAlquiler(reservasdelCliente)
+                        else{
+                            System.out.println("No fue posible hallar al cliente");
                         }
                     }
                     else if(opcion_empleadoA==2){}
                     else if(opcion_empleadoA==3){
-                        boolean buscandoCliente=true;
-                        while(buscandoCliente){
                         int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
-                        List<Cliente> clientes = Usuario.getListaClientes();
                         Cliente reservante=Usuario.assignCliente(cedulaCliente);
                         if(reservante!=null){
-                            buscandoCliente=false;
                             Reserva.crearReserva(reservante, true);
                         }
-                    }}
+                        else{
+                            System.out.println("No fue posible hallar al cliente");
+                        }
+                    }
                     else if(opcion_empleadoA==4){}
                     else if(opcion_empleadoA==5){}
                     else if(opcion_empleadoA==6){continuarPersonal1=false;}
@@ -159,15 +156,19 @@ public class Consola {
 
                         try {
                             if (opcion_empleadoT==1){
-                                System.out.println("\nIngresa que se va a realizar en el vehículo\n");
+                                List<Vehiculo> vehiculos = Inventario.getListaVehiculos();
+                                String placa = input("\nIngrese la placa del vehículo al que le asignará un nuevo estado");
+                                System.out.println("Ingrese que se va a realizar en el vehículo\n");
                                 System.out.println("1. Lavado");
                                 System.out.println("2. Mantenimiento");
                                 int opcion_empleadoT2 = Integer.parseInt(input("Por favor seleccione una opción"));
-                                if(opcion_empleadoT2==1){String descripcion = "En Lavado";}
-                                else if(opcion_empleadoT2==2){String descripcion = "En Mantenimiento";}
-                                String placa = input("Ingrese la placa del vehículo");
-                                List<Vehiculo> vehiculos = Inventario.getListaVehiculos()
-                                Evento.crearEvento(descripcion, placa, vehiculos);
+                                if(opcion_empleadoT2==1){String descripcion = "En Lavado";
+                                    Evento.crearEvento(descripcion, placa, vehiculos);
+                                }
+                                else if(opcion_empleadoT2==2){String descripcion = "En Mantenimiento";
+                                    Evento.crearEvento(descripcion, placa, vehiculos);
+                                }
+                                else{System.out.println("\n>Por favor seleccione una opción válida.");}
                                
                             }
                             else if(opcion_empleadoT==2){continuarPersonal2=false;}
@@ -197,7 +198,7 @@ public class Consola {
                         cliente.setPassword(nueva_contraseña);}
                     if (opcion_cliente==2){cliente.actualizarCliente();}
                     else if(opcion_cliente==3){Reserva.crearReserva(cliente,false);}
-                    else if(opcion_cliente==4){}
+                    else if(opcion_cliente==4){Reserva.modificarReserva(cliente);}
                     else if(opcion_cliente==5){}
                     else if(opcion_cliente==6){continuarCliente=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}

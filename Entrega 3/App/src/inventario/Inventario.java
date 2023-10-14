@@ -55,6 +55,14 @@ public class Inventario {
     public static int getCostoPorTrasladoSedes(){return costoPorTrasladoSedes;}
     public static List<Integer> getPeriodoTemporadaAlta(){return periodoTemporadaAlta;}
     public static List<Integer> getPeriodoTemporadaBaja(){return periodoTemporadaBaja;}
+    public static boolean esTemporadaAlta(int mmdd1, int mmdd2){
+        return (mmdd1 < getPeriodoTemporadaAlta().get(0) && mmdd2 > getPeriodoTemporadaAlta().get(0)) ||
+                (mmdd1 > getPeriodoTemporadaAlta().get(0) && mmdd1 < getPeriodoTemporadaAlta().get(1));
+    }
+    public static boolean esTemporadaBaja(int mmdd1, int mmdd2){
+        return (mmdd1 < getPeriodoTemporadaBaja().get(0) && mmdd2 > getPeriodoTemporadaBaja().get(0)) ||
+                (mmdd1 > getPeriodoTemporadaBaja().get(0) && mmdd1 < getPeriodoTemporadaBaja().get(1));
+    }
     public static void setCostoPorConductorAdicional(){
         try{
             int costo= Integer.parseInt(input("Ingrese el nuevo costo diario por conductor adicional"));
@@ -91,16 +99,52 @@ public class Inventario {
     public static List<Sede> getListaSedes(){return listaSedes;}
     public static List<Evento> getListaEventos(){return listaEventos;}
     public static List<Vehiculo> getListaVehiculos(){return listaVehiculos;}
-    
     public static void updateSistema() throws IOException{
-    //updateInfo();
+    updateInfo();
     updateCategorias();
     updateSedes();
+    updatePersonal();
     updateSeguros();
+    updateLicencia();
     updateReserva();
     updateVehiculo();
     updateAlquiler();
     updateCliente();
+    }
+    public static void updateInfo() throws IOException{
+        File archivo = new File("./data/info.txt");
+        FileWriter escritor = new FileWriter(archivo);
+        String nombrecompania=nombreCompania;
+        String costoConductor=Integer.toString(costoPorConductorAdicional);
+        String costoTraslado=Integer.toString(costoPorTrasladoSedes);
+        List<Integer> periodoBaja=periodoTemporadaBaja;
+        StringBuilder temporadaBaja=new StringBuilder();
+        temporadaBaja.append("[");
+        for (Integer i: periodoBaja){
+            temporadaBaja.append(Integer.toString(i));
+            temporadaBaja.append(",");
+        }
+        if (temporadaBaja.length()>=3){
+                 temporadaBaja.setLength(temporadaBaja.length() - 1);
+            }
+        temporadaBaja.append("]");
+        String PeriodoTempBaja=temporadaBaja.toString();
+        List<Integer> periodoAlta=periodoTemporadaAlta;
+        StringBuilder temporadaAlta=new StringBuilder();
+        temporadaAlta.append("[");
+        for (Integer i: periodoAlta){
+            temporadaAlta.append(Integer.toString(i));
+            temporadaAlta.append(",");
+        }
+        if (temporadaAlta.length()>=3){
+                 temporadaAlta.setLength(temporadaAlta.length() - 1);
+            }
+        temporadaAlta.append("]");
+        String PeriodoTempAlta= temporadaAlta.toString();
+        String resultado = String.format("%s;%s%n%s;%s%n%s;%s%n%s;%s%n%s;%s%n", "nombreCompania", nombrecompania, "costoPorConductorAdicional", costoConductor, "costoPorTrasladoSedes", costoTraslado, "periodoTemporadaBaja", PeriodoTempBaja, "periodoTemporadaAlta", PeriodoTempAlta);
+        escritor.write(resultado);
+        escritor.close();
+
     }
     public static void updateCategorias() throws IOException{
         File archivo = new File("./data/categorias.txt");
@@ -162,6 +206,22 @@ public class Inventario {
         escritor.close();
       
     }
+    public static void updatePersonal() throws IOException{
+        File archivo = new File("./data/seguros.txt");
+        FileWriter escritor2= new FileWriter(archivo);
+        List<personal> lstpersonal= personal.getCredencialesPersonal();
+        for (personal i: lstpersonal){
+            String login=i.getLogin();
+            String password=i.getPassword();
+            Sede sede=i.getSede();
+            String idSede=Integer.toString(sede.getID());
+            String tipoPersonal=i.getTipoPersonal();
+            String resultado = String.format("%s;%s;%s;%s%n",login, password, idSede, tipoPersonal);
+            escritor2.write(resultado);
+
+        }
+        escritor2.close();
+    }
     public static void updateSeguros() throws IOException{
         File archivo = new File("./data/seguros.txt");
         FileWriter escritor2= new FileWriter(archivo);
@@ -174,6 +234,20 @@ public class Inventario {
             escritor2.write(resultado);
         }
         escritor2.close();
+    }
+    public static void updateLicencia() throws IOException{
+        File archivo = new File("./data/licencias.txt");
+        FileWriter escritor= new FileWriter(archivo);
+        List<Licencia> lstlicencia=Usuario.getListaLicencias();
+        for (Licencia i: lstlicencia){
+            String numLicencia=Integer.toString(i.getNumeroLicencia());
+            String fechaExpedicion= Integer.toString(i.getFechaExpedicion());
+            String fechaVencimiento=Integer.toString(i.getFechaVencimiento());
+            String paisExpedicion=i.getPaisExpedicion();
+            String resultado = String.format("%s;%s;%s;%s%n", numLicencia, fechaExpedicion, fechaVencimiento, paisExpedicion);
+            escritor.write(resultado);
+        }
+        escritor.close();
     }
     public static void updateReserva() throws IOException{
         File archivo = new File("./data/reservas.txt");

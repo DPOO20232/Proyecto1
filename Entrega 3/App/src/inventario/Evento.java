@@ -1,5 +1,12 @@
 package inventario;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.List;
+
+import alquiler.Reserva;
+
 public class Evento {
     
     private int idEvento;
@@ -73,27 +80,42 @@ public class Evento {
         this.descripcion = descripcion;
     }
 
-    public static crearEvento(String descripcion, String placa, List<Vehiculo> vehiculos) {
+    public static void crearEvento(String descripcion, String placa, List<Vehiculo> vehiculos) {
         System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
         try { 
             boolean continuar=true;
             while(continuar){
                 int finicio = Integer.parseInt(input("Por favor ingrese la fecha en la que tendrá inicio el evento(en formato aaaammdd)"));
                 int ffinal = Integer.parseInt(input("Por favor ingrese la fecha en la que finalizará el evento(en formato aaaammdd)"));
-                int hinicio = Integer.parseInt(input("Ingrese la hora en la que tendrá inicio el evento(en formato hhmm)"));
-                int hfinal = Integer.parseInt(input("Ingrese la hora en la que finalizará el evento(en formato hhmm)"));
+                int hinicio = Integer.parseInt(input("Ingrese la hora en la que tendrá inicio el evento(en formato 24h de tipo hhmm)"));
+                int hfinal = Integer.parseInt(input("Ingrese la hora en la que finalizará el evento(en formato 24h de tipo hhmm)"));
                 boolean horaVinicio= Reserva.horaValida(hinicio);
                 boolean horaVfin = Reserva.horaValida(hfinal);
                 if(horaVinicio&&horaVfin){
-                    Evento evento = new Evento(finicio, ffinal, hinicio, hfinal, descripcion)
+                    Evento evento = new Evento(finicio, ffinal, hinicio, hfinal, descripcion);
                     for (Vehiculo vehiculo : vehiculos) {
                         if (vehiculo.getPlaca().equals(placa)) {
-                            vehiculo.addEvento(evento)
+                            vehiculo.addEvento(evento);
                         } else {System.out.println(">No se pudo encontrar el vehículo que buscas.");}
                     }
                 } else {System.out.println(">Las horas ingresadas no son válidas. Por favor, inténtelo nuevamente.");}
             }
-        }
+        }catch(NumberFormatException e){System.out.println("\n>Ingrese los datos requeridos en el formato especificado");}
+    }
+        public static String input(String mensaje)
+	{
+		try
+		{
+			System.out.print(mensaje + ": ");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+			return reader.readLine();
+		}
+		catch (IOException e)
+		{
+			System.out.println("Error leyendo de la consola");
+			e.printStackTrace();
+		}
+		return null;
     }
 
 }
