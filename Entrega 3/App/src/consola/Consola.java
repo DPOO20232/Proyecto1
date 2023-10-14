@@ -123,9 +123,10 @@ public class Consola {
                             else if(opcion_empleadoA==3){
                                 String nombreCliente = input("Ingrese el nombre del cliente");
                                 List<Cliente> clientes = Usuario.getListaClientes();
+                                Cliente reservante=null;
                                 for (Cliente cliente : clientes) {
                                     if (cliente.getNombre().equals(nombreCliente)) {
-                                        Cliente reservante = cliente
+                                        reservante = cliente;
                                     }
                                 }
                                 Reserva.crearReserva(reservante, ensede);
@@ -140,10 +141,12 @@ public class Consola {
                 else {
                     System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área técnica!");
                     boolean continuarPersonal2=true;
-                    while (continuarPersonal1==true){
+                    while (continuarPersonal2==true){
                         System.out.println("\nDijita la opción que necesitas\n");
                         System.out.println("1. Actualizar estado de un vehículo: ");
                         System.out.println("2. Cerrar sesión\n");
+                        int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
+
                         try {
                             if (opcion_empleadoA==1){
                                 String placa = input("Ingrese la placa del vehículo");
