@@ -117,7 +117,17 @@ public class Consola {
                     System.out.println("6. Cerrar sesión\n");
                     int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
-                    if (opcion_empleadoA==1){}
+                    if (opcion_empleadoA==1){
+                        int cedula = Integer.parseInt(input("Ingrese la cédula del cliente"));
+                        reservasdelCliente= new ArrayList<Reserva>();
+                        for(Reserva i: getListaReservas()){
+                            if(cedula == i.getCliente().getNumeroCedula()){
+                                reservasdelCliente.add(i)
+                            }
+                        }
+                        alquiler.crearAlquiler(reservasdelCliente)
+                        }
+                    }
                     else if(opcion_empleadoA==2){}
                     else if(opcion_empleadoA==3){
                         boolean buscandoCliente=true;

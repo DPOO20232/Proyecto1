@@ -1,6 +1,7 @@
 package alquiler;
 import java.util.ArrayList;
 import inventario.Seguro;
+import inventario.Vehiculo;
 import usuario.Conductor;
 
 public class alquiler{
@@ -11,6 +12,7 @@ public class alquiler{
     private ArrayList<Seguro> seguros;
     private ArrayList<PagoExcedente> pagosExcedentes;
     private static ArrayList<alquiler> listaAlquileres;
+
     public alquiler(Reserva reserva){
         this.idAlquiler= reserva.getID();
         this.pagoFinal=-1;
@@ -71,4 +73,39 @@ public class alquiler{
             }}
         return retorno;
     }
+
+
+
+    public static crearAlquiler(List<Reserva>reservas){
+        if (!reservas.isEmpty()){
+            System.out.println("Reserva/s activa/s del cliente: ");
+            for(Reserva i: reservas){
+                //id,categoria,fechae,horae,sedeentregar,precio
+                int idreseva = i.getID();
+                String categoria = i.getCategoria().getnombreCategoria();
+                int fechaRecoger = i.getFechaRecoger();
+                int fechaEntregar = i.getFechaEntregar();
+                int horaRecoger = i.getHoraRecoger();
+                int horaEntregar = i.getHoraEntregar();
+                String sedeEntrega = i.getSedeEntregar().getNombre();
+                String sedeRecoger = i.getSedeRecoger().getNombre();
+                double pago = i.getPagoReserva();
+                System.out.println("ID de la reserva: " + idreseva);
+                System.out.println("Categoría: " + categoria);
+                System.out.println("Fecha y Hora de entrega: " + fechaRecoger + ", " + horaRecoger);
+                System.out.println("Fecha y Hora de devolución: "+ fechaEntregar + ", " + horaEntregar);
+                System.out.println("Sede de entrega: " + sedeRecoger) ;
+                System.out.println("Sede de devolución: " + sedeEntrega);
+                System.out.println("Pago Realizado por la reserva: " + pago);
+                Reserva reserva = i
+            }
+            int id = Integer.parseInt(input("Por favor ingrese el ID de la reserva que desee utilizar: "));
+
+            //conducores = 
+            //seguros
+            alquiler alquiler = new alquiler(reserva)
+    
+        }
+    }
+
 }
