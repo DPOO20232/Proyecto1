@@ -100,6 +100,7 @@ public class Inventario {
     updateLicencia();
     updateReserva();
     updateVehiculo();
+    updateEvento();
     updateAlquiler();
     updateCliente();
     }
@@ -324,6 +325,20 @@ public class Inventario {
             String resultado = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s%n", placa, marca, modelo, color, tipo_trasmicion, estado, averiado,strid_categoria, id_sede, lstidEvento, lstidReserva,lstidAlquiler);
             escritor.write(resultado);
 
+        }
+        escritor.close();
+    }
+    public static void updateEvento() throws IOException{
+        File archivo = new File("./data/eventos.txt");
+        FileWriter escritor= new FileWriter(archivo);
+        List<Evento> lsteventos=listaEventos;
+        for(Evento i: lsteventos){
+            String idEvento=Integer.toString(i.getID());
+            String FechaInicio=Integer.toString(i.getFechaInicio());
+            String FechaFin=Integer.toString(i.getFechaFin());
+            String descripcion=i.getDescripcion();
+            String resultado = String.format("%s;%s;%s;%s%n", idEvento, FechaInicio, FechaFin, descripcion);
+            escritor.write(resultado);
         }
         escritor.close();
     }
