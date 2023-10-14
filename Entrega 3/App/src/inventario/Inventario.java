@@ -99,6 +99,7 @@ public class Inventario {
     updateSeguros();
     updateReserva();
     updateVehiculo();
+    updateAlquiler();
     }
     public static void updateCategorias() throws IOException{
         File archivo = new File("./data/categorias.txt");
@@ -283,7 +284,7 @@ public class Inventario {
 
             }
             conductores.append("]");
-            conductores.toString();
+            String conductor=conductores.toString();
             List<Seguro> lstseguro=i.getSeguros();
             StringBuilder seguros = new StringBuilder();
             seguros.append("[");
@@ -295,20 +296,31 @@ public class Inventario {
                 seguros.setLength(seguros.length() - 1);
             }
             seguros.append("]");
-            seguros.toString();
+            String seguro=seguros.toString();
             List<PagoExcedente> lstpagosexcedentes=i.getPagosExcedentes();
             StringBuilder pagosExcedentes = new StringBuilder();
             pagosExcedentes.append("[");
+            for(PagoExcedente s: lstpagosexcedentes){
+                pagosExcedentes.append("[");
+                pagosExcedentes.append(s.getMotivoPago());
+                pagosExcedentes.append("-");
+                pagosExcedentes.append(Double.toString(s.getValorPago()));
+                pagosExcedentes.append("]");
+            }
+            pagosExcedentes.append("]");
+            String pagoExcedente=pagosExcedentes.toString();
+            String resultado = String.format("%s;%s;%s;%s;%s;%s%n", idAlquiler, PagoFinal, IdReserva, conductor, seguro, pagoExcedente);
+            escritor.write(resultado);
 
 
             }
 
-
+            escritor.close();
 
 
         }
 
-    }
+    
     
     public static String input(String mensaje)
 	{
