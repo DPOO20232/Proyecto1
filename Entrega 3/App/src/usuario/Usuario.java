@@ -23,7 +23,6 @@ public class Usuario {
     public String getPassword(){
         return this.password;
     }
-    //no tiene sentido permitir cambio de nombre de usuario
     public void setPassword(String newpassword) {
         this.password = newpassword;
     }

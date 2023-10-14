@@ -2,7 +2,6 @@ package consola;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Calendar;
 import java.util.List;
 
 import alquiler.Reserva;
@@ -12,8 +11,7 @@ import inventario.Vehiculo;
 import usuario.Cliente;
 import usuario.Usuario;
 import usuario.personal;
-import usuario.Licencia;
-import usuario.Tarjeta;
+
 public class Consola {
     public static void MenuInicial() throws IOException{
     boolean continuar=true;
@@ -35,7 +33,7 @@ public class Consola {
                 perfil="Admin";
                 System.out.println("\n\t\t>>>Hola, Admin!");
                 while (continuarAdmin==true){
-            System.out.println("\nOpciones de la aplicación\n");
+                System.out.println("\nOpciones de la aplicación\n");
                 //ESTOS METODOS HAY QUE PASARLOS A ADMIN
                 System.out.println("1. Crear categoría");
                 System.out.println("2. Añadir vehículo al inventario");
@@ -80,12 +78,12 @@ public class Consola {
                 else if(opcion_admin==16){Inventario.setPeriodoTemporadaBaja();}
                 else if(opcion_admin==17){continuarAdmin=false;}
                 else{System.out.println("Por favor seleccione una opción válida.");}
-            }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
-            //MENU PERSONAL
+                }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
+            //MENU ADMIN LOCAL
             else if (personal.checkLoginPersonal(login, password)!=null){
                 perfil=(personal.checkLoginPersonal(login, password)).getTipoPersonal();
                 personal adminlocal= personal.checkLoginPersonal(login, password);
-                    if (perfil.equals("AdminLocal")){
+                if (perfil.equals("AdminLocal")){
                     boolean continuarAdminL=true;
                     Sede adminSede=adminlocal.getSede();
                     String nomSede= adminSede.getNombre();
@@ -103,62 +101,94 @@ public class Consola {
                     else if(opcion_adminL==3){personal.printRegistroEmpleados(adminSede);}
                     else if(opcion_adminL==4){continuarAdminL=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
-                }catch(NumberFormatException e){}}}
-                    //ESTAS CLASES HAY QUE PASARLAS A ADMIN
-                else if (perfil.equals("EmpleadoAtencion")){
-                    boolean continuarPersonal1=true;
-                    System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área de atención!");
-                    while (continuarPersonal1==true){
+                    }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
+                //MENU PERSONAL DE ATENCIÓN
+            else if (perfil.equals("EmpleadoAtencion")){
+                boolean continuarPersonal1=true;
+                System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área de atención!");
+                while (continuarPersonal1==true){
                     System.out.println("\nOpciones de la aplicación\n");
-                    System.out.println("1. Registrar empleado en la sede: ");
-                    System.out.println("2. Actualizar información de un empleado de la sede: ");
-                    System.out.println("3. Obtener registro de los empleados de la sede: ");
-                    System.out.println("4. Cerrar sesión\n");
-                    int opcion_adminL = Integer.parseInt(input("Por favor seleccione una opción"));
+                    System.out.println("1. Registrar un alquiler: ");
+                    System.out.println("2. Modificar un alquiler: ");
+                    System.out.println("3. Registrar una reserva: ");
+                    System.out.println("4. Registrar evento de un vehículo: ");
+                    System.out.println("5. Registrar un conductor adicional a un alquiler: ");
+                    System.out.println("6. Cerrar sesión\n");
+                    int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
-                    if (opcion_adminL==1){}
-                    else if(opcion_adminL==2){}
-                    else if(opcion_adminL==3){}
-                    else if(opcion_adminL==4){continuarPersonal1=false;}
+                    if (opcion_empleadoA==1){}
+                    else if(opcion_empleadoA==2){}
+                    else if(opcion_empleadoA==3){
+                        boolean buscandoCliente=true;
+                        while(buscandoCliente){
+                        int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
+                        List<Cliente> clientes = Usuario.getListaClientes();
+                        Cliente reservante=Usuario.assignCliente(cedulaCliente);
+                        if(reservante!=null){
+                            buscandoCliente=false;
+                            Reserva.crearReserva(reservante, true);
+                        }
+                    }}
+                    else if(opcion_empleadoA==4){}
+                    else if(opcion_empleadoA==5){}
+                    else if(opcion_empleadoA==6){continuarPersonal1=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
-                }catch(NumberFormatException e){}}
-
-
+                    } catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}
+                    }
                 }
+                //MENU PERSONAL TÉCNICO
                 else {
-                    //aqui va EmpleadoTecnico
-
+                    System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área técnica!");
+                    boolean continuarPersonal2=true;
+                    while (continuarPersonal2==true){
+                    System.out.println("\nOpciones de la aplicación\n");
+                    System.out.println("1. Actualizar estado de un vehículo: ");
+                    System.out.println("2. Cerrar sesión\n");
+                    int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
+                    try {
+                    if (opcion_empleadoA==1){
+                        String placa = input("Ingrese la placa del vehículo");
+                                //actualizar
+                    }
+                    else if(opcion_empleadoA==2){continuarPersonal2=false;}
+                    else{System.out.println("Por favor seleccione una opción válida.");}
+                    } catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}
+                    }
                 }
             }
             //MENU CLIENTE
             else if (Usuario.checkLoginCliente(login, password)!=null){
                 Cliente cliente= Usuario.checkLoginCliente(login, password);
                 boolean continuarCliente=true;
-                System.out.println("\n\t>>>Bienvenid@, "+cliente.getNombre());
+                System.out.println("\n\t\t>>>Hola, "+cliente.getNombre()+" :)");
                 while (continuarCliente){
-                    System.out.println("1. Actualizar datos");
-                    System.out.println("2. Crear una reserva");
-                    System.out.println("3. Modificar datos de mi reserva");
-                    System.out.println("4. Cancelar reserva");
-                    System.out.println("5. Modificar mis datos");
+                    System.out.println("\nOpciones de la aplicación\n");
+                    System.out.println("1. Cambiar contraseña");
+                    System.out.println("2. Actualizar información personal");
+                    System.out.println("3. Crear una reserva");
+                    System.out.println("4. Modificar datos de mi reserva");
+                    System.out.println("5. Cancelar reserva");
                     System.out.println("6. Cerrar sesión\n");
                     int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
-                    boolean ensede = false;
-                    if (opcion_cliente==1){Reserva.crearReserva(cliente,ensede);}
-                    //else if(opcion_cliente==2){}
-                    //else if(opcion_cliente==3){}
-                    //else if(opcion_cliente==4){}
-                    //else if(opcion_cliente==5){}
+                    if (opcion_cliente==1){
+                        String nueva_contraseña = input("Ingrese una nueva contraseña");
+                        System.out.println(">Contraseña actualizada\n");
+                        cliente.setPassword(nueva_contraseña);}
+                    if (opcion_cliente==2){cliente.actualizarCliente();}
+                    else if(opcion_cliente==3){Reserva.crearReserva(cliente,false);}
+                    else if(opcion_cliente==4){}
+                    else if(opcion_cliente==5){}
                     else if(opcion_cliente==6){continuarCliente=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
-                    }catch(NumberFormatException e){}}
+                    }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
             }
 
             else{System.out.println("\n\t>>> Credenciales incorrectas, intentelo de nuevo.");}          
             }
             else if(opcion_seleccionada==2){
-                nuevoCliente();
+                Cliente.nuevoCliente();
+                
             }
             else if(opcion_seleccionada==3){
                 Inventario.updateSistema();
@@ -173,86 +203,7 @@ public class Consola {
 			}
 		}
     }
-    public static void nuevoCliente(){
-        try {
-            System.out.println("\n¡Bienvenido a nuestro sistema!\n");
-            int cedula = Integer.parseInt(input("Por favor ingrese su número de documento de identidad"));
-            if (Usuario.checkCedulas(cedula)==false){
-            String nombre = input("Por favor ingrese su nombre completo");
-            String correo = input("Por favor ingrese su correo electrónico");
-            long telefono = Long.parseLong(input("Por favor ingrese su número de teléfono celular"));
-            int anacimiento = Integer.parseInt(input("Por favor ingrese su año de nacimiento"));
-            int mnacimiento = Integer.parseInt(input("Por favor ingrese su mes de nacimiento"));
-            int dnacimiento = Integer.parseInt(input("Por favor ingrese su día de nacimiento"));
-            String nacionalidad = input("Por favor ingrese su pais de nacionalidad").toUpperCase();
-            int fnacimiento = anacimiento + mnacimiento*10000 + dnacimiento*1000000;
-            //ddmmaaaa
-            boolean mayor = esMayorDeEdad(anacimiento, mnacimiento, dnacimiento);
-            if (!mayor) {
-                System.out.println("\n>No es posible registrarlo como cliente porque es menor de edad.");
-            } else {
-                System.out.println("\n>Ahora necesita crear su usuario y contraseña.");
-                boolean continuar=true;
-                while (continuar){
-                //COMPARACION
-                String login = input("Por favor ingrese su nombre de usuario");
-                if(((Usuario.checkNombresLogins(login)==false))) {   
-                    String password = input("Por favor ingrese una contraseña");
-                    Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
-                    System.out.println("\n>A continuación tiene que ingresar una licencia de conducción y un medio de pago.");
-                    cliente.setLicencia();
-                    if(cliente.getLicencia()!=null){
-                    System.out.println("\n>Nuestro sistema solamente acepta tarjetas de crédito como medio de pago");
-                    cliente.setTarjeta();
-                    if (cliente.getTarjeta()!=null){
-                    Usuario.addNombreLogin(login);
-                    Usuario.addNumCedulas(cedula);
-                    Usuario.addCliente(cliente);
-                    Usuario.addLicencia(cliente.getLicencia());
-                    continuar=false;
-                    }
-                    else{continuar=false;}                    
-                }
-                    else{continuar=false;}
-                }
-                else{System.out.println("\n>El nombre de usuario ya ha sido utilizado. Por favor, elija otro.");}
-                }}}
-        else{
-                    System.out.println("\n>Ya existe una cuenta con esta cédula. ¿Desea cambiar su contraseña?");
-                    System.out.println("1.Sí");
-                    System.out.println("2.No(ó cualquier otro número)");
-                    int opcion = Integer.parseInt(input("Por favor seleccione una opción"));    
-                    if (opcion==1){
-                        Cliente cliente=Usuario.assignCliente(cedula);
-                        int fechaNac_u=Integer.parseInt(input("Ingrese su fecha de nacimiento en el formato ddmmaaaa para verificar que es usted"));
-                        if (cliente.getFechaNacimiento()==fechaNac_u){
-                        String new_password=input("Ingrese una nueva contraseña");
-                        cliente.setPassword(new_password);
-                        System.out.println("\n>Su contraseña se ha actualizado correctamente.");
-                        }
-                        else{
-                        System.out.println("\n>Verificación fallida.");
-                        }
-                    }
-                }}
-            catch(NumberFormatException e) {
-        System.out.println("\n>Debe ingresar los datos requeridos en el formato adecuado para que la creación de la cuenta sea exitosa.");}}
-
-    public static boolean esMayorDeEdad(int anho, int mes, int dia) {
-        Calendar fechaActual = Calendar.getInstance();
-        int diaActual = fechaActual.get(Calendar.DAY_OF_MONTH);
-        int mesActual = fechaActual.get(Calendar.MONTH) + 1;
-        int anhoActual = fechaActual.get(Calendar.YEAR);
     
-        if (anho + 18 < anhoActual) {
-            return true;
-        } else if (anho + 18 == anhoActual && mes < mesActual) {
-            return true;
-        } else if (anho + 18 == anhoActual && mes == mesActual && dia <= diaActual) {
-            return true;
-        }
-        return false;
-    }
 
     public static String input(String mensaje)
 	{
@@ -272,7 +223,7 @@ public class Consola {
     public static void main(String[] args) throws IOException
 	{
     Inventario.loadSistema();
-    System.out.println("\n\t\t>>> Bienvenid@ a "+Inventario.getNombreCompania()+" :)");    
+    System.out.println("\n\t\t>>> Bienvenid@ a "+Inventario.getNombreCompania());    
     MenuInicial();
     
 	}
