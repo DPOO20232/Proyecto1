@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import alquiler.Reserva;
+import inventario.Evento;
 import inventario.Inventario;
 import inventario.Sede;
 import inventario.Vehiculo;
@@ -148,18 +149,27 @@ public class Consola {
                     System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área técnica!");
                     boolean continuarPersonal2=true;
                     while (continuarPersonal2==true){
-                    System.out.println("\nOpciones de la aplicación\n");
-                    System.out.println("1. Actualizar estado de un vehículo: ");
-                    System.out.println("2. Cerrar sesión\n");
-                    int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
-                    try {
-                    if (opcion_empleadoA==1){
-                        String placa = input("Ingrese la placa del vehículo");
-                                //actualizar
-                    }
-                    else if(opcion_empleadoA==2){continuarPersonal2=false;}
-                    else{System.out.println("Por favor seleccione una opción válida.");}
-                    } catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}
+                        System.out.println("\nDijita la opción que necesitas\n");
+                        System.out.println("1. Actualizar estado de un vehículo: ");
+                        System.out.println("2. Cerrar sesión\n");
+                        int opcion_empleadoT = Integer.parseInt(input("Por favor seleccione una opción"));
+
+                        try {
+                            if (opcion_empleadoT==1){
+                                System.out.println("\nIngresa que se va a realizar en el vehículo\n");
+                                System.out.println("1. Lavado");
+                                System.out.println("2. Mantenimiento");
+                                int opcion_empleadoT2 = Integer.parseInt(input("Por favor seleccione una opción"));
+                                if(opcion_empleadoT2==1){String descripcion = "En Lavado";}
+                                else if(opcion_empleadoT2==2){String descripcion = "En Mantenimiento";}
+                                String placa = input("Ingrese la placa del vehículo");
+                                List<Vehiculo> vehiculos = Inventario.getListaVehiculos()
+                                Evento.crearEvento(descripcion, placa, vehiculos);
+                               
+                            }
+                            else if(opcion_empleadoT==2){continuarPersonal2=false;}
+                            else{System.out.println("Por favor seleccione una opción válida.");}
+                        } catch(NumberFormatException e){}
                     }
                 }
             }

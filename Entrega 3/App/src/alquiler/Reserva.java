@@ -123,7 +123,7 @@ public class Reserva {
 
     public static void crearReserva(Cliente cliente, boolean reservaEnSede){
         //reservaEnSede es true cuando la hace el personal de atencion
-            System.out.println("\n¡Bienvenido a nuestro sistema de reservas!");
+        System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
         try { 
             boolean continuar=true;
             while(continuar){
