@@ -83,7 +83,7 @@ public class Consola {
             else if (personal.checkLoginPersonal(login, password)!=null){
                 perfil=(personal.checkLoginPersonal(login, password)).getTipoPersonal();
                 personal adminlocal= personal.checkLoginPersonal(login, password);
-                    if (perfil.equals("AdminLocal")){
+                if (perfil.equals("AdminLocal")){
                     boolean continuarAdminL=true;
                     Sede adminSede=adminlocal.getSede();
                     String nomSede= adminSede.getNombre();
@@ -101,33 +101,58 @@ public class Consola {
                     else if(opcion_adminL==3){personal.printRegistroEmpleados(adminSede);}
                     else if(opcion_adminL==4){continuarAdminL=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
-                }catch(NumberFormatException e){}}}
+                    }catch(NumberFormatException e){}}}
                     //ESTAS CLASES HAY QUE PASARLAS A ADMIN
                 else if (perfil.equals("EmpleadoAtencion")){
-                    //FALTA EMPLEADOS MENU TODO
                     boolean continuarPersonal1=true;
                     System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área de atención!");
-                    //empleadoAtencion tambien crea reservas
                     while (continuarPersonal1==true){
-                    System.out.println("\nOpciones de la aplicación\n");
-                    System.out.println("1. Registrar empleado en la sede: ");
-                    System.out.println("2. Actualizar información de un empleado de la sede: ");
-                    System.out.println("3. Obtener registro de los empleados de la sede: ");
-                    System.out.println("4. Cerrar sesión\n");
-                    int opcion_adminL = Integer.parseInt(input("Por favor seleccione una opción"));
-                    try{
-                    if (opcion_adminL==1){}
-                    else if(opcion_adminL==2){}
-                    else if(opcion_adminL==3){}
-                    else if(opcion_adminL==4){continuarPersonal1=false;}
-                    else{System.out.println("Por favor seleccione una opción válida.");}
-                }catch(NumberFormatException e){}}
-
-
+                        System.out.println("\nDijita la opción que necesitas\n");
+                        System.out.println("1. Registrar un alquiler: ");
+                        System.out.println("2. Modificar un alquiler: ");
+                        System.out.println("3. Registrar una reserva: ");
+                        System.out.println("4. Registrar evento de un vehículo: ");
+                        System.out.println("5. Registrar un conductor adicional a un alquiler: ");
+                        System.out.println("6. Cerrar sesión\n");
+                        int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
+                        try{
+                            boolean ensede = false;
+                            //TODO
+                            if (opcion_empleadoA==1){}
+                            else if(opcion_empleadoA==2){}
+                            else if(opcion_empleadoA==3){
+                                String nombreCliente = input("Ingrese el nombre del cliente");
+                                List<Cliente> clientes = Usuario.getListaClientes();
+                                for (Cliente cliente : clientes) {
+                                    if (cliente.getNombre().equals(nombreCliente)) {
+                                        Cliente reservante = cliente
+                                    }
+                                }
+                                Reserva.crearReserva(reservante, ensede);
+                            }
+                            else if(opcion_empleadoA==4){}
+                            else if(opcion_empleadoA==5){}
+                            else if(opcion_empleadoA==6){continuarPersonal1=false;}
+                            else{System.out.println("Por favor seleccione una opción válida.");}
+                            } catch(NumberFormatException e){}
+                    }
                 }
                 else {
-                    //aqui va EmpleadoTecnico
-
+                    System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área técnica!");
+                    boolean continuarPersonal2=true;
+                    while (continuarPersonal1==true){
+                        System.out.println("\nDijita la opción que necesitas\n");
+                        System.out.println("1. Actualizar estado de un vehículo: ");
+                        System.out.println("2. Cerrar sesión\n");
+                        try {
+                            if (opcion_empleadoA==1){
+                                String placa = input("Ingrese la placa del vehículo");
+                                //actualizar
+                            }
+                            else if(opcion_empleadoA==2){continuarPersonal2=false;}
+                            else{System.out.println("Por favor seleccione una opción válida.");}
+                        } catch(NumberFormatException e){}
+                    }
                 }
             }
             //MENU CLIENTE
