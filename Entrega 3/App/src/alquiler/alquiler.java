@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import inventario.Seguro;
 import inventario.Vehiculo;
 import usuario.Conductor;
+import usuario.Licencia;
+import usuario.Cliente;
 
 public class alquiler{
     private int idAlquiler;
@@ -74,6 +76,39 @@ public class alquiler{
         return retorno;
     }
 
+    public agregarConductores(Cliente cliente){
+        conductores= new ArrayList<Conductor>();
+        String nombre1 = cliente.getNombre();
+        int cedula1 = cliente.getNumeroCedula();
+        Licencia licencia1 = cliente.getLicencia();
+        Conductor conductor1 = new Conductor(nombre1, cedula1, licencia1)
+        conductores.add(conductor1);
+        System.out.println("Conductor Registrado: " + nombre1);
+        System.out.println("Número de Licencia: " + licencia1.getNumeroLicencia());
+        continuarPersonal1 = true
+        while (continuarPersonal1==true){
+            System.out.println("¿Desea agregar un conductor adicional?");
+            System.out.println("1. Sí");
+            System.out.println("2. No");
+            int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
+            try {
+                if(opcion==1){
+                    String nombre = input("Ingrese el nombre del conductor");
+                    int cedula = Integer.parseInt(input("Por favor ingrese el número de cédula del conductor"));
+                    //Licencia licencia = Cliente.setLicencia(); TODO
+                    Conductor conductor = new Conductor(nombre, cedula, licencia)
+                    conductores.add(conductor);
+                    System.out.println("Conductor Registrado: " + nombre);
+                    System.out.println("Número de Licencia: " + licencia);
+                }
+                else if(opcion==2){continuarPersonal1 = false}
+            }
+        }
+
+    }
+
+    
+
 
 
     public static crearAlquiler(List<Reserva>reservas){
@@ -97,13 +132,12 @@ public class alquiler{
                 System.out.println("Sede de entrega: " + sedeRecoger) ;
                 System.out.println("Sede de devolución: " + sedeEntrega);
                 System.out.println("Pago Realizado por la reserva: " + pago);
-                Reserva reserva = i
             }
+
             int id = Integer.parseInt(input("Por favor ingrese el ID de la reserva que desee utilizar: "));
 
-            //conducores = 
-            //seguros
-            alquiler alquiler = new alquiler(reserva)
+
+            alquiler alquiler = new alquiler(reserva);
     
         }
     }
