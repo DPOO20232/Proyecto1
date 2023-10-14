@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 
 
 public class Cliente extends Usuario{
-    private String login;
     private int numeroCedula;
     private String nombre;
     private String mail;
@@ -111,9 +110,7 @@ public class Cliente extends Usuario{
     public Tarjeta getTarjeta() {
         return tarjeta;
     }
-    public String getLogin(){
-        return this.login;
-    }
+   
     public int getNumeroCedula() {
         return numeroCedula;
     }
