@@ -90,8 +90,8 @@ public class Cliente extends Usuario{
                 }}
             catch(NumberFormatException e) {
         System.out.println("\n>Debe ingresar los datos requeridos en el formato adecuado para que la creación de la cuenta sea exitosa.");}}
-
-    public static boolean esMayorDeEdad(int anho, int mes, int dia) {
+    
+        public static boolean esMayorDeEdad(int anho, int mes, int dia) {
         Calendar fechaActual = Calendar.getInstance();
         int diaActual = fechaActual.get(Calendar.DAY_OF_MONTH);
         int mesActual = fechaActual.get(Calendar.MONTH) + 1;
@@ -222,6 +222,35 @@ public class Cliente extends Usuario{
 			e.printStackTrace();
 		}
 		return null;
+    }
+
+    public static void actualizarCliente(){
+        boolean continuarCliente=true;
+        System.out.println("\nPor favor ingrese el dato que desee modificar\n");
+        while (continuarCliente){
+            System.out.println("1. Mi correo electrónico");
+            System.out.println("2. Mi número de teléfono");
+            System.out.println("3. Mi Licencia de Conducción");
+            System.out.println("4. Mi Tarjeta de Crédito");
+            System.out.println("5. He terminado\n");
+            int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
+            try {
+                else if(opcion_cliente==1){
+                    String nuevoCorreo = input("Por favor ingrese su nuevo correo electrónico");
+                    cliente.setCorreo(nuevoCorreo);
+                    System.out.println("Correo electrónico actualizado correctamente.");
+                }
+                else if(opcion_cliente==2){
+                    long nuevoTelefono = Long.parseLong(input("Por favor ingrese su nuevo número de teléfono"));
+                    cliente.setTelefono(nuevoTelefono);
+                    System.out.println("Número de teléfono actualizado correctamente.");
+                }
+                else if(opcion_cliente==3){setLicencia()}
+                else if(opcion_cliente==4){setTarjeta()}
+                else if(opcion_cliente==5){continuarCliente=false;}
+                else{System.out.println("Por favor seleccione una opción válida.");}
+            } catch(NumberFormatException e){}
+        }
     }
 
 }
