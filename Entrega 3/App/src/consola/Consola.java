@@ -156,15 +156,19 @@ public class Consola {
 
                         try {
                             if (opcion_empleadoT==1){
-                                System.out.println("\nIngresa que se va a realizar en el vehículo\n");
+                                List<Vehiculo> vehiculos = Inventario.getListaVehiculos();
+                                String placa = input("\nIngrese la placa del vehículo al que le asignará un nuevo estado");
+                                System.out.println("Ingrese que se va a realizar en el vehículo\n");
                                 System.out.println("1. Lavado");
                                 System.out.println("2. Mantenimiento");
                                 int opcion_empleadoT2 = Integer.parseInt(input("Por favor seleccione una opción"));
-                                if(opcion_empleadoT2==1){String descripcion = "En Lavado";}
-                                else if(opcion_empleadoT2==2){String descripcion = "En Mantenimiento";}
-                                String placa = input("Ingrese la placa del vehículo");
-                                List<Vehiculo> vehiculos = Inventario.getListaVehiculos()
-                                Evento.crearEvento(descripcion, placa, vehiculos);
+                                if(opcion_empleadoT2==1){String descripcion = "En Lavado";
+                                    Evento.crearEvento(descripcion, placa, vehiculos);
+                                }
+                                else if(opcion_empleadoT2==2){String descripcion = "En Mantenimiento";
+                                    Evento.crearEvento(descripcion, placa, vehiculos);
+                                }
+                                else{System.out.println("\n>Por favor seleccione una opción válida.");}
                                
                             }
                             else if(opcion_empleadoT==2){continuarPersonal2=false;}
