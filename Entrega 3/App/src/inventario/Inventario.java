@@ -92,10 +92,12 @@ public class Inventario {
     public static List<Evento> getListaEventos(){return listaEventos;}
     public static List<Vehiculo> getListaVehiculos(){return listaVehiculos;}
     public static void updateSistema() throws IOException{
-    //updateInfo();
+    updateInfo();
     updateCategorias();
     updateSedes();
+    updatePersonal();
     updateSeguros();
+    updateLicencia();
     updateReserva();
     updateVehiculo();
     updateAlquiler();
@@ -196,6 +198,22 @@ public class Inventario {
         escritor.close();
       
     }
+    public static void updatePersonal() throws IOException{
+        File archivo = new File("./data/seguros.txt");
+        FileWriter escritor2= new FileWriter(archivo);
+        List<personal> lstpersonal= personal.getCredencialesPersonal();
+        for (personal i: lstpersonal){
+            String login=i.getLogin();
+            String password=i.getPassword();
+            Sede sede=i.getSede();
+            String idSede=Integer.toString(sede.getID());
+            String tipoPersonal=i.getTipoPersonal();
+            String resultado = String.format("%s;%s;%s;%s%n",login, password, idSede, tipoPersonal);
+            escritor2.write(resultado);
+
+        }
+        escritor2.close();
+    }
     public static void updateSeguros() throws IOException{
         File archivo = new File("./data/seguros.txt");
         FileWriter escritor2= new FileWriter(archivo);
@@ -208,6 +226,20 @@ public class Inventario {
             escritor2.write(resultado);
         }
         escritor2.close();
+    }
+    public static void updateLicencia() throws IOException{
+        File archivo = new File("./data/licencias.txt");
+        FileWriter escritor= new FileWriter(archivo);
+        List<Licencia> lstlicencia=Usuario.getListaLicencias();
+        for (Licencia i: lstlicencia){
+            String numLicencia=Integer.toString(i.getNumeroLicencia());
+            String fechaExpedicion= Integer.toString(i.getFechaExpedicion());
+            String fechaVencimiento=Integer.toString(i.getFechaVencimiento());
+            String paisExpedicion=i.getPaisExpedicion();
+            String resultado = String.format("%s;%s;%s;%s%n", numLicencia, fechaExpedicion, fechaVencimiento, paisExpedicion);
+            escritor.write(resultado);
+        }
+        escritor.close();
     }
     public static void updateReserva() throws IOException{
         File archivo = new File("./data/reservas.txt");
