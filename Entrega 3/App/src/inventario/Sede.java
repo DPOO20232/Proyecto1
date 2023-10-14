@@ -113,7 +113,7 @@ public class Sede {
     boolean esDiaSemana = ((diaSemana != DayOfWeek.SATURDAY) && (diaSemana != DayOfWeek.SUNDAY));
     if (esDiaSemana){
         List <Integer> horario1= this.getHorarioAtencionEnSemana();
-        if(horario1.get(0) < hora && hora < horario1.get(1)){
+        if(horario1.get(0) <= hora && hora <= horario1.get(1)){
             retorno=true;
         }}
     else{

@@ -3,6 +3,8 @@ import java.util.Calendar;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 public class Cliente extends Usuario{
@@ -182,15 +184,17 @@ public class Cliente extends Usuario{
         while(continuar){
         int numerolicencia = Integer.parseInt(input("\nPor favor ingrese el número de su licencia de conducción"));
         if (Usuario.checkLicencia(numerolicencia)==false|| numerolicencia==this.getLicencia().getNumeroLicencia()){
-        int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato aaaammdd)"));            int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato aaaammdd)"));
+        int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato aaaammdd)"));            
+        int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato aaaammdd)"));
         String pais = input("Por favor ingrese el país de expedición de su licencia");
         Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
-        if(Usuario.checkVencimientoLicencia(licencia,0,0,0)==false){
+        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        if(Usuario.checkVencimientoLicencia(licencia,0,0,0)==false&& expedicion<=fechaActual){
             this.setLicencia(licencia);
             continuar=false;
             }
             else{
-                System.out.println("\n>La licencia ingresada ya caducó, desea ingresar otra?");
+                System.out.println("\n>La licencia ingresada ya caducó/no es válida, desea ingresar otra?");
                 System.out.println("1.Sí");
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
