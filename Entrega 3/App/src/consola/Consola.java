@@ -198,7 +198,7 @@ public class Consola {
                         cliente.setPassword(nueva_contraseña);}
                     if (opcion_cliente==2){cliente.actualizarCliente();}
                     else if(opcion_cliente==3){Reserva.crearReserva(cliente,false);}
-                    else if(opcion_cliente==4){}
+                    else if(opcion_cliente==4){Reserva.modificarReserva(cliente);}
                     else if(opcion_cliente==5){}
                     else if(opcion_cliente==6){continuarCliente=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}

@@ -55,6 +55,14 @@ public class Inventario {
     public static int getCostoPorTrasladoSedes(){return costoPorTrasladoSedes;}
     public static List<Integer> getPeriodoTemporadaAlta(){return periodoTemporadaAlta;}
     public static List<Integer> getPeriodoTemporadaBaja(){return periodoTemporadaBaja;}
+    public static boolean esTemporadaAlta(int mmdd1, int mmdd2){
+        return (mmdd1 < getPeriodoTemporadaAlta().get(0) && mmdd2 > getPeriodoTemporadaAlta().get(0)) ||
+                (mmdd1 > getPeriodoTemporadaAlta().get(0) && mmdd1 < getPeriodoTemporadaAlta().get(1));
+    }
+    public static boolean esTemporadaBaja(int mmdd1, int mmdd2){
+        return (mmdd1 < getPeriodoTemporadaBaja().get(0) && mmdd2 > getPeriodoTemporadaBaja().get(0)) ||
+                (mmdd1 > getPeriodoTemporadaBaja().get(0) && mmdd1 < getPeriodoTemporadaBaja().get(1));
+    }
     public static void setCostoPorConductorAdicional(){
         try{
             int costo= Integer.parseInt(input("Ingrese el nuevo costo diario por conductor adicional"));

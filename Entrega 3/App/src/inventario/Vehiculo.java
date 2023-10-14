@@ -88,8 +88,7 @@ public class Vehiculo {
         LocalDateTime fhFinReserva = LocalDateTime.parse(String.format("%08d%04d", fecha2, hora2), formatter);
         int numReservasActivas=this.getReservasActivas().size();
         int numEventos=this.getHistorialEventos().size();
-        if (numEventos==0){}
-        else{
+        if(numEventos>0){
             for (Evento i: this.getHistorialEventos()){
             LocalDateTime fhInicioEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaInicio(), i.getHoraInicio()), formatter);
             LocalDateTime fhFinEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaFin(), i.getHoraFin()), formatter);
@@ -98,11 +97,7 @@ public class Vehiculo {
                 break;
             }
         }}
-
-        if(numReservasActivas==0){
-            reservaInPeriodoReserva=false;
-        }
-        else{
+        if(numReservasActivas>0){
             for (Reserva i: this.getReservasActivas()){
                 //A i_finReserva se le suma 1 para prevenir el periodo de 24h en el que el vehículo será EnLimpieza
                 LocalDateTime i_inicioReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaRecoger(), i.getHoraRecoger()), formatter);
