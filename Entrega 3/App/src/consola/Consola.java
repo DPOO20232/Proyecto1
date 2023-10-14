@@ -34,7 +34,7 @@ public class Consola {
                 perfil="Admin";
                 System.out.println("\n\t\t>>>Hola, Admin!");
                 while (continuarAdmin==true){
-            System.out.println("\nOpciones de la aplicación\n");
+                System.out.println("\nOpciones de la aplicación\n");
                 //ESTOS METODOS HAY QUE PASARLOS A ADMIN
                 System.out.println("1. Crear categoría");
                 System.out.println("2. Añadir vehículo al inventario");
@@ -79,8 +79,8 @@ public class Consola {
                 else if(opcion_admin==16){Inventario.setPeriodoTemporadaBaja();}
                 else if(opcion_admin==17){continuarAdmin=false;}
                 else{System.out.println("Por favor seleccione una opción válida.");}
-            }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
-            //MENU PERSONAL
+                }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
+            //MENU ADMIN LOCAL
             else if (personal.checkLoginPersonal(login, password)!=null){
                 perfil=(personal.checkLoginPersonal(login, password)).getTipoPersonal();
                 personal adminlocal= personal.checkLoginPersonal(login, password);
@@ -102,43 +102,42 @@ public class Consola {
                     else if(opcion_adminL==3){personal.printRegistroEmpleados(adminSede);}
                     else if(opcion_adminL==4){continuarAdminL=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
-                    }catch(NumberFormatException e){}}}
-                    //ESTAS CLASES HAY QUE PASARLAS A ADMIN
-                else if (perfil.equals("EmpleadoAtencion")){
-                    boolean continuarPersonal1=true;
-                    System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área de atención!");
-                    while (continuarPersonal1==true){
-                        System.out.println("\nDijita la opción que necesitas\n");
-                        System.out.println("1. Registrar un alquiler: ");
-                        System.out.println("2. Modificar un alquiler: ");
-                        System.out.println("3. Registrar una reserva: ");
-                        System.out.println("4. Registrar evento de un vehículo: ");
-                        System.out.println("5. Registrar un conductor adicional a un alquiler: ");
-                        System.out.println("6. Cerrar sesión\n");
-                        int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
-                        try{
-                            boolean ensede = false;
-                            //TODO
-                            if (opcion_empleadoA==1){}
-                            else if(opcion_empleadoA==2){}
-                            else if(opcion_empleadoA==3){
-                                String nombreCliente = input("Ingrese el nombre del cliente");
-                                List<Cliente> clientes = Usuario.getListaClientes();
-                                Cliente reservante=null;
-                                for (Cliente cliente : clientes) {
-                                    if (cliente.getNombre().equals(nombreCliente)) {
-                                        reservante = cliente;
-                                    }
-                                }
-                                Reserva.crearReserva(reservante, ensede);
-                            }
-                            else if(opcion_empleadoA==4){}
-                            else if(opcion_empleadoA==5){}
-                            else if(opcion_empleadoA==6){continuarPersonal1=false;}
-                            else{System.out.println("Por favor seleccione una opción válida.");}
-                            } catch(NumberFormatException e){}
+                    }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
+                //MENU PERSONAL DE ATENCIÓN
+            else if (perfil.equals("EmpleadoAtencion")){
+                boolean continuarPersonal1=true;
+                System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área de atención!");
+                while (continuarPersonal1==true){
+                    System.out.println("\nOpciones de la aplicación\n");
+                    System.out.println("1. Registrar un alquiler: ");
+                    System.out.println("2. Modificar un alquiler: ");
+                    System.out.println("3. Registrar una reserva: ");
+                    System.out.println("4. Registrar evento de un vehículo: ");
+                    System.out.println("5. Registrar un conductor adicional a un alquiler: ");
+                    System.out.println("6. Cerrar sesión\n");
+                    int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
+                    try{
+                    if (opcion_empleadoA==1){}
+                    else if(opcion_empleadoA==2){}
+                    else if(opcion_empleadoA==3){
+                        boolean buscandoCliente=true;
+                        while(buscandoCliente){
+                        int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
+                        List<Cliente> clientes = Usuario.getListaClientes();
+                        Cliente reservante=Usuario.assignCliente(cedulaCliente);
+                        if(reservante!=null){
+                            buscandoCliente=false;
+                            Reserva.crearReserva(reservante, true);
+                        }
+                    }}
+                    else if(opcion_empleadoA==4){}
+                    else if(opcion_empleadoA==5){}
+                    else if(opcion_empleadoA==6){continuarPersonal1=false;}
+                    else{System.out.println("Por favor seleccione una opción válida.");}
+                    } catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}
                     }
                 }
+                //MENU PERSONAL TÉCNICO
                 else {
                     System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área técnica!");
                     boolean continuarPersonal2=true;
@@ -171,30 +170,28 @@ public class Consola {
             else if (Usuario.checkLoginCliente(login, password)!=null){
                 Cliente cliente= Usuario.checkLoginCliente(login, password);
                 boolean continuarCliente=true;
-                System.out.println("\n\t>>>Bienvenid@, "+cliente.getNombre());
+                System.out.println("\n\t\t>>>Hola, "+cliente.getNombre()+" :)");
                 while (continuarCliente){
+                    System.out.println("\nOpciones de la aplicación\n");
                     System.out.println("1. Cambiar contraseña");
-                    System.out.println("2. Actualizar datos");
+                    System.out.println("2. Actualizar información personal");
                     System.out.println("3. Crear una reserva");
                     System.out.println("4. Modificar datos de mi reserva");
                     System.out.println("5. Cancelar reserva");
                     System.out.println("6. Cerrar sesión\n");
                     int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
-                    boolean ensede = false;
                     if (opcion_cliente==1){
                         String nueva_contraseña = input("Ingrese una nueva contraseña");
                         System.out.println(">Contraseña actualizada\n");
                         cliente.setPassword(nueva_contraseña);}
                     if (opcion_cliente==2){cliente.actualizarCliente();}
-                    else if(opcion_cliente==1){Reserva.crearReserva(cliente,ensede);}
-                    else if(opcion_cliente==2){}
-                    else if(opcion_cliente==3){}
+                    else if(opcion_cliente==3){Reserva.crearReserva(cliente,false);}
                     else if(opcion_cliente==4){}
                     else if(opcion_cliente==5){}
                     else if(opcion_cliente==6){continuarCliente=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
-                    }catch(NumberFormatException e){}}
+                    }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
             }
 
             else{System.out.println("\n\t>>> Credenciales incorrectas, intentelo de nuevo.");}          
@@ -236,7 +233,7 @@ public class Consola {
     public static void main(String[] args) throws IOException
 	{
     Inventario.loadSistema();
-    System.out.println("\n\t\t>>> Bienvenid@ a "+Inventario.getNombreCompania()+" :)");    
+    System.out.println("\n\t\t>>> Bienvenid@ a "+Inventario.getNombreCompania());    
     MenuInicial();
     
 	}

@@ -3,9 +3,12 @@ import java.util.Calendar;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 public class Cliente extends Usuario{
+    private String login;
     private int numeroCedula;
     private String nombre;
     private String mail;
@@ -110,7 +113,9 @@ public class Cliente extends Usuario{
     public Tarjeta getTarjeta() {
         return tarjeta;
     }
-
+    public String getLogin(){
+        return this.login;
+    }
     public int getNumeroCedula() {
         return numeroCedula;
     }
@@ -177,18 +182,22 @@ public class Cliente extends Usuario{
     catch(NumberFormatException e){System.out.println("\n>Debe ingresar los datos requeridos en el formato adecuado para que la creación de la cuenta sea exitosa.");}
     }
     public void setLicencia(){
+        try{
         boolean continuar=true;
         while(continuar){
         int numerolicencia = Integer.parseInt(input("\nPor favor ingrese el número de su licencia de conducción"));
         if (Usuario.checkLicencia(numerolicencia)==false|| numerolicencia==this.getLicencia().getNumeroLicencia()){
-        int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato aaaammdd)"));            int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato aaaammdd)"));
+        int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato aaaammdd)"));            
+        int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato aaaammdd)"));
         String pais = input("Por favor ingrese el país de expedición de su licencia");
         Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
-        if(Usuario.checkVencimientoLicencia(licencia,0,0,0)==false){
+        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        if(Usuario.checkVencimientoLicencia(licencia,0,0,0)==false&& expedicion<=fechaActual){
             this.setLicencia(licencia);
+            continuar=false;
             }
             else{
-                System.out.println("\n>La licencia ingresada ya caducó, desea ingresar otra?");
+                System.out.println("\n>La licencia ingresada ya caducó/no es válida, desea ingresar otra?");
                 System.out.println("1.Sí");
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
@@ -207,7 +216,9 @@ public class Cliente extends Usuario{
                 continuar=false;  
             }
         }
-        }}
+        }
+        }catch(NumberFormatException e){System.out.println("\n>Debe ingresar los datos requeridos en el formato adecuado para que la creación de la cuenta sea exitosa.");}   
+        }
         public static String input(String mensaje)
 	{
 		try
@@ -226,8 +237,8 @@ public class Cliente extends Usuario{
 
     public void actualizarCliente(){
         boolean continuarCliente=true;
-        System.out.println("\nPor favor ingrese el dato que desee modificar\n");
         while (continuarCliente){
+            System.out.println("\nPor favor seleccione que desea modificar\n");
             System.out.println("1. Mi correo electrónico");
             System.out.println("2. Mi número de teléfono");
             System.out.println("3. Mi Licencia de Conducción");
@@ -247,9 +258,10 @@ public class Cliente extends Usuario{
                 }
                 else if(opcion_cliente==3){this.setLicencia();}
                 else if(opcion_cliente==4){this.setTarjeta();}
-                else if(opcion_cliente==5){continuarCliente=false;}
+                else if(opcion_cliente==5){continuarCliente=false;
+                            System.out.println(">\nInformación actualizada.\n");}
                 else{System.out.println("Por favor seleccione una opción válida.");}
-            } catch(NumberFormatException e){}
+            } catch(NumberFormatException e){System.out.println("\n>Debe ingresar los datos requeridos en el formato adecuado para que la creación de la cuenta sea exitosa.");}
         }
     }
 

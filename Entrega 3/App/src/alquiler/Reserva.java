@@ -87,22 +87,21 @@ public class Reserva {
     public void setCategoria(Categoria categoria) {this.categoria = categoria;}
     public void setVehiculoAsignado() {
         Vehiculo vehiculoAsignado=null;
+        boolean encontreUpgrade=false;
         boolean esUpgrade=true;
         int categoria=this.getCategoria().getID();
+        int categoriaPadre=this.getCategoria().getId_Padre();
         for(Vehiculo i: Inventario.getListaVehiculos()){
             if(i.getCategoria().getID()==categoria && i.getSede().getID()==this.getSedeRecoger().getID()){
                 if(i.estaDisponible(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar )){
                     vehiculoAsignado=i;
                     esUpgrade=false;
-                    break;}}}
-        if (esUpgrade){
-            int id_padre= this.getCategoria().getId_Padre();
-            if (id_padre!=0){
-            for(Vehiculo i: Inventario.getListaVehiculos()){
-            if(i.getCategoria().getID()==id_padre){
-                if(i.estaDisponible(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar )){
+                    break;}}
+                else if(encontreUpgrade==false && i.getCategoria().getID()==categoriaPadre && i.getSede().getID()==this.getSedeRecoger().getID()){
                     vehiculoAsignado=i;
-                    break;}}}}}
+                    encontreUpgrade=true;
+                }
+            }
         if ((vehiculoAsignado!=null)&&(esUpgrade==false)){
             vehiculoAsignado.addReservaActiva(this);
             this.vehiculoAsignado=vehiculoAsignado;}
@@ -130,7 +129,7 @@ public class Reserva {
         try { 
             boolean continuar=true;
             while(continuar){
-            System.out.println(">Lista de Sedes Disponibles:");
+            System.out.println("\n>Lista de Sedes Disponibles:");
                 List<Sede> sedes = Inventario.getListaSedes();
                 for (int i = 0; i < sedes.size(); i++) {
                     System.out.println((i + 1) + ". " + sedes.get(i).getNombre()+" ("+sedes.get(i).getUbicacion()+").");
@@ -138,8 +137,8 @@ public class Reserva {
             Sede sedeRecoger=null;
             Sede sedeEntrega=null;
 
-            int sedeRecogerIndex = Integer.parseInt(input("\nSeleccione una sede para recoger su vehículo(ingrese el número)"));
-            int sedeEntregaIndex = Integer.parseInt(input("Seleccione una sede para la entrega de su vehículo(ingrese el número)"));
+            int sedeRecogerIndex = Integer.parseInt(input("\nSeleccione una sede para recoger el vehículo(ingrese el número)"));
+            int sedeEntregaIndex = Integer.parseInt(input("Seleccione una sede para la devolución del vehículo(ingrese el número)"));
             if(sedeRecogerIndex<=sedes.size()&& sedeEntregaIndex<=sedes.size()){
             sedeRecoger = sedes.get(sedeRecogerIndex - 1);
             sedeEntrega = sedes.get(sedeEntregaIndex - 1);
@@ -148,22 +147,26 @@ public class Reserva {
             System.out.println("\n\t>Información Sede donde se recogerá el vehículo:");
             sedeRecoger.printInfo();
             int frecoger = Integer.parseInt(input("Por favor ingrese la fecha en la que desee recoger su vehículo(en formato aaaammdd)"));
-            int hrecoger = Integer.parseInt(input("Considerando los horarios de atención de la sede, ingrese la hora en la que desee recoger su vehículo(en formato hhmm)"));
+            int hrecoger = Integer.parseInt(input("Considerando los horarios de atención de la sede, ingrese la hora en la que desee recoger su vehículo(en formato 24h de tipo hhmm)"));
             System.out.println("\n\t>Información Sede donde se devolverá el vehículo:");
             sedeEntrega.printInfo();
-            int fentregar = Integer.parseInt(input("Por favor ingrese la fecha en la que desee entregar su vehículo(en formato aaaammdd)"));
-            int hentregar = Integer.parseInt(input("Considerando los horarios de atención de la sede, ingrese la hora en la que desee entregar su vehículo(en formato hhmm)"));
+            int fentregar = Integer.parseInt(input("Por favor ingrese la fecha en la que desee devolver su vehículo(en formato aaaammdd)"));
+            int hentregar = Integer.parseInt(input("Considerando los horarios de atención de la sede, ingrese la hora en la que desee devolver su vehículo(en formato 24h de tipo hhmm)"));
             boolean horaVrecoger = horaValida(hrecoger);
             boolean horaVdevolucion = horaValida(hentregar);
-            boolean fVrecoger = fechaValidaReserva(frecoger);
-            boolean fVdevolucion = fechaValidaReserva(fentregar);
+            boolean fVrecoger = fechaValidaReserva(frecoger,hrecoger);
+            boolean fVdevolucion = fechaValidaDevolucion(frecoger,fentregar,hrecoger,hentregar);
             boolean posibleRecoger=sedeRecoger.estaAbierta(frecoger,hrecoger);
             boolean posibleEntregar=sedeEntrega.estaAbierta(fentregar,hentregar);
             if (horaVrecoger && horaVdevolucion && fVrecoger && fVdevolucion &&posibleEntregar&&posibleRecoger ){
+                boolean continuar2=true;
+                while (continuar2){
                 Licencia licencia_act= cliente.getLicencia();
+                if(Usuario.checkVencimientoLicencia(licencia_act,fentregar % 100, (fentregar / 100) % 100, fentregar / 10000)==false){
+                boolean continuar3=true;
+                while(continuar3){
                 Tarjeta tarjeta_act= cliente.getTarjeta();
-                if(Usuario.checkVencimientoLicencia(licencia_act, fentregar / 10000, (fentregar / 100) % 100, fentregar % 100)==false){
-                if (tarjeta_act.checkVencimientoTarjeta(fentregar / 10000, (fentregar / 100) % 100, fentregar % 100)==false){
+                if (tarjeta_act.checkVencimientoTarjeta( fentregar % 100, (fentregar / 100) % 100,fentregar / 10000)==false){
                 System.out.println("\nLista de Categorías de Vehículos Disponibles:\n");
                 List<Categoria> categorias = Inventario.getListaCategorias();
                 for (int i = 0; i < categorias.size(); i++) {
@@ -173,50 +176,57 @@ public class Reserva {
                     System.out.println("   - Capacidad: " + i_categoria.getCapacidad() + " personas");
                 }
                 int categoriaElegidaIndex = Integer.parseInt(input("Seleccione una categoría (ingrese el número): "));
-                boolean continuar1=true;
-                while(continuar1){
+                boolean continuar4=true;
+                while(continuar4){
                 if (categoriaElegidaIndex>=1 && categoriaElegidaIndex<=(categorias.size())){
                     Categoria categoriaElegida = categorias.get(categoriaElegidaIndex - 1);
                     Reserva reserva_u = new Reserva(frecoger, fentregar, hrecoger, hentregar, reservaEnSede, sedeRecoger, sedeEntrega, categoriaElegida, cliente);
                     // AÑADIR SOLO SI ENCONTRAMOS CARRO 
                     reserva_u.setVehiculoAsignado();
                     if (reserva_u.getVehiculoAsignado()!=null){
-                        boolean continuar2=true;
+                        boolean continuar5=true;
                         System.out.println("> Encontramos un vehículo para tí!");
-                        while(continuar2){
+                        while(continuar5){
                         int numTarjeta = Integer.parseInt(input("Para debitar el 30% del alquiler de su cuenta, por favor ingrese los últimos 4 dígitos de la tarjeta que tiene registrada"));
                         if (numTarjeta== (cliente.getTarjeta().getNumeroTarjeta())%10000){
                         addReserva(reserva_u);
                         reserva_u.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar );
                         System.out.println(">Se debitaron $"+ Double.toString(reserva_u.getPagoReserva())+".");
                         System.out.println(">Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_u.getID()));
+                                continuar5=false;
+                                continuar4=false;
+                                continuar3=false;
                                 continuar2=false;
-                                continuar1=false;
                                 continuar=false;
                                 Reserva.addReserva(reserva_u);
                         }
-                        else{System.out.println("\n>Los últimos 4 dígitos ingresados no corresponden a los últimos 4 dígitos de su tarjeta, desea intentarlo nuevamente?");
+                        else{System.out.println("\n>Los últimos 4 dígitos ingresados no corresponden a los últimos 4 dígitos de su tarjeta, desea intentarlo nuevamente?(En caso de no reintentar se cancelará el proceso de reserva)");
                             System.out.println("1.Sí");
                             System.out.println("2.No(ó cualquier otro número)");
                             int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
                             if(opcion>1){continuar2=false;
-                                continuar1=false;
                                 continuar=false;}}
-                    }}else{System.out.println(">No se encontraron vehículos disponibles para la categoría dada en el rango de fechas requerido.");}
+                    }}else{System.out.println(">No se encontraron vehículos disponibles para la categoría dada en el rango de fechas requerido.");
+                        continuar4=false;
+                        continuar3=false;
+                        continuar2=false;
+                        continuar=false;}
                 }else{System.out.println(">Elija una categoría de las opciones mostradas.");}
             }} 
-            else{ System.out.println("\n>Su tarjeta caducará/caducó, desea actualizar su licencia?");
+            else{ System.out.println("\n>Su tarjeta caducará/caducó, desea actualizar su método de pago?(En caso de no actualizarla se cancelará el proceso de reserva)");
                 System.out.println("1.Sí");
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
                 if(opcion==1){cliente.setTarjeta();}
-                else{continuar=false;}
-                }} else{System.out.println("\n>Su licencia caducará/caducó, desea actualizar su licencia?");
+                else{continuar3=false;continuar2=false;continuar=false;}
+                }}} else{System.out.println("\n>Su licencia caducará/caducó, desea actualizar su licencia?(En caso de no actualizarla se cancelará el proceso de reserva)");
                 System.out.println("1.Sí");
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
                 if(opcion==1){cliente.setLicencia();}
-                else{continuar=false;}
+                else{continuar2=false;
+                continuar=false;}
+            }
             }} else {System.out.println(">Las fechas u horas ingresadas no son válidas. Por favor, inténtelo nuevamente.");}
             }
             else{System.out.println(">Elija opciones de sede válidas.\n");}}}
@@ -257,9 +267,6 @@ public class Reserva {
         try{
         if(reservaPorModificar!=null){
             boolean continuar=true;
-            /*
-                private double pagoReserva;
-             */
             while(continuar){
             Sede sedeRecoger=reservaPorModificar.getSedeRecoger();
             Sede sedeEntrega=reservaPorModificar.getSedeEntregar();
@@ -306,8 +313,8 @@ public class Reserva {
             int hentregar= Integer.parseInt("Ingrese la nueva hora en la que desea devolver el vehículo (formato hhmm)");
             boolean horaVrecoger = horaValida(hrecoger);
             boolean horaVdevolucion = horaValida(hentregar);
-            boolean fVrecoger = fechaValidaReserva(frecoger);
-            boolean fVdevolucion = fechaValidaReserva(fentregar);
+            boolean fVrecoger = fechaValidaReserva(frecoger,hrecoger);
+            boolean fVdevolucion = fechaValidaDevolucion(frecoger,fentregar,hrecoger,hentregar);;
             boolean posibleRecoger=sedeRecoger.estaAbierta(frecoger,hrecoger);
             boolean posibleEntregar=sedeEntrega.estaAbierta(fentregar,hentregar);
             if(horaVrecoger&&horaVdevolucion&&fVrecoger&&fVdevolucion&&posibleRecoger&&posibleEntregar){
@@ -479,11 +486,13 @@ public class Reserva {
             return false;
         }
     }
-        public static boolean fechaValidaReserva(int fecha) {
+        public static boolean fechaValidaReserva(int fecha,int hora) {
         Calendar fechaActual = Calendar.getInstance();
         int diaactual = fechaActual.get(Calendar.DAY_OF_MONTH);
         int mesactual = fechaActual.get(Calendar.MONTH) + 1;
         int anhoactual = fechaActual.get(Calendar.YEAR);
+        int houractual = fechaActual.get(Calendar.HOUR_OF_DAY);
+        int minutoactual =fechaActual.get(Calendar.MINUTE);
         int dia = fecha % 100;
         int mes = (fecha % 10000) / 100;
         int anio = fecha / 10000;
@@ -492,19 +501,22 @@ public class Reserva {
             if ((anio == anhoactual+1)) {
                 retorno= true;
             }
-            else if ((anio == anhoactual && mes > mesactual)) {
+            else if ((mes > mesactual)) {
                 retorno= true;
             }
-            else if ((anio == anhoactual && mes == mesactual && dia > diaactual)) {
+            else if ((dia > diaactual)) {
                 retorno= true;
+            }
+            else if(hora>(houractual*100+minutoactual)){
+                retorno=true;
             }
         } 
         return retorno;
     }
-    public static boolean fechaValidaDevolucion(int entrega, int devolucion) {
-        int diae = entrega % 100;
-        int mese = (entrega % 10000) / 100;
-        int anioe = entrega / 10000;
+    public static boolean fechaValidaDevolucion(int recoger, int devolucion, int hrecoger, int hdevolver) {
+        int diae = recoger % 100;
+        int mese = (recoger % 10000) / 100;
+        int anioe = recoger / 10000;
 
         int diad = devolucion % 100;
         int mesd = (devolucion % 10000) / 100;
@@ -514,12 +526,15 @@ public class Reserva {
             if ((aniod == anioe+1)) {
                 retorno= true;
             }
-            else if ((aniod == anioe && mesd > mese)) {
+            else if ((mesd > mese)) {
                 retorno= true;
             }
-            else if ((aniod == anioe && mesd == mese && diad > diae)) {
+            else if ((diad > diae)) {
                 retorno= true;
             }
+            else if((hdevolver> hrecoger)) {
+                retorno= true;
+            } 
         }
         return retorno;
     }
@@ -562,6 +577,9 @@ public class Reserva {
         LocalDate fechaT2 = LocalDate.parse(fechaString2, formato);
         long duracionEnDias = fechaT1.until(fechaT2).getDays();
         int valorInt=(int) duracionEnDias;
+        if(hora2>hora1){
+            valorInt+=1;
+        }
         return valorInt;
     }
 

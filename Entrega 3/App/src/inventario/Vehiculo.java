@@ -1,14 +1,11 @@
 package inventario;
 import java.util.ArrayList;
 import java.util.List;
-import inventario.Evento;
 import alquiler.alquiler;
 import alquiler.Reserva;
-import inventario.Sede;
-import inventario.Categoria;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Vehiculo {
     private  String placa;
@@ -83,6 +80,7 @@ public class Vehiculo {
         }}
 
     public boolean estaDisponible(int fecha1, int hora1, int fecha2, int hora2){
+        try{
         boolean reservaInPeriodoReserva=false;
         boolean eventoInPeriodoReserva=false;
         DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyyMMddHHmm");
@@ -90,25 +88,29 @@ public class Vehiculo {
         LocalDateTime fhFinReserva = LocalDateTime.parse(String.format("%08d%04d", fecha2, hora2), formatter);
         int numReservasActivas=this.getReservasActivas().size();
         int numEventos=this.getHistorialEventos().size();
-        if (numEventos>1){
-            Evento ultimoEvento= this.getHistorialEventos().get(numEventos-1);
-            LocalDateTime fhInicioEvento= LocalDateTime.parse(String.format("%08d%04d", ultimoEvento.getFechaInicio(), ultimoEvento.getHoraInicio()), formatter);
-            LocalDateTime fhFinEvento= LocalDateTime.parse(String.format("%08d%04d", ultimoEvento.getFechaInicio(), ultimoEvento.getHoraInicio()), formatter);
-
-            eventoInPeriodoReserva=(fhFinEvento.isBefore(fhInicioReserva) || fhInicioEvento.isAfter(fhFinReserva));
-        }
+        if (numEventos==0){}
+        else{
+            for (Evento i: this.getHistorialEventos()){
+            LocalDateTime fhInicioEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaInicio(), i.getHoraInicio()), formatter);
+            LocalDateTime fhFinEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaFin(), i.getHoraFin()), formatter);
+            if (!fhFinEvento.isBefore(fhInicioReserva) && !fhInicioEvento.isAfter(fhFinReserva)) {
+                eventoInPeriodoReserva=true;
+                break;
+            }
+        }}
 
         if(numReservasActivas==0){
             reservaInPeriodoReserva=false;
         }
         else{
             for (Reserva i: this.getReservasActivas()){
+                //A i_finReserva se le suma 1 para prevenir el periodo de 24h en el que el vehículo será EnLimpieza
                 LocalDateTime i_inicioReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaRecoger(), i.getHoraRecoger()), formatter);
                 LocalDateTime i_finReserva = (LocalDateTime.parse(String.format("%08d%04d",  i.getFechaEntregar(), i.getHoraEntregar()), formatter)).plusDays(1);
-                if (!i_finReserva.isBefore(fhInicioReserva) || i_inicioReserva.isAfter(fhFinReserva)){
+                if (!i_finReserva.isBefore(fhInicioReserva) && !i_inicioReserva.isAfter(fhFinReserva)) {
                         reservaInPeriodoReserva=true;
                         break;
-                    }
+                }
             }
         }
         if ((reservaInPeriodoReserva==false) && (eventoInPeriodoReserva==false)){
@@ -117,6 +119,9 @@ public class Vehiculo {
         else{
             return false;
         }
-        //implementacion: revisar todas las reservas para ver si esta ocupado en ese rango
+    }catch(DateTimeParseException e){
+        System.out.println("\n>Se presentó un error al verificar la disponibilidad");
+        return false;
+    }
     }
 }

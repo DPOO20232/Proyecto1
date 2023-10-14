@@ -3,6 +3,7 @@ import java.util.List;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import usuario.personal;;
 public class Sede {
@@ -105,21 +106,24 @@ public class Sede {
     }
     public boolean estaAbierta(int fecha, int hora){
     boolean retorno=false;
+    try{
     DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyyMMddHHmm");
     LocalDateTime fecha_u = LocalDateTime.parse(String.format("%08d%04d", fecha, hora), formatter);
     DayOfWeek diaSemana = fecha_u.getDayOfWeek();
     boolean esDiaSemana = ((diaSemana != DayOfWeek.SATURDAY) && (diaSemana != DayOfWeek.SUNDAY));
     if (esDiaSemana){
         List <Integer> horario1= this.getHorarioAtencionEnSemana();
-        if(horario1.get(0) < hora && hora < horario1.get(1)){
+        if(horario1.get(0) <= hora && hora <= horario1.get(1)){
             retorno=true;
         }}
     else{
         List <Integer> horario1= this.getHorarioAtencionFinSemana();
-        if(horario1.get(0) < hora && hora < horario1.get(1)){
+        if(horario1.get(0) <= hora && hora <= horario1.get(1)){
             retorno=true;
     }
     }
         return retorno;
-    }
+    }catch(DateTimeParseException  e){System.out.println("\n>Ingrese las fechas y horas en el formato solicitado.");
+    return retorno;}
+}
 }
