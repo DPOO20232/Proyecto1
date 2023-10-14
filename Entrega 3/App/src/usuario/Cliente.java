@@ -177,6 +177,7 @@ public class Cliente extends Usuario{
     catch(NumberFormatException e){System.out.println("\n>Debe ingresar los datos requeridos en el formato adecuado para que la creación de la cuenta sea exitosa.");}
     }
     public void setLicencia(){
+        try{
         boolean continuar=true;
         while(continuar){
         int numerolicencia = Integer.parseInt(input("\nPor favor ingrese el número de su licencia de conducción"));
@@ -186,6 +187,7 @@ public class Cliente extends Usuario{
         Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
         if(Usuario.checkVencimientoLicencia(licencia,0,0,0)==false){
             this.setLicencia(licencia);
+            continuar=false;
             }
             else{
                 System.out.println("\n>La licencia ingresada ya caducó, desea ingresar otra?");
@@ -207,7 +209,9 @@ public class Cliente extends Usuario{
                 continuar=false;  
             }
         }
-        }}
+        }
+        }catch(NumberFormatException e){System.out.println("\n>Debe ingresar los datos requeridos en el formato adecuado para que la creación de la cuenta sea exitosa.");}   
+        }
         public static String input(String mensaje)
 	{
 		try
@@ -226,8 +230,8 @@ public class Cliente extends Usuario{
 
     public void actualizarCliente(){
         boolean continuarCliente=true;
-        System.out.println("\nPor favor ingrese el dato que desee modificar\n");
         while (continuarCliente){
+            System.out.println("\nPor favor seleccione que desea modificar\n");
             System.out.println("1. Mi correo electrónico");
             System.out.println("2. Mi número de teléfono");
             System.out.println("3. Mi Licencia de Conducción");
@@ -247,9 +251,10 @@ public class Cliente extends Usuario{
                 }
                 else if(opcion_cliente==3){this.setLicencia();}
                 else if(opcion_cliente==4){this.setTarjeta();}
-                else if(opcion_cliente==5){continuarCliente=false;}
+                else if(opcion_cliente==5){continuarCliente=false;
+                            System.out.println(">\nInformación actualizada.\n");}
                 else{System.out.println("Por favor seleccione una opción válida.");}
-            } catch(NumberFormatException e){}
+            } catch(NumberFormatException e){System.out.println("\n>Debe ingresar los datos requeridos en el formato adecuado para que la creación de la cuenta sea exitosa.");}
         }
     }
 

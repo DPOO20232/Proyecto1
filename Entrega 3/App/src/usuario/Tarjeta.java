@@ -37,7 +37,7 @@ public class Tarjeta {
         anio = fechaActual.get(Calendar.YEAR);}
         String fechaString = String.format("%04d%02d%02d", anio, mes, dia);
         int fechaTope = Integer.parseInt(fechaString);
-        if (this.getNumeroTarjeta()>= fechaTope) {
+        if (this.getFechaVencimiento()>= fechaTope) {
             vence= false;
     }
         return vence;

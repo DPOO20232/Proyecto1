@@ -126,11 +126,11 @@ public class Reserva {
 
     public static void crearReserva(Cliente cliente, boolean reservaEnSede){
         //reservaEnSede es true cuando la hace el personal de atencion
-            System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
+            System.out.println("\n¡Bienvenido a nuestro sistema de reservas!");
         try { 
             boolean continuar=true;
             while(continuar){
-            System.out.println(">Lista de Sedes Disponibles:");
+            System.out.println("\n>Lista de Sedes Disponibles:");
                 List<Sede> sedes = Inventario.getListaSedes();
                 for (int i = 0; i < sedes.size(); i++) {
                     System.out.println((i + 1) + ". " + sedes.get(i).getNombre()+" ("+sedes.get(i).getUbicacion()+").");
@@ -138,8 +138,8 @@ public class Reserva {
             Sede sedeRecoger=null;
             Sede sedeEntrega=null;
 
-            int sedeRecogerIndex = Integer.parseInt(input("\nSeleccione una sede para recoger su vehículo(ingrese el número)"));
-            int sedeEntregaIndex = Integer.parseInt(input("Seleccione una sede para la entrega de su vehículo(ingrese el número)"));
+            int sedeRecogerIndex = Integer.parseInt(input("\nSeleccione una sede para recoger el vehículo(ingrese el número)"));
+            int sedeEntregaIndex = Integer.parseInt(input("Seleccione una sede para la devolución del vehículo(ingrese el número)"));
             if(sedeRecogerIndex<=sedes.size()&& sedeEntregaIndex<=sedes.size()){
             sedeRecoger = sedes.get(sedeRecogerIndex - 1);
             sedeEntrega = sedes.get(sedeEntregaIndex - 1);
@@ -148,22 +148,22 @@ public class Reserva {
             System.out.println("\n\t>Información Sede donde se recogerá el vehículo:");
             sedeRecoger.printInfo();
             int frecoger = Integer.parseInt(input("Por favor ingrese la fecha en la que desee recoger su vehículo(en formato aaaammdd)"));
-            int hrecoger = Integer.parseInt(input("Considerando los horarios de atención de la sede, ingrese la hora en la que desee recoger su vehículo(en formato hhmm)"));
+            int hrecoger = Integer.parseInt(input("Considerando los horarios de atención de la sede, ingrese la hora en la que desee recoger su vehículo(en formato 24h de tipo hhmm)"));
             System.out.println("\n\t>Información Sede donde se devolverá el vehículo:");
             sedeEntrega.printInfo();
-            int fentregar = Integer.parseInt(input("Por favor ingrese la fecha en la que desee entregar su vehículo(en formato aaaammdd)"));
-            int hentregar = Integer.parseInt(input("Considerando los horarios de atención de la sede, ingrese la hora en la que desee entregar su vehículo(en formato hhmm)"));
+            int fentregar = Integer.parseInt(input("Por favor ingrese la fecha en la que desee devolver su vehículo(en formato aaaammdd)"));
+            int hentregar = Integer.parseInt(input("Considerando los horarios de atención de la sede, ingrese la hora en la que desee devolver su vehículo(en formato 24h de tipo hhmm)"));
             boolean horaVrecoger = horaValida(hrecoger);
             boolean horaVdevolucion = horaValida(hentregar);
             boolean fVrecoger = fechaValidaReserva(frecoger);
-            boolean fVdevolucion = fechaValidaReserva(fentregar);
+            boolean fVdevolucion = fechaValidaDevolucion(frecoger,fentregar,hrecoger,hentregar);
             boolean posibleRecoger=sedeRecoger.estaAbierta(frecoger,hrecoger);
             boolean posibleEntregar=sedeEntrega.estaAbierta(fentregar,hentregar);
             if (horaVrecoger && horaVdevolucion && fVrecoger && fVdevolucion &&posibleEntregar&&posibleRecoger ){
                 Licencia licencia_act= cliente.getLicencia();
                 Tarjeta tarjeta_act= cliente.getTarjeta();
-                if(Usuario.checkVencimientoLicencia(licencia_act, fentregar / 10000, (fentregar / 100) % 100, fentregar % 100)==false){
-                if (tarjeta_act.checkVencimientoTarjeta(fentregar / 10000, (fentregar / 100) % 100, fentregar % 100)==false){
+                if(Usuario.checkVencimientoLicencia(licencia_act,fentregar % 100, (fentregar / 100) % 100, fentregar / 10000)==false){
+                if (tarjeta_act.checkVencimientoTarjeta( fentregar % 100, (fentregar / 100) % 100,fentregar / 10000)==false){
                 System.out.println("\nLista de Categorías de Vehículos Disponibles:\n");
                 List<Categoria> categorias = Inventario.getListaCategorias();
                 for (int i = 0; i < categorias.size(); i++) {
@@ -202,7 +202,9 @@ public class Reserva {
                             if(opcion>1){continuar2=false;
                                 continuar1=false;
                                 continuar=false;}}
-                    }}else{System.out.println(">No se encontraron vehículos disponibles para la categoría dada en el rango de fechas requerido.");}
+                    }}else{System.out.println(">No se encontraron vehículos disponibles para la categoría dada en el rango de fechas requerido.");
+                        continuar1=false;
+                        continuar=false;;}
                 }else{System.out.println(">Elija una categoría de las opciones mostradas.");}
             }} 
             else{ System.out.println("\n>Su tarjeta caducará/caducó, desea actualizar su licencia?");
@@ -257,9 +259,6 @@ public class Reserva {
         try{
         if(reservaPorModificar!=null){
             boolean continuar=true;
-            /*
-                private double pagoReserva;
-             */
             while(continuar){
             Sede sedeRecoger=reservaPorModificar.getSedeRecoger();
             Sede sedeEntrega=reservaPorModificar.getSedeEntregar();
@@ -492,19 +491,19 @@ public class Reserva {
             if ((anio == anhoactual+1)) {
                 retorno= true;
             }
-            else if ((anio == anhoactual && mes > mesactual)) {
+            else if ((mes > mesactual)) {
                 retorno= true;
             }
-            else if ((anio == anhoactual && mes == mesactual && dia > diaactual)) {
+            else if ((dia >= diaactual)) {
                 retorno= true;
             }
         } 
         return retorno;
     }
-    public static boolean fechaValidaDevolucion(int entrega, int devolucion) {
-        int diae = entrega % 100;
-        int mese = (entrega % 10000) / 100;
-        int anioe = entrega / 10000;
+    public static boolean fechaValidaDevolucion(int recoger, int devolucion, int hrecoger, int hdevolver) {
+        int diae = recoger % 100;
+        int mese = (recoger % 10000) / 100;
+        int anioe = recoger / 10000;
 
         int diad = devolucion % 100;
         int mesd = (devolucion % 10000) / 100;
@@ -514,12 +513,15 @@ public class Reserva {
             if ((aniod == anioe+1)) {
                 retorno= true;
             }
-            else if ((aniod == anioe && mesd > mese)) {
+            else if ((mesd > mese)) {
                 retorno= true;
             }
-            else if ((aniod == anioe && mesd == mese && diad > diae)) {
+            else if ((diad > diae)) {
                 retorno= true;
             }
+            else if((hdevolver> hrecoger)) {
+                retorno= true;
+            } 
         }
         return retorno;
     }

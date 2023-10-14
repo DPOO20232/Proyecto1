@@ -1,22 +1,26 @@
 package alquiler;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class PagoExcedente {
 
-    private Map<String, Double> pagoAdicional;
+    private String motivoPago;
+    private double pago;
 
-    public PagoExcedente() {
-        pagoAdicional = new HashMap<>();
+    public PagoExcedente(String motivo, double pago) {
+        this.motivoPago=motivo;
+        this.pago=pago;
     }
 
-    public void agregarPagoAdicional(String motivo, double valor) {
-        pagoAdicional.put(motivo, valor);
+    public void setValorPago(double pago){
+        this.pago=pago;
     }
-
-    public double getValorPagoAdicional(String motivo) {
-        return pagoAdicional.get(motivo);
+    public void setMotivoPago(String motivo){
+        this.motivoPago=motivo;
+    }
+    public double getValorPago(){
+        return this.pago;
+    }
+    public String getMotivoPago(){
+        return this.motivoPago;
     }
     
 }
