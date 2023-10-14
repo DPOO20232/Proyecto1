@@ -320,7 +320,39 @@ public class Inventario {
 
         }
 
-    
+    public static void updateCliente() throws IOException{
+        File archivo = new File("./data/clientes.txt");
+        FileWriter escritor= new FileWriter(archivo);
+        List<Cliente> clientes=Usuario.getListaClientes();
+        for(Cliente i: clientes){
+            String login=i.getLogin();
+            String password=i.getPassword();
+            String cedula= Integer.toString(i.getNumeroCedula());
+            String nombre= i.getNombre();
+            String correo=i.getMail();
+            String celular=Long.toString(i.getTelefono());
+            String nacimiento=Integer.toString(i.getFechaNacimiento());
+            String nacionalidad=i.getNacionalidad();
+            Tarjeta tarjeta=i.getTarjeta();
+            StringBuilder tarjet=new StringBuilder();
+            tarjet.append("[");
+            tarjet.append(Long.toString(tarjeta.getNumeroTarjeta()));
+            tarjet.append(",");
+            tarjet.append(Integer.toString(tarjeta.getFechaVencimiento()));
+            tarjet.append(",");
+            tarjet.append(tarjeta.getMarcaTarjeta());
+            tarjet.append(",");
+            tarjet.append(tarjeta.getNombreTitular());
+            tarjet.append("]");
+            String datosTarjeta=tarjet.toString();
+            Licencia licencia=i.getLicencia();
+            String NumLicencia=Integer.toString(licencia.getNumeroLicencia());
+            String resultado = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s%n", login, password, cedula, nombre, correo, celular, nacimiento, nacionalidad, datosTarjeta, NumLicencia);
+            escritor.write(resultado);
+
+        }
+        escritor.close();
+    }
     
     public static String input(String mensaje)
 	{
