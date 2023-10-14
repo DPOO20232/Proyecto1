@@ -456,12 +456,27 @@ public class Reserva {
         return valorInt;
     }
         
+    public static void eliminarReserva(Cliente cliente){
+        List<Reserva> reservas= getListaReservas();
+        if (reservas.size()>0){
+        System.out.println("Tiene las siguientes Reservas activas:");
+        for (int i = 0; i < reservas.size(); i++) {
+            Reserva i_reserva=reservas.get(i);
+            System.out.println((i + 1) + ". " + Integer.toString(i_reserva.getID()));
+            int f1= i_reserva.getFechaRecoger();
+            int f2=i_reserva.getFechaEntregar();
+            String fecha1 = String.format("%02d/%02d/%04d",f1 % 100,(f1/ 100) % 100, f1/ 10000);
+            String fecha2 = String.format("%02d/%02d/%04d",f2 % 100,(f2/ 100) % 100, f2/ 10000);
 
-
-    public String crearMensajeConfirmacionReserva() {
-        // Lógica para crear un mensaje de confirmación de reserva
-        String str="Su reserva fue realizada existosamente";
-        return str;
+             System.out.println("   - Fecha Inicio: $" + fecha1);
+             System.out.println("   - Fecha Inicio: $" + fecha2);
+                }
+        }
+        //QUITAR DE RESERVAS ACTIVAS
+        //QUITAR DE LISTA RESERVAS
+        else{
+                    System.out.println(">No tiene reservas activas.");
+        }
     }
     public static String input(String mensaje)
 	{
