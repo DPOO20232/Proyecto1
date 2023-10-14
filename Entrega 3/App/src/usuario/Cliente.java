@@ -1,5 +1,5 @@
 package usuario;
-
+import java.util.Calendar;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -224,7 +224,7 @@ public class Cliente extends Usuario{
 		return null;
     }
 
-    public static void actualizarCliente(){
+    public void actualizarCliente(){
         boolean continuarCliente=true;
         System.out.println("\nPor favor ingrese el dato que desee modificar\n");
         while (continuarCliente){
@@ -235,18 +235,18 @@ public class Cliente extends Usuario{
             System.out.println("5. He terminado\n");
             int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
             try {
-                else if(opcion_cliente==1){
+                if(opcion_cliente==1){
                     String nuevoCorreo = input("Por favor ingrese su nuevo correo electrónico");
-                    cliente.setCorreo(nuevoCorreo);
+                    this.setMail(nuevoCorreo);
                     System.out.println("Correo electrónico actualizado correctamente.");
                 }
                 else if(opcion_cliente==2){
                     long nuevoTelefono = Long.parseLong(input("Por favor ingrese su nuevo número de teléfono"));
-                    cliente.setTelefono(nuevoTelefono);
+                    this.setTelefono(nuevoTelefono);
                     System.out.println("Número de teléfono actualizado correctamente.");
                 }
-                else if(opcion_cliente==3){setLicencia()}
-                else if(opcion_cliente==4){setTarjeta()}
+                else if(opcion_cliente==3){this.setLicencia();}
+                else if(opcion_cliente==4){this.setTarjeta();}
                 else if(opcion_cliente==5){continuarCliente=false;}
                 else{System.out.println("Por favor seleccione una opción válida.");}
             } catch(NumberFormatException e){}

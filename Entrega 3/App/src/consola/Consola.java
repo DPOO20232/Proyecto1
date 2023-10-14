@@ -145,7 +145,7 @@ public class Consola {
                     int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
                     boolean ensede = false;
-                    if (opcion_cliente==1){}
+                    if (opcion_cliente==1){cliente.actualizarCliente();}
                     else if(opcion_cliente==2){Reserva.crearReserva(cliente,ensede);}
                     else if(opcion_cliente==2){}
                     else if(opcion_cliente==3){}
@@ -159,7 +159,8 @@ public class Consola {
             else{System.out.println("\n\t>>> Credenciales incorrectas, intentelo de nuevo.");}          
             }
             else if(opcion_seleccionada==2){
-                nuevoCliente();
+                Cliente.nuevoCliente();
+                
             }
             else if(opcion_seleccionada==3){
                 Inventario.updateSistema();
