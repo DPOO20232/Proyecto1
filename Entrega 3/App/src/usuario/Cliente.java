@@ -180,7 +180,7 @@ public class Cliente extends Usuario{
         boolean continuar=true;
         while(continuar){
         int numerolicencia = Integer.parseInt(input("\nPor favor ingrese el número de su licencia de conducción"));
-        if (Usuario.checkLicencia(numerolicencia)==false){
+        if (Usuario.checkLicencia(numerolicencia)==false|| numerolicencia==this.getLicencia().getNumeroLicencia()){
         int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato aaaammdd)"));            int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato aaaammdd)"));
         String pais = input("Por favor ingrese el país de expedición de su licencia");
         Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
