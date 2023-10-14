@@ -98,7 +98,7 @@ public class Inventario {
     updateSedes();
     updateSeguros();
     updateReserva();
-    //updateVehiculos();
+    updateVehiculo();
     }
     public static void updateCategorias() throws IOException{
         File archivo = new File("./data/categorias.txt");
@@ -194,6 +194,68 @@ public class Inventario {
             String strcedula_cliente= Integer.toString(cliente.getNumeroCedula());
             String resultado = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s%n", stridReserva, strfechaRecoger, strfechaEntregar, strhoraRecoger, strhoraEntregar, strreservaEnSede, strid_sedeRecoger, strid_sedeEntregar, strid_categoria, strcedula_cliente);
             escritor.write(resultado);
+        }
+        escritor.close();
+    }
+    public static void updateVehiculo() throws IOException{
+        File archivo = new File("./data/vehiculos.txt");
+        FileWriter escritor= new FileWriter(archivo);
+        List<Vehiculo> lstvehiculo=listaVehiculos;
+        for(Vehiculo i: lstvehiculo){
+            String placa=i.getPlaca();
+            String marca=i.getMarca();
+            String modelo=i.getModelo();
+            String color=i.getColor();
+            String tipo_trasmicion=i.getTipoTransmicion();
+            String estado= i.getEstado();
+            String averiado= Boolean.toString(i.getAveriado());
+            Categoria categoria=i.getCategoria();
+            String strid_categoria=Integer.toString(categoria.getID());
+            Sede sede=i.getSede();
+            String id_sede=Integer.toString(sede.getID());
+            List<Evento> stringIDsEventos=i.getHistorialEventos();
+            StringBuilder idsevento = new StringBuilder();
+            idsevento.append("[");
+            for(Evento x: stringIDsEventos){ 
+                String IdEvento=Integer.toString(x.getID());
+                idsevento.append(IdEvento);
+                idsevento.append(",");
+            }
+            if (idsevento.length()>=3){
+                 idsevento.setLength(idsevento.length() - 1);
+            }
+           
+            idsevento.append("]");
+            String lstidEvento=idsevento.toString();
+            List<Reserva> stringIDsReservasActivas=i.getReservasActivas();
+            StringBuilder idsReserva = new StringBuilder();
+            idsReserva.append("[");
+            for(Reserva z:stringIDsReservasActivas){
+                String IdReserva=Integer.toString(z.getID());
+                idsReserva.append(IdReserva);
+                idsReserva.append(",");
+            }
+            if (idsReserva.length()>=3){
+                 idsReserva.setLength(idsReserva.length() - 1);
+            }
+            idsReserva.append("]");
+            String lstidReserva=idsReserva.toString();
+            List<alquiler> stringIDsAlquileres=i.getHistorialAlquileres();
+            StringBuilder idsAlquiler = new StringBuilder();
+            idsAlquiler.append("[");
+            for(alquiler s: stringIDsAlquileres){
+                String IdAlquiler=Integer.toString(s.getID());
+                idsAlquiler.append(IdAlquiler);
+                idsAlquiler.append(",");
+            }
+            if (idsAlquiler.length()>=3){
+                 idsAlquiler.setLength(idsAlquiler.length() - 1);
+            }
+            idsAlquiler.append("]");
+            String lstidAlquiler=idsAlquiler.toString();
+            String resultado = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s%n", placa, marca, modelo, color, tipo_trasmicion, estado, averiado,strid_categoria, id_sede, lstidEvento, lstidReserva,lstidAlquiler);
+            escritor.write(resultado);
+
         }
         escritor.close();
     }
