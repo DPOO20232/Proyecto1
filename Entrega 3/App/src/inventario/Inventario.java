@@ -70,22 +70,22 @@ public class Inventario {
             }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}
     }
     public static void setPeriodoTemporadaAlta(){
-    int fechaInicio= Integer.parseInt(input("Intrese el nuevo inicio de temporada alta en formato mmdd(Ej: 31 de marzo->0331)"));
-    int fechaFin= Integer.parseInt(input("Intrese el nuevo cierre de temporada alta en formato mmdd(Ej: 31 de marzo->0331)"));
-    List<Integer> periodo=getPeriodoTemporadaAlta();
-        periodo.clear();
-        periodo.add(fechaInicio);
-        periodo.add(fechaFin);
-        System.out.println(">>> Costo actualizado");}
+        int fechaInicio= Integer.parseInt(input("Intrese el nuevo inicio de temporada alta en formato mmdd(Ej: 31 de marzo->0331)"));
+        int fechaFin= Integer.parseInt(input("Intrese el nuevo cierre de temporada alta en formato mmdd(Ej: 31 de marzo->0331)"));
+        List<Integer> periodo=getPeriodoTemporadaAlta();
+            periodo.clear();
+            periodo.add(fechaInicio);
+            periodo.add(fechaFin);
+            System.out.println(">>> Costo actualizado");}
 
-    public static void setPeriodoTemporadaBaja(){
-    int fechaInicio= Integer.parseInt(input("Intrese el nuevo inicio de temporada baja en formato mmdd(Ej: 31 de marzo->0331)"));
-    int fechaFin= Integer.parseInt(input("Intrese el nuevo cierre de temporada baja en formato mmdd(Ej: 31 de marzo->0331)"));
-    List<Integer> periodo=getPeriodoTemporadaBaja();
-        periodo.clear();
-        periodo.add(fechaInicio);
-        periodo.add(fechaFin);
-        System.out.println(">>> Costo actualizado");}
+        public static void setPeriodoTemporadaBaja(){
+        int fechaInicio= Integer.parseInt(input("Intrese el nuevo inicio de temporada baja en formato mmdd(Ej: 31 de marzo->0331)"));
+        int fechaFin= Integer.parseInt(input("Intrese el nuevo cierre de temporada baja en formato mmdd(Ej: 31 de marzo->0331)"));
+        List<Integer> periodo=getPeriodoTemporadaBaja();
+            periodo.clear();
+            periodo.add(fechaInicio);
+            periodo.add(fechaFin);
+            System.out.println(">>> Costo actualizado");}
     public static List<Categoria> getListaCategorias(){return listaCategorias;}
     public static List<Seguro> getListaSeguros(){return listaSeguros;}
     public static List<Sede> getListaSedes(){return listaSedes;}
@@ -158,7 +158,7 @@ public class Inventario {
             escritor.write(resultado);
         }
         escritor.close();
-        //cambios
+      
     }
     public static void updateSeguros() throws IOException{
         File archivo = new File("./data/seguros.txt");
@@ -258,6 +258,56 @@ public class Inventario {
 
         }
         escritor.close();
+    }
+    public static void updateAlquiler() throws IOException{
+        File archivo = new File("./data/alquileres.txt");
+        FileWriter escritor= new FileWriter(archivo);
+        List<alquiler> lstAlquiler=alquiler.getListaAlquileres();
+        for (alquiler i: lstAlquiler){
+            String idAlquiler=Integer.toString(i.getID());
+            String PagoFinal=Double.toString(i.getPagoFinal());
+            Reserva reserva= i.getReserva();
+            String IdReserva=Integer.toString(reserva.getID());
+            List<Conductor> lstconductor=i.getConductores();
+            StringBuilder conductores = new StringBuilder();
+            conductores.append("[");
+            for(Conductor x: lstconductor){
+                conductores.append("[");
+                conductores.append(x.getNombre());
+                conductores.append("-");
+                conductores.append(Integer.toString(x.getCedula()));
+                conductores.append("-");
+                Licencia licencia=x.getLicencia();
+                conductores.append(Integer.toString(licencia.getNumeroLicencia()));
+                conductores.append("]");
+
+            }
+            conductores.append("]");
+            conductores.toString();
+            List<Seguro> lstseguro=i.getSeguros();
+            StringBuilder seguros = new StringBuilder();
+            seguros.append("[");
+            for(Seguro z: lstseguro){
+                seguros.append(Integer.toString(z.getID()));
+                seguros.append(",");
+            }
+            if (seguros.length()>=3){
+                seguros.setLength(seguros.length() - 1);
+            }
+            seguros.append("]");
+            seguros.toString();
+            List<PagoExcedente> lstpagosexcedentes=i.getPagosExcedentes();
+            StringBuilder pagosExcedentes = new StringBuilder();
+            pagosExcedentes.append("[");
+
+
+            }
+
+
+
+
+        }
+
     }
     
     public static String input(String mensaje)
