@@ -2,7 +2,6 @@ package consola;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Calendar;
 import java.util.List;
 
 import alquiler.Reserva;
@@ -12,8 +11,7 @@ import inventario.Vehiculo;
 import usuario.Cliente;
 import usuario.Usuario;
 import usuario.personal;
-import usuario.Licencia;
-import usuario.Tarjeta;
+
 public class Consola {
     public static void MenuInicial() throws IOException{
     boolean continuar=true;
@@ -109,6 +107,7 @@ public class Consola {
                     //FALTA EMPLEADOS MENU TODO
                     boolean continuarPersonal1=true;
                     System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área de atención!");
+                    //empleadoAtencion tambien crea reservas
                     while (continuarPersonal1==true){
                     System.out.println("\nOpciones de la aplicación\n");
                     System.out.println("1. Registrar empleado en la sede: ");
@@ -137,16 +136,21 @@ public class Consola {
                 boolean continuarCliente=true;
                 System.out.println("\n\t>>>Bienvenid@, "+cliente.getNombre());
                 while (continuarCliente){
-                    System.out.println("1. Actualizar datos");
-                    System.out.println("2. Crear una reserva");
-                    System.out.println("3. Modificar datos de mi reserva");
-                    System.out.println("4. Cancelar reserva");
+                    System.out.println("1. Cambiar contraseña");
+                    System.out.println("2. Actualizar datos");
+                    System.out.println("3. Crear una reserva");
+                    System.out.println("4. Modificar datos de mi reserva");
+                    System.out.println("5. Cancelar reserva");
                     System.out.println("6. Cerrar sesión\n");
                     int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
                     boolean ensede = false;
-                    if (opcion_cliente==1){cliente.actualizarCliente();}
-                    else if(opcion_cliente==2){Reserva.crearReserva(cliente,ensede);}
+                    if (opcion_cliente==1){
+                        String nueva_contraseña = input("Ingrese una nueva contraseña");
+                        System.out.println(">Contraseña actualizada\n");
+                        cliente.setPassword(nueva_contraseña);}
+                    if (opcion_cliente==2){cliente.actualizarCliente();}
+                    else if(opcion_cliente==1){Reserva.crearReserva(cliente,ensede);}
                     else if(opcion_cliente==2){}
                     else if(opcion_cliente==3){}
                     else if(opcion_cliente==4){}
