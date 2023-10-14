@@ -67,8 +67,6 @@ public class Reserva {
         //reservaEnSede es true cuando la hace el personal de atencion
             System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
         try { 
-            //primero checkear que la licencia y tarjeta esten vigente
-
             boolean continuar=true;
             while(continuar){
             System.out.println(">Lista de Sedes Disponibles:");
@@ -124,7 +122,6 @@ public class Reserva {
                     if (reserva_u.getVehiculoAsignado()!=null){
                         boolean continuar2=true;
                         System.out.println("> Encontramos un vehículo para tí!");
-
                         while(continuar2){
                         int numTarjeta = Integer.parseInt(input("Para debitar el 30% del alquiler de su cuenta, por favor ingrese los últimos 4 dígitos de la tarjeta que tiene registrada"));
                         if (numTarjeta== (cliente.getTarjeta().getNumeroTarjeta())%10000){
@@ -137,66 +134,31 @@ public class Reserva {
                                 continuar=false;
                                 Reserva.addReserva(reserva_u);
                         }
-                        else{
-                            System.out.println("\n>Los últimos 4 dígitos ingresados no corresponden a los últimos 4 dígitos de su tarjeta, desea intentarlo nuevamente?");
+                        else{System.out.println("\n>Los últimos 4 dígitos ingresados no corresponden a los últimos 4 dígitos de su tarjeta, desea intentarlo nuevamente?");
                             System.out.println("1.Sí");
                             System.out.println("2.No(ó cualquier otro número)");
                             int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
-                            if(opcion>1){
-                                continuar2=false;
+                            if(opcion>1){continuar2=false;
                                 continuar1=false;
-                                continuar=false;
-                        }
-                        }
-                    }
-                    }
-                    else{
-                        System.out.println(">No se encontraron vehículos disponibles para la categoría dada en el rango de fechas requerido.");
-
-                    }
-
-                }
-                else{
-                System.out.println(">Elija una categoría de las opciones mostradas.");
-                }
-            }
-            } 
-            else{
-                System.out.println("\n>Su tarjeta caducará/caducó, desea actualizar su licencia?");
+                                continuar=false;}}
+                    }}else{System.out.println(">No se encontraron vehículos disponibles para la categoría dada en el rango de fechas requerido.");}
+                }else{System.out.println(">Elija una categoría de las opciones mostradas.");}
+            }} 
+            else{ System.out.println("\n>Su tarjeta caducará/caducó, desea actualizar su licencia?");
                 System.out.println("1.Sí");
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
-                if(opcion==1){
-                    cliente.setTarjeta();
-                }
-                else{
-                continuar=false;
-                }
-            }
-            }
-            else{
-                System.out.println("\n>Su licencia caducará/caducó, desea actualizar su licencia?");
+                if(opcion==1){cliente.setTarjeta();}
+                else{continuar=false;}
+                }} else{System.out.println("\n>Su licencia caducará/caducó, desea actualizar su licencia?");
                 System.out.println("1.Sí");
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
-                if(opcion==1){
-                    cliente.setLicencia();
-                }
-                else{
-                continuar=false;
-                }
+                if(opcion==1){cliente.setLicencia();}
+                else{continuar=false;}
+            }} else {System.out.println(">Las fechas u horas ingresadas no son válidas. Por favor, inténtelo nuevamente.");}
             }
-            } else {
-                System.out.println(">Las fechas u horas ingresadas no son válidas. Por favor, inténtelo nuevamente.");
-                }
-            }
-            else{
-                System.out.println(">Elija opciones de sede válidas.\n");
-
-            }
-
-        
-            }}
+            else{System.out.println(">Elija opciones de sede válidas.\n");}}}
         catch (NumberFormatException e) {
             System.out.println(">Debe ingresar los datos requeridos para que la creación de su reserva sea exitosa.");
         }
@@ -457,26 +419,67 @@ public class Reserva {
     }
         
     public static void eliminarReserva(Cliente cliente){
+        Reserva reservaElejida=encontrarReserva(cliente);
+        if(reservaElejida!=null){
+        Reserva.getListaReservas().remove(reservaElejida);
+        Vehiculo vehiculoReservaElejida= reservaElejida.getVehiculoAsignado();
+        vehiculoReservaElejida.getReservasActivas().remove(reservaElejida);
+        System.out.println("\n> La reserva ha sido cancelada, pronto se trasferirá de vuelta el pago del 30% ($ "+Double.toString(reservaElejida.getPagoReserva())+").");
+    }}
+        
+    
+    public static void modificarReserva(Cliente cliente){
+        Reserva reservaElejida=encontrarReserva(cliente);
+        if(reservaElejida!=null){
+            System.out.println("\nDesea editar la descripción del seguro?\n");
+            System.out.println("1.Sí");
+            System.out.println("2.No(ó cualquier otro número)");
+        }
+        }
+    public static List<Integer> desplegarReservasActivas(Cliente cliente){
         List<Reserva> reservas= getListaReservas();
+        List<Integer> idsReservas= new ArrayList<Integer>();
         if (reservas.size()>0){
         System.out.println("Tiene las siguientes Reservas activas:");
         for (int i = 0; i < reservas.size(); i++) {
+            if (reservas.get(i).getCliente().equals(cliente)){
             Reserva i_reserva=reservas.get(i);
-            System.out.println((i + 1) + ". " + Integer.toString(i_reserva.getID()));
+            idsReservas.add(i_reserva.getID());
+            System.out.println("IDreserva: " + Integer.toString(i_reserva.getID()));
             int f1= i_reserva.getFechaRecoger();
             int f2=i_reserva.getFechaEntregar();
+            String categoria=i_reserva.getCategoria().getnombreCategoria();
             String fecha1 = String.format("%02d/%02d/%04d",f1 % 100,(f1/ 100) % 100, f1/ 10000);
             String fecha2 = String.format("%02d/%02d/%04d",f2 % 100,(f2/ 100) % 100, f2/ 10000);
+            System.out.println(" Tipo de vehículo reservado: "+ categoria+ ". Fecha Inicio: " + fecha1+"-> Fecha Final: "+ fecha2);
+            System.out.println("------------------------------------------------------------------------------------------------------------");
+            }}}
+            else{ System.out.println("\n>No tiene reservas activas ");}
+            return idsReservas;
+    }
+    public static Reserva encontrarReserva(Cliente cliente){
+        Reserva retorno=null;
+        List<Integer> idsReservas= desplegarReservasActivas(cliente);
+        if (idsReservas.size()>=1){
+        boolean continuar=true;
+        while (continuar){
+        int intReservaElejida= Integer.parseInt(input("Porfavor ingrese el idReserva de la reserva que desea cancelar"));
+        if (idsReservas.contains(intReservaElejida)){
+            retorno=Reserva.assignReserva(intReservaElejida);
+            System.out.println("\n> Reserva encontrada.");
 
-             System.out.println("   - Fecha Inicio: $" + fecha1);
-             System.out.println("   - Fecha Inicio: $" + fecha2);
-                }
         }
-        //QUITAR DE RESERVAS ACTIVAS
-        //QUITAR DE LISTA RESERVAS
         else{
-                    System.out.println(">No tiene reservas activas.");
-        }
+            System.out.println("\n> El idReserva ingresado no es válido, desea intentarlo de nuevo?\n");
+            System.out.println("1.Sí");
+            System.out.println("2.No(ó cualquier otro número)");
+            int opcion= Integer.parseInt(input("Porfavor elija una opción"));
+            if(opcion==1){
+                idsReservas=desplegarReservasActivas(cliente);
+            }
+            else{continuar=false;}
+        }}}
+        return retorno;    
     }
     public static String input(String mensaje)
 	{

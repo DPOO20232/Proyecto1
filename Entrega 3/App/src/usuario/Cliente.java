@@ -69,7 +69,7 @@ public class Cliente extends Usuario{
     }
     public void setTarjeta(Tarjeta tarjeta) {
         this.tarjeta = tarjeta;}
-
+        
     public void setTarjeta(){
         try{
         boolean continuar=true;

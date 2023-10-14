@@ -106,6 +106,7 @@ public class Consola {
                 }catch(NumberFormatException e){}}}
                     //ESTAS CLASES HAY QUE PASARLAS A ADMIN
                 else if (perfil.equals("EmpleadoAtencion")){
+                    //FALTA EMPLEADOS MENU TODO
                     boolean continuarPersonal1=true;
                     System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área de atención!");
                     while (continuarPersonal1==true){
@@ -140,16 +141,16 @@ public class Consola {
                     System.out.println("2. Crear una reserva");
                     System.out.println("3. Modificar datos de mi reserva");
                     System.out.println("4. Cancelar reserva");
-                    System.out.println("5. Modificar mis datos");
                     System.out.println("6. Cerrar sesión\n");
                     int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
                     boolean ensede = false;
-                    if (opcion_cliente==1){Reserva.crearReserva(cliente,ensede);}
-                    //else if(opcion_cliente==2){}
-                    //else if(opcion_cliente==3){}
-                    //else if(opcion_cliente==4){}
-                    //else if(opcion_cliente==5){}
+                    if (opcion_cliente==1){}
+                    else if(opcion_cliente==2){Reserva.crearReserva(cliente,ensede);}
+                    else if(opcion_cliente==2){}
+                    else if(opcion_cliente==3){}
+                    else if(opcion_cliente==4){}
+                    else if(opcion_cliente==5){}
                     else if(opcion_cliente==6){continuarCliente=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
                     }catch(NumberFormatException e){}}
