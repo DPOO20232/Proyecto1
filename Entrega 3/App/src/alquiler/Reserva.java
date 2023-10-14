@@ -564,6 +564,9 @@ public class Reserva {
         LocalDate fechaT2 = LocalDate.parse(fechaString2, formato);
         long duracionEnDias = fechaT1.until(fechaT2).getDays();
         int valorInt=(int) duracionEnDias;
+        if(hora2>hora1){
+            valorInt+=1;
+        }
         return valorInt;
     }
 
