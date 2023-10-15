@@ -1,4 +1,7 @@
 package alquiler;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,14 +85,7 @@ public class alquiler{
         return retorno;
     }
 
-    public void agregarConductores(Cliente cliente) {
-        String nombre1 = cliente.getNombre();
-        int cedula1 = cliente.getNumeroCedula();
-        Licencia licencia1 = cliente.getLicencia();
-        Conductor conductor1 = new Conductor(nombre1, cedula1, licencia1);
-        addConductor(conductor1);
-        System.out.println("Conductor Registrado: " + nombre1);
-        System.out.println("Número de Licencia: " + licencia1.getNumeroLicencia());
+    public void agregarConductores() {
         boolean continuarPersonal1 = true;
         while (continuarPersonal1==true){
             System.out.println("¿Desea agregar un conductor adicional?");
@@ -101,24 +97,30 @@ public class alquiler{
                     String nombre = input("Ingrese el nombre del conductor");
                     int cedula = Integer.parseInt(input("Por favor ingrese el número de cédula del conductor"));
                     Licencia licencia = Licencia.crearLicencia(); 
-                    Conductor conductor = new Conductor(nombre, cedula, licencia);
-                    addConductor(conductor);
-                    System.out.println("Conductor Registrado: " + nombre);
-                    System.out.println("Número de Licencia: " + licencia.getNumeroLicencia());
+                    if (licencia != null){
+                        Conductor conductor = new Conductor(nombre, cedula, licencia);
+                        addConductor(conductor);
+                        System.out.println("Conductor Registrado: " + nombre);
+                        System.out.println("Número de Licencia: " + licencia.getNumeroLicencia());
+                    }
+                    else{
+                        System.out.println("No se pudo registrar");
+                    }
+                    
                 }
-                else if(opcion==2){continuarPersonal1 = false;}
+                else if(opcion==2){continuarPersonal1 = false;
+                }
             }
         }
     }
 
-    public void segurosdeAlquiler (){
+    public void agregarSeguros (){
         boolean continuar = true;
-        for(Seguro i: Inventario.getListaSeguros()){
-            System.out.println("ID del seguro: " + i.getID());
-            System.out.println("Descripción del seguro: " + i.getDescripcion());
-            System.out.println("Tarifa diaria del seguro(en porcentage): " + i.getPctg_TarifaDiaria);
-        }
+        
         while (continuar){
+             for(Seguro i: Inventario.getListaSeguros()){
+            System.out.println("ID del seguro: " + i.getID()+"Descripción del seguro: " + i.getDescripcion() + "Tarifa diaria del seguro(en porcentage): " + i.getPctg_TarifaDiaria());
+            }
             System.out.println("¿Desea agregar un seguro al alquiler?");
             System.out.println("1. Sí");
             System.out.println("2. No");
@@ -131,7 +133,7 @@ public class alquiler{
                     System.out.println("Seguro agregado al alquiler.");
                 } catch(NumberFormatException e){System.out.println("ID de seguro no válido. Intente nuevamente.");}
             }
-            else if(opcion==2) {boolean continuar = false;}
+            else if(opcion==2) { continuar = false;}
             else {System.out.println("Por favor seleccione una opción válida.");}
         }
     }
@@ -177,49 +179,18 @@ public class alquiler{
         }
 
         int id = Integer.parseInt(input("Por favor ingrese el ID de la reserva que desee utilizar: "));
-        reserva = Reserva.assignReserva(id);
+        Reserva reserva = Reserva.assignReserva(id);
 
         if (reserva != null) {
             alquiler alquiler = new alquiler(reserva);
-            Cliente cliente = reserva.getCliente();
-            alquiler.agregarConductores(cliente);
-            alquiler.segurosdeAlquiler();
-            alquiler.setPagoFinal(alquiler.setPagoAlquiler());
-            public static void crearAlquiler(List<Reserva>reservas){
-                System.out.println("Reserva/s activa/s del cliente: ");
-                for(Reserva i: reservas){
-                    int idreseva = i.getID();
-                    String categoria = i.getCategoria().getnombreCategoria();
-                    int fechaRecoger = i.getFechaRecoger();
-                    int fechaEntregar = i.getFechaEntregar();
-                    int horaRecoger = i.getHoraRecoger();
-                    int horaEntregar = i.getHoraEntregar();
-                    String sedeEntrega = i.getSedeEntregar().getNombre();
-                    String sedeRecoger = i.getSedeRecoger().getNombre();
-                    double pago = i.getPagoReserva();
-                    System.out.println("ID de la reserva: " + idreseva);
-                    System.out.println("Categoría: " + categoria);
-                    System.out.println("Fecha y Hora de entrega: " + fechaRecoger + ", " + horaRecoger);
-                    System.out.println("Fecha y Hora de devolución: "+ fechaEntregar + ", " + horaEntregar);
-                    System.out.println("Sede de entrega: " + sedeRecoger) ;
-                    System.out.println("Sede de devolución: " + sedeEntrega);
-                    System.out.println("Pago Realizado por la reserva: " + pago);
-                }
-        
-                int id = Integer.parseInt(input("Por favor ingrese el ID de la reserva que desee utilizar: "));
-                reserva = Reserva.assignReserva(id);
-                alquiler alquiler = new alquiler(reserva);
-                cliente = reserva.getCliente();
-                alquiler.agregarConductores(cliente);
-                alquiler.segurosdeAlquiler();
-                alquiler.setPagoFinal(alquiler.setPagoAlquiler());
-                System.out.println("El valor a pagar es de " + alquiler.setPagoAlquiler()) 
-                addAlquiler(alquiler)
+            alquiler.agregarConductores();
+            alquiler.agregarSeguros();
+            System.out.println("El valor a pagar es de " + alquiler.setPagoAlquiler()); 
+            addAlquiler(alquiler);
                          
             }
-            addAlquiler(alquiler)
-            System.out.println("El alquiler se ha realizado correctamente")
-        } else {System.out.println("Reserva no encontrada. Por favor, ingrese un ID válido.")}
+        
+        else {System.out.println("Reserva no encontrada. Por favor, ingrese un ID válido.");}
     }
 
     public static String input(String mensaje) {
