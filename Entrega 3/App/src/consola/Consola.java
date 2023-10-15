@@ -232,7 +232,7 @@ public class Consola {
 		{
 			System.out.print(mensaje + ": ");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-			return reader.readLine();
+            return reader.readLine();
 		}
 		catch (IOException e)
 		{

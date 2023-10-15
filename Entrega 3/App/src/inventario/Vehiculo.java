@@ -99,7 +99,7 @@ public class Vehiculo {
         }}
         if(numReservasActivas>0){
             for (Reserva i: this.getReservasActivas()){
-                //A i_finReserva se le suma 1 para prevenir el periodo de 24h en el que el vehículo será EnLimpieza
+                //A i_finReserva se le suma 1 para prever el periodo de 24h en el que el vehículo será EnLimpieza
                 LocalDateTime i_inicioReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaRecoger(), i.getHoraRecoger()), formatter);
                 LocalDateTime i_finReserva = (LocalDateTime.parse(String.format("%08d%04d",  i.getFechaEntregar(), i.getHoraEntregar()), formatter)).plusDays(1);
                 if (!i_finReserva.isBefore(fhInicioReserva) && !i_inicioReserva.isAfter(fhFinReserva)) {
