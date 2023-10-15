@@ -97,7 +97,7 @@ public class Inventario {
             periodo.clear();
             periodo.add(fechaInicio);
             periodo.add(fechaFin);
-            System.out.println(">>> Costo actualizado");}
+            System.out.println(">>> Periodo actualizado");}
 
         public static void setPeriodoTemporadaBaja(){
         int fechaInicio= Integer.parseInt(input("Intrese el nuevo inicio de temporada baja en formato mmdd(Ej: 31 de marzo->0331)"));
@@ -106,7 +106,7 @@ public class Inventario {
             periodo.clear();
             periodo.add(fechaInicio);
             periodo.add(fechaFin);
-            System.out.println(">>> Costo actualizado");}
+            System.out.println(">>> Periodo actualizado");}
 
     public static void updateSistema() throws IOException{
     updateInfo();
@@ -217,7 +217,7 @@ public class Inventario {
       
     }
     public static void updatePersonal() throws IOException{
-        File archivo = new File("./data/seguros.txt");
+        File archivo = new File("./data/personal.txt");
         FileWriter escritor2= new FileWriter(archivo);
         List<personal> lstpersonal= personal.getCredencialesPersonal();
         for (personal i: lstpersonal){
