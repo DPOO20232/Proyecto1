@@ -353,9 +353,11 @@ public class Inventario {
         for(Evento i: lsteventos){
             String idEvento=Integer.toString(i.getID());
             String FechaInicio=Integer.toString(i.getFechaInicio());
+            String HoraInicio=Integer.toString(i.getHoraInicio());
+            String HoraFin=Integer.toString(i.getHoraFin());
             String FechaFin=Integer.toString(i.getFechaFin());
             String descripcion=i.getDescripcion();
-            String resultado = String.format("%s;%s;%s;%s%n", idEvento, FechaInicio, FechaFin, descripcion);
+            String resultado = String.format("%s;%s;%s;%s%n", idEvento, FechaInicio, FechaFin, HoraInicio, HoraFin, descripcion);
             escritor.write(resultado);
         }
         escritor.close();
