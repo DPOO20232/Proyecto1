@@ -1,4 +1,7 @@
 package alquiler;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +83,20 @@ public class alquiler{
             }}
         return retorno;
     }
-
+    public static String input(String mensaje){
+		try
+		{
+			System.out.print(mensaje + ": ");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+			return reader.readLine();
+		}
+		catch (IOException e)
+		{
+			System.out.println("Error leyendo de la consola");
+			e.printStackTrace();
+		}
+		return null;
+    }
     public void agregarConductores(Cliente cliente){
         conductores= new ArrayList<Conductor>();
         String nombre1 = cliente.getNombre();
@@ -100,16 +116,16 @@ public class alquiler{
                 if(opcion==1){
                     String nombre = input("Ingrese el nombre del conductor");
                     int cedula = Integer.parseInt(input("Por favor ingrese el número de cédula del conductor"));
-                    Licencia licencia = Cliente.setLicencia(); 
+                    Licencia licencia = Licencia.setLicencia(); 
                     Conductor conductor = new Conductor(nombre, cedula, licencia);
                     conductores.add(conductor);
                     System.out.println("Conductor Registrado: " + nombre);
                     System.out.println("Número de Licencia: " + licencia);
                 }
-                else if(opcion==2){continuarPersonal1 = false;}
+                else if(opcion==2){continuarPersonal1 = false;
             }
         }
-        return conductores
+        
     }
 
     public List<Seguro> segurosdeAlquiler (){
@@ -118,7 +134,7 @@ public class alquiler{
         for(Seguro i: Inventario.getListaSeguros()){
             System.out.println("ID del seguro: " + i.getID());
             System.out.println("Descripción del seguro: " + i.getDescripcion());
-            System.out.println("Tarifa diaria del seguro(en porcentage): " + i.getPctg_TarifaDiaria);
+            System.out.println("Tarifa diaria del seguro(en porcentage): " + i.getPctg_TarifaDiaria());
         }
         while (continuar){
             System.out.println("¿Desea agregar un seguro al alquiler?");
@@ -133,10 +149,10 @@ public class alquiler{
                     System.out.println("Seguro agregado al alquiler.");
                 } catch(NumberFormatException e){System.out.println("ID de seguro no válido. Intente nuevamente.");}
             }
-            else if(opcion==2) {boolean continuar = false;}
+            else if(opcion==2) { continuar = false;}
             else {System.out.println("Por favor seleccione una opción válida.");}
         }
-        return seguros
+        return seguros;
     }
 
     public Double setPagoAlquiler(){
