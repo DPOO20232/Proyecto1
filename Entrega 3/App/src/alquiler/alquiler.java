@@ -36,7 +36,9 @@ public class alquiler{
         this.seguros= new ArrayList<Seguro>();
         this.pagosExcedentes= new ArrayList<PagoExcedente>();
     }
-
+    public boolean getActivo(){
+        return this.activo;
+    }
     public int getID(){
         return this.idAlquiler;
     }
@@ -57,6 +59,9 @@ public class alquiler{
     }
     public static ArrayList<alquiler> getListaAlquileres(){
         return listaAlquileres;
+    }
+    public void setActivo(boolean activo){
+        this.activo=activo;
     }
     public void setPagoFinal(double valor){
         this.pagoFinal=valor;
@@ -301,16 +306,19 @@ public class alquiler{
         if(alquiler_u.getReserva().getCliente().getNumeroCedula()==cliente.getNumeroCedula()){
         alquiler_u.activo=false;
         Reserva reserva= alquiler_u.getReserva();
+        Vehiculo vehiculo=reserva.getVehiculoAsignado();
         reserva.setSedeRecoger(sedePersonal);
         reserva.setFechaEntregar(fechaActual);
         reserva.setHoraEntregar(horaActual);
         double costoFinal=alquiler_u.calcularPagoFinal(sedePersonal);
         alquiler_u.setPagoFinal(costoFinal);
+        vehiculo.eliminarReservaActiva(id);
+        Reserva.getListaReservas().remove(reserva);
         System.out.println("\n>El vehículo se ha devuelto correctamente y se han debitado COP"+"de su tarjeta terminada en "+ Long.toString(cliente.getTarjeta().getNumeroTarjeta()% 100003));
         }
         else{
         System.out.println("Alquiler no encontrada/disponible. Por favor, ingrese un ID válido.");}           
-        }
+    }
 
     public static String input(String mensaje) {
 		try {

@@ -66,7 +66,6 @@ public class Vehiculo {
     public void setColor(String color){this.color=color;}
     public void setEstado(String estado){
         this.estado=estado;}
-    //TODO quitar atributos estado
     public void setAveriado(boolean averiado){this.averiado=averiado;}
     public void setTrasladoASede(Sede nuevaSede){
         this.sede=nuevaSede;
@@ -235,6 +234,7 @@ public class Vehiculo {
         }}
 
     public void resumenStatus(){
+        System.out.println();
         String ubicacion="";
         String infoCliente="";
         String disponibilidad= "";

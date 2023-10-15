@@ -743,7 +743,7 @@ public class Inventario {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
-            if (partes.length == 6) {
+            if (partes.length == 7) {
             //int idAlquiler= Integer.parseInt(partes[0]);
             double pagoFinal= Double.parseDouble(partes[1]);
             int id_reserva= Integer.parseInt(partes[2]);
@@ -772,6 +772,8 @@ public class Inventario {
                 PagoExcedente i_PagoExcedente= new PagoExcedente(i_partes[0],Double.parseDouble(i_partes[1]));
                 alquilerActual.addPagoExcedente(i_PagoExcedente);
             }}
+            boolean activo= Boolean.parseBoolean(partes[6]);
+            alquilerActual.setActivo(activo);
             alquiler.addAlquiler(alquilerActual);
             contador+=1;
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}
