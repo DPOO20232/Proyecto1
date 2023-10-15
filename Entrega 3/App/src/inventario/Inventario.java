@@ -220,6 +220,13 @@ public class Inventario {
         File archivo = new File("./data/personal.txt");
         FileWriter escritor2= new FileWriter(archivo);
         List<personal> lstpersonal= personal.getCredencialesPersonal();
+        Admin admin=personal.getCredendialAdmin();
+        String loginA=admin.getLogin();
+        String passwordA=admin.getPassword();
+        String idSedeA="0";
+        String tipoPersonalA="Admin";
+        String resultadoA = String.format("%s;%s;%s;%s%n",loginA, passwordA, idSedeA, tipoPersonalA);
+        escritor2.write(resultadoA);
         for (personal i: lstpersonal){
             String login=i.getLogin();
             String password=i.getPassword();
