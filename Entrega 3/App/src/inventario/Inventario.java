@@ -357,7 +357,7 @@ public class Inventario {
             String HoraFin=Integer.toString(i.getHoraFin());
             String FechaFin=Integer.toString(i.getFechaFin());
             String descripcion=i.getDescripcion();
-            String resultado = String.format("%s;%s;%s;%s%n", idEvento, FechaInicio, FechaFin, HoraInicio, HoraFin, descripcion);
+            String resultado = String.format("%s;%s;%s;%s;%s;%s%n", idEvento, FechaInicio, FechaFin, HoraInicio, HoraFin, descripcion);
             escritor.write(resultado);
         }
         escritor.close();
@@ -421,7 +421,7 @@ public class Inventario {
             pagosExcedentes.append("]");
             String pagoExcedente=pagosExcedentes.toString();
 
-            String resultado = String.format("%s;%s;%s;%s;%s;%s%n", idAlquiler, PagoFinal, IdReserva, conductor, seguro, pagoExcedente, activo);
+            String resultado = String.format("%s;%s;%s;%s;%s;%s;%s%n", idAlquiler, PagoFinal, IdReserva, conductor, seguro, pagoExcedente, activo);
             escritor.write(resultado);
 
 
