@@ -30,7 +30,6 @@ public class Consola {
             if (opcion_seleccionada==1) {
 			System.out.println("\n>Nombre de la empresa: "+Inventario.getNombreCompania());
             System.out.println("\n>Sedes: ");                
-               
             List<Sede> sedes = Inventario.getListaSedes();
             for (int i = 0; i < sedes.size(); i++) {
                 sedes.get(i).printInfo();
@@ -69,7 +68,15 @@ public class Consola {
                 System.out.println("18. Cerrar sesión\n");
                 int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
                 try{
-                if (opcion_admin==1){}
+                if (opcion_admin==1){
+                    String placa = input("Ingrese la placa del vehículo que desee consultar");
+                    Vehiculo vehiculo= Inventario.assignVehiculo(placa);
+                    if (vehiculo!=null){
+                    vehiculo.resumenStatus();}
+                    else{
+                    System.out.println("\n>La placa ingresada no corresponde a ningún vehículo del inventario.\n");
+                    }
+                }
                 if (opcion_admin==2){Inventario.crearCategoria();}
                 else if(opcion_admin==3){Inventario.crearVehiculo();}
                 else if(opcion_admin==4){Inventario.eliminarVehiculo();}

@@ -65,7 +65,6 @@ public class Vehiculo {
     public void setPlaca(String placa){this.placa=placa;}
     public void setColor(String color){this.color=color;}
     public void setEstado(String estado){
-        //para definir estado en el menu dar opciones que representen los estados definidos
         this.estado=estado;}
     //TODO quitar atributos estado
     public void setAveriado(boolean averiado){this.averiado=averiado;}
@@ -234,4 +233,16 @@ public class Vehiculo {
              } catch (IOException e) {
             System.err.println("Error al escribir en el archivo: " + e.getMessage());
         }}
+
+    public void resumenStatus(){
+        String ubicacion="";
+        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        LocalTime hora = LocalTime.now();
+        int horaActual = hora.getHour() * 100 + hora.getMinute();
+        String estado= actualizarEstado(fechaActual,horaActual ,fechaActual,horaActual);
+        if (estado.equals("Disponible")||estado.equals("EnLimpieza")||estado.equals("EnMantenimiento")){
+            ubicacion= this.getSede().getNombre();
+        }
+        System.out.println("Estado: "+estado+". Ubicación: "+ubicacion);
+    }
 }

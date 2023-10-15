@@ -538,7 +538,7 @@ public class Inventario {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
-                if (partes.length == 6) {
+                if (partes.length == 5) {
                     int id = Integer.parseInt(partes[0]);
                     String nombreSede= partes[1];
                     String ubicacionSede= partes[2];
