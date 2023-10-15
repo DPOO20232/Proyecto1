@@ -55,13 +55,21 @@ public class Inventario {
     public static int getCostoPorTrasladoSedes(){return costoPorTrasladoSedes;}
     public static List<Integer> getPeriodoTemporadaAlta(){return periodoTemporadaAlta;}
     public static List<Integer> getPeriodoTemporadaBaja(){return periodoTemporadaBaja;}
+    
     public static boolean esTemporadaAlta(int mmdd1, int mmdd2){
-        return (mmdd1 < getPeriodoTemporadaAlta().get(0) && mmdd2 > getPeriodoTemporadaAlta().get(0)) ||
-                (mmdd1 > getPeriodoTemporadaAlta().get(0) && mmdd1 < getPeriodoTemporadaAlta().get(1));
+        int inicioTemp1=getPeriodoTemporadaAlta().get(0);
+        int finTemp1=getPeriodoTemporadaAlta().get(1);
+        int inicioTemp2=getPeriodoTemporadaAlta().get(2);
+        int finTemp2=getPeriodoTemporadaAlta().get(3);
+        boolean condicion1=(mmdd1 <= finTemp1) && (mmdd1 >= inicioTemp1)||(mmdd2 <= finTemp1) && (mmdd2 >= inicioTemp1);
+        boolean condicion2=(mmdd1 <= finTemp2) && (mmdd1 >= inicioTemp2)||(mmdd2 <= finTemp2) && (mmdd2 >= inicioTemp2);
+        return condicion1||condicion2;
+        
     }
     public static boolean esTemporadaBaja(int mmdd1, int mmdd2){
-        return (mmdd1 < getPeriodoTemporadaBaja().get(0) && mmdd2 > getPeriodoTemporadaBaja().get(0)) ||
-                (mmdd1 > getPeriodoTemporadaBaja().get(0) && mmdd1 < getPeriodoTemporadaBaja().get(1));
+        int inicioTemp=getPeriodoTemporadaBaja().get(0);
+        int finTemp=getPeriodoTemporadaBaja().get(1);
+        return (mmdd1 <= finTemp) && (mmdd1 >= inicioTemp)||(mmdd2 <= finTemp) && (mmdd2 >= inicioTemp);
     }
     public static void setCostoPorConductorAdicional(){
         try{
@@ -464,7 +472,7 @@ public class Inventario {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
-                 if (partes.length == 2){
+                 if (partes.length >= 2){
                     if (partes[0].equals("nombreCompania")){
                         nombreCompania=partes[1];
                     }
@@ -485,12 +493,16 @@ public class Inventario {
                     }
                     else{
                         periodoTemporadaAlta = new ArrayList<Integer>();
-                        String subString= partes[1].substring(1,partes[1].length()-1);
-                        String[] subPartes=subString.split(",");
-                        int inicioTemp = Integer.parseInt(subPartes[0]);
-                        int finTemp = Integer.parseInt(subPartes[1]);
-                        periodoTemporadaAlta.add(inicioTemp);
-                        periodoTemporadaAlta.add(finTemp);   
+                        String subString1= partes[1].substring(1,partes[1].length()-1);
+                        String[] subPartes1=subString1.split(",");
+                        int inicioTemp1 = Integer.parseInt(subPartes1[0]);
+                        int finTemp1 = Integer.parseInt(subPartes1[1]);
+                        int inicioTemp2 = Integer.parseInt(subPartes1[2]);
+                        int finTemp2 = Integer.parseInt(subPartes1[3]);
+                        periodoTemporadaAlta.add(inicioTemp1);
+                        periodoTemporadaAlta.add(finTemp1);   
+                        periodoTemporadaAlta.add(inicioTemp2);
+                        periodoTemporadaAlta.add(finTemp2);  
                     }
                  }
             }

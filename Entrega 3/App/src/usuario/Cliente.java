@@ -55,7 +55,8 @@ public class Cliente extends Usuario{
                     String password = input("Por favor ingrese una contraseña");
                     Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
                     System.out.println("\n>A continuación tiene que ingresar una licencia de conducción y un medio de pago.");
-                    cliente.setLicencia();
+                    Licencia licencia= Licencia.crearLicencia();
+                    cliente.setLicencia(licencia);
                     if(cliente.getLicencia()!=null){
                     System.out.println("\n>Nuestro sistema solamente acepta tarjetas de crédito como medio de pago");
                     cliente.setTarjeta();
@@ -178,44 +179,7 @@ public class Cliente extends Usuario{
         }
     catch(NumberFormatException e){System.out.println("\n>Debe ingresar los datos requeridos en el formato adecuado para que la creación de la cuenta sea exitosa.");}
     }
-    public void setLicencia(){
-        try{
-        boolean continuar=true;
-        while(continuar){
-        int numerolicencia = Integer.parseInt(input("\nPor favor ingrese el número de su licencia de conducción"));
-        if (Usuario.checkLicencia(numerolicencia)==false|| numerolicencia==this.getLicencia().getNumeroLicencia()){
-        int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato aaaammdd)"));            
-        int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato aaaammdd)"));
-        String pais = input("Por favor ingrese el país de expedición de su licencia");
-        Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
-        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-        if(Usuario.checkVencimientoLicencia(licencia,0,0,0)==false&& expedicion<=fechaActual){
-            this.setLicencia(licencia);
-            continuar=false;
-            }
-            else{
-                System.out.println("\n>La licencia ingresada ya caducó/no es válida, desea ingresar otra?");
-                System.out.println("1.Sí");
-                System.out.println("2.No(ó cualquier otro número)");
-                int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
-                if(opcion==2){
-                    continuar=false;
-                } 
-            }
-        }
-        else{
-                System.out.println("\n>Ese número de licencia esta asignado a otro cliente.");
-                System.out.println(">Desea ingresar otra licencia?");
-                System.out.println("1.Sí");
-                System.out.println("2.No(ó cualquier otro número)");
-                int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
-                if(opcion==2){
-                continuar=false;  
-            }
-        }
-        }
-        }catch(NumberFormatException e){System.out.println("\n>Debe ingresar los datos requeridos en el formato adecuado para que la creación de la cuenta sea exitosa.");}   
-        }
+    
         public static String input(String mensaje)
 	{
 		try
@@ -253,7 +217,11 @@ public class Cliente extends Usuario{
                     this.setTelefono(nuevoTelefono);
                     System.out.println("Número de teléfono actualizado correctamente.");
                 }
-                else if(opcion_cliente==3){this.setLicencia();}
+                else if(opcion_cliente==3){
+                    getListaLicencias().remove(this.getLicencia());
+                    this.setLicencia(null);
+                    Licencia licencia=Licencia.crearLicencia();
+                    this.setLicencia(licencia);}
                 else if(opcion_cliente==4){this.setTarjeta();}
                 else if(opcion_cliente==5){continuarCliente=false;
                             System.out.println(">\nInformación actualizada.\n");}

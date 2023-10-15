@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 
 
@@ -91,6 +92,7 @@ public class Reserva {
         int categoria=this.getCategoria().getID();
         int categoriaPadre=this.getCategoria().getId_Padre();
         for(Vehiculo i: Inventario.getListaVehiculos()){
+            if (i.getAveriado()==false){
             if(i.getCategoria().getID()==categoria && i.getSede().getID()==this.getSedeRecoger().getID()){
                 if(i.estaDisponible(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar )){
                     vehiculoAsignado=i;
@@ -100,7 +102,7 @@ public class Reserva {
                     if(i.estaDisponible(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar)){
                     vehiculoAsignado=i;
                     encontreUpgrade=true;
-                }}
+                }}}
             }
         if ((vehiculoAsignado!=null)&&(esUpgrade==false)){
             vehiculoAsignado.addReservaActiva(this);
@@ -118,10 +120,8 @@ public class Reserva {
         Categoria categoria=this.getCategoria();
         int tarifa=categoria.getTarifaDiaria();
         int dias=this.calcularDuracionRenta(fecha1,hora1,fecha2,hora2);
-        //TODO VERIFICAR TEMPORADA ALTA Y TEMPORADA BAJA
         double precio_inicial= dias*tarifa*0.3;
         double pctg_temporada=1;
-        //int mmdd = fechaCompleta % 10000;
         int mmdd1=fecha1%10000;
         int mmdd2=fecha2%10000;
         boolean esTempAlta=Inventario.esTemporadaAlta(mmdd1,mmdd2);
@@ -130,12 +130,15 @@ public class Reserva {
         else if(esTempBaja){pctg_temporada=categoria.getPctg_temporadaBaja();}
         double precio_final=precio_inicial*pctg_temporada;
         this.pagoReserva= precio_final;
+        //
     }
 
     public static void crearReserva(Cliente cliente, boolean reservaEnSede){
         //reservaEnSede es true cuando la hace el personal de atencion
         System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
-        try { 
+        try {
+            Licencia licenciaInicial=cliente.getLicencia();
+            Tarjeta tarjetaInicial=cliente.getTarjeta(); 
             boolean continuar=true;
             while(continuar){
             System.out.println("\n>Lista de Sedes Disponibles:");
@@ -184,7 +187,7 @@ public class Reserva {
                     System.out.println("   - Costo Diario: $" + i_categoria.getTarifaDiaria());
                     System.out.println("   - Capacidad: " + i_categoria.getCapacidad() + " personas");
                 }
-                int categoriaElegidaIndex = Integer.parseInt(input("Seleccione una categoría (ingrese el número): "));
+                int categoriaElegidaIndex = Integer.parseInt(input("Seleccione una categoría (ingrese el número)"));
                 boolean continuar4=true;
                 while(continuar4){
                 if (categoriaElegidaIndex>=1 && categoriaElegidaIndex<=(categorias.size())){
@@ -231,13 +234,20 @@ public class Reserva {
                 System.out.println("1.Sí");
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
-                if(opcion==1){cliente.setLicencia();}
+                if(opcion==1){
+                    Cliente.getListaLicencias().remove(cliente.getLicencia());
+                    cliente.setLicencia(null);
+                    Licencia licencia= Licencia.crearLicencia();
+                    cliente.setLicencia(licencia);}
                 else{continuar2=false;
                 continuar=false;}
             }
             }} else {System.out.println(">Las fechas u horas ingresadas no son válidas. Por favor, inténtelo nuevamente.");}
             }
-            else{System.out.println(">Elija opciones de sede válidas.\n");}}}
+            else{System.out.println(">Elija opciones de sede válidas.\n");}}
+            if (cliente.getLicencia()==null){cliente.setLicencia(licenciaInicial);}
+            if (cliente.getTarjeta()==null){cliente.setTarjeta(tarjetaInicial);}
+            }
         catch (NumberFormatException e) {
             System.out.println(">Debe ingresar los datos requeridos para que la creación de su reserva sea exitosa.");
         }
@@ -275,6 +285,7 @@ public class Reserva {
         //Se elimina la reserva de la lista de reservas general
         try{
         if(reservaPorModificar!=null){
+            Licencia licenciaOriginal= cliente.getLicencia();
             Vehiculo vehiculoActual= reservaPorModificar.getVehiculoAsignado();
             reservaPorModificar.vehiculoAsignado=null;
             vehiculoActual.eliminarReservaActiva(reservaPorModificar.getID());
@@ -361,7 +372,9 @@ public class Reserva {
                 System.out.println("1.Sí");
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion2_3= Integer.parseInt(input("Porfavor elija una opción"));
-                if(opcion2_3==1){reservaPorModificar.getCliente().setLicencia();}
+                if(opcion2_3==1){
+                    Licencia licencia=Licencia.crearLicencia();
+                    reservaPorModificar.getCliente().setLicencia(licencia);}
                 else{continuar3=false;continuar2=false;}
                 }
                 }
@@ -409,6 +422,7 @@ public class Reserva {
                 int opcion3_2= Integer.parseInt(input("Porfavor elija una opción"));
                 if(opcion3_2>1){continuar2=false;}
             }
+            if (cliente.getLicencia()==null){cliente.setLicencia(licenciaOriginal);}
 
         }
         }
@@ -460,10 +474,11 @@ public class Reserva {
         if (idsReservas.size()>=1){
         boolean continuar=true;
         while (continuar){
-        int intReservaElejida= Integer.parseInt(input("Porfavor ingrese el idReserva de la reserva que desea cancelar"));
+        int intReservaElejida= Integer.parseInt(input("Porfavor ingrese el idReserva de la reserva que desea modificar/cancelar"));
         if (idsReservas.contains(intReservaElejida)){
             retorno=Reserva.assignReserva(intReservaElejida);
-            System.out.println("\n> Reserva encontrada.");
+            System.out.println("\n> Reserva encontrada.\n");
+            continuar=false;
 
         }
         else{
@@ -486,7 +501,7 @@ public class Reserva {
         for (int i = 0; i < reservas.size(); i++) {
             if (reservas.get(i).getCliente().equals(cliente)){
             if (inicio==false){
-                System.out.println("Tiene las siguientes Reservas activas:");
+                System.out.println("\nTiene las siguientes Reservas activas:");
                 inicio=true;
             }
             Reserva i_reserva=reservas.get(i);
@@ -500,7 +515,7 @@ public class Reserva {
             System.out.println(" Tipo de vehículo reservado: "+ categoria+ ". Fecha Inicio: " + fecha1+"-> Fecha Final: "+ fecha2);
             System.out.println("------------------------------------------------------------------------------------------------------------");
             }}}
-            else if (inicio==false){ System.out.println("\n>No tiene reservas activas ");}
+            if (inicio==false){ System.out.println("\n>No tienes reservas activas. ");}
             return idsReservas;
     }
 
@@ -602,7 +617,7 @@ public class Reserva {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate fechaT1 = LocalDate.parse(fechaString1, formato);
         LocalDate fechaT2 = LocalDate.parse(fechaString2, formato);
-        long duracionEnDias = fechaT1.until(fechaT2).getDays();
+        long duracionEnDias = fechaT1.until(fechaT2, ChronoUnit.DAYS);
         int valorInt=(int) duracionEnDias;
         if(hora2>hora1){
             valorInt+=1;
