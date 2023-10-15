@@ -132,7 +132,7 @@ public class alquiler{
         }
     }
 
-    public Double setPagoAlquiler(){
+    public Double setPagoInicial(){
         double pagoReserva=this.reserva.getPagoReserva();
         double costo70=(pagoReserva*7/3);
         double costo100=costo70+pagoReserva;
@@ -184,7 +184,7 @@ public class alquiler{
             alquiler.agregarConductores();
             alquiler.agregarSeguros();
             long ultimos_digitos=(reserva.getCliente().getTarjeta().getNumeroTarjeta()% 10000);
-            System.out.println("Se debitaron COP " + alquiler.setPagoAlquiler()+ "de su tarjeta terminada en "+ Long.toString(ultimos_digitos)); 
+            System.out.println("Se debitaron COP " + alquiler.setPagoInicial()+ "de su tarjeta terminada en "+ Long.toString(ultimos_digitos)); 
             addAlquiler(alquiler);
                          
             }

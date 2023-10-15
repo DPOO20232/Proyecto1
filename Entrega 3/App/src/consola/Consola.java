@@ -20,13 +20,23 @@ public class Consola {
         try
 			{
             System.out.println("\n\t\t>>> Menú principal");    
-
-			System.out.println("1. Iniciar sesión");
-			System.out.println("2. Crear cuenta");
-			System.out.println("3. Salir de la aplicación\n");
+			System.out.println("1. Mostrar información de la empresa");
+			System.out.println("2. Iniciar sesión");
+			System.out.println("3. Crear cuenta");
+			System.out.println("4. Salir de la aplicación\n");
 
             int opcion_seleccionada = Integer.parseInt(input("Por favor seleccione una opción"));
             if (opcion_seleccionada==1) {
+			System.out.println("\n>Nombre de la empresa: "+Inventario.getNombreCompania());
+            System.out.println("\n>Sedes: ");                
+               
+            List<Sede> sedes = Inventario.getListaSedes();
+            for (int i = 0; i < sedes.size(); i++) {
+                sedes.get(i).printInfo();
+            }   
+        }
+
+            if (opcion_seleccionada==2) {
             String perfil;
             String login = input("Usuario");
             String password = input("Contraseña");
@@ -64,10 +74,34 @@ public class Consola {
                 else if(opcion_admin==4){Inventario.eliminarVehiculo();}
                 else if(opcion_admin==5){
                     String placa = input("Ingrese la placa del vehículo que desee consultar");
-                    Inventario.obtenerHistorial(placa);
+                    Vehiculo vehiculo= Inventario.assignVehiculo(placa);
+                    if (vehiculo!=null){
+                    vehiculo.obtenerLog();}
+                    else{
+                    System.out.println("\n>La placa ingresada no corresponde a ningún vehículo del inventario.\n");
+                    }
+                    
                 }
                 else if(opcion_admin==6){
-                    //TODO
+                    String placa = input("Ingrese la placa del vehículo al que desee trasladar");
+                    Vehiculo vehiculo=Inventario.assignVehiculo(placa);
+                    if(vehiculo!=null){
+
+                    System.out.println("\n>Lista de Sedes Disponibles:");
+                    List<Sede> sedes = Inventario.getListaSedes();
+                    for (int i = 0; i < sedes.size(); i++) {
+                        System.out.println((i + 1) + ". " + sedes.get(i).getNombre()+" ("+sedes.get(i).getUbicacion()+").");}
+                    int idSede=Integer.parseInt(input("Ingrese la opción de la sede a la que desea trasladar el vehículo"));
+                    if(idSede<=sedes.size()&& idSede<=sedes.size()){
+                        vehiculo.setTrasladoASede(Inventario.assignSede(idSede));
+                    }
+                    else{
+                        System.out.println("\n>Ingrese una opción de sede válida.\n");
+                    }
+                    }
+                    else{
+                        System.out.println("\n>La placa ingresada no corresponde a ningún vehículo del inventario.\n");
+                    }
                 }
                 else if(opcion_admin==7){Inventario.nuevoSeguro();}
                 else if(opcion_admin==8){Inventario.editarSeguro();}
@@ -123,8 +157,7 @@ public class Consola {
                             int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
                             Cliente reservante=Usuario.assignCliente(cedulaCliente);
                             if(reservante!=null){
-                                reservas = Reserva.getListaReservas();
-                                alquiler.crearAlquiler(reservas);
+                                //TODO
                             }
                             else{
                                 System.out.println("No fue posible hallar al cliente");
@@ -153,24 +186,23 @@ public class Consola {
                     System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área técnica!");
                     boolean continuarPersonal2=true;
                     while (continuarPersonal2==true){
-                        System.out.println("\nDijita la opción que necesitas\n");
+                        System.out.println("\nOpciones de la aplicación\n");
                         System.out.println("1. Actualizar estado de un vehículo: ");
                         System.out.println("2. Cerrar sesión\n");
                         int opcion_empleadoT = Integer.parseInt(input("Por favor seleccione una opción"));
 
                         try {
                             if (opcion_empleadoT==1){
-                                List<Vehiculo> vehiculos = Inventario.getListaVehiculos();
                                 String placa = input("\nIngrese la placa del vehículo al que le asignará un nuevo estado");
                                 System.out.println("Ingrese que se va a realizar en el vehículo\n");
                                 System.out.println("1. Lavado");
                                 System.out.println("2. Mantenimiento");
                                 int opcion_empleadoT2 = Integer.parseInt(input("Por favor seleccione una opción"));
                                 if(opcion_empleadoT2==1){String descripcion = "En Lavado";
-                                    Evento.crearEvento(descripcion, placa, vehiculos);
+                                    Evento.crearEvento(descripcion, placa);
                                 }
                                 else if(opcion_empleadoT2==2){String descripcion = "En Mantenimiento";
-                                    Evento.crearEvento(descripcion, placa, vehiculos);
+                                    Evento.crearEvento(descripcion, placa);
                                 }
                                 else{System.out.println("\n>Por favor seleccione una opción válida.");}
                                
@@ -211,11 +243,11 @@ public class Consola {
 
             else{System.out.println("\n\t>>> Credenciales incorrectas, intentelo de nuevo.");}          
             }
-            else if(opcion_seleccionada==2){
+            else if(opcion_seleccionada==3){
                 Cliente.nuevoCliente();
                 
             }
-            else if(opcion_seleccionada==3){
+            else if(opcion_seleccionada==4){
                 Inventario.updateSistema();
                 continuar=false;
             }
