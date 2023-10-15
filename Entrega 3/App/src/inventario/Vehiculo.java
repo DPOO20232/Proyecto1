@@ -81,42 +81,59 @@ public class Vehiculo {
 
     public boolean estaDisponible(int fecha1, int hora1, int fecha2, int hora2){
         try{
-        boolean reservaInPeriodoReserva=false;
-        boolean eventoInPeriodoReserva=false;
-        DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-        LocalDateTime fhInicioReserva = LocalDateTime.parse(String.format("%08d%04d", fecha1, hora1), formatter);
-        LocalDateTime fhFinReserva = LocalDateTime.parse(String.format("%08d%04d", fecha2, hora2), formatter);
-        int numReservasActivas=this.getReservasActivas().size();
-        int numEventos=this.getHistorialEventos().size();
-        if(numEventos>0){
-            for (Evento i: this.getHistorialEventos()){
-            LocalDateTime fhInicioEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaInicio(), i.getHoraInicio()), formatter);
-            LocalDateTime fhFinEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaFin(), i.getHoraFin()), formatter);
-            if (!fhFinEvento.isBefore(fhInicioReserva) && !fhInicioEvento.isAfter(fhFinReserva)) {
-                eventoInPeriodoReserva=true;
-                break;
-            }
-        }}
-        if(numReservasActivas>0){
-            for (Reserva i: this.getReservasActivas()){
-                //A i_finReserva se le suma 1 para prever el periodo de 24h en el que el vehículo será EnLimpieza
-                LocalDateTime i_inicioReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaRecoger(), i.getHoraRecoger()), formatter);
-                LocalDateTime i_finReserva = (LocalDateTime.parse(String.format("%08d%04d",  i.getFechaEntregar(), i.getHoraEntregar()), formatter)).plusDays(1);
-                if (!i_finReserva.isBefore(fhInicioReserva) && !i_inicioReserva.isAfter(fhFinReserva)) {
-                        reservaInPeriodoReserva=true;
+            boolean reservaInPeriodoReserva=false;
+            boolean eventoInPeriodoReserva=false;
+            DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+            LocalDateTime fhInicioReserva = LocalDateTime.parse(String.format("%08d%04d", fecha1, hora1), formatter);
+            LocalDateTime fhFinReserva = LocalDateTime.parse(String.format("%08d%04d", fecha2, hora2), formatter);
+            int numReservasActivas=this.getReservasActivas().size();
+            int numEventos=this.getHistorialEventos().size();
+            if(numEventos>0){
+                for (Evento i: this.getHistorialEventos()){
+                    LocalDateTime fhInicioEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaInicio(), i.getHoraInicio()), formatter);
+                    LocalDateTime fhFinEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaFin(), i.getHoraFin()), formatter);
+                    if (!fhFinEvento.isBefore(fhInicioReserva) && !fhInicioEvento.isAfter(fhFinReserva)) {
+                        eventoInPeriodoReserva=true;
                         break;
+                    }
                 }
             }
-        }
-        if ((reservaInPeriodoReserva==false) && (eventoInPeriodoReserva==false)){
-            return true;
-        }
-        else{
+            if(numReservasActivas>0){
+                for (Reserva i: this.getReservasActivas()){
+                    //A i_finReserva se le suma 1 para prever el periodo de 24h en el que el vehículo será EnLimpieza
+                    LocalDateTime i_inicioReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaRecoger(), i.getHoraRecoger()), formatter);
+                    LocalDateTime i_finReserva = (LocalDateTime.parse(String.format("%08d%04d",  i.getFechaEntregar(), i.getHoraEntregar()), formatter)).plusDays(1);
+                    if (!i_finReserva.isBefore(fhInicioReserva) && !i_inicioReserva.isAfter(fhFinReserva)) {
+                        reservaInPeriodoReserva=true;
+                        break;
+                    }
+                }
+            }
+            if ((reservaInPeriodoReserva==false) && (eventoInPeriodoReserva==false)){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }catch(DateTimeParseException e){
+            System.out.println("\n>Se presentó un error al verificar la disponibilidad");
             return false;
         }
-    }catch(DateTimeParseException e){
-        System.out.println("\n>Se presentó un error al verificar la disponibilidad");
-        return false;
     }
+
+    
+
+    public static String input(String mensaje) {
+		try {
+			System.out.print(mensaje + ": ");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+			return reader.readLine();
+		}
+		catch (IOException e) {
+			System.out.println("Error leyendo de la consola");
+			e.printStackTrace();
+		}
+		return null;
     }
+
 }
