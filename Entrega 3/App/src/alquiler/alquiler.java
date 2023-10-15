@@ -105,7 +105,7 @@ public class alquiler{
                 else if(opcion==2){continuarPersonal1 = false}
             }
         }
-    //return conductores
+        return conductores
     }
 
     public List<Seguro> segurosdeAlquiler (){
