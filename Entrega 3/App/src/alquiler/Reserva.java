@@ -85,6 +85,7 @@ public class Reserva {
     public void setSedeRecoger(Sede sede) {this.sedeRecoger = sede;}
     public void setSedeEntregar(Sede sede) {this.sedeEntregar = sede;}
     public void setCategoria(Categoria categoria) {this.categoria = categoria;}
+    public void setVehiculoAsignado(Vehiculo vehiculo){this.vehiculoAsignado=vehiculo;}
     public void setVehiculoAsignado() {
         Vehiculo vehiculoAsignado=null;
         boolean encontreUpgrade=false;
@@ -106,10 +107,10 @@ public class Reserva {
             }
         if ((vehiculoAsignado!=null)&&(esUpgrade==false)){
             vehiculoAsignado.addReservaActiva(this);
-            this.vehiculoAsignado=vehiculoAsignado;}
+            this.setVehiculoAsignado(vehiculoAsignado);}
         else if((vehiculoAsignado!=null)&&(esUpgrade==true)){
             vehiculoAsignado.addReservaActiva(this);
-            this.vehiculoAsignado=vehiculoAsignado;
+            this.setVehiculoAsignado(vehiculoAsignado);
             System.out.println("\n\t>Accederás a un Upgrade de vehiculo sin costo adicional!\n");}
         else{System.out.println("\n\t>No se encontraron vehículos disponibles para la categoría dada en el rango de fechas dado.");}
     }
@@ -130,7 +131,6 @@ public class Reserva {
         else if(esTempBaja){pctg_temporada=categoria.getPctg_temporadaBaja();}
         double precio_final=precio_inicial*pctg_temporada;
         this.pagoReserva= precio_final;
-        //
     }
 
     public static void crearReserva(Cliente cliente, boolean reservaEnSede){
@@ -271,7 +271,7 @@ public class Reserva {
     public static void eliminarReserva(Cliente cliente){
         Reserva reservaElejida=encontrarReserva(cliente);
         if(reservaElejida!=null){
-        Reserva.getListaReservas().remove(reservaElejida);
+        getListaReservas().remove(reservaElejida);
         Vehiculo vehiculoReservaElejida= reservaElejida.getVehiculoAsignado();
         vehiculoReservaElejida.eliminarReservaActiva(reservaElejida.getID());
         System.out.println("\n> La reserva ha sido cancelada, pronto se trasferirá de vuelta el pago del 30% ($ "+Double.toString(reservaElejida.getPagoReserva())+").");
@@ -283,7 +283,6 @@ public class Reserva {
         //Se desasigna el vehículo dado que caulquier modificacion puede alterar su disponibilidad
         //Al vehiculo se le desasigna la reserva
         //Se elimina la reserva de la lista de reservas general
-        try{
         if(reservaPorModificar!=null){
             Licencia licenciaOriginal= cliente.getLicencia();
             Vehiculo vehiculoActual= reservaPorModificar.getVehiculoAsignado();
@@ -293,8 +292,7 @@ public class Reserva {
             //Se realiza una copia de la reserva en caso de que el usuario no complete la modificación de la reserva
             Reserva copiaReserva= new Reserva(reservaPorModificar.getID(),reservaPorModificar.getFechaRecoger(),reservaPorModificar.getFechaEntregar(),reservaPorModificar.getHoraRecoger(),reservaPorModificar.getHoraEntregar(),reservaPorModificar.getReservaEnSede(),reservaPorModificar.getSedeRecoger(),reservaPorModificar.getSedeEntregar(),reservaPorModificar.getCategoria(),reservaPorModificar.getCliente());
             boolean encontroNuevoCarro=false;
-            boolean continuar=true;
-            while(continuar){
+            try{
             Sede sedeRecoger=reservaPorModificar.getSedeRecoger();
             Sede sedeEntrega=reservaPorModificar.getSedeEntregar();
             double pagoReservaInicial=reservaPorModificar.getPagoReserva();
@@ -314,15 +312,18 @@ public class Reserva {
                 if(sedeRecogerIndex<=sedes.size()&& sedeEntregaIndex<=sedes.size()){
                 sedeRecoger = sedes.get(sedeRecogerIndex - 1);
                 sedeEntrega = sedes.get(sedeEntregaIndex - 1);
-                System.out.println("\n>Sedes actualizadas.");
+                reservaPorModificar.setSedeEntregar(sedeEntrega);
+                reservaPorModificar.setSedeRecoger(sedeRecoger);
+                continuar2=false;
+                System.out.println("\n>Sedes actualizadas.\n");
                 }else{
                 System.out.println("\n>No ingresó opciones de sede válidas. Desea intentarlo de nuevo?\n");
                 System.out.println("1.Sí");
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion_1= Integer.parseInt(input("Porfavor elija una opción"));
-                if(opcion_1>1){continuar2=false;}
-                }
-            }}
+                if(opcion_1>1){continuar2=false;
+                System.out.println("\n>Se mantienen las sedes previas.\n");}}}}
+        
             System.out.println("\nDesea actualizar las fechas de reserva?\n");
             System.out.println("1.Sí");
             System.out.println("2.No(ó cualquier otro número)");
@@ -332,12 +333,12 @@ public class Reserva {
             while(continuar2){
             System.out.println("\n\t>Información Sede donde se recogerá el vehículo:");
             sedeRecoger.printInfo();
+            int frecoger= Integer.parseInt(input("\nIngrese la nueva fecha en la que desea recoger el vehículo (formato aaaammdd)"));
+            int hrecoger= Integer.parseInt(input("Ingrese la nueva hora en la que desea recoger el vehículo (formato hhmm)"));
             System.out.println("\n\t>Información Sede donde se devolverá el vehículo:");
             sedeEntrega.printInfo();
-            int frecoger= Integer.parseInt(input("\nIngrese la nueva fecha en la que desea recoger el vehículo (formato aaaammdd)"));
-            int fentregar = Integer.parseInt("Ingrese la nueva fecha en la que desea devolver el vehículo (formato aaaammdd)");
-            int hrecoger= Integer.parseInt("Ingrese la nueva hora en la que desea recoger el vehículo (formato hhmm)");
-            int hentregar= Integer.parseInt("Ingrese la nueva hora en la que desea devolver el vehículo (formato hhmm)");
+            int fentregar = Integer.parseInt(input("Ingrese la nueva fecha en la que desea devolver el vehículo (formato aaaammdd)"));
+            int hentregar= Integer.parseInt(input("Ingrese la nueva hora en la que desea devolver el vehículo (formato hhmm)"));
             boolean horaVrecoger = horaValida(hrecoger);
             boolean horaVdevolucion = horaValida(hentregar);
             boolean fVrecoger = fechaValidaReserva(frecoger,hrecoger);
@@ -347,15 +348,16 @@ public class Reserva {
             if(horaVrecoger&&horaVdevolucion&&fVrecoger&&fVdevolucion&&posibleRecoger&&posibleEntregar){
                 boolean continuar3=true;
                 while (continuar3){
-                if(Usuario.checkVencimientoLicencia((reservaPorModificar.getCliente().getLicencia()), fentregar / 10000, (fentregar / 100) % 100, fentregar % 100)==false){
+                if(Usuario.checkVencimientoLicencia((reservaPorModificar.getCliente().getLicencia()), fentregar % 100 , (fentregar / 100) % 100,fentregar / 10000)==false){
                 boolean continuar4=true;
                 while (continuar4){
-                if ((reservaPorModificar.getCliente().getTarjeta()).checkVencimientoTarjeta(fentregar / 10000, (fentregar / 100) % 100, fentregar % 100)==false){
+                if ((reservaPorModificar.getCliente().getTarjeta()).checkVencimientoTarjeta(fentregar % 100, (fentregar / 100) % 100, fentregar / 10000)==false){
                 reservaPorModificar.setFechaRecoger(frecoger);
                 reservaPorModificar.setHoraRecoger(hrecoger);
                 reservaPorModificar.setFechaEntregar(fentregar);
                 reservaPorModificar.setHoraEntregar(hentregar);
                 System.out.println("\n>Fechas de reserva actualizadas.");
+                continuar4=false;continuar3=false;continuar2=false;
                 }
                 else{
                 System.out.println("\n>Su método de pago no es válido para el rango de fechas dado, desea actulizarlo?\n");
@@ -363,31 +365,28 @@ public class Reserva {
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion2_3= Integer.parseInt(input("Porfavor elija una opción"));
                 if(opcion2_3==1){reservaPorModificar.getCliente().setTarjeta();}
-                else{continuar4=false;continuar3=false;continuar2=false;}                    
-                }
-                
-                }}
+                else{continuar4=false;continuar3=false;continuar2=false;}}}}
                 else{
                 System.out.println("\n>Su licencia no es válida para el rango de fechas seleccionado, desea actualizar la información de su licencia?\n");
                 System.out.println("1.Sí");
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion2_3= Integer.parseInt(input("Porfavor elija una opción"));
                 if(opcion2_3==1){
+                    Usuario.getListaLicencias().remove(licenciaOriginal); 
                     Licencia licencia=Licencia.crearLicencia();
                     reservaPorModificar.getCliente().setLicencia(licencia);}
-                else{continuar3=false;continuar2=false;}
-                }
-                }
-
-            }else{
-                System.out.println("\n>No ingresó fechas y/o horas válidas. Desea intentarlo de nuevo?\n");
+                else{continuar3=false;continuar2=false;
+                System.out.println("\n> Se mantienen las fechas previas.");
+                }}}}
+                else{
+                System.out.println("\n>No ingresó fechas y/o horas válidas. Desea intentarlo de nuevo?");
                 System.out.println("1.Sí");
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion2_2= Integer.parseInt(input("Porfavor elija una opción"));
-                if(opcion2_2>1){continuar2=false;}
-                }
-            }           
-            }
+                if(opcion2_2>1){continuar2=false;
+                System.out.println("\n> Se mantienen las fechas previas.");
+                }}}}   
+
             System.out.println("\nDesea actualizar el tipo de vehículo?\n");
             System.out.println("1.Sí");
             System.out.println("2.No(ó cualquier otro número)");
@@ -403,43 +402,49 @@ public class Reserva {
                 System.out.println("   - Costo Diario: $" + i_categoria.getTarifaDiaria());
                 System.out.println("   - Capacidad: " + i_categoria.getCapacidad() + " personas");
             }
-            int categoriaElegidaIndex = Integer.parseInt(input("Seleccione una categoría (ingrese el número): "));
+            int categoriaElegidaIndex = Integer.parseInt(input("Seleccione una categoría (ingrese el número)"));
             if (categoriaElegidaIndex>=1 && categoriaElegidaIndex<=(categorias.size())){
                 Categoria categoriaElegida = categorias.get(categoriaElegidaIndex - 1);
                 reservaPorModificar.setCategoria(categoriaElegida);
                 reservaPorModificar.setVehiculoAsignado();
                 System.out.println("\n>Categoría actualizada.");
                 if(reservaPorModificar.getVehiculoAsignado()!=null){
-                    addReserva(reservaPorModificar);
                     encontroNuevoCarro=true;
-                }
-
-            }
+                    continuar2=false;}}
             else{
                 System.out.println("\n>No seleccionó una categoría válida. Desea intentarlo de nuevo?\n");
                 System.out.println("1.Sí");
                 System.out.println("2.No(ó cualquier otro número)");
                 int opcion3_2= Integer.parseInt(input("Porfavor elija una opción"));
-                if(opcion3_2>1){continuar2=false;}
-            }
-            if (cliente.getLicencia()==null){cliente.setLicencia(licenciaOriginal);}
-
-        }
+                if(opcion3_2>1){continuar2=false;
+                System.out.println("\n> Se mantiene la categoría anterior.");
+                reservaPorModificar.setVehiculoAsignado();
+                if(reservaPorModificar.getVehiculoAsignado()!=null){
+                encontroNuevoCarro=true;
+                continuar2=false;
+                }}}}}
+                else{
+                reservaPorModificar.setVehiculoAsignado();
+                if(reservaPorModificar.getVehiculoAsignado()!=null){
+                encontroNuevoCarro=true;
+                }
         }
         if (encontroNuevoCarro==true){
         boolean continuar2=true;
         while(continuar2){
         int numTarjeta = Integer.parseInt(input("Para debitar el 30% del alquiler de su cuenta, por favor ingrese los últimos 4 dígitos de la tarjeta que tiene registrada"));
         if (numTarjeta== (cliente.getTarjeta().getNumeroTarjeta())%10000){
+        addReserva(reservaPorModificar);
         reservaPorModificar.setPagoReserva(reservaPorModificar.getFechaRecoger(),reservaPorModificar.getHoraRecoger(),reservaPorModificar.getFechaEntregar(),reservaPorModificar.getHoraEntregar());
         double newPago=reservaPorModificar.getPagoReserva();
         double debito= newPago-pagoReservaInicial;
         if(debito>0){
-        System.out.println(">Considerando el pago de reserva inicial +($"+Double.toString(pagoReservaInicial)+"). Se debitarán $"+Double.toString(debito)+".");
+        System.out.println("\n>Considerando el pago de reserva inicial +($"+Double.toString(pagoReservaInicial)+"). Se debitarán $"+Double.toString(debito)+".");
         }
         else{
-        System.out.println(">Considerando el pago de reserva inicial +($"+Double.toString(pagoReservaInicial)+"). Se le devolverán  $"+Double.toString(-debito)+".");
+        System.out.println("\n>Considerando el pago de reserva inicial +($"+Double.toString(pagoReservaInicial)+"). Se le devolverán  $"+Double.toString(-debito)+".");
         }
+        continuar2=false;
         }
         else{
         System.out.println("\n>Los últimos 4 dígitos ingresados no corresponden a los últimos 4 dígitos de su tarjeta, desea intentarlo nuevamente?");
@@ -449,25 +454,24 @@ public class Reserva {
         if(opcion3_3>1){
             continuar2=false;
             reservaPorModificar=new Reserva(copiaReserva.getID(),copiaReserva.getFechaRecoger(),copiaReserva.getFechaEntregar(),copiaReserva.getHoraRecoger(),copiaReserva.getHoraEntregar(),copiaReserva.getReservaEnSede(),copiaReserva.getSedeRecoger(),copiaReserva.getSedeEntregar(),copiaReserva.getCategoria(),copiaReserva.getCliente());;
-        System.out.println("\n>No se pudo completar la modificación de la reserva, por lo que los cambios realizados no se reflejarán en la reserva.\n");
-        addReserva(reservaPorModificar);
-        reservaPorModificar.vehiculoAsignado= copiaReserva.getVehiculoAsignado();
-        reservaPorModificar.vehiculoAsignado.addReservaActiva(reservaPorModificar);
-        }
-        }
-        }}
+            addReserva(reservaPorModificar);
+            reservaPorModificar.setVehiculoAsignado(vehiculoActual);
+            vehiculoActual.addReservaActiva(reservaPorModificar);
+            System.out.println("\n>No se pudo completar la modificación de la reserva, por lo que los cambios realizados no se reflejarán en la reserva.\n");
+
+        }}}}
         else{
         System.out.println("\n>No se encontró un vehículo disponible para las nuevas modificaciones, intente modificar la reserva con modificaciones disntintas.\n");
-        reservaPorModificar=new Reserva(copiaReserva.getID(),copiaReserva.getFechaRecoger(),copiaReserva.getFechaEntregar(),copiaReserva.getHoraRecoger(),copiaReserva.getHoraEntregar(),copiaReserva.getReservaEnSede(),copiaReserva.getSedeRecoger(),copiaReserva.getSedeEntregar(),copiaReserva.getCategoria(),copiaReserva.getCliente());;
-        addReserva(reservaPorModificar);
-        reservaPorModificar.vehiculoAsignado= copiaReserva.getVehiculoAsignado();
-        reservaPorModificar.vehiculoAsignado.addReservaActiva(reservaPorModificar);
+            reservaPorModificar=new Reserva(copiaReserva.getID(),copiaReserva.getFechaRecoger(),copiaReserva.getFechaEntregar(),copiaReserva.getHoraRecoger(),copiaReserva.getHoraEntregar(),copiaReserva.getReservaEnSede(),copiaReserva.getSedeRecoger(),copiaReserva.getSedeEntregar(),copiaReserva.getCategoria(),copiaReserva.getCliente());;
+            addReserva(reservaPorModificar);
+            reservaPorModificar.setVehiculoAsignado(vehiculoActual);
+            vehiculoActual.addReservaActiva(reservaPorModificar);
         }
 
             
-        }}}catch(NumberFormatException e){System.out.println("\n>Debe ingresar los datos en el formato solicitado.\n");
-}
-        }
+        }catch(NumberFormatException e){
+        }}}
+
     public static Reserva encontrarReserva(Cliente cliente){
         Reserva retorno=null;
         List<Integer> idsReservas= desplegarReservasActivas(cliente);

@@ -705,9 +705,6 @@ public class Inventario {
         catch (IOException e) {e.printStackTrace();}
     }
     private static void loadReservas(){
-        // public Reserva(int idReserva,int fechaRecoger, int fechaEntregar, int horaRecoger,
-        // int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar,
-        // Categoria categoria, Cliente cliente) {
         int contador=0;
         try (BufferedReader br = new BufferedReader(new FileReader("./data/reservas.txt"))) {
             String linea;
@@ -819,15 +816,19 @@ public class Inventario {
                     if (!stringIDsAlquileres.equals("")){
                     String [] listaIDsAlquileres=stringIDsAlquileres.split(",");
                     for (String i: listaIDsAlquileres){
-                        vehiculoActual.addAlquiler(alquiler.assignAlquiler(Integer.parseInt(i)));
+                        alquiler i_alquiler=  alquiler.assignAlquiler(Integer.parseInt(i));
+                        vehiculoActual.addAlquiler(i_alquiler);                       
                         contadorAlquileres+=1;
                     }}
                     if (!stringIDsReservasActivas.equals("")){
                     String [] listaIDsReservasActivas=stringIDsReservasActivas.split(",");
                     for (String i: listaIDsReservasActivas){
-                        vehiculoActual.addReservaActiva(Reserva.assignReserva(Integer.parseInt(i)));
+                        Reserva i_Reserva=Reserva.assignReserva(Integer.parseInt(i));
+                        vehiculoActual.addReservaActiva(i_Reserva);
+                        i_Reserva.setVehiculoAsignado(vehiculoActual);
                         contadorReservasActivas+=1;
                     }}
+
                     listaVehiculos.add(vehiculoActual);
 
 
@@ -884,7 +885,7 @@ public class Inventario {
             }}
         return retorno;
     } 
-     public static void nuevoVehiculo(){
+    public static void crearVehiculo(){
         try{
         String placa= input("Ingrese la placa del Vehiculo: "); 
         boolean encontrado=false;
@@ -950,7 +951,7 @@ public class Inventario {
             else{System.out.println(">No se halló ningun vehículo con la placa "+placa+".");
             }
     }
-    public static void NuevaCategoria(){
+    public static void crearCategoria(){
        
         try {
         boolean continuar=true;
@@ -1155,10 +1156,11 @@ public class Inventario {
     catch(NumberFormatException e){
         System.out.println("Ingrese solo números en los campos correspondientes");}}
 
-    public static void obtenerHistorial(List<Vehiculo> vehiculos, String placa){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Información del vehiculo: " + placa))) {
-            for (Vehiculo vehiculo : vehiculos) {
+    public static void obtenerHistorial(String placa){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./historiales/"+placa+".txt"))) {
+            for (Vehiculo vehiculo : getListaVehiculos()) {
                 if (vehiculo.getPlaca().equals(placa)) {
+                    System.out.println("\n>Se encontró el vehículopondientes");
                     writer.write("Placa: " + vehiculo.getPlaca());
                     writer.newLine();
                     writer.write("Marca: " + vehiculo.getMarca());
@@ -1235,6 +1237,7 @@ public class Inventario {
                             //cliente
 
                         } 
+                    System.out.println("\n>Log guardado en carpeta historiales bajo el nombre "+placa+".txt");
                     } else {
                         writer.write("Este vehículo no cuenta con Reservas Activas:");
                         writer.newLine();
