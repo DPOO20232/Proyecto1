@@ -5,6 +5,7 @@ import inventario.Vehiculo;
 import usuario.Conductor;
 import usuario.Licencia;
 import usuario.Cliente;
+import inventario.Inventario;
 
 public class alquiler{
     private int idAlquiler;
@@ -104,7 +105,34 @@ public class alquiler{
                 else if(opcion==2){continuarPersonal1 = false}
             }
         }
+    //return conductores
+    }
 
+    public List<Seguro> segurosdeAlquiler (){
+        List<Seguro> seguros = new ArrayList<>();
+        boolean continuar = true;
+        for(Seguro i: Inventario.getListaSeguros()){
+            System.out.println("ID del seguro: " + i.getID());
+            System.out.println("Descripción del seguro: " + i.getDescripcion());
+            System.out.println("Tarifa diaria del seguro(en porcentage): " + i.getPctg_TarifaDiaria);
+        }
+        while (continuar){
+            System.out.println("¿Desea agregar un seguro al alquiler?");
+            System.out.println("1. Sí");
+            System.out.println("2. No");
+            int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
+            if (opcion==1) {
+                try{
+                    int idseguro = Integer.parseInt(input("Ingrese el ID del seguro que desee añadir"));
+                    Seguro seguro = Inventario.assignSeguro(idseguro);
+                    seguros.add(seguro)
+                    System.out.println("Seguro agregado al alquiler.");
+                } catch(NumberFormatException e){System.out.println("ID de seguro no válido. Intente nuevamente.");}
+            }
+            else if(opcion==2) {boolean continuar = false;}
+            else {System.out.println("Por favor seleccione una opción válida.");}
+        }
+        return seguros
     }
 
     
