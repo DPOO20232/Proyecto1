@@ -27,6 +27,9 @@ public class personal extends Usuario{
     public String getTipoPersonal(){
         return this.tipoPersonal;
     }
+    public static Admin getCredendialAdmin(){
+        return credencialAdmin;
+    }
     public static void setAdmin(Admin admin){
         credencialAdmin=admin;
     }
