@@ -9,19 +9,19 @@ Averiado: false
 Sede: SedeChapinero
 Categoría: sedan_ECONOMICO
 Historial de Eventos:
-Fecha del inicio del evento: 20240321
-Fecha del fin del evento: 20240322
-Descripción: descripcion
-Historial de Alquileres:
-Pago Final: $1000000.0
-Conductores:
+-> Fecha del inicio del evento: 20240321 .Fecha del fin del evento: 20240322. Descripción: descripcion
 
-- nombre
-Pagos Excedentes:
-- Detalle del pago excedente
-- Detalle del pago excedente
+Historial de Alquileres:
+->IDAlquiler: 1. Pago Final: COP1000000.0. Fecha inicio: 20200203. Fecha final: 20200205
+      Sede de recogida: SedeChapinero. Sede de devolución: SedeSur
+      Cliente: Ana González. Cédula: 1023456789
+  ->Conductores:
+      Nombre: nombre. Número de cédula: 1023456789
+  ->Pagos Excedentes:
+      Detalle del pago excedente: motivopago1. Valor pagado: 200.4
+      Detalle del pago excedente: motivopago2. Valor pagado: 100.5
 
 Reservas Activas:
-Fecha para recoger el vehículo: 20200203
-Sede de recogida: SedeChapinero
-Categoría: sedan_ECONOMICO
+->IDreserva: 1. Pago 30%: COP0.0. Fecha inicio: 20200203. Fecha final: 20200205
+      Sede de recogida: SedeChapinero. Sede de devolución: SedeSur
+      Cliente: Ana González. Cédula: 1023456789

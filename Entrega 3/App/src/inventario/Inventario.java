@@ -1,20 +1,14 @@
 package inventario;
-
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
-import inventario.Vehiculo;
 import alquiler.alquiler;
 import alquiler.PagoExcedente;
 import alquiler.Reserva;
@@ -55,7 +49,12 @@ public class Inventario {
     public static int getCostoPorTrasladoSedes(){return costoPorTrasladoSedes;}
     public static List<Integer> getPeriodoTemporadaAlta(){return periodoTemporadaAlta;}
     public static List<Integer> getPeriodoTemporadaBaja(){return periodoTemporadaBaja;}
-    
+    public static List<Categoria> getListaCategorias(){return listaCategorias;}
+    public static List<Seguro> getListaSeguros(){return listaSeguros;}
+    public static List<Sede> getListaSedes(){return listaSedes;}
+    public static List<Evento> getListaEventos(){return listaEventos;}
+    public static List<Vehiculo> getListaVehiculos(){return listaVehiculos;}
+
     public static boolean esTemporadaAlta(int mmdd1, int mmdd2){
         int inicioTemp1=getPeriodoTemporadaAlta().get(0);
         int finTemp1=getPeriodoTemporadaAlta().get(1);
@@ -92,7 +91,7 @@ public class Inventario {
             periodo.clear();
             periodo.add(fechaInicio);
             periodo.add(fechaFin);
-            System.out.println(">>> Costo actualizado");}
+            System.out.println(">>> Periodo actualizado");}
 
         public static void setPeriodoTemporadaBaja(){
         int fechaInicio= Integer.parseInt(input("Intrese el nuevo inicio de temporada baja en formato mmdd(Ej: 31 de marzo->0331)"));
@@ -101,12 +100,8 @@ public class Inventario {
             periodo.clear();
             periodo.add(fechaInicio);
             periodo.add(fechaFin);
-            System.out.println(">>> Costo actualizado");}
-    public static List<Categoria> getListaCategorias(){return listaCategorias;}
-    public static List<Seguro> getListaSeguros(){return listaSeguros;}
-    public static List<Sede> getListaSedes(){return listaSedes;}
-    public static List<Evento> getListaEventos(){return listaEventos;}
-    public static List<Vehiculo> getListaVehiculos(){return listaVehiculos;}
+            System.out.println(">>> Periodo actualizado");}
+
     public static void updateSistema() throws IOException{
     updateInfo();
     updateCategorias();
@@ -216,9 +211,16 @@ public class Inventario {
       
     }
     public static void updatePersonal() throws IOException{
-        File archivo = new File("./data/seguros.txt");
+        File archivo = new File("./data/personal.txt");
         FileWriter escritor2= new FileWriter(archivo);
         List<personal> lstpersonal= personal.getCredencialesPersonal();
+        Admin admin=personal.getCredendialAdmin();
+        String loginA=admin.getLogin();
+        String passwordA=admin.getPassword();
+        String idSedeA="0";
+        String tipoPersonalA="Admin";
+        String resultadoA = String.format("%s;%s;%s;%s%n",loginA, passwordA, idSedeA, tipoPersonalA);
+        escritor2.write(resultadoA);
         for (personal i: lstpersonal){
             String login=i.getLogin();
             String password=i.getPassword();
@@ -543,7 +545,7 @@ public class Inventario {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
-                if (partes.length == 6) {
+                if (partes.length == 5) {
                     int id = Integer.parseInt(partes[0]);
                     String nombreSede= partes[1];
                     String ubicacionSede= partes[2];
@@ -885,6 +887,15 @@ public class Inventario {
             }}
         return retorno;
     } 
+    public static Vehiculo assignVehiculo(String placa){
+        Vehiculo retorno = null;
+        for(Vehiculo i: Inventario.getListaVehiculos()){
+            if(i.getPlaca().equals(placa)){
+            retorno= i;
+            break;
+            }}
+        return retorno;
+    }
     public static void crearVehiculo(){
         try{
         String placa= input("Ingrese la placa del Vehiculo: "); 
@@ -1051,7 +1062,6 @@ public class Inventario {
     public static void registrarAdminLocal(){
         try {
             String login=input("Ingrese el login del usuario");
-            //LO DE ABAJO APLICARLO AL CREAR NUEVOS CLIENTES
             boolean continuar=true;
             while(continuar){
             String password=input("Ingrese la contraseña del usuario");
@@ -1091,9 +1101,14 @@ public class Inventario {
                 if (i.getLogin().equals(login) && i.getTipoPersonal().equals("AdminLocal")){
                     {
                         sede= Inventario.assignSede(NidSede);
+                        if(sede.getAdminLocal()!=null){
                         i.setSede(sede);
                         System.out.println(">El admin ha sido asignado correctamente a la sede "+ Integer.toString(NidSede));
                         break;
+                        }
+                        else{
+                        System.out.println(">Ya hay un admin local en la sede "+ Integer.toString(NidSede));
+                        }
                     }
                 }}}
             else{System.out.println(">Ingresó un ID de sede inválido");}
@@ -1132,9 +1147,15 @@ public class Inventario {
         List<Integer> horario= new ArrayList<Integer>();
         int hapertura=Integer.parseInt(input("Ingrese la nueva hora de entrada"));
         int hcierre=Integer.parseInt(input("Ingrese la nueva hora de cierre"));
-        horario.add(hapertura);
-        horario.add(hcierre);
-        Inventario.assignSede(id_sede).setHorarioAtencionEnSemana(horario);;
+        boolean hvalida1= Reserva.horaValida(hapertura);
+        boolean hvalida2= Reserva.horaValida(hcierre);
+        if (hvalida1&&hvalida2){
+            horario.add(hapertura);
+            horario.add(hcierre);
+            Inventario.assignSede(id_sede).setHorarioAtencionEnSemana(horario);
+}
+        else{System.out.println("\n>No se pudieron modificar los horarios dado que no se ingresaron valores válidos.");}
+
     }
     System.out.println("\nDesea modificar el horario de fin de semana de la sede?\n");
     System.out.println("1.Sí");
@@ -1144,9 +1165,14 @@ public class Inventario {
         List<Integer> horario= new ArrayList<Integer>();
         int hapertura=Integer.parseInt(input("Ingrese la nueva hora de entrada"));
         int hcierre=Integer.parseInt(input("Ingrese la nueva hora de cierre"));
-        horario.add(hapertura);
-        horario.add(hcierre);
-        Inventario.assignSede(id_sede).setHorarioAtencionFinSemana(horario);
+        boolean hvalida1= Reserva.horaValida(hapertura);
+        boolean hvalida2= Reserva.horaValida(hcierre);
+        if (hvalida1&&hvalida2){
+            horario.add(hapertura);
+            horario.add(hcierre);
+            Inventario.assignSede(id_sede).setHorarioAtencionFinSemana(horario);}
+        else{System.out.println("\n>No se pudieron modificar los horarios dado que no se ingresaron valores válidos.");}
+        
     }
     System.out.println("\n> Información actualizada.");
  
@@ -1156,93 +1182,6 @@ public class Inventario {
     catch(NumberFormatException e){
         System.out.println("Ingrese solo números en los campos correspondientes");}}
 
-    public static void obtenerHistorial(String placa){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("./historiales/"+placa+".txt"))) {
-            for (Vehiculo vehiculo : getListaVehiculos()) {
-                if (vehiculo.getPlaca().equals(placa)) {
-                    System.out.println("\n>Se encontró el vehículopondientes");
-                    writer.write("Placa: " + vehiculo.getPlaca());
-                    writer.newLine();
-                    writer.write("Marca: " + vehiculo.getMarca());
-                    writer.newLine();
-                    writer.write("Modelo: " + vehiculo.getModelo());
-                    writer.newLine();
-                    writer.write("Color: " + vehiculo.getColor());
-                    writer.newLine();
-                    writer.write("Tipo de Transmisión: " + vehiculo.getTipoTransmicion());
-                    writer.newLine();
-                    writer.write("Ubicación GPS: " + vehiculo.getUbicacionGPS());
-                    writer.newLine();
-                    writer.write("Estado: " + vehiculo.getEstado());
-                    writer.newLine();
-                    writer.write("Averiado: " + vehiculo.getAveriado());
-                    writer.newLine();
-                    writer.write("Sede: " + vehiculo.getSede().getNombre());
-                    writer.newLine();
-                    writer.write("Categoría: " + vehiculo.getCategoria().getnombreCategoria());
-                    writer.newLine();
-                    List<Evento> historialEvento = vehiculo.getHistorialEventos();
-                    if (!historialEvento.isEmpty()) {
-                        writer.write("Historial de Eventos:");
-                        writer.newLine();
-                        for (Evento evento : historialEvento) {
-                            writer.write("-> Fecha del inicio del evento: " + evento.getFechaInicio()+"Fecha del fin del evento: " + evento.getFechaFin()+"Descripción: " + evento.getDescripcion());             
-                        }
-                    } else {
-                        writer.write("Este vehículo no cuenta con historial de Eventos:");
-                        writer.newLine();
-                    }
-                    List<alquiler> historialAlquiler = vehiculo.getHistorialAlquileres();
-                    if (!historialAlquiler.isEmpty()) {
-                        writer.write("Historial de Alquileres:");
-                        writer.newLine();
-                        for (alquiler alquiler : historialAlquiler) {
-                            writer.write("Pago Final: $" + alquiler.getPagoFinal());
-                            writer.newLine();
-                            writer.write("Conductores:");
-                            writer.newLine();
-                            writer.newLine();
-                            for (Conductor conductor : alquiler.getConductores()) {
-                                writer.write("- " + conductor.getNombre()); //
-                                writer.newLine();
-                            }
-                            writer.write("Pagos Excedentes:");
-                            writer.newLine();
-                            for (PagoExcedente pagoExcedente : alquiler.getPagosExcedentes()) {
-                                writer.write("- Detalle del pago excedente"+pagoExcedente.getMotivoPago()+" ");
-                                writer.newLine();
-                            }
-                            writer.newLine();
-                        }
-                    } else {
-                        writer.write("Este vehículo no cuenta con historial de Alquileres:");
-                        writer.newLine();
-                    }
-                    List<Reserva> reservasActivas = vehiculo.getReservasActivas();
-                    if (!reservasActivas.isEmpty()) {
-                        writer.write("Reservas Activas:");
-                        writer.newLine();
-                        for (Reserva reserva : reservasActivas) {
-                            writer.write("Fecha para recoger el vehículo: " + reserva.getFechaRecoger());
-                            writer.newLine(); 
-                            writer.write("Sede de recogida: " + reserva.getSedeRecoger().getNombre());
-                            writer.newLine();
-                            writer.write("Categoría: " + reserva.getCategoria().getnombreCategoria());
-                            writer.newLine();
-                            //cliente
-
-                        } 
-                    System.out.println("\n>Log guardado en carpeta historiales bajo el nombre "+placa+".txt");
-                    } else {
-                        writer.write("Este vehículo no cuenta con Reservas Activas:");
-                        writer.newLine();
-                    } 
-                } 
-            }
-        } catch (IOException e) {
-            System.err.println("Error al escribir en el archivo: " + e.getMessage());
-        }
-    }
 }
 
 

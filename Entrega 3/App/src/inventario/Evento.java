@@ -3,6 +3,8 @@ package inventario;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import alquiler.Reserva;
@@ -80,7 +82,7 @@ public class Evento {
         this.descripcion = descripcion;
     }
 
-    public static void crearEvento(String descripcion, String placa, List<Vehiculo> vehiculos) {
+    public static void crearEvento(String descripcion, Vehiculo vehiculo) {
         System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
         try { 
             boolean continuar=true;
@@ -91,13 +93,10 @@ public class Evento {
                 int hfinal = Integer.parseInt(input("Ingrese la hora en la que finalizará el evento(en formato 24h de tipo hhmm)"));
                 boolean horaVinicio= Reserva.horaValida(hinicio);
                 boolean horaVfin = Reserva.horaValida(hfinal);
-                if(horaVinicio&&horaVfin){
+                int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+                if(horaVinicio&&horaVfin&&finicio>=fechaActual){
                     Evento evento = new Evento(finicio, ffinal, hinicio, hfinal, descripcion);
-                    for (Vehiculo vehiculo : vehiculos) {
-                        if (vehiculo.getPlaca().equals(placa)) {
-                            vehiculo.addEvento(evento);
-                        } else {System.out.println(">No se pudo encontrar el vehículo que buscas.");}
-                    }
+                    vehiculo.addEvento(evento);
                 } else {System.out.println(">Las horas ingresadas no son válidas. Por favor, inténtelo nuevamente.");}
             }
         }catch(NumberFormatException e){System.out.println("\n>Ingrese los datos requeridos en el formato especificado");}

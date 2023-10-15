@@ -95,12 +95,12 @@ public class Reserva {
         for(Vehiculo i: Inventario.getListaVehiculos()){
             if (i.getAveriado()==false){
             if(i.getCategoria().getID()==categoria && i.getSede().getID()==this.getSedeRecoger().getID()){
-                if(i.estaDisponible(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar )){
+                if(i.actualizarEstado(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar ).equals("Disponible")){
                     vehiculoAsignado=i;
                     esUpgrade=false;
                     break;}}
                 else if(encontreUpgrade==false && i.getCategoria().getID()==categoriaPadre && i.getSede().getID()==this.getSedeRecoger().getID()){
-                    if(i.estaDisponible(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar)){
+                    if(i.actualizarEstado(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar).equals("Disponible")){
                     vehiculoAsignado=i;
                     encontreUpgrade=true;
                 }}}
@@ -144,11 +144,9 @@ public class Reserva {
             System.out.println("\n>Lista de Sedes Disponibles:");
                 List<Sede> sedes = Inventario.getListaSedes();
                 for (int i = 0; i < sedes.size(); i++) {
-                    System.out.println((i + 1) + ". " + sedes.get(i).getNombre()+" ("+sedes.get(i).getUbicacion()+").");
-                }
+                    System.out.println((i + 1) + ". " + sedes.get(i).getNombre()+" ("+sedes.get(i).getUbicacion()+").");}
             Sede sedeRecoger=null;
             Sede sedeEntrega=null;
-
             int sedeRecogerIndex = Integer.parseInt(input("\nSeleccione una sede para recoger el vehículo(ingrese el número)"));
             int sedeEntregaIndex = Integer.parseInt(input("Seleccione una sede para la devolución del vehículo(ingrese el número)"));
             if(sedeRecogerIndex<=sedes.size()&& sedeEntregaIndex<=sedes.size()){
@@ -184,7 +182,7 @@ public class Reserva {
                 for (int i = 0; i < categorias.size(); i++) {
                     Categoria i_categoria=categorias.get(i);
                     System.out.println((i + 1) + ". " + i_categoria.getnombreCategoria());
-                    System.out.println("   - Costo Diario: $" + i_categoria.getTarifaDiaria());
+                    System.out.println("   - Costo Diario: COP" + i_categoria.getTarifaDiaria());
                     System.out.println("   - Capacidad: " + i_categoria.getCapacidad() + " personas");
                 }
                 int categoriaElegidaIndex = Integer.parseInt(input("Seleccione una categoría (ingrese el número)"));
@@ -202,7 +200,7 @@ public class Reserva {
                         int numTarjeta = Integer.parseInt(input("Para debitar el 30% del alquiler de su cuenta, por favor ingrese los últimos 4 dígitos de la tarjeta que tiene registrada"));
                         if (numTarjeta== (cliente.getTarjeta().getNumeroTarjeta())%10000){
                         reserva_u.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar );
-                        System.out.println(">Se debitaron $"+ Double.toString(reserva_u.getPagoReserva())+".");
+                        System.out.println(">Se debitaron COP"+ Double.toString(reserva_u.getPagoReserva())+".");
                         System.out.println(">Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_u.getID()));
                                 continuar5=false;
                                 continuar4=false;
@@ -251,33 +249,8 @@ public class Reserva {
         catch (NumberFormatException e) {
             System.out.println(">Debe ingresar los datos requeridos para que la creación de su reserva sea exitosa.");
         }
+    }
 
-    }
-    public static void addReserva(Reserva reserva){
-        if (listaReservas==null){
-        listaReservas= new ArrayList<Reserva>();
-        }
-        listaReservas.add(reserva);
-    }
-    public static Reserva assignReserva(int idReserva){
-        Reserva retorno = null;
-        for(Reserva i: Reserva.getListaReservas()){
-            if(i.getID()==idReserva){
-            retorno= i;
-            break;
-            }}
-        return retorno;
-    }       
-    public static void eliminarReserva(Cliente cliente){
-        Reserva reservaElejida=encontrarReserva(cliente);
-        if(reservaElejida!=null){
-        getListaReservas().remove(reservaElejida);
-        Vehiculo vehiculoReservaElejida= reservaElejida.getVehiculoAsignado();
-        vehiculoReservaElejida.eliminarReservaActiva(reservaElejida.getID());
-        System.out.println("\n> La reserva ha sido cancelada, pronto se trasferirá de vuelta el pago del 30% ($ "+Double.toString(reservaElejida.getPagoReserva())+").");
-    }}
-        
-    
     public static void modificarReserva(Cliente cliente){
         Reserva reservaPorModificar=encontrarReserva(cliente);
         //Se desasigna el vehículo dado que caulquier modificacion puede alterar su disponibilidad
@@ -386,7 +359,6 @@ public class Reserva {
                 if(opcion2_2>1){continuar2=false;
                 System.out.println("\n> Se mantienen las fechas previas.");
                 }}}}   
-
             System.out.println("\nDesea actualizar el tipo de vehículo?\n");
             System.out.println("1.Sí");
             System.out.println("2.No(ó cualquier otro número)");
@@ -399,7 +371,7 @@ public class Reserva {
             for (int i = 0; i < categorias.size(); i++) {
                 Categoria i_categoria=categorias.get(i);
                 System.out.println((i + 1) + ". " + i_categoria.getnombreCategoria());
-                System.out.println("   - Costo Diario: $" + i_categoria.getTarifaDiaria());
+                System.out.println("   - Costo Diario: COP" + i_categoria.getTarifaDiaria());
                 System.out.println("   - Capacidad: " + i_categoria.getCapacidad() + " personas");
             }
             int categoriaElegidaIndex = Integer.parseInt(input("Seleccione una categoría (ingrese el número)"));
@@ -439,10 +411,10 @@ public class Reserva {
         double newPago=reservaPorModificar.getPagoReserva();
         double debito= newPago-pagoReservaInicial;
         if(debito>0){
-        System.out.println("\n>Considerando el pago de reserva inicial +($"+Double.toString(pagoReservaInicial)+"). Se debitarán $"+Double.toString(debito)+".");
+        System.out.println("\n>Considerando el pago de reserva inicial +(COP"+Double.toString(pagoReservaInicial)+"). Se debitarán COP"+Double.toString(debito)+".");
         }
         else{
-        System.out.println("\n>Considerando el pago de reserva inicial +($"+Double.toString(pagoReservaInicial)+"). Se le devolverán  $"+Double.toString(-debito)+".");
+        System.out.println("\n>Considerando el pago de reserva inicial +(COP"+Double.toString(pagoReservaInicial)+"). Se le devolverán  COP"+Double.toString(-debito)+".");
         }
         continuar2=false;
         }
@@ -467,11 +439,34 @@ public class Reserva {
             reservaPorModificar.setVehiculoAsignado(vehiculoActual);
             vehiculoActual.addReservaActiva(reservaPorModificar);
         }
-
-            
         }catch(NumberFormatException e){
         }}}
 
+    public static void eliminarReserva(Cliente cliente){
+        Reserva reservaElejida=encontrarReserva(cliente);
+        if(reservaElejida!=null){
+        int id= reservaElejida.getID();
+        getListaReservas().remove(reservaElejida);
+        Vehiculo vehiculoReservaElejida= reservaElejida.getVehiculoAsignado();
+        vehiculoReservaElejida.eliminarReservaActiva(reservaElejida.getID());
+        System.out.println("\n> La reserva con IDreserva "+Integer.toString(id)+" ha sido cancelada, pronto se trasferirá de vuelta el pago del 30% (COP "+Double.toString(reservaElejida.getPagoReserva())+").");
+    }}
+
+    public static void addReserva(Reserva reserva){
+        if (listaReservas==null){
+        listaReservas= new ArrayList<Reserva>();
+        }
+        listaReservas.add(reserva);
+    }
+    public static Reserva assignReserva(int idReserva){
+        Reserva retorno = null;
+        for(Reserva i: Reserva.getListaReservas()){
+            if(i.getID()==idReserva){
+            retorno= i;
+            break;
+            }}
+        return retorno;
+    }       
     public static Reserva encontrarReserva(Cliente cliente){
         Reserva retorno=null;
         List<Integer> idsReservas= desplegarReservasActivas(cliente);
