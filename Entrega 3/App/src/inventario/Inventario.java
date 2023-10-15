@@ -1071,7 +1071,8 @@ public class Inventario {
             while(continuar2){
             int Idsede=Integer.parseInt(input("ingrese el ID de la sede"));
             if ((Idsede>=1&& Idsede<=listaSedes.size())){
-                if(Inventario.assignSede(Idsede).getAdminLocal()!=null){
+                sede=Inventario.assignSede(Idsede);
+                if(sede.getAdminLocal()==null){
                 sede= Inventario.assignSede(Idsede);
                 personal adminlocal=new personal(login, password, "AdminLocal", sede);
                 personal.addCredencialesPersonal(adminlocal);

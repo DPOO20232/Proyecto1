@@ -180,20 +180,20 @@ public class alquiler{
         int opcion = Integer.parseInt(input("Por favor seleccione una opción")); 
         if (opcion==1){
             saldoFinal+=categoria.getCostoAveriaLeve();
-            Evento mantenimiento= new Evento(fechaActual,fechaMas5 ,horaActual ,horaActual , "MantenimientoAveriaLeve");
+            Evento mantenimiento= new Evento(fechaActual,fechaMas5 ,horaActual ,horaActual , "EnMantenimiento");
             this.getReserva().getVehiculoAsignado().addEvento(mantenimiento);
             Inventario.getListaEventos().add(mantenimiento);
         }
         else if (opcion==2){
             saldoFinal+=categoria.getCostoAveriaModerada();
             saldoFinal+=categoria.getCostoAveriaLeve();
-            Evento mantenimiento= new Evento(fechaActual,fechaMas10 ,horaActual ,horaActual , "MantenimientoAveriaLeve");
+            Evento mantenimiento= new Evento(fechaActual,fechaMas10 ,horaActual ,horaActual , "EnMantenimiento");
             this.getReserva().getVehiculoAsignado().addEvento(mantenimiento);
             Inventario.getListaEventos().add(mantenimiento);
         }
         else if (opcion==3){
             saldoFinal+=categoria.getCostoAveriaTotal();
-            Evento mantenimiento= new Evento(fechaActual,fechaMas30 ,horaActual ,horaActual , "MantenimientoAveriaLeve");
+            Evento mantenimiento= new Evento(fechaActual,fechaMas30 ,horaActual ,horaActual , "EnMantenimiento");
             this.getReserva().getVehiculoAsignado().addEvento(mantenimiento);
             Inventario.getListaEventos().add(mantenimiento);
             this.getReserva().getVehiculoAsignado().setAveriado(true);

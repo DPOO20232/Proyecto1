@@ -236,13 +236,38 @@ public class Vehiculo {
 
     public void resumenStatus(){
         String ubicacion="";
+        String infoCliente="";
+        String disponibilidad= "";
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         LocalTime hora = LocalTime.now();
         int horaActual = hora.getHour() * 100 + hora.getMinute();
         String estado= actualizarEstado(fechaActual,horaActual ,fechaActual,horaActual);
-        if (estado.equals("Disponible")||estado.equals("EnLimpieza")||estado.equals("EnMantenimiento")){
+        if (estado.equals("Disponible")){
             ubicacion= this.getSede().getNombre();
+            disponibilidad=LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+            System.out.println("Estado: "+estado+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".");
+
         }
-        System.out.println("Estado: "+estado+". Ubicación: "+ubicacion);
-    }
+        else if (estado.equals("EnLimpieza")||estado.equals("EnMantenimiento")){
+            ubicacion= this.getSede().getNombre();
+            for(Evento i: this.getHistorialEventos()){
+                if (i.getFechaFin()>=fechaActual&&i.getFechaInicio()<=fechaActual){
+                    disponibilidad=Integer.toString(i.getFechaFin());
+                    break;
+                }            
+            }
+            System.out.println("Estado: "+estado+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".");
+        }
+        else if(estado.equals("EnReserva")) {
+            ubicacion=this.getUbicacionGPS();
+            for (Reserva i: this.getReservasActivas()){
+                if (i.getFechaEntregar()>=fechaActual&&i.getFechaRecoger()<=fechaActual){
+                    disponibilidad=Integer.toString(i.getFechaRecoger());
+                    infoCliente="Cliente en posesión del vehículo: "+i.getCliente().getNombre()+". Cédula: "+Integer.toString(i.getCliente().getNumeroCedula())+".";
+                    break;
+            }
+        }
+            System.out.println("Estado: "+estado+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".\n"+infoCliente);
+
+    }}
 }
