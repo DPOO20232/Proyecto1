@@ -178,8 +178,8 @@ public class alquiler{
 
         int id = Integer.parseInt(input("Por favor ingrese el ID de la reserva que desee utilizar: "));
         Reserva reserva = Reserva.assignReserva(id);
-
         if (reserva != null) {
+
             alquiler alquiler = new alquiler(reserva);
             alquiler.agregarConductores();
             alquiler.agregarSeguros();
