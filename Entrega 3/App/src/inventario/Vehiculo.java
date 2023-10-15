@@ -67,7 +67,7 @@ public class Vehiculo {
     public void setEstado(String estado){
         //para definir estado en el menu dar opciones que representen los estados definidos
         this.estado=estado;}
-    //TODO quitar atributos averiado y estado
+    //TODO quitar atributos estado
     public void setAveriado(boolean averiado){this.averiado=averiado;}
     public void setTrasladoASede(Sede nuevaSede){
         this.sede=nuevaSede;
@@ -75,10 +75,11 @@ public class Vehiculo {
         int fechaFinal=Integer.parseInt((LocalDate.now()).plusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         LocalTime horaActual = LocalTime.now();
         int horaEnFormatoHHMM = horaActual.getHour() * 100 + horaActual.getMinute();
-        if (this.estaDisponible(fechaActual, horaEnFormatoHHMM, fechaFinal, horaEnFormatoHHMM)){
+        if (this.actualizarEstado(fechaActual, horaEnFormatoHHMM, fechaFinal, horaEnFormatoHHMM)=="Disponible"){
         Evento nuevoEvento= new Evento(fechaActual, fechaFinal, horaEnFormatoHHMM, horaEnFormatoHHMM, "EnTraslado");
         this.addEvento(nuevoEvento);
         Inventario.getListaEventos().add(nuevoEvento);
+        this.setEstado("EnTraslado");
         System.out.println("\n>Solicitud de traslado registrada. En\n");
 
         }
@@ -104,11 +105,12 @@ public class Vehiculo {
                 break;
             }
         }}
+    //TODO cambias estaDisponible->actualizarEstado
+    public String actualizarEstado(int fecha1, int hora1, int fecha2, int hora2){
+        String retorno= "NoDisponible";
 
-    public boolean estaDisponible(int fecha1, int hora1, int fecha2, int hora2){
         try{
-        boolean reservaInPeriodoReserva=false;
-        boolean eventoInPeriodoReserva=false;
+        boolean ocupado=false;
         DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyyMMddHHmm");
         LocalDateTime fhInicioReserva = LocalDateTime.parse(String.format("%08d%04d", fecha1, hora1), formatter);
         LocalDateTime fhFinReserva = LocalDateTime.parse(String.format("%08d%04d", fecha2, hora2), formatter);
@@ -119,7 +121,8 @@ public class Vehiculo {
             LocalDateTime fhInicioEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaInicio(), i.getHoraInicio()), formatter);
             LocalDateTime fhFinEvento= LocalDateTime.parse(String.format("%08d%04d", i.getFechaFin(), i.getHoraFin()), formatter);
             if (!fhFinEvento.isBefore(fhInicioReserva) && !fhInicioEvento.isAfter(fhFinReserva)) {
-                eventoInPeriodoReserva=true;
+                retorno=i.getDescripcion();
+                ocupado=true;
                 break;
             }
         }}
@@ -129,20 +132,19 @@ public class Vehiculo {
                 LocalDateTime i_inicioReserva = LocalDateTime.parse(String.format("%08d%04d",  i.getFechaRecoger(), i.getHoraRecoger()), formatter);
                 LocalDateTime i_finReserva = (LocalDateTime.parse(String.format("%08d%04d",  i.getFechaEntregar(), i.getHoraEntregar()), formatter)).plusDays(1);
                 if (!i_finReserva.isBefore(fhInicioReserva) && !i_inicioReserva.isAfter(fhFinReserva)) {
-                        reservaInPeriodoReserva=true;
+                        retorno="EnReserva";
+                        ocupado=true;
                         break;
                 }
             }
         }
-        if ((reservaInPeriodoReserva==false) && (eventoInPeriodoReserva==false)){
-            return true;
-        }
-        else{
-            return false;
-        }
+        if (ocupado==false){retorno="Disponible";}
+        return retorno;
+
+        
     }catch(DateTimeParseException e){
         System.out.println("\n>Se presentó un error al verificar la disponibilidad");
-        return false;
+        return retorno;
     }}
     
     public void obtenerLog(){
