@@ -1,20 +1,14 @@
 package inventario;
-
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
-import inventario.Vehiculo;
 import alquiler.alquiler;
 import alquiler.PagoExcedente;
 import alquiler.Reserva;
@@ -60,7 +54,7 @@ public class Inventario {
     public static List<Sede> getListaSedes(){return listaSedes;}
     public static List<Evento> getListaEventos(){return listaEventos;}
     public static List<Vehiculo> getListaVehiculos(){return listaVehiculos;}
-    
+
     public static boolean esTemporadaAlta(int mmdd1, int mmdd2){
         int inicioTemp1=getPeriodoTemporadaAlta().get(0);
         int finTemp1=getPeriodoTemporadaAlta().get(1);
@@ -1107,9 +1101,14 @@ public class Inventario {
                 if (i.getLogin().equals(login) && i.getTipoPersonal().equals("AdminLocal")){
                     {
                         sede= Inventario.assignSede(NidSede);
+                        if(sede.getAdminLocal()!=null){
                         i.setSede(sede);
                         System.out.println(">El admin ha sido asignado correctamente a la sede "+ Integer.toString(NidSede));
                         break;
+                        }
+                        else{
+                        System.out.println(">Ya hay un admin local en la sede "+ Integer.toString(NidSede));
+                        }
                     }
                 }}}
             else{System.out.println(">Ingresó un ID de sede inválido");}

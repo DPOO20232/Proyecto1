@@ -1,4 +1,4 @@
-1;1;Protección total del vehículo
+1;1.0;Protección total del vehículo
 2;0.35;Protección contra robo y daños
 3;0.4;Protección contra pago deducible
 4;0.11;Seguro de neumáticos y parabrisas
