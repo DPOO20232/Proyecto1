@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import inventario.Categoria;
 import inventario.Inventario;
 import inventario.Sede;
 import inventario.Seguro;
@@ -153,10 +154,10 @@ public class alquiler{
     public Double setPagoFinal(Sede sedeActual){
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         double pago30=this.reserva.getPagoReserva();
-        double pago70=this.setPagoAlquiler();
+        double pago70=this.setPagoInicial();
         this.reserva.setFechaEntregar(fechaActual);
         double sPago30= this.reserva.getPagoReserva();
-        double sPago70=this.setPagoAlquiler();
+        double sPago70=this.setPagoInicial();
         double saldoFinal=(sPago30+sPago70)-(pago30+pago70);
         System.out.println("¿El vehiculo tiene algun tipo de daño?");
         System.out.println("1. Averia leve");
