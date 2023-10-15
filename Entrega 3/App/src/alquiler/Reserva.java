@@ -95,12 +95,12 @@ public class Reserva {
         for(Vehiculo i: Inventario.getListaVehiculos()){
             if (i.getAveriado()==false){
             if(i.getCategoria().getID()==categoria && i.getSede().getID()==this.getSedeRecoger().getID()){
-                if(i.estaDisponible(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar )){
+                if(i.actualizarEstado(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar ).equals("Disponible")){
                     vehiculoAsignado=i;
                     esUpgrade=false;
                     break;}}
                 else if(encontreUpgrade==false && i.getCategoria().getID()==categoriaPadre && i.getSede().getID()==this.getSedeRecoger().getID()){
-                    if(i.estaDisponible(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar)){
+                    if(i.actualizarEstado(this.fechaRecoger,this.horaRecoger ,this.fechaEntregar ,this.horaEntregar).equals("Disponible")){
                     vehiculoAsignado=i;
                     encontreUpgrade=true;
                 }}}
