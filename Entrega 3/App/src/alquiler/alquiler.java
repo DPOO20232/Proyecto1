@@ -7,15 +7,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import inventario.Categoria;
 import inventario.Inventario;
 import inventario.Sede;
 import inventario.Seguro;
-import inventario.Vehiculo;
 import usuario.Conductor;
 import usuario.Licencia;
-import usuario.Cliente;
-import inventario.Inventario;
 
 public class alquiler{
     private int idAlquiler;
@@ -71,9 +67,6 @@ public class alquiler{
     public void addPagoExcedente(PagoExcedente pago){
         this.pagosExcedentes.add(pago);
     }
-    public String crearReciboAlquiler(){
-        return "Recibo creado correctamente";
-    }
     public static void addAlquiler(alquiler alquiler){
         if (listaAlquileres==null){ listaAlquileres= new ArrayList<alquiler>();}
         listaAlquileres.add(alquiler);
@@ -111,11 +104,10 @@ public class alquiler{
                     }
                     
                 }
-                else if(opcion==2){continuarPersonal1 = false;
-                }
-            }
-        }
-    }
+                else if(opcion==2){continuarPersonal1 = false;}
+            
+        
+    }catch (NumberFormatException e){System.out.println("\n>Ingrese los valores requeridos en el formato solicitado");}}}
 
     public void agregarSeguros (){
         boolean continuar = true;
@@ -141,7 +133,7 @@ public class alquiler{
         }
     }
 
-    public Double setPagoAlquiler(){
+    public Double setPagoInicial(){
         double pagoReserva=this.reserva.getPagoReserva();
         double costo70=(pagoReserva*7/3);
         double costo100=costo70+pagoReserva;
@@ -197,7 +189,10 @@ public class alquiler{
 
     public static void crearAlquiler(List<Reserva>reservas){
         System.out.println("Reserva/s activa/s del cliente: ");
+        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+
         for(Reserva i: reservas){
+            if(i.getFechaRecoger()==fechaActual){
             int idreseva = i.getID();
             String categoria = i.getCategoria().getnombreCategoria();
             int fechaRecoger = i.getFechaRecoger();
@@ -215,6 +210,7 @@ public class alquiler{
             System.out.println("Sede de devolución: " + sedeEntrega);
             System.out.println("Pago Realizado por la reserva: " + pago);
         }
+        }
 
         int id = Integer.parseInt(input("Por favor ingrese el ID de la reserva que desee utilizar: "));
         Reserva reserva = Reserva.assignReserva(id);
@@ -223,7 +219,8 @@ public class alquiler{
             alquiler alquiler = new alquiler(reserva);
             alquiler.agregarConductores();
             alquiler.agregarSeguros();
-            System.out.println("El valor a pagar es de " + alquiler.setPagoAlquiler()); 
+            long ultimos_digitos=(reserva.getCliente().getTarjeta().getNumeroTarjeta()% 10000);
+            System.out.println("Se debitaron COP " + alquiler.setPagoInicial()+ "de su tarjeta terminada en "+ Long.toString(ultimos_digitos)); 
             addAlquiler(alquiler);
                          
             }

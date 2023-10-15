@@ -2,8 +2,16 @@ package inventario;
 import java.util.ArrayList;
 import java.util.List;
 import alquiler.alquiler;
+import usuario.Conductor;
+import alquiler.PagoExcedente;
 import alquiler.Reserva;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -59,12 +67,30 @@ public class Vehiculo {
     public void setEstado(String estado){
         //para definir estado en el menu dar opciones que representen los estados definidos
         this.estado=estado;}
+    //TODO quitar atributos averiado y estado
     public void setAveriado(boolean averiado){this.averiado=averiado;}
     public void setTrasladoASede(Sede nuevaSede){
-        //incluir logica de cambio de sede (crear nuevo evento, cambiar estado)
+        this.sede=nuevaSede;
+        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        int fechaFinal=Integer.parseInt((LocalDate.now()).plusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        LocalTime horaActual = LocalTime.now();
+        int horaEnFormatoHHMM = horaActual.getHour() * 100 + horaActual.getMinute();
+        if (this.estaDisponible(fechaActual, horaEnFormatoHHMM, fechaFinal, horaEnFormatoHHMM)){
+        Evento nuevoEvento= new Evento(fechaActual, fechaFinal, horaEnFormatoHHMM, horaEnFormatoHHMM, "EnTraslado");
+        this.addEvento(nuevoEvento);
+        Inventario.getListaEventos().add(nuevoEvento);
+        System.out.println("\n>Solicitud de traslado registrada. En\n");
+
+        }
+        else{
+        System.out.println("\n>El vehículo actualmente no está disponible para trasladar, monitoree el vehículo para solicitar el traslado más adelante.\n");
+
+        }
     }
     public void addEvento(Evento evento){
-        this.historialEvento.add(evento);}
+        this.historialEvento.add(evento);
+        Inventario.getListaEventos().add(evento);
+        }
     public void addReservaActiva(Reserva reserva){
         this.reservasActivas.add(reserva);}
     public void addAlquiler(alquiler alquiler){
@@ -117,6 +143,93 @@ public class Vehiculo {
     }catch(DateTimeParseException e){
         System.out.println("\n>Se presentó un error al verificar la disponibilidad");
         return false;
-    }
-    }
+    }}
+    
+    public void obtenerLog(){
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("./historiales/"+placa+".txt"));
+                System.out.println("\n>Se encontró el vehículopondientes");
+                writer.write("Placa: " + this.getPlaca());
+                writer.newLine();
+                writer.write("Marca: " + this.getMarca());
+                writer.newLine();
+                writer.write("Modelo: " + this.getModelo());
+                writer.newLine();
+                writer.write("Color: " + this.getColor());
+                writer.newLine();
+                writer.write("Tipo de Transmisión: " + this.getTipoTransmicion());
+                writer.newLine();
+                writer.write("Ubicación GPS: " + this.getUbicacionGPS());
+                writer.newLine();
+                writer.write("Estado: " + this.getEstado());
+                writer.newLine();
+                writer.write("Averiado: " + this.getAveriado());
+                writer.newLine();
+                writer.write("Sede: " + this.getSede().getNombre());
+                writer.newLine();
+                writer.write("Categoría: " + this.getCategoria().getnombreCategoria());
+                writer.newLine();
+                List<Evento> historialEvento = this.getHistorialEventos();
+                if (!historialEvento.isEmpty()) {
+                    writer.write("Historial de Eventos:");
+                    writer.newLine();
+                    for (Evento evento : historialEvento) {
+                        writer.write("-> Fecha del inicio del evento: " + evento.getFechaInicio()+" .Fecha del fin del evento: " + evento.getFechaFin()+". Descripción: " + evento.getDescripcion()); 
+                        writer.newLine();
+                        }
+                } else {
+                    writer.write("Este vehículo no cuenta con historial de Eventos:");
+                    writer.newLine();
+                }
+                writer.newLine();
+
+                List<alquiler> historialAlquiler = this.getHistorialAlquileres();
+                if (!historialAlquiler.isEmpty()) {
+                    writer.write("Historial de Alquileres:");
+                    writer.newLine();
+                    for (alquiler alquiler : historialAlquiler) {
+                        writer.write("->IDAlquiler: "+alquiler.getID()+". Pago Final: COP" + alquiler.getPagoFinal()+". Fecha inicio: "+alquiler.getReserva().getFechaRecoger()+". Fecha final: "+alquiler.getReserva().getFechaEntregar());
+                        writer.newLine();
+                        writer.write("      Sede de recogida: "+alquiler.getReserva().getSedeRecoger().getNombre()+". Sede de devolución: "+alquiler.getReserva().getSedeEntregar().getNombre());
+                        writer.newLine();
+                        writer.write("      Cliente: "+alquiler.getReserva().getCliente().getNombre()+". Cédula: "+alquiler.getReserva().getCliente().getNumeroCedula());
+                        writer.newLine();
+                        writer.write("  ->Conductores:");
+                        writer.newLine();
+                        for (Conductor conductor : alquiler.getConductores()) {
+                            writer.write("      Nombre: " + conductor.getNombre()+". Número de cédula: "+ conductor.getCedula());
+                            writer.newLine();
+                        }
+                        writer.write("  ->Pagos Excedentes:");
+                        writer.newLine();
+                        for (PagoExcedente pagoExcedente : alquiler.getPagosExcedentes()) {
+                            writer.write("      Detalle del pago excedente: "+pagoExcedente.getMotivoPago()+". Valor pagado: "+ pagoExcedente.getValorPago());
+                            writer.newLine();
+                        }
+                        writer.newLine();
+                        }
+                } else {
+                    writer.write("Este vehículo no cuenta con historial de Alquileres:");
+                    writer.newLine();
+                }
+                List<Reserva> reservasActivas = this.getReservasActivas();
+                if (!reservasActivas.isEmpty()) {
+                    writer.write("Reservas Activas:");
+                    writer.newLine();
+                    for (Reserva reserva : reservasActivas) {
+                        writer.write("->IDreserva: "+reserva.getID()+". Pago 30%: COP" + reserva.getPagoReserva()+". Fecha inicio: "+reserva.getFechaRecoger()+". Fecha final: "+reserva.getFechaEntregar());
+                        writer.newLine();
+                        writer.write("      Sede de recogida: "+reserva.getSedeRecoger().getNombre()+". Sede de devolución: "+reserva.getSedeEntregar().getNombre());
+                        writer.newLine();
+                        writer.write("      Cliente: "+reserva.getCliente().getNombre()+". Cédula: "+reserva.getCliente().getNumeroCedula());
+                        writer.newLine();
+                    } 
+                } else {
+                    writer.write("Este vehículo no cuenta con Reservas Activas:");
+                    writer.newLine();
+                } 
+                writer.close(); // Cerrar el BufferedWriter después de terminar de escribir.
+             } catch (IOException e) {
+            System.err.println("Error al escribir en el archivo: " + e.getMessage());
+        }}
 }
