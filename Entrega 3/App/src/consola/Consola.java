@@ -121,7 +121,8 @@ public class Consola {
                             int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
                             Cliente reservante=Usuario.assignCliente(cedulaCliente);
                             if(reservante!=null){
-                                //Alquiler.crearAlquiler(reservante);
+                                reservas = Reserva.getListaReservas();
+                                alquiler.crearAlquiler(reservas);
                             }
                             else{
                                 System.out.println("No fue posible hallar al cliente");
