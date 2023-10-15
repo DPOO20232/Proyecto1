@@ -1,5 +1,9 @@
 package alquiler;
 import java.util.ArrayList;
+import java.util.List;
+
+import inventario.Categoria;
+import inventario.Inventario;
 import inventario.Seguro;
 import inventario.Vehiculo;
 import usuario.Conductor;
@@ -76,7 +80,7 @@ public class alquiler{
         return retorno;
     }
 
-    public agregarConductores(Cliente cliente){
+    public void agregarConductores(Cliente cliente){
         conductores= new ArrayList<Conductor>();
         String nombre1 = cliente.getNombre();
         int cedula1 = cliente.getNumeroCedula();
@@ -85,7 +89,7 @@ public class alquiler{
         conductores.add(conductor1);
         System.out.println("Conductor Registrado: " + nombre1);
         System.out.println("Número de Licencia: " + licencia1.getNumeroLicencia());
-        continuarPersonal1 = true
+        boolean continuarPersonal1 = true;
         while (continuarPersonal1==true){
             System.out.println("¿Desea agregar un conductor adicional?");
             System.out.println("1. Sí");
@@ -95,23 +99,38 @@ public class alquiler{
                 if(opcion==1){
                     String nombre = input("Ingrese el nombre del conductor");
                     int cedula = Integer.parseInt(input("Por favor ingrese el número de cédula del conductor"));
-                    //Licencia licencia = Cliente.setLicencia(); TODO
-                    Conductor conductor = new Conductor(nombre, cedula, licencia)
+                    Licencia licencia = Cliente.setLicencia(); 
+                    Conductor conductor = new Conductor(nombre, cedula, licencia);
                     conductores.add(conductor);
                     System.out.println("Conductor Registrado: " + nombre);
                     System.out.println("Número de Licencia: " + licencia);
                 }
-                else if(opcion==2){continuarPersonal1 = false}
+                else if(opcion==2){continuarPersonal1 = false;}
             }
         }
 
     }
 
-    
+    public Double setPagoAlquiler(){
+        double pagoReserva=this.reserva.getPagoReserva();
+        double costo70=(pagoReserva*7/3);
+        double costo100=costo70+pagoReserva;
+        int conductores=this.getConductores().size();
+        int costo_conductores=(Inventario.getCostoPorConductorAdicional())*conductores;
+        List<Seguro>lstseguro=seguros;
+        int costo_seguros=0;
+        for(Seguro i: lstseguro){
+            double costoT=(i.getPctg_TarifaDiaria())*costo100;
+            costo_seguros+=costoT;
+        }
+
+        Double costo_T=costo70+costo_conductores+costo_seguros;
+        return costo_T;
+    }
 
 
 
-    public static crearAlquiler(List<Reserva>reservas){
+    public static void crearAlquiler(List<Reserva>reservas){
         if (!reservas.isEmpty()){
             System.out.println("Reserva/s activa/s del cliente: ");
             for(Reserva i: reservas){
