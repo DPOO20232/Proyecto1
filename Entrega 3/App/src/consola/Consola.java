@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import alquiler.Reserva;
+import alquiler.alquiler;
 import inventario.Evento;
 import inventario.Inventario;
 import inventario.Sede;
@@ -120,6 +121,7 @@ public class Consola {
             //MENU ADMIN LOCAL
             else if (personal.checkLoginPersonal(login, password)!=null){
                 perfil=(personal.checkLoginPersonal(login, password)).getTipoPersonal();
+                Sede sedePersonal= personal.checkLoginPersonal(login, password).getSede();
                 personal adminlocal= personal.checkLoginPersonal(login, password);
                 if (perfil.equals("AdminLocal")){
                     boolean continuarAdminL=true;
@@ -147,23 +149,33 @@ public class Consola {
                 while (continuarPersonal1==true){
                     System.out.println("\nOpciones de la aplicación\n");
                     System.out.println("1. Registrar un alquiler: ");
-                    System.out.println("2. Modificar un alquiler: ");
+                    System.out.println("2. Completar un alquiler: ");
                     System.out.println("3. Registrar una reserva: ");
-                    System.out.println("4. Registrar evento de un vehículo: ");
-                    System.out.println("6. Cerrar sesión\n");
+                    System.out.println("4. Modificar una reserva: ");
+                    System.out.println("5. Cerrar sesión\n");
                     int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
                         if (opcion_empleadoA==1){
                             int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
                             Cliente reservante=Usuario.assignCliente(cedulaCliente);
                             if(reservante!=null){
-                                //TODO
+                                alquiler.crearAlquiler(Reserva.getListaReservas(), reservante,sedePersonal);
                             }
                             else{
                                 System.out.println("No fue posible hallar al cliente");
                             }
                         }
-                        else if(opcion_empleadoA==2){}
+                        else if(opcion_empleadoA==2){
+                            int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
+                            Cliente reservante=Usuario.assignCliente(cedulaCliente);
+                            if(reservante!=null){
+                                alquiler.completarAlquiler(reservante,sedePersonal);
+                            }
+                            else{
+                                System.out.println("No fue posible hallar al cliente");
+                            }
+
+                        }
                         else if(opcion_empleadoA==3){
                             int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
                             Cliente reservante=Usuario.assignCliente(cedulaCliente);
@@ -174,9 +186,18 @@ public class Consola {
                                 System.out.println("No fue posible hallar al cliente");
                             }
                         }
-                        else if(opcion_empleadoA==4){}
-                        else if(opcion_empleadoA==5){}
-                        else if(opcion_empleadoA==6){continuarPersonal1=false;}
+
+                        else if(opcion_empleadoA==4){
+                            int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
+                            Cliente reservante=Usuario.assignCliente(cedulaCliente);
+                            if(reservante!=null){
+                                Reserva.modificarReserva(reservante);
+                            }
+                            else{
+                                System.out.println("No fue posible hallar al cliente");
+                            }
+                        }
+                        else if(opcion_empleadoA==5){continuarPersonal1=false;}
                         else{System.out.println("Por favor seleccione una opción válida.");}
                     } catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}
                     }
@@ -198,13 +219,16 @@ public class Consola {
                                 System.out.println("1. Lavado");
                                 System.out.println("2. Mantenimiento");
                                 int opcion_empleadoT2 = Integer.parseInt(input("Por favor seleccione una opción"));
-                                if(opcion_empleadoT2==1){String descripcion = "En Lavado";
-                                    Evento.crearEvento(descripcion, placa);
+                                Vehiculo vehiculo=Inventario.assignVehiculo(placa);
+                                if (vehiculo!=null){
+                                if(opcion_empleadoT2==1){String descripcion = "EnLimpieza";
+                                    Evento.crearEvento(descripcion, vehiculo);
                                 }
-                                else if(opcion_empleadoT2==2){String descripcion = "En Mantenimiento";
-                                    Evento.crearEvento(descripcion, placa);
+                                else if(opcion_empleadoT2==2){String descripcion = "EnMantenimiento";
+                                    Evento.crearEvento(descripcion, vehiculo);
                                 }
                                 else{System.out.println("\n>Por favor seleccione una opción válida.");}
+                            }
                                
                             }
                             else if(opcion_empleadoT==2){continuarPersonal2=false;}

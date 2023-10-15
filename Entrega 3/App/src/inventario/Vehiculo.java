@@ -75,7 +75,7 @@ public class Vehiculo {
         int fechaFinal=Integer.parseInt((LocalDate.now()).plusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         LocalTime horaActual = LocalTime.now();
         int horaEnFormatoHHMM = horaActual.getHour() * 100 + horaActual.getMinute();
-        if (this.actualizarEstado(fechaActual, horaEnFormatoHHMM, fechaFinal, horaEnFormatoHHMM)=="Disponible"){
+        if (this.actualizarEstado(fechaActual, horaEnFormatoHHMM, fechaFinal, horaEnFormatoHHMM).equals("Disponible")){
         Evento nuevoEvento= new Evento(fechaActual, fechaFinal, horaEnFormatoHHMM, horaEnFormatoHHMM, "EnTraslado");
         this.addEvento(nuevoEvento);
         Inventario.getListaEventos().add(nuevoEvento);

@@ -82,7 +82,7 @@ public class Evento {
         this.descripcion = descripcion;
     }
 
-    public static void crearEvento(String descripcion, String placa) {
+    public static void crearEvento(String descripcion, Vehiculo vehiculo) {
         System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
         try { 
             boolean continuar=true;
@@ -96,11 +96,7 @@ public class Evento {
                 int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
                 if(horaVinicio&&horaVfin&&finicio>=fechaActual){
                     Evento evento = new Evento(finicio, ffinal, hinicio, hfinal, descripcion);
-                    for (Vehiculo vehiculo : Inventario.getListaVehiculos()) {
-                        if (vehiculo.getPlaca().equals(placa)) {
-                            vehiculo.addEvento(evento);
-                        } else {System.out.println(">No se pudo encontrar el vehículo que buscas.");}
-                    }
+                    vehiculo.addEvento(evento);
                 } else {System.out.println(">Las horas ingresadas no son válidas. Por favor, inténtelo nuevamente.");}
             }
         }catch(NumberFormatException e){System.out.println("\n>Ingrese los datos requeridos en el formato especificado");}
