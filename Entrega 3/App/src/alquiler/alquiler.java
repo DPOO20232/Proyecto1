@@ -11,6 +11,7 @@ import inventario.Categoria;
 import inventario.Inventario;
 import inventario.Sede;
 import inventario.Seguro;
+import inventario.Vehiculo;
 import usuario.Conductor;
 import usuario.Licencia;
 
