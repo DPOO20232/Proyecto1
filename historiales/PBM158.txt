@@ -1,0 +1,27 @@
+Placa: PBM158
+Marca: chevrolet
+Modelo: aveo
+Color: gris
+Tipo de Transmisión: manual
+Ubicación GPS: No disponible :c
+Estado: disponible
+Averiado: false
+Sede: SedeChapinero
+Categoría: sedan_ECONOMICO
+Historial de Eventos:
+Fecha del inicio del evento: 20240321
+Fecha del fin del evento: 20240322
+Descripción: descripcion
+Historial de Alquileres:
+Pago Final: $1000000.0
+Conductores:
+
+- nombre
+Pagos Excedentes:
+- Detalle del pago excedente
+- Detalle del pago excedente
+
+Reservas Activas:
+Fecha para recoger el vehículo: 20200203
+Sede de recogida: SedeChapinero
+Categoría: sedan_ECONOMICO

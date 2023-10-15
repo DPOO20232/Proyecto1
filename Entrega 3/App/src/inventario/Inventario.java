@@ -1186,12 +1186,7 @@ public class Inventario {
                         writer.write("Historial de Eventos:");
                         writer.newLine();
                         for (Evento evento : historialEvento) {
-                            writer.write("Fecha del inicio del evento: " + evento.getFechaInicio());
-                            writer.newLine();
-                            writer.write("Fecha del fin del evento: " + evento.getFechaFin());
-                            writer.newLine();
-                            writer.write("Descripción: " + evento.getDescripcion());
-                            writer.newLine();                            
+                            writer.write("-> Fecha del inicio del evento: " + evento.getFechaInicio()+"Fecha del fin del evento: " + evento.getFechaFin()+"Descripción: " + evento.getDescripcion());             
                         }
                     } else {
                         writer.write("Este vehículo no cuenta con historial de Eventos:");
@@ -1214,7 +1209,7 @@ public class Inventario {
                             writer.write("Pagos Excedentes:");
                             writer.newLine();
                             for (PagoExcedente pagoExcedente : alquiler.getPagosExcedentes()) {
-                                writer.write("- Detalle del pago excedente");
+                                writer.write("- Detalle del pago excedente"+pagoExcedente.getMotivoPago()+" ");
                                 writer.newLine();
                             }
                             writer.newLine();

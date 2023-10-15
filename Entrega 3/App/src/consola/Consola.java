@@ -225,7 +225,7 @@ public class Consola {
 			}
 		}
     }
-    
+
 
     public static String input(String mensaje)
 	{
