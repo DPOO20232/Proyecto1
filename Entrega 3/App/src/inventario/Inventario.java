@@ -370,6 +370,7 @@ public class Inventario {
             Reserva reserva= i.getReserva();
             String IdReserva=Integer.toString(reserva.getID());
             List<Conductor> lstconductor=i.getConductores();
+            String activo=Boolean.toString(i.getActivo());
             StringBuilder conductores = new StringBuilder();
             conductores.append("[");
             for(Conductor x: lstconductor){
@@ -381,7 +382,11 @@ public class Inventario {
                 Licencia licencia=x.getLicencia();
                 conductores.append(Integer.toString(licencia.getNumeroLicencia()));
                 conductores.append("]");
+                conductores.append(",");
 
+            }
+            if (conductores.length()>=3){
+                conductores.setLength(conductores.length() - 1);
             }
             conductores.append("]");
             String conductor=conductores.toString();
@@ -406,10 +411,15 @@ public class Inventario {
                 pagosExcedentes.append("-");
                 pagosExcedentes.append(Double.toString(s.getValorPago()));
                 pagosExcedentes.append("]");
+                pagosExcedentes.append(",");
+            }
+            if (pagosExcedentes.length()>=3){
+                pagosExcedentes.setLength(pagosExcedentes.length() - 1);
             }
             pagosExcedentes.append("]");
             String pagoExcedente=pagosExcedentes.toString();
-            String resultado = String.format("%s;%s;%s;%s;%s;%s%n", idAlquiler, PagoFinal, IdReserva, conductor, seguro, pagoExcedente);
+
+            String resultado = String.format("%s;%s;%s;%s;%s;%s%n", idAlquiler, PagoFinal, IdReserva, conductor, seguro, pagoExcedente, activo);
             escritor.write(resultado);
 
 
@@ -743,7 +753,7 @@ public class Inventario {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
-            if (partes.length == 7) {
+            if (partes.length == 6) {
             //int idAlquiler= Integer.parseInt(partes[0]);
             double pagoFinal= Double.parseDouble(partes[1]);
             int id_reserva= Integer.parseInt(partes[2]);
