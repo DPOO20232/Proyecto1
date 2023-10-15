@@ -109,9 +109,10 @@ public class Reserva {
             vehiculoAsignado.addReservaActiva(this);
             this.setVehiculoAsignado(vehiculoAsignado);}
         else if((vehiculoAsignado!=null)&&(esUpgrade==true)){
+            System.out.println("\n\t>Accederás a un Upgrade de vehiculo sin costo adicional!\n");
             vehiculoAsignado.addReservaActiva(this);
             this.setVehiculoAsignado(vehiculoAsignado);
-            System.out.println("\n\t>Accederás a un Upgrade de vehiculo sin costo adicional!\n");}
+            }
         else{System.out.println("\n\t>No se encontraron vehículos disponibles para la categoría dada en el rango de fechas dado.");}
     }
     public void setPagoReserva(int pago) {
@@ -177,6 +178,8 @@ public class Reserva {
                 while(continuar3){
                 Tarjeta tarjeta_act= cliente.getTarjeta();
                 if (tarjeta_act.checkVencimientoTarjeta( fentregar % 100, (fentregar / 100) % 100,fentregar / 10000)==false){
+                boolean continuar4=true;
+                while(continuar4){
                 System.out.println("\nLista de Categorías de Vehículos Disponibles:\n");
                 List<Categoria> categorias = Inventario.getListaCategorias();
                 for (int i = 0; i < categorias.size(); i++) {
@@ -186,8 +189,7 @@ public class Reserva {
                     System.out.println("   - Capacidad: " + i_categoria.getCapacidad() + " personas");
                 }
                 int categoriaElegidaIndex = Integer.parseInt(input("Seleccione una categoría (ingrese el número)"));
-                boolean continuar4=true;
-                while(continuar4){
+
                 if (categoriaElegidaIndex>=1 && categoriaElegidaIndex<=(categorias.size())){
                     Categoria categoriaElegida = categorias.get(categoriaElegidaIndex - 1);
                     Reserva reserva_u = new Reserva(frecoger, fentregar, hrecoger, hentregar, reservaEnSede, sedeRecoger, sedeEntrega, categoriaElegida, cliente);
@@ -215,12 +217,12 @@ public class Reserva {
                             int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
                             if(opcion>1){continuar2=false;
                                 continuar=false;}}
-                    }}else{System.out.println(">No se encontraron vehículos disponibles para la categoría dada en el rango de fechas requerido.");
+                    }}else{
                         continuar4=false;
                         continuar3=false;
                         continuar2=false;
                         continuar=false;}
-                }else{System.out.println(">Elija una categoría de las opciones mostradas.");}
+                }else{System.out.println("\n>Elija una categoría de las opciones mostradas.");}
             }} 
             else{ System.out.println("\n>Su tarjeta caducará/caducó, desea actualizar su método de pago?(En caso de no actualizarla se cancelará el proceso de reserva)");
                 System.out.println("1.Sí");
@@ -414,7 +416,7 @@ public class Reserva {
         System.out.println("\n>Considerando el pago de reserva inicial +(COP"+Double.toString(pagoReservaInicial)+"). Se debitarán COP"+Double.toString(debito)+".");
         }
         else{
-        System.out.println("\n>Considerando el pago de reserva inicial +(COP"+Double.toString(pagoReservaInicial)+"). Se le devolverán  COP"+Double.toString(-debito)+".");
+        System.out.println("\n>Considerando el pago de reserva inicial +(COP"+Double.toString(pagoReservaInicial)+"). Se le devolverán  COP"+Double.toString(Math.abs(debito))+".");
         }
         continuar2=false;
         }
@@ -509,10 +511,14 @@ public class Reserva {
             int f1= i_reserva.getFechaRecoger();
             int f2=i_reserva.getFechaEntregar();
             String categoria=i_reserva.getCategoria().getnombreCategoria();
+            Sede sedeRecoger= i_reserva.getSedeRecoger();
+            Sede sedeDevolver=i_reserva.getSedeEntregar();
             String fecha1 = String.format("%02d/%02d/%04d",f1 % 100,(f1/ 100) % 100, f1/ 10000);
             String fecha2 = String.format("%02d/%02d/%04d",f2 % 100,(f2/ 100) % 100, f2/ 10000);
-            System.out.println(" Tipo de vehículo reservado: "+ categoria+ ". Fecha Inicio: " + fecha1+"-> Fecha Final: "+ fecha2);
-            System.out.println("------------------------------------------------------------------------------------------------------------");
+            System.out.println("    Tipo de vehículo reservado: "+ categoria+ ". Fecha Inicio: " + fecha1+"-> Fecha Final: "+ fecha2);
+            System.out.println("    Sede de recogida del vehículo: "+ sedeRecoger.getNombre()+" ("+sedeRecoger.getUbicacion()+")"+ ". -> Sede de devolución del vehículon: "+ sedeDevolver.getNombre()+" ("+sedeDevolver.getUbicacion()+")");
+
+            System.out.println("------------------------------------------------------------------------------------------------------------------------");
             }}}
             if (inicio==false){ System.out.println("\n>No tienes reservas activas. ");}
             return idsReservas;

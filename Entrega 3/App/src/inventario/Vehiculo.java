@@ -103,7 +103,6 @@ public class Vehiculo {
                 break;
             }
         }}
-    //TODO cambias estaDisponible->actualizarEstado
     public String actualizarEstado(int fecha1, int hora1, int fecha2, int hora2){
         String retorno= "NoDisponible";
 

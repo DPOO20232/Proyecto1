@@ -350,6 +350,7 @@ public class Inventario {
         File archivo = new File("./data/eventos.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Evento> lsteventos=listaEventos;
+        List<String> lstrepetido= new ArrayList<String>();
         for(Evento i: lsteventos){
             String idEvento=Integer.toString(i.getID());
             String FechaInicio=Integer.toString(i.getFechaInicio());
@@ -358,7 +359,18 @@ public class Inventario {
             String FechaFin=Integer.toString(i.getFechaFin());
             String descripcion=i.getDescripcion();
             String resultado = String.format("%s;%s;%s;%s;%s;%s%n", idEvento, FechaInicio, FechaFin, HoraInicio, HoraFin, descripcion);
-            escritor.write(resultado);
+            boolean repetido=false;
+            for (String j: lstrepetido){
+                if (j.equals(resultado)){
+                    repetido=true;
+                    break;
+                }
+            }
+            if (repetido==false){
+                escritor.write(resultado);
+                lstrepetido.add(resultado);
+
+            }
         }
         escritor.close();
     }
