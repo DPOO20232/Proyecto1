@@ -2,11 +2,14 @@ package alquiler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import inventario.Categoria;
 import inventario.Inventario;
+import inventario.Sede;
 import inventario.Seguro;
 import inventario.Vehiculo;
 import usuario.Conductor;
@@ -155,6 +158,41 @@ public class alquiler{
         return costo_T;
     }
 
+    public Double setPagoFinal(Sede sedeActual){
+        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        double pago30=this.reserva.getPagoReserva();
+        double pago70=this.setPagoAlquiler();
+        this.reserva.setFechaEntregar(fechaActual);
+        double sPago30= this.reserva.getPagoReserva();
+        double sPago70=this.setPagoAlquiler();
+        double saldoFinal=(sPago30+sPago70)-(pago30+pago70);
+        System.out.println("¿El vehiculo tiene algun tipo de daño?");
+        System.out.println("1. Averia leve");
+        System.out.println("2. Averia moderada");
+        System.out.println("3. Averia total");
+        System.out.println("4. No");
+        Categoria categoria=this.reserva.getCategoria();
+        int opcion = Integer.parseInt(input("Por favor seleccione una opción")); 
+        if (opcion==1){
+            saldoFinal+=categoria.getCostoAveriaLeve();
+        }
+        if (opcion==2){
+            saldoFinal+=categoria.getCostoAveriaModerada();
+        }
+        if (opcion==3){
+            saldoFinal+=categoria.getCostoAveriaTotal();
+        }
+        int idsedeAntigua=this.reserva.getSedeEntregar().getID();
+        int idSedeActual=sedeActual.getID();
+        if (idSedeActual!=idsedeAntigua){
+            saldoFinal+=Inventario.getCostoPorTrasladoSedes();
+            Vehiculo vehiculo =this.reserva.getVehiculoAsignado();
+            vehiculo.setTrasladoASede(sedeActual);
+        }
+      
+
+        return saldoFinal;
+    }
 
 
     public static void crearAlquiler(List<Reserva>reservas){
