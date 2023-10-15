@@ -5,14 +5,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import inventario.Categoria;
 import inventario.Inventario;
 import inventario.Seguro;
-import inventario.Vehiculo;
 import usuario.Conductor;
 import usuario.Licencia;
-import usuario.Cliente;
-import inventario.Inventario;
 
 public class alquiler{
     private int idAlquiler;
@@ -108,11 +104,10 @@ public class alquiler{
                     }
                     
                 }
-                else if(opcion==2){continuarPersonal1 = false;
-                }
-            }
-        }
-    }
+                else if(opcion==2){continuarPersonal1 = false;}
+            
+        
+    }catch (NumberFormatException e){System.out.println("\n>Ingrese los valores requeridos en el formato solicitado");}}}
 
     public void agregarSeguros (){
         boolean continuar = true;
