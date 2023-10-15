@@ -1197,7 +1197,7 @@ public class Inventario {
                         writer.write("Historial de Alquileres:");
                         writer.newLine();
                         for (alquiler alquiler : historialAlquiler) {
-                            writer.write("Pago Final: $" + alquiler.getPagoFinal());
+                            writer.write("Pago Final: COP" + alquiler.getPagoFinal());
                             writer.newLine();
                             writer.write("Conductores:");
                             writer.newLine();

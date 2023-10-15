@@ -2,6 +2,8 @@ package alquiler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,9 +65,6 @@ public class alquiler{
     }
     public void addPagoExcedente(PagoExcedente pago){
         this.pagosExcedentes.add(pago);
-    }
-    public String crearReciboAlquiler(){
-        return "Recibo creado correctamente";
     }
     public static void addAlquiler(alquiler alquiler){
         if (listaAlquileres==null){ listaAlquileres= new ArrayList<alquiler>();}
@@ -154,7 +153,10 @@ public class alquiler{
 
     public static void crearAlquiler(List<Reserva>reservas){
         System.out.println("Reserva/s activa/s del cliente: ");
+        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+
         for(Reserva i: reservas){
+            if(i.getFechaRecoger()==fechaActual){
             int idreseva = i.getID();
             String categoria = i.getCategoria().getnombreCategoria();
             int fechaRecoger = i.getFechaRecoger();
@@ -172,6 +174,7 @@ public class alquiler{
             System.out.println("Sede de devolución: " + sedeEntrega);
             System.out.println("Pago Realizado por la reserva: " + pago);
         }
+        }
 
         int id = Integer.parseInt(input("Por favor ingrese el ID de la reserva que desee utilizar: "));
         Reserva reserva = Reserva.assignReserva(id);
@@ -180,7 +183,8 @@ public class alquiler{
             alquiler alquiler = new alquiler(reserva);
             alquiler.agregarConductores();
             alquiler.agregarSeguros();
-            System.out.println("El valor a pagar es de " + alquiler.setPagoAlquiler()); 
+            long ultimos_digitos=(reserva.getCliente().getTarjeta().getNumeroTarjeta()% 10000);
+            System.out.println("Se debitaron COP " + alquiler.setPagoAlquiler()+ "de su tarjeta terminada en "+ Long.toString(ultimos_digitos)); 
             addAlquiler(alquiler);
                          
             }

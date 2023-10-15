@@ -38,47 +38,49 @@ public class Consola {
                 while (continuarAdmin==true){
                 System.out.println("\nOpciones de la aplicación\n");
                 //ESTOS METODOS HAY QUE PASARLOS A ADMIN
-                System.out.println("1. Crear categoría");
-                System.out.println("2. Añadir vehículo al inventario");
-                System.out.println("3. Eliminar vehículo al inventario");
-                System.out.println("4. Obtener historial de un vehículo");
-                System.out.println("5. Cambiar sede de un vehículo (traslado interno)");
-                System.out.println("6. Crear un seguro");
-                System.out.println("7. Modificar informacion de un seguro");
-                System.out.println("8. Eliminar seguro");
-                System.out.println("9. Registrar una nueva sede");
-                System.out.println("10. Modificar informacion de una sede");
-                System.out.println("11. Registrar un administrador local");
-                System.out.println("12. Actualizar información de  un administrador local");
-                System.out.println("13. Actualizar costo por conductor adicional");
-                System.out.println("14. Actualizar costo por traslado de sedes para un alquiler");
-                System.out.println("15. Actualizar periodo de temporada alta");
-                System.out.println("16. Actualizar periodo de temporada baja");
-                System.out.println("17. Cerrar sesión\n");
+                System.out.println("1. Monitorear un vehículo");
+                System.out.println("2. Crear categoría");
+                System.out.println("3. Añadir vehículo al inventario");
+                System.out.println("4. Eliminar vehículo al inventario");
+                System.out.println("5. Obtener historial de un vehículo");
+                System.out.println("6. Cambiar sede de un vehículo (traslado interno)");
+                System.out.println("7. Crear un seguro");
+                System.out.println("8. Modificar informacion de un seguro");
+                System.out.println("9. Eliminar seguro");
+                System.out.println("10. Registrar una nueva sede");
+                System.out.println("11. Modificar informacion de una sede");
+                System.out.println("12. Registrar un administrador local");
+                System.out.println("13. Actualizar información de  un administrador local");
+                System.out.println("14. Actualizar costo por conductor adicional");
+                System.out.println("15. Actualizar costo por traslado de sedes para un alquiler");
+                System.out.println("16. Actualizar periodo de temporada alta");
+                System.out.println("17. Actualizar periodo de temporada baja");
+                System.out.println("18. Cerrar sesión\n");
                 int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
                 try{
-                if (opcion_admin==1){Inventario.crearCategoria();}
-                else if(opcion_admin==2){Inventario.crearVehiculo();}
-                else if(opcion_admin==3){Inventario.eliminarVehiculo();}
-                else if(opcion_admin==4){
+                if (opcion_admin==1){}
+                if (opcion_admin==2){Inventario.crearCategoria();}
+                else if(opcion_admin==3){Inventario.crearVehiculo();}
+                else if(opcion_admin==4){Inventario.eliminarVehiculo();}
+                else if(opcion_admin==5){
                     String placa = input("Ingrese la placa del vehículo que desee consultar");
                     Inventario.obtenerHistorial(placa);
                 }
-                else if(opcion_admin==5){
+                else if(opcion_admin==6){
                     //TODO
                 }
-                else if(opcion_admin==6){Inventario.nuevoSeguro();}
-                else if(opcion_admin==7){Inventario.editarSeguro();}
-                else if(opcion_admin==8){Inventario.eliminarSeguro();}
-                else if(opcion_admin==9){Inventario.nuevaSede();}
-                else if(opcion_admin==10){Inventario.editarSede();}
-                else if(opcion_admin==11){Inventario.registrarAdminLocal();}
-                else if(opcion_admin==12){Inventario.actualizarAdminLocal();}
-                else if(opcion_admin==13){Inventario.setCostoPorConductorAdicional();}
-                else if(opcion_admin==14){Inventario.setCostoPorTrasladoSedes();}
-                else if(opcion_admin==15){Inventario.setPeriodoTemporadaAlta();}
-                else if(opcion_admin==16){Inventario.setPeriodoTemporadaBaja();}
-                else if(opcion_admin==17){continuarAdmin=false;}
+                else if(opcion_admin==7){Inventario.nuevoSeguro();}
+                else if(opcion_admin==8){Inventario.editarSeguro();}
+                else if(opcion_admin==9){Inventario.eliminarSeguro();}
+                else if(opcion_admin==10){Inventario.nuevaSede();}
+                else if(opcion_admin==11){Inventario.editarSede();}
+                else if(opcion_admin==12){Inventario.registrarAdminLocal();}
+                else if(opcion_admin==13){Inventario.actualizarAdminLocal();}
+                else if(opcion_admin==14){Inventario.setCostoPorConductorAdicional();}
+                else if(opcion_admin==15){Inventario.setCostoPorTrasladoSedes();}
+                else if(opcion_admin==16){Inventario.setPeriodoTemporadaAlta();}
+                else if(opcion_admin==17){Inventario.setPeriodoTemporadaBaja();}
+                else if(opcion_admin==18){continuarAdmin=false;}
                 else{System.out.println("Por favor seleccione una opción válida.");}
                 }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
             //MENU ADMIN LOCAL

@@ -184,7 +184,7 @@ public class Reserva {
                 for (int i = 0; i < categorias.size(); i++) {
                     Categoria i_categoria=categorias.get(i);
                     System.out.println((i + 1) + ". " + i_categoria.getnombreCategoria());
-                    System.out.println("   - Costo Diario: $" + i_categoria.getTarifaDiaria());
+                    System.out.println("   - Costo Diario: COP" + i_categoria.getTarifaDiaria());
                     System.out.println("   - Capacidad: " + i_categoria.getCapacidad() + " personas");
                 }
                 int categoriaElegidaIndex = Integer.parseInt(input("Seleccione una categoría (ingrese el número)"));
@@ -202,7 +202,7 @@ public class Reserva {
                         int numTarjeta = Integer.parseInt(input("Para debitar el 30% del alquiler de su cuenta, por favor ingrese los últimos 4 dígitos de la tarjeta que tiene registrada"));
                         if (numTarjeta== (cliente.getTarjeta().getNumeroTarjeta())%10000){
                         reserva_u.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar );
-                        System.out.println(">Se debitaron $"+ Double.toString(reserva_u.getPagoReserva())+".");
+                        System.out.println(">Se debitaron COP"+ Double.toString(reserva_u.getPagoReserva())+".");
                         System.out.println(">Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_u.getID()));
                                 continuar5=false;
                                 continuar4=false;
@@ -274,7 +274,7 @@ public class Reserva {
         getListaReservas().remove(reservaElejida);
         Vehiculo vehiculoReservaElejida= reservaElejida.getVehiculoAsignado();
         vehiculoReservaElejida.eliminarReservaActiva(reservaElejida.getID());
-        System.out.println("\n> La reserva ha sido cancelada, pronto se trasferirá de vuelta el pago del 30% ($ "+Double.toString(reservaElejida.getPagoReserva())+").");
+        System.out.println("\n> La reserva ha sido cancelada, pronto se trasferirá de vuelta el pago del 30% (COP "+Double.toString(reservaElejida.getPagoReserva())+").");
     }}
         
     
@@ -399,7 +399,7 @@ public class Reserva {
             for (int i = 0; i < categorias.size(); i++) {
                 Categoria i_categoria=categorias.get(i);
                 System.out.println((i + 1) + ". " + i_categoria.getnombreCategoria());
-                System.out.println("   - Costo Diario: $" + i_categoria.getTarifaDiaria());
+                System.out.println("   - Costo Diario: COP" + i_categoria.getTarifaDiaria());
                 System.out.println("   - Capacidad: " + i_categoria.getCapacidad() + " personas");
             }
             int categoriaElegidaIndex = Integer.parseInt(input("Seleccione una categoría (ingrese el número)"));
@@ -439,10 +439,10 @@ public class Reserva {
         double newPago=reservaPorModificar.getPagoReserva();
         double debito= newPago-pagoReservaInicial;
         if(debito>0){
-        System.out.println("\n>Considerando el pago de reserva inicial +($"+Double.toString(pagoReservaInicial)+"). Se debitarán $"+Double.toString(debito)+".");
+        System.out.println("\n>Considerando el pago de reserva inicial +(COP"+Double.toString(pagoReservaInicial)+"). Se debitarán COP"+Double.toString(debito)+".");
         }
         else{
-        System.out.println("\n>Considerando el pago de reserva inicial +($"+Double.toString(pagoReservaInicial)+"). Se le devolverán  $"+Double.toString(-debito)+".");
+        System.out.println("\n>Considerando el pago de reserva inicial +(COP"+Double.toString(pagoReservaInicial)+"). Se le devolverán  COP"+Double.toString(-debito)+".");
         }
         continuar2=false;
         }
