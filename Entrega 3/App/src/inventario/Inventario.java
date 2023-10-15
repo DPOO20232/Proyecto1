@@ -753,7 +753,7 @@ public class Inventario {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
-            if (partes.length == 6) {
+            if (partes.length == 7) {
             //int idAlquiler= Integer.parseInt(partes[0]);
             double pagoFinal= Double.parseDouble(partes[1]);
             int id_reserva= Integer.parseInt(partes[2]);
