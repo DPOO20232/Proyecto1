@@ -34,9 +34,9 @@ public class Cliente extends Usuario{
             String nombre = input("Por favor ingrese su nombre completo");
             String correo = input("Por favor ingrese su correo electrónico");
             long telefono = Long.parseLong(input("Por favor ingrese su número de teléfono celular"));
-            int anacimiento = Integer.parseInt(input("Por favor ingrese su año de nacimiento"));
-            int mnacimiento = Integer.parseInt(input("Por favor ingrese su mes de nacimiento"));
-            int dnacimiento = Integer.parseInt(input("Por favor ingrese su día de nacimiento"));
+            int anacimiento = Integer.parseInt(input("Por favor ingrese el número de su año de nacimiento"));
+            int mnacimiento = Integer.parseInt(input("Por favor ingrese el número de su mes de nacimiento"));
+            int dnacimiento = Integer.parseInt(input("Por favor ingrese el número de su día de nacimiento"));
             String nacionalidad = input("Por favor ingrese su pais de nacionalidad").toUpperCase();
             int fnacimiento = anacimiento*10000 + mnacimiento*100 + dnacimiento;
             //ddmmaaaa
@@ -62,14 +62,18 @@ public class Cliente extends Usuario{
                     Usuario.addNombreLogin(login);
                     Usuario.addNumCedulas(cedula);
                     Usuario.addCliente(cliente);
-                    Usuario.addLicencia(licencia);
                     System.out.println("\n>Su cuenta se registró con éxito!\n");
 
                     continuar=false;
                     }
-                    else{continuar=false;}                    
+                    else{
+                        System.out.println("\n>Se cancela la creación de cuenta dado que es necesario ingresar un método de pago válido\n");
+
+                        continuar=false;}                    
                 }
-                    else{continuar=false;}
+                    else{
+                        System.out.println("\n>Se cancela la creación de cuenta dado que es necesario ingresar una licencia válida\n");
+                        continuar=false;}
                 }
                 else{System.out.println("\n>El nombre de usuario ya ha sido utilizado. Por favor, elija otro.");}
                 }}}
