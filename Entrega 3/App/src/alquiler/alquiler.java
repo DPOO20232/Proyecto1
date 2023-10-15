@@ -1,5 +1,9 @@
 package alquiler;
 import java.util.ArrayList;
+import java.util.List;
+
+import inventario.Categoria;
+import inventario.Inventario;
 import inventario.Seguro;
 import inventario.Vehiculo;
 import usuario.Conductor;
@@ -24,6 +28,7 @@ public class alquiler{
         this.seguros= new ArrayList<Seguro>();
         this.pagosExcedentes= new ArrayList<PagoExcedente>();
     }
+
     public int getID(){
         return this.idAlquiler;
     }
@@ -77,16 +82,15 @@ public class alquiler{
         return retorno;
     }
 
-    public agregarConductores(Cliente cliente){
-        conductores= new ArrayList<Conductor>();
+    public void agregarConductores(Cliente cliente) {
         String nombre1 = cliente.getNombre();
         int cedula1 = cliente.getNumeroCedula();
         Licencia licencia1 = cliente.getLicencia();
-        Conductor conductor1 = new Conductor(nombre1, cedula1, licencia1)
-        conductores.add(conductor1);
+        Conductor conductor1 = new Conductor(nombre1, cedula1, licencia1);
+        addConductor(conductor1);
         System.out.println("Conductor Registrado: " + nombre1);
         System.out.println("Número de Licencia: " + licencia1.getNumeroLicencia());
-        continuarPersonal1 = true
+        boolean continuarPersonal1 = true;
         while (continuarPersonal1==true){
             System.out.println("¿Desea agregar un conductor adicional?");
             System.out.println("1. Sí");
@@ -96,20 +100,18 @@ public class alquiler{
                 if(opcion==1){
                     String nombre = input("Ingrese el nombre del conductor");
                     int cedula = Integer.parseInt(input("Por favor ingrese el número de cédula del conductor"));
-                    //Licencia licencia = Cliente.setLicencia(); TODO
-                    Conductor conductor = new Conductor(nombre, cedula, licencia)
-                    conductores.add(conductor);
+                    Licencia licencia = Licencia.crearLicencia(); 
+                    Conductor conductor = new Conductor(nombre, cedula, licencia);
+                    addConductor(conductor);
                     System.out.println("Conductor Registrado: " + nombre);
-                    System.out.println("Número de Licencia: " + licencia);
+                    System.out.println("Número de Licencia: " + licencia.getNumeroLicencia());
                 }
-                else if(opcion==2){continuarPersonal1 = false}
+                else if(opcion==2){continuarPersonal1 = false;}
             }
         }
-        return conductores
     }
 
-    public List<Seguro> segurosdeAlquiler (){
-        List<Seguro> seguros = new ArrayList<>();
+    public void segurosdeAlquiler (){
         boolean continuar = true;
         for(Seguro i: Inventario.getListaSeguros()){
             System.out.println("ID del seguro: " + i.getID());
@@ -125,49 +127,112 @@ public class alquiler{
                 try{
                     int idseguro = Integer.parseInt(input("Ingrese el ID del seguro que desee añadir"));
                     Seguro seguro = Inventario.assignSeguro(idseguro);
-                    seguros.add(seguro)
+                    addSeguro(seguro);
                     System.out.println("Seguro agregado al alquiler.");
                 } catch(NumberFormatException e){System.out.println("ID de seguro no válido. Intente nuevamente.");}
             }
             else if(opcion==2) {boolean continuar = false;}
             else {System.out.println("Por favor seleccione una opción válida.");}
         }
-        return seguros
     }
 
-    
-
-
-
-    public static crearAlquiler(List<Reserva>reservas){
-        if (!reservas.isEmpty()){
-            System.out.println("Reserva/s activa/s del cliente: ");
-            for(Reserva i: reservas){
-                //id,categoria,fechae,horae,sedeentregar,precio
-                int idreseva = i.getID();
-                String categoria = i.getCategoria().getnombreCategoria();
-                int fechaRecoger = i.getFechaRecoger();
-                int fechaEntregar = i.getFechaEntregar();
-                int horaRecoger = i.getHoraRecoger();
-                int horaEntregar = i.getHoraEntregar();
-                String sedeEntrega = i.getSedeEntregar().getNombre();
-                String sedeRecoger = i.getSedeRecoger().getNombre();
-                double pago = i.getPagoReserva();
-                System.out.println("ID de la reserva: " + idreseva);
-                System.out.println("Categoría: " + categoria);
-                System.out.println("Fecha y Hora de entrega: " + fechaRecoger + ", " + horaRecoger);
-                System.out.println("Fecha y Hora de devolución: "+ fechaEntregar + ", " + horaEntregar);
-                System.out.println("Sede de entrega: " + sedeRecoger) ;
-                System.out.println("Sede de devolución: " + sedeEntrega);
-                System.out.println("Pago Realizado por la reserva: " + pago);
-            }
-
-            int id = Integer.parseInt(input("Por favor ingrese el ID de la reserva que desee utilizar: "));
-
-
-            alquiler alquiler = new alquiler(reserva);
-    
+    public Double setPagoAlquiler(){
+        double pagoReserva=this.reserva.getPagoReserva();
+        double costo70=(pagoReserva*7/3);
+        double costo100=costo70+pagoReserva;
+        int conductores=this.getConductores().size();
+        int costo_conductores=(Inventario.getCostoPorConductorAdicional())*conductores;
+        List<Seguro>lstseguro=seguros;
+        int costo_seguros=0;
+        for(Seguro i: lstseguro){
+            double costoT=(i.getPctg_TarifaDiaria())*costo100;
+            costo_seguros+=costoT;
         }
+
+        Double costo_T=costo70+costo_conductores+costo_seguros;
+        return costo_T;
+    }
+
+
+
+    public static void crearAlquiler(List<Reserva>reservas){
+        System.out.println("Reserva/s activa/s del cliente: ");
+        for(Reserva i: reservas){
+            int idreseva = i.getID();
+            String categoria = i.getCategoria().getnombreCategoria();
+            int fechaRecoger = i.getFechaRecoger();
+            int fechaEntregar = i.getFechaEntregar();
+            int horaRecoger = i.getHoraRecoger();
+            int horaEntregar = i.getHoraEntregar();
+            String sedeEntrega = i.getSedeEntregar().getNombre();
+            String sedeRecoger = i.getSedeRecoger().getNombre();
+            double pago = i.getPagoReserva();
+            System.out.println("ID de la reserva: " + idreseva);
+            System.out.println("Categoría: " + categoria);
+            System.out.println("Fecha y Hora de entrega: " + fechaRecoger + ", " + horaRecoger);
+            System.out.println("Fecha y Hora de devolución: "+ fechaEntregar + ", " + horaEntregar);
+            System.out.println("Sede de entrega: " + sedeRecoger) ;
+            System.out.println("Sede de devolución: " + sedeEntrega);
+            System.out.println("Pago Realizado por la reserva: " + pago);
+        }
+
+        int id = Integer.parseInt(input("Por favor ingrese el ID de la reserva que desee utilizar: "));
+        reserva = Reserva.assignReserva(id);
+
+        if (reserva != null) {
+            alquiler alquiler = new alquiler(reserva);
+            Cliente cliente = reserva.getCliente();
+            alquiler.agregarConductores(cliente);
+            alquiler.segurosdeAlquiler();
+            alquiler.setPagoFinal(alquiler.setPagoAlquiler());
+            public static void crearAlquiler(List<Reserva>reservas){
+                System.out.println("Reserva/s activa/s del cliente: ");
+                for(Reserva i: reservas){
+                    int idreseva = i.getID();
+                    String categoria = i.getCategoria().getnombreCategoria();
+                    int fechaRecoger = i.getFechaRecoger();
+                    int fechaEntregar = i.getFechaEntregar();
+                    int horaRecoger = i.getHoraRecoger();
+                    int horaEntregar = i.getHoraEntregar();
+                    String sedeEntrega = i.getSedeEntregar().getNombre();
+                    String sedeRecoger = i.getSedeRecoger().getNombre();
+                    double pago = i.getPagoReserva();
+                    System.out.println("ID de la reserva: " + idreseva);
+                    System.out.println("Categoría: " + categoria);
+                    System.out.println("Fecha y Hora de entrega: " + fechaRecoger + ", " + horaRecoger);
+                    System.out.println("Fecha y Hora de devolución: "+ fechaEntregar + ", " + horaEntregar);
+                    System.out.println("Sede de entrega: " + sedeRecoger) ;
+                    System.out.println("Sede de devolución: " + sedeEntrega);
+                    System.out.println("Pago Realizado por la reserva: " + pago);
+                }
+        
+                int id = Integer.parseInt(input("Por favor ingrese el ID de la reserva que desee utilizar: "));
+                reserva = Reserva.assignReserva(id);
+                alquiler alquiler = new alquiler(reserva);
+                cliente = reserva.getCliente();
+                alquiler.agregarConductores(cliente);
+                alquiler.segurosdeAlquiler();
+                alquiler.setPagoFinal(alquiler.setPagoAlquiler());
+                System.out.println("El valor a pagar es de " + alquiler.setPagoAlquiler()) 
+                addAlquiler(alquiler)
+                         
+            }
+            addAlquiler(alquiler)
+            System.out.println("El alquiler se ha realizado correctamente")
+        } else {System.out.println("Reserva no encontrada. Por favor, ingrese un ID válido.")}
+    }
+
+    public static String input(String mensaje) {
+		try {
+			System.out.print(mensaje + ": ");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+			return reader.readLine();
+		}
+		catch (IOException e) {
+			System.out.println("Error leyendo de la consola");
+			e.printStackTrace();
+		}
+		return null;
     }
 
 }
