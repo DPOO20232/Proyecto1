@@ -25,7 +25,7 @@ public class Cliente extends Usuario{
         this.mail = mail;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
-        this.nacionalidad = nacionalidad;
+        this.nacionalidad = nacionalidad.toUpperCase();
     }
 
     public static void nuevoCliente(){
@@ -40,7 +40,7 @@ public class Cliente extends Usuario{
             int mnacimiento = Integer.parseInt(input("Por favor ingrese su mes de nacimiento"));
             int dnacimiento = Integer.parseInt(input("Por favor ingrese su día de nacimiento"));
             String nacionalidad = input("Por favor ingrese su pais de nacionalidad").toUpperCase();
-            int fnacimiento = anacimiento + mnacimiento*10000 + dnacimiento*1000000;
+            int fnacimiento = anacimiento*10000 + mnacimiento*100 + dnacimiento;
             //ddmmaaaa
             boolean mayor = esMayorDeEdad(anacimiento, mnacimiento, dnacimiento);
             if (!mayor) {
@@ -64,7 +64,9 @@ public class Cliente extends Usuario{
                     Usuario.addNombreLogin(login);
                     Usuario.addNumCedulas(cedula);
                     Usuario.addCliente(cliente);
-                    Usuario.addLicencia(cliente.getLicencia());
+                    Usuario.addLicencia(licencia);
+                    System.out.println("\n>Su cuenta se registró con éxito!\n");
+
                     continuar=false;
                     }
                     else{continuar=false;}                    
@@ -80,7 +82,7 @@ public class Cliente extends Usuario{
                     int opcion = Integer.parseInt(input("Por favor seleccione una opción"));    
                     if (opcion==1){
                         Cliente cliente=Usuario.assignCliente(cedula);
-                        int fechaNac_u=Integer.parseInt(input("Ingrese su fecha de nacimiento en el formato ddmmaaaa para verificar que es usted"));
+                        int fechaNac_u=Integer.parseInt(input("Ingrese su fecha de nacimiento en el formato aaaammdd para verificar que es usted"));
                         if (cliente.getFechaNacimiento()==fechaNac_u){
                         String new_password=input("Ingrese una nueva contraseña");
                         cliente.setPassword(new_password);
@@ -207,6 +209,7 @@ public class Cliente extends Usuario{
             System.out.println("5. He terminado\n");
             int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
             try {
+                Licencia licenciaAnterior=this.getLicencia();
                 if(opcion_cliente==1){
                     String nuevoCorreo = input("Por favor ingrese su nuevo correo electrónico");
                     this.setMail(nuevoCorreo);
@@ -226,6 +229,7 @@ public class Cliente extends Usuario{
                 else if(opcion_cliente==5){continuarCliente=false;
                             System.out.println(">\nInformación actualizada.\n");}
                 else{System.out.println("Por favor seleccione una opción válida.");}
+                if (this.getLicencia()==null){this.setLicencia(licenciaAnterior);}
             } catch(NumberFormatException e){System.out.println("\n>Debe ingresar los datos requeridos en el formato adecuado para que la creación de la cuenta sea exitosa.");}
         }
     }

@@ -19,6 +19,8 @@ public class Consola {
     while (continuar){
         try
 			{
+            System.out.println("\n\t\t>>> Menú principal");    
+
 			System.out.println("1. Iniciar sesión");
 			System.out.println("2. Crear cuenta");
 			System.out.println("3. Salir de la aplicación\n");
@@ -55,13 +57,12 @@ public class Consola {
                 System.out.println("17. Cerrar sesión\n");
                 int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
                 try{
-                if (opcion_admin==1){Inventario.NuevaCategoria();}
-                else if(opcion_admin==2){Inventario.nuevoVehiculo();}
+                if (opcion_admin==1){Inventario.crearCategoria();}
+                else if(opcion_admin==2){Inventario.crearVehiculo();}
                 else if(opcion_admin==3){Inventario.eliminarVehiculo();}
                 else if(opcion_admin==4){
                     String placa = input("Ingrese la placa del vehículo que desee consultar");
-                    List<Vehiculo> lista = Inventario.getListaVehiculos();
-                    Inventario.obtenerHistorial(lista, placa);
+                    Inventario.obtenerHistorial(placa);
                 }
                 else if(opcion_admin==5){
                     //TODO
@@ -199,7 +200,7 @@ public class Consola {
                     if (opcion_cliente==2){cliente.actualizarCliente();}
                     else if(opcion_cliente==3){Reserva.crearReserva(cliente,false);}
                     else if(opcion_cliente==4){Reserva.modificarReserva(cliente);}
-                    else if(opcion_cliente==5){}
+                    else if(opcion_cliente==5){Reserva.eliminarReserva(cliente);}
                     else if(opcion_cliente==6){continuarCliente=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
                     }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}

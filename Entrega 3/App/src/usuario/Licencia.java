@@ -48,7 +48,7 @@ public class Licencia {
         if (Usuario.checkLicencia(numerolicencia)==false){
         int expedicion = Integer.parseInt(input("Por favor ingrese la fecha de expedición de su licencia(en formato aaaammdd)"));            
         int vencimiento = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su licencia(en formato aaaammdd)"));
-        String pais = input("Por favor ingrese el país de expedición de su licencia");
+        String pais = input("Por favor ingrese el país de expedición de su licencia").toUpperCase();
         Licencia licencia = new Licencia(numerolicencia, expedicion, vencimiento, pais);
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         if(Usuario.checkVencimientoLicencia(licencia,0,0,0)==false&& expedicion<=fechaActual){
