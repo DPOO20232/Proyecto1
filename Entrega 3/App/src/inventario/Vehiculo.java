@@ -269,5 +269,8 @@ public class Vehiculo {
         }
             System.out.println("Estado: "+estado+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".\n"+infoCliente);
 
-    }}
+    }
+            System.out.println("Error, intentelo de nuevo");
+
+    }
 }
