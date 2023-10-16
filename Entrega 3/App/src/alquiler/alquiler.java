@@ -217,7 +217,6 @@ public class alquiler{
         System.out.println("4. No");
         Categoria categoria=this.reserva.getCategoria();
         int opcion = Integer.parseInt(input("Por favor seleccione una opción")); 
-
         if (opcion==1){
             if (noPagaLeve==false){saldoFinal+=categoria.getCostoAveriaLeve();}
             if(trasladoAgendado==false){
@@ -380,6 +379,7 @@ public class alquiler{
             vehiculo.addAlquiler(alquiler);
             addAlquiler(alquiler);
             alquiler.setPagoFinal(pagoInicial);
+            alquiler.setActivo(true);
             }
             else{
             System.out.println("\n> Lastimosamente, el vehículo reservado actualmente se encuentra "+estadoActualVehiculo+", y no hay más vehiculos disponibles.");
@@ -393,18 +393,24 @@ public class alquiler{
 
     public static void completarAlquiler(Cliente cliente,Sede sedePersonal){
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-        int fechaActualmas1=Integer.parseInt((LocalDate.now()).plusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         LocalTime hora = LocalTime.now();
         int horaActual = hora.getHour() * 100 + hora.getMinute();
         alquiler alquiler_u=null;
+        System.out.println("Alquiler/es activo/s del cliente: ");
+
         for (alquiler i: getListaAlquileres()){
-            if (i.getReserva().getCliente().getNumeroCedula()==cliente.getNumeroCedula()&&i.activo==true){
-                alquiler_u=i;
+            if (i.getReserva().getCliente().getNumeroCedula()==cliente.getNumeroCedula()&&i.getActivo()==true){
+            int id = i.getID();
+            String placa = i.getReserva().getVehiculoAsignado().getPlaca();
+            int fechaRecoger = i.getReserva().getFechaRecoger();
+            int fechaEntregar = i.getReserva().getFechaEntregar();
+            System.out.println("ID de la reserva: " + id+". Placa vehículo: "+placa+".");
+            System.out.println("    Fecha de recogida: " +fechaRecoger+". Fecha de devolucion: "+fechaEntregar+".\n");
             }}
         //mostrar los alquileres que pueda completar usando el for anterior TODO
         int id = Integer.parseInt(input("Por favor ingrese el ID del alquiler que desee completar"));
         alquiler_u = assignAlquiler(id);
-        if(alquiler_u.getReserva().getCliente().getNumeroCedula()==cliente.getNumeroCedula()){
+        if(alquiler_u!=null && alquiler_u.getReserva().getCliente().getNumeroCedula()==cliente.getNumeroCedula() && alquiler_u.getActivo()==true){
         alquiler_u.activo=false;
         Reserva reserva= alquiler_u.getReserva();
         double pago70=alquiler_u.getPagoFinal();
