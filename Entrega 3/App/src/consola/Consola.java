@@ -130,7 +130,8 @@ public class Consola {
                 else if(opcion_admin==17){Inventario.setPeriodoTemporadaBaja();}
                 else if(opcion_admin==18){continuarAdmin=false;}
                 else{System.out.println("Por favor seleccione una opción válida.");}
-                }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
+                }
+                catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
             //MENU ADMIN LOCAL
             else if (personal.checkLoginPersonal(login, password)!=null){
                 perfil=(personal.checkLoginPersonal(login, password)).getTipoPersonal();
