@@ -233,6 +233,7 @@ public class Vehiculo {
         }}
 
     public void resumenStatus(){
+        boolean resumenHecho=false;
         System.out.println();
         String ubicacion="";
         String infoCliente="";
@@ -245,6 +246,7 @@ public class Vehiculo {
             ubicacion= this.getSede().getNombre();
             disponibilidad=LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
             System.out.println("Estado: "+estado+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".");
+            resumenHecho=true;
 
         }
         else if (estado.equals("EnLimpieza")||estado.equals("EnMantenimiento")){
@@ -256,6 +258,7 @@ public class Vehiculo {
                 }            
             }
             System.out.println("Estado: "+estado+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".");
+            resumenHecho=true;
         }
         else if(estado.equals("EnReserva")) {
             ubicacion=this.getUbicacionGPS();
@@ -267,9 +270,10 @@ public class Vehiculo {
             }
         }
             System.out.println("Estado: "+estado+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".\n"+infoCliente);
+            resumenHecho=true;
 
     }
-            System.out.println("Error, intentelo de nuevo");
+    if (resumenHecho==false){System.out.println("Error, intentelo de nuevo");}
 
     }
 }

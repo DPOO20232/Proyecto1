@@ -115,7 +115,7 @@ public class Reserva {
             }
         else{System.out.println("\n\t>No se encontraron vehículos disponibles para la categoría dada en el rango de fechas dado.");}
     }
-    public void setPagoReserva(int pago) {
+    public void setPagoReserva(double pago) {
         pagoReserva = pago;
     }
         public void setPagoReserva(int fecha1, int hora1, int fecha2, int hora2) {
@@ -202,7 +202,7 @@ public class Reserva {
                         int numTarjeta = Integer.parseInt(input("Para debitar el 30% del alquiler de su cuenta, por favor ingrese los últimos 4 dígitos de la tarjeta que tiene registrada"));
                         if (numTarjeta== (cliente.getTarjeta().getNumeroTarjeta())%10000){
                         reserva_u.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar );
-                        System.out.println(">Se debitaron COP"+ Double.toString(reserva_u.getPagoReserva())+".");
+                        System.out.println(">Se debitaron COP "+ Double.toString(reserva_u.getPagoReserva())+".");
                         System.out.println(">Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_u.getID()));
                                 continuar5=false;
                                 continuar4=false;
@@ -435,7 +435,7 @@ public class Reserva {
 
         }}}}
         else{
-        System.out.println("\n>No se encontró un vehículo disponible para las nuevas modificaciones, intente modificar la reserva con modificaciones disntintas.\n");
+        System.out.println("\n>No se encontró un vehículo disponible para las nuevas modificaciones, intente modificar la reserva con modificaciones distintas.\n");
             reservaPorModificar=new Reserva(copiaReserva.getID(),copiaReserva.getFechaRecoger(),copiaReserva.getFechaEntregar(),copiaReserva.getHoraRecoger(),copiaReserva.getHoraEntregar(),copiaReserva.getReservaEnSede(),copiaReserva.getSedeRecoger(),copiaReserva.getSedeEntregar(),copiaReserva.getCategoria(),copiaReserva.getCliente());;
             addReserva(reservaPorModificar);
             reservaPorModificar.setVehiculoAsignado(vehiculoActual);

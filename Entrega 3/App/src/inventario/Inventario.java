@@ -279,7 +279,8 @@ public class Inventario {
             String strid_categoria=Integer.toString(categoria.getID());
             Cliente cliente= i.getCliente();
             String strcedula_cliente= Integer.toString(cliente.getNumeroCedula());
-            String resultado = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s%n", stridReserva, strfechaRecoger, strfechaEntregar, strhoraRecoger, strhoraEntregar, strreservaEnSede, strid_sedeRecoger, strid_sedeEntregar, strid_categoria, strcedula_cliente);
+            String pagoReserva= Double.toString(i.getPagoReserva());
+            String resultado = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s%n", stridReserva, strfechaRecoger, strfechaEntregar, strhoraRecoger, strhoraEntregar, strreservaEnSede, strid_sedeRecoger, strid_sedeEntregar, strid_categoria, strcedula_cliente,pagoReserva);
             escritor.write(resultado);
         }
         escritor.close();
@@ -736,7 +737,7 @@ public class Inventario {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split(";");
-            if (partes.length == 10) {
+            if (partes.length == 11) {
             int idReserva= Integer.parseInt(partes[0]);
             int fechaRecoger= Integer.parseInt(partes[1]);
             int fechaEntregar=Integer.parseInt(partes[2]);
@@ -750,8 +751,10 @@ public class Inventario {
             int id_categoria=Integer.parseInt(partes[8]);
             Categoria categoria= Inventario.assignCategoria(id_categoria);
             int cedula_cliente= Integer.parseInt(partes[9]);
+            double pagoReserva=Double.parseDouble(partes[10]);
             Cliente cliente= Usuario.assignCliente(cedula_cliente);
             Reserva reservaActual= new Reserva(idReserva, fechaRecoger, fechaEntregar, horaRecoger, horaEntregar, reservaEnSede, sedeRecoger, sedeEntregar, categoria, cliente);
+            reservaActual.setPagoReserva(pagoReserva);
             Reserva.addReserva(reservaActual);
             contador+=1;
             }else{System.out.println("Formato incorrecto en la línea: " + linea);}
@@ -832,29 +835,33 @@ public class Inventario {
                     Sede sede= Inventario.assignSede(id_sede);
                     Vehiculo vehiculoActual= new Vehiculo(placa, marca, modelo, color, tipo_trasmicion, ubicacionGPS, estado, averiado,categoria,sede);
                     String stringIDsEventos=partes[9].substring(1, partes[9].length() - 1);
-                    String stringIDsAlquileres=partes[10].substring(1, partes[10].length() - 1);
-                    String stringIDsReservasActivas=partes[11].substring(1, partes[11].length() - 1);
+                    String stringIDsAlquileres=partes[11].substring(1, partes[11].length() - 1);
+                    String stringIDsReservasActivas=partes[10].substring(1, partes[10].length() - 1);
 
                     if (!stringIDsEventos.equals("")){
                     String [] listaIDsEventos=stringIDsEventos.split(",");
                     for (String i: listaIDsEventos){
-                        vehiculoActual.addEvento(Inventario.assignEvento(Integer.parseInt(i)));
-                        contadorEventos+=1;
+                        Evento i_evento= Inventario.assignEvento(Integer.parseInt(i));
+                        if (i_evento!=null){
+                        vehiculoActual.addEvento(i_evento);
+                        contadorEventos+=1;}
                         }}
                     if (!stringIDsAlquileres.equals("")){
                     String [] listaIDsAlquileres=stringIDsAlquileres.split(",");
                     for (String i: listaIDsAlquileres){
                         alquiler i_alquiler=  alquiler.assignAlquiler(Integer.parseInt(i));
+                        if (i_alquiler!=null){
                         vehiculoActual.addAlquiler(i_alquiler);                       
-                        contadorAlquileres+=1;
+                        contadorAlquileres+=1;}
                     }}
                     if (!stringIDsReservasActivas.equals("")){
                     String [] listaIDsReservasActivas=stringIDsReservasActivas.split(",");
                     for (String i: listaIDsReservasActivas){
                         Reserva i_Reserva=Reserva.assignReserva(Integer.parseInt(i));
+                        if (i_Reserva!=null){
                         vehiculoActual.addReservaActiva(i_Reserva);
                         i_Reserva.setVehiculoAsignado(vehiculoActual);
-                        contadorReservasActivas+=1;
+                        contadorReservasActivas+=1;}
                     }}
 
                     listaVehiculos.add(vehiculoActual);

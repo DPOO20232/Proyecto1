@@ -287,7 +287,7 @@ public class Consola {
             }
         }
 		catch (NumberFormatException e){
-				System.out.println("Debe seleccionar uno de los números de las opciones y cargar la información del restaurante.");
+				System.out.println("Por favor seleccione una opción válida.");
 			}
 		}
     }
