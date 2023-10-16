@@ -147,7 +147,7 @@ public class Vehiculo {
     public void obtenerLog(){
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("./historiales/"+placa+".txt"));
-                System.out.println("\n>Se encontró el vehículopondientes");
+                System.out.println("\n>Se encontró el vehículo\n");
                 writer.write("Placa: " + this.getPlaca());
                 writer.newLine();
                 writer.write("Marca: " + this.getMarca());
@@ -157,8 +157,6 @@ public class Vehiculo {
                 writer.write("Color: " + this.getColor());
                 writer.newLine();
                 writer.write("Tipo de Transmisión: " + this.getTipoTransmicion());
-                writer.newLine();
-                writer.write("Ubicación GPS: " + this.getUbicacionGPS());
                 writer.newLine();
                 writer.write("Estado: " + this.getEstado());
                 writer.newLine();

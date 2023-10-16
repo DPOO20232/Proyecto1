@@ -96,7 +96,16 @@ public class Evento {
                 if(horaVinicio&&horaVfin&&finicio>=fechaActual){
                     Evento evento = new Evento(finicio, ffinal, hinicio, hfinal, descripcion);
                     vehiculo.addEvento(evento);
-                } else {System.out.println(">Las horas ingresadas no son válidas. Por favor, inténtelo nuevamente.");}
+                    continuar=false;
+                } else {
+                    System.out.println(">Las horas ingresadas no son válidas. Desea reintentar?");
+                    System.out.println("1.Si");
+                    System.out.println("2. No(o cualquier otro número)");
+                    int opcion =Integer.parseInt(input("Porfavor elija una opción"));
+                    if (opcion!=1){
+                        continuar=false;
+                    }
+                }
             }
         }catch(NumberFormatException e){System.out.println("\n>Ingrese los datos requeridos en el formato especificado");}
     }

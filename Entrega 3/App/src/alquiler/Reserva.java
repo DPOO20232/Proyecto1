@@ -145,7 +145,8 @@ public class Reserva {
             System.out.println("\n>Lista de Sedes Disponibles:");
                 List<Sede> sedes = Inventario.getListaSedes();
                 for (int i = 0; i < sedes.size(); i++) {
-                    System.out.println((i + 1) + ". " + sedes.get(i).getNombre()+" ("+sedes.get(i).getUbicacion()+").");}
+                    System.out.println((Integer.toString(i + 1) + ". "));
+                    sedes.get(i).printInfo() ;}
             Sede sedeRecoger=null;
             Sede sedeEntrega=null;
             int sedeRecogerIndex = Integer.parseInt(input("\nSeleccione una sede para recoger el vehículo(ingrese el número)"));
@@ -281,7 +282,8 @@ public class Reserva {
                 System.out.println(">Lista de Sedes Disponibles:");
                 List<Sede> sedes = Inventario.getListaSedes();
                 for (int i = 0; i < sedes.size(); i++) {
-                    System.out.println((i + 1) + ". " + sedes.get(i).getNombre()+" ("+sedes.get(i).getUbicacion()+").");}
+                    System.out.println((Integer.toString(i + 1) + ". "));
+                    sedes.get(i).printInfo() ;}
                 int sedeRecogerIndex = Integer.parseInt(input("\nSeleccione una sede para recoger su vehículo(ingrese el número)"));
                 int sedeEntregaIndex = Integer.parseInt(input("Seleccione una sede para la entrega de su vehículo(ingrese el número)"));
                 if(sedeRecogerIndex<=sedes.size()&& sedeEntregaIndex<=sedes.size()){
@@ -414,9 +416,11 @@ public class Reserva {
         double debito= newPago-pagoReservaInicial;
         if(debito>0){
         System.out.println("\n>Considerando el pago de reserva inicial +(COP"+Double.toString(pagoReservaInicial)+"). Se debitarán COP"+Double.toString(debito)+".");
+        System.out.println("(Pago 30%: "+Double.toString(newPago)+").");
         }
         else{
         System.out.println("\n>Considerando el pago de reserva inicial +(COP"+Double.toString(pagoReservaInicial)+"). Se le devolverán  COP"+Double.toString(Math.abs(debito))+".");
+        System.out.println("(Pago 30%: "+Double.toString(newPago)+").");
         }
         continuar2=false;
         }

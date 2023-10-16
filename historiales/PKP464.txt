@@ -1,0 +1,25 @@
+Placa: PKP464
+Marca: ram
+Modelo: 500
+Color: rojo
+Tipo de Transmisión: automatico
+Estado: disponible
+Averiado: false
+Sede: SedeChapinero
+Categoría: pickup_PREMIUM
+Historial de Eventos:
+-> Fecha del inicio del evento: 20231015 .Fecha del fin del evento: 20231025. Descripción: EnMantenimiento
+-> Fecha del inicio del evento: 20231212 .Fecha del fin del evento: 20231213. Descripción: EnLimpieza
+
+Historial de Alquileres:
+->IDAlquiler: 3. Pago Final: COP400900.0. Fecha inicio: 20231015. Fecha final: 20231015
+      Sede de recogida: SedeSur. Sede de devolución: SedeChia
+      Cliente: Martin Calderon. Cédula: 1014903362
+  ->Conductores:
+      Nombre: Daniel Ramirez. Número de cédula: 1014903232
+  ->Pagos Excedentes:
+
+Reservas Activas:
+->IDreserva: 2. Pago 30%: COP432000.0. Fecha inicio: 20231111. Fecha final: 20231112
+      Sede de recogida: SedeSur. Sede de devolución: SedeChia
+      Cliente: Martin Calderon. Cédula: 1014903362

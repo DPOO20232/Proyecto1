@@ -52,7 +52,7 @@ public class Consola {
                 System.out.println("2. Crear categoría");
                 System.out.println("3. Añadir vehículo al inventario");
                 System.out.println("4. Eliminar vehículo al inventario");
-                System.out.println("5. Obtener historial de un vehículo");
+                System.out.println("5. Obtener historial de un vehículo (archivo Log)");
                 System.out.println("6. Cambiar sede de un vehículo (traslado interno)");
                 System.out.println("7. Crear un seguro");
                 System.out.println("8. Modificar informacion de un seguro");
@@ -94,6 +94,7 @@ public class Consola {
                     String placa = input("Ingrese la placa del vehículo al que desee trasladar");
                     Vehiculo vehiculo=Inventario.assignVehiculo(placa);
                     if(vehiculo!=null){
+                    String sedeAct = input("Sede actual del vehículo: "+vehiculo.getSede().getNombre());
 
                     System.out.println("\n>Lista de Sedes Disponibles:");
                     List<Sede> sedes = Inventario.getListaSedes();
@@ -101,7 +102,12 @@ public class Consola {
                         System.out.println((i + 1) + ". " + sedes.get(i).getNombre()+" ("+sedes.get(i).getUbicacion()+").");}
                     int idSede=Integer.parseInt(input("Ingrese la opción de la sede a la que desea trasladar el vehículo"));
                     if(idSede<=sedes.size()&& idSede<=sedes.size()){
-                        vehiculo.setTrasladoASede(Inventario.assignSede(idSede));
+                        Sede nuevaSede=Inventario.assignSede(idSede);
+                        if(!nuevaSede.getNombre().equals(sedeAct)){
+                        vehiculo.setTrasladoASede(nuevaSede);}
+                        else{
+                        System.out.println("\n>Ingrese una opción de sede diferente.\n");
+                        }
                     }
                     else{
                         System.out.println("\n>Ingrese una opción de sede válida.\n");
@@ -155,10 +161,10 @@ public class Consola {
                 System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área de atención!");
                 while (continuarPersonal1==true){
                     System.out.println("\nOpciones de la aplicación\n");
-                    System.out.println("1. Registrar un alquiler: ");
-                    System.out.println("2. Completar un alquiler: ");
-                    System.out.println("3. Registrar una reserva: ");
-                    System.out.println("4. Modificar una reserva: ");
+                    System.out.println("1. Registrar un alquiler");
+                    System.out.println("2. Completar un alquiler");
+                    System.out.println("3. Registrar una reserva");
+                    System.out.println("4. Modificar una reserva");
                     System.out.println("5. Cerrar sesión\n");
                     int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{

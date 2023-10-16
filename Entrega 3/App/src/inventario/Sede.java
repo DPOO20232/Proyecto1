@@ -90,16 +90,20 @@ public class Sede {
     public void printInfo(){
     List <Integer> horario1= this.getHorarioAtencionEnSemana();
     List <Integer> horario2= this.getHorarioAtencionFinSemana();
-    String num1=Integer.toString((horario1.get(0))/100);
-    String num2=Integer.toString((horario1.get(0))%100);
-    String num3=Integer.toString((horario1.get(1))/100);
-    String num4=Integer.toString((horario1.get(1))%100);
-    String num5=Integer.toString((horario2.get(0))/100);
-    String num6=Integer.toString((horario2.get(0))%100);
-    String num7=Integer.toString((horario2.get(1))/100);
-    String num8=Integer.toString((horario2.get(1))%100);
-    String horarioAtencion1="Hora de apertura de lunes a viernes: "+num1+":"+num2+" - "+num3+":"+num4+".";
-    String horarioAtencion2="Hora de apertura de sabado a domingo: "+num5+":"+num6+" - "+num7+":"+num8+".";
+    String snum1=Integer.toString((horario1.get(0))/100);
+    String snum2=Integer.toString((horario1.get(0))%100);
+    String snum3=Integer.toString((horario1.get(1))/100);
+    String snum4=Integer.toString((horario1.get(1))%100);
+    String snum5=Integer.toString((horario2.get(0))/100);
+    String snum6=Integer.toString((horario2.get(0))%100);
+    String snum7=Integer.toString((horario2.get(1))/100);
+    String snum8=Integer.toString((horario2.get(1))%100);
+    if(snum2.equals("0")){snum2="00";}
+    if(snum4.equals("0")){snum4="00";}
+    if(snum6.equals("0")){snum6="00";}
+    if(snum8.equals("0")){snum8="00";}
+    String horarioAtencion1="Hora de apertura de lunes a viernes: "+snum1+":"+snum2+" - "+snum3+":"+snum4+".";
+    String horarioAtencion2="Hora de apertura de sabado a domingo: "+snum5+":"+snum6+" - "+snum7+":"+snum8+".";
     
     System.out.println("Información Sede: "+this.getNombre()+" ("+this.getUbicacion()+").");
     System.out.println(horarioAtencion1+" "+horarioAtencion2+"\n");

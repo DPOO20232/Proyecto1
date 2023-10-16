@@ -1155,8 +1155,9 @@ public class Inventario {
     public static void editarSede(){
     //SedeSur;cra58 #2, Bogotá;[0730,1430];[0730,1530];[]
     try{
+    for (Sede i:getListaSedes()){i.printInfo();}
     int id_sede= Integer.parseInt(input("Ingrese el ID de la sede que desea modificar"));
-    if ((id_sede>0) &&(id_sede<=Inventario.getListaSedes().size())){
+    if ((id_sede>0) &&(id_sede<=getListaSedes().size())){
     System.out.println("\nDesea editar el nombre de la sede?\n");
     System.out.println("1.Sí");
     System.out.println("2.No(ó cualquier otro número)");
