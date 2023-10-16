@@ -1033,30 +1033,30 @@ public class Inventario {
     
     public static void editarSeguro(){
     try{
-    boolean continuar=true;
-    while(continuar){
-    int id_seguro= Integer.parseInt(input("Ingrese el ID del seguro que desea modificar"));
-    if ((id_seguro>0) &&(id_seguro<=Inventario.getListaSeguros().size())){
-    System.out.println("\nDesea editar el porcentaje de tarifa diaria?\n");
-    System.out.println("1.Sí");
-    System.out.println("2.No(ó cualquier otro número)");
-    int opcion_pctg = Integer.parseInt(input("Por favor seleccione una opción"));    
-    if (opcion_pctg==1){
-        int pctg=Integer.parseInt(input("Ingrese el nuevo porcentage de tarifa diaria designado al seguro"));
-        Inventario
-        .assignSeguro(id_seguro).setPctg_TarifaDiaria(pctg);
-    }
-    System.out.println("\nDesea editar la descripción del seguro?\n");
-    System.out.println("1.Sí");
-    System.out.println("2.No(ó cualquier otro número)");
-    int opcion_desc = Integer.parseInt(input("Por favor seleccione una opción"));    
-    if (opcion_desc==1){
-        String desc=input("Ingrese la nueva descripcion");
-        Inventario.assignSeguro(id_seguro).setDescripcion(desc);
-    }
-    continuar=false;
-    }
-    else{System.out.println(">Ingrese el id de un seguro válido ");}}}
+        boolean continuar=true;
+        while(continuar){
+            int id_seguro= Integer.parseInt(input("Ingrese el ID del seguro que desea modificar"));
+            if ((id_seguro>0) &&(id_seguro<=Inventario.getListaSeguros().size())){
+                System.out.println("\nDesea editar el porcentaje de tarifa diaria?\n");
+                System.out.println("1.Sí");
+                System.out.println("2.No(ó cualquier otro número)");
+                int opcion_pctg = Integer.parseInt(input("Por favor seleccione una opción"));    
+                if (opcion_pctg==1){
+                    double pctg=Double.parseDouble(input("Ingrese el nuevo porcentage de tarifa diaria designado al seguro"));
+                    Inventario
+                    .assignSeguro(id_seguro).setPctg_TarifaDiaria(pctg);
+                }
+                System.out.println("\nDesea editar la descripción del seguro?\n");
+                System.out.println("1.Sí");
+                System.out.println("2.No(ó cualquier otro número)");
+                int opcion_desc = Integer.parseInt(input("Por favor seleccione una opción"));    
+                if (opcion_desc==1){
+                    String desc=input("Ingrese la nueva descripcion");
+                    Inventario.assignSeguro(id_seguro).setDescripcion(desc);
+                }
+                continuar=false;
+            }
+            else{System.out.println(">Ingrese el id de un seguro válido ");}}}
     catch(NumberFormatException e){System.out.println(">Ingrese solo números en los campos correspondientes");}}
     
     public static void eliminarSeguro(){
@@ -1068,9 +1068,10 @@ public class Inventario {
                 listaSeguros.remove(i);
                 encontrado=true;
                 break;}}
-        if (encontrado==true){System.out.println(">Se eliminó del inventario el vehículo con placa "+Integer.toString(id)+".");}
+        if (encontrado==true){System.out.println(">Se eliminó del inventario el seguro con ID "+Integer.toString(id)+".");}
         else{System.out.println(">No se halló ningun vehículo con la placa "+Integer.toString(id)+".");}
-            }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
+            }
+        catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
     
     public static void nuevaSede(){
     try{

@@ -78,7 +78,7 @@ public class Vehiculo {
         this.addEvento(nuevoEvento);
         Inventario.getListaEventos().add(nuevoEvento);
         this.setEstado("EnTraslado");
-        System.out.println("\n>Solicitud de traslado registrada. En\n");
+        System.out.println("\n>Solicitud de traslado registrada.\n");
 
         }
         else{
