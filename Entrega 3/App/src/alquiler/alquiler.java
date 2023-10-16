@@ -89,7 +89,7 @@ public class alquiler{
         return retorno;
     }
 
-    public void agregarConductores() {
+    private void agregarConductores() {
         boolean continuarPersonal1 = true;
         while (continuarPersonal1==true){
             System.out.println("\n¿Desea agregar un conductor adicional?");
@@ -116,7 +116,7 @@ public class alquiler{
         
     }catch (NumberFormatException e){System.out.println("\n>Ingrese los valores requeridos en el formato solicitado");}}}
 
-    public void agregarSeguros (){
+    private void agregarSeguros (){
         boolean continuar = true;
         System.out.println();
         while (continuar){
@@ -140,7 +140,7 @@ public class alquiler{
         }
     }
 
-    public Double calcularPagoInicial(){
+    private Double calcularPagoInicial(){
         double pagoReserva=this.reserva.getPagoReserva();
         double costo70=(pagoReserva*7/3);
         double costo100=costo70+pagoReserva;
@@ -161,7 +161,7 @@ public class alquiler{
         return costo_T;
     }
 
-    public Double calcularPagoFinal(Sede sedeActual){
+    private Double calcularPagoFinal(Sede sedeActual){
         /*
          seguro id1: no cobramos ningun daño, 
          seguro id2 ó id3: solo cobramos daños graves, seguro4: no cobramos daños leves.

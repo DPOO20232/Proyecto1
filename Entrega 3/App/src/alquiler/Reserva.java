@@ -118,7 +118,7 @@ public class Reserva {
     public void setPagoReserva(double pago) {
         pagoReserva = pago;
     }
-        public void setPagoReserva(int fecha1, int hora1, int fecha2, int hora2) {
+    private void setPagoReserva(int fecha1, int hora1, int fecha2, int hora2) {
         Categoria categoria=this.getCategoria();
         int tarifa=categoria.getTarifaDiaria();
         int dias=this.calcularDuracionRenta(fecha1,hora1,fecha2,hora2);
@@ -473,7 +473,7 @@ public class Reserva {
             }}
         return retorno;
     }       
-    public static Reserva encontrarReserva(Cliente cliente){
+    private static Reserva encontrarReserva(Cliente cliente){
         Reserva retorno=null;
         List<Integer> idsReservas= desplegarReservasActivas(cliente);
         if (idsReservas.size()>=1){
@@ -498,7 +498,7 @@ public class Reserva {
         }}}
         return retorno;    
     }
-    public static List<Integer> desplegarReservasActivas(Cliente cliente){
+    private static List<Integer> desplegarReservasActivas(Cliente cliente){
         List<Reserva> reservas= getListaReservas();
         List<Integer> idsReservas= new ArrayList<Integer>();
         boolean inicio=false;
@@ -537,7 +537,7 @@ public class Reserva {
             return false;
         }
     }
-        public static boolean fechaValidaReserva(int fecha,int hora) {
+    private static boolean fechaValidaReserva(int fecha,int hora) {
         Calendar fechaActual = Calendar.getInstance();
         int diaactual = fechaActual.get(Calendar.DAY_OF_MONTH);
         int mesactual = fechaActual.get(Calendar.MONTH) + 1;
@@ -564,7 +564,7 @@ public class Reserva {
         } 
         return retorno;
     }
-    public static boolean fechaValidaDevolucion(int recoger, int devolucion, int hrecoger, int hdevolver) {
+    private static boolean fechaValidaDevolucion(int recoger, int devolucion, int hrecoger, int hdevolver) {
         int diae = recoger % 100;
         int mese = (recoger % 10000) / 100;
         int anioe = recoger / 10000;
@@ -589,7 +589,7 @@ public class Reserva {
         }
         return retorno;
     }
-    public int calcularDuracionRenta(int fecha1, int hora1, int fecha2, int hora2) {
+    private int calcularDuracionRenta(int fecha1, int hora1, int fecha2, int hora2) {
         // Lógica para calcular la duración de la renta
         String fechaStr1=Integer.toString(fecha1);
         String fechaStr2=Integer.toString(fecha2);

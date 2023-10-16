@@ -115,7 +115,7 @@ public class Inventario {
     updateAlquiler();
     updateCliente();
     }
-    public static void updateInfo() throws IOException{
+    private static void updateInfo() throws IOException{
         File archivo = new File("./data/info.txt");
         FileWriter escritor = new FileWriter(archivo);
         String nombrecompania=nombreCompania;
@@ -150,7 +150,7 @@ public class Inventario {
         escritor.close();
 
     }
-    public static void updateCategorias() throws IOException{
+    private static void updateCategorias() throws IOException{
         File archivo = new File("./data/categorias.txt");
         FileWriter escritor = new FileWriter(archivo);
         List <Categoria> lstcategorias=listaCategorias;
@@ -180,7 +180,7 @@ public class Inventario {
             }
             escritor.close();
         }
-    public static void updateSedes() throws IOException{
+    private static void updateSedes() throws IOException{
         File archivo = new File("./data/sedes.txt");
         FileWriter escritor = new FileWriter(archivo);
         List<Sede>lstsedes=listaSedes;
@@ -210,7 +210,7 @@ public class Inventario {
         escritor.close();
       
     }
-    public static void updatePersonal() throws IOException{
+    private static void updatePersonal() throws IOException{
         File archivo = new File("./data/personal.txt");
         FileWriter escritor2= new FileWriter(archivo);
         List<personal> lstpersonal= personal.getCredencialesPersonal();
@@ -233,7 +233,7 @@ public class Inventario {
         }
         escritor2.close();
     }
-    public static void updateSeguros() throws IOException{
+    private static void updateSeguros() throws IOException{
         File archivo = new File("./data/seguros.txt");
         FileWriter escritor2= new FileWriter(archivo);
         List<Seguro> lstseguros=listaSeguros;
@@ -246,7 +246,7 @@ public class Inventario {
         }
         escritor2.close();
     }
-    public static void updateLicencia() throws IOException{
+    private static void updateLicencia() throws IOException{
         File archivo = new File("./data/licencias.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Licencia> lstlicencia=Usuario.getListaLicencias();
@@ -260,7 +260,7 @@ public class Inventario {
         }
         escritor.close();
     }
-    public static void updateReserva() throws IOException{
+    private static void updateReserva() throws IOException{
         File archivo = new File("./data/reservas.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Reserva> lstreserva= Reserva.getListaReservas();
@@ -285,7 +285,7 @@ public class Inventario {
         }
         escritor.close();
     }
-    public static void updateVehiculo() throws IOException{
+    private static void updateVehiculo() throws IOException{
         File archivo = new File("./data/vehiculos.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Vehiculo> lstvehiculo=listaVehiculos;
@@ -347,7 +347,7 @@ public class Inventario {
         }
         escritor.close();
     }
-    public static void updateEvento() throws IOException{
+    private static void updateEvento() throws IOException{
         File archivo = new File("./data/eventos.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Evento> lsteventos=listaEventos;
@@ -375,7 +375,7 @@ public class Inventario {
         }
         escritor.close();
     }
-    public static void updateAlquiler() throws IOException{
+    private static void updateAlquiler() throws IOException{
         File archivo = new File("./data/alquileres.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<alquiler> lstAlquiler=alquiler.getListaAlquileres();
@@ -445,7 +445,7 @@ public class Inventario {
 
         }
 
-    public static void updateCliente() throws IOException{
+    private static void updateCliente() throws IOException{
         File archivo = new File("./data/clientes.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Cliente> clientes=Usuario.getListaClientes();
