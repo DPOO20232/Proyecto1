@@ -77,7 +77,7 @@ public class Consola {
                     System.out.println("\n>La placa ingresada no corresponde a ningún vehículo del inventario.\n");
                     }
                 }
-                if (opcion_admin==2){Inventario.crearCategoria();}
+                else if (opcion_admin==2){Inventario.crearCategoria();}
                 else if(opcion_admin==3){Inventario.crearVehiculo();}
                 else if(opcion_admin==4){Inventario.eliminarVehiculo();}
                 else if(opcion_admin==5){
