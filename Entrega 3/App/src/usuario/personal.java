@@ -152,22 +152,26 @@ public class personal extends Usuario{
         String value2 = "";
     
         if (sede.getAdminLocal() != null) {
-            inicio = "1 Administrador Local: " + sede.getAdminLocal().getLogin() + ". ";
+            inicio =inicio+ "1 Administrador Local: " + sede.getAdminLocal().getLogin() + ". ";
         } else {
-            inicio = "0 Administradores Locales. ";
+            inicio =inicio+ "0 Administradores Locales. ";
         }
     
         for (personal i : sede.getPersonalSede()) {
-            if (i.getTipoPersonal().equals("PersonalAtencion")) {
+            String tipo=i.getTipoPersonal();
+            String login=i.getLogin();
+            if (tipo.equals("EmpleadoAtencion")) {
+                cantidadPersonalAtencion+=1;
                 key1 = cantidadPersonalAtencion + " Empleado(s) de atención: ";
-                value1 += i.getLogin() + ", ";
-            } else if (i.getTipoPersonal().equals("PersonalTecnico")) {
-                key2 = cantidadPersonalTecnico + " Empleado(s) técnico(s): ";
-                value2 += i.getLogin() + ", ";
+                value1 =value1+ login + ", ";
+            } else if (i.getTipoPersonal().equals("EmpleadoTecnico")) {
+                cantidadPersonalTecnico+=1;
+                key2 =cantidadPersonalTecnico + " Empleado(s) técnico(s): ";
+                value2 =value2+ login + ", ";
             }
         }
     
-        System.out.println(inicio + key1 + value1.substring(0, value1.length() - 2) + key2 + value2.substring(0, value2.length() - 2) + ".");
+        System.out.println(inicio + key1 + value1.substring(0, value1.length() - 2) +". "+ key2 + value2.substring(0, value2.length() - 2) + ".");
     }
         public static String input(String mensaje)
 	{
