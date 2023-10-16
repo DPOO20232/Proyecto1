@@ -47,11 +47,10 @@ public class Consola {
                 System.out.println("\n\t\t>>>Hola, Admin!");
                 while (continuarAdmin==true){
                 System.out.println("\nOpciones de la aplicación\n");
-                //ESTOS METODOS HAY QUE PASARLOS A ADMIN
                 System.out.println("1. Monitorear un vehículo");
                 System.out.println("2. Crear categoría");
                 System.out.println("3. Añadir vehículo al inventario");
-                System.out.println("4. Eliminar vehículo al inventario");
+                System.out.println("4. Eliminar vehículo del inventario");
                 System.out.println("5. Obtener historial de un vehículo (archivo Log)");
                 System.out.println("6. Cambiar sede de un vehículo (traslado interno)");
                 System.out.println("7. Crear un seguro");
