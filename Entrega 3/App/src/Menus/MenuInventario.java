@@ -3,11 +3,14 @@ package Menus;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
+import alquiler.Reserva;
 import inventario.Categoria;
 import inventario.Inventario;
 import inventario.Sede;
+import inventario.Seguro;
 import inventario.Vehiculo;
 
 public class MenuInventario {
@@ -151,6 +154,177 @@ public class MenuInventario {
 
         }
     }
+    public static void nuevoSeguro(){
+        try{
+        String desc = input("Ingrese una descripción del seguro");
+        double pctg_tarifadiaria= Double.parseDouble(input("Ingrese el porcentaje de la tarifa diaria que el seguro cuesta (ej: 90%->0.9)"));
+        Seguro seguro= new Seguro(pctg_tarifadiaria,desc );
+        Inventario.setListaSeguros(seguro);
+        System.out.println(">El nuevo seguro se guardo con el id "+ Integer.toString(seguro.getID()));
+        }
+    catch(NumberFormatException e){
+        System.out.println(">Ingrese solo números en los campos correspondientes");}}
+    
+    public static void editarSeguro(){
+    try{
+        boolean continuar=true;
+        while(continuar){
+            int id_seguro= Integer.parseInt(input("Ingrese el ID del seguro que desea modificar"));
+            if ((id_seguro>0) &&(id_seguro<=Inventario.getListaSeguros().size())){
+                System.out.println("\nDesea editar el porcentaje de tarifa diaria?\n");
+                System.out.println("1.Sí");
+                System.out.println("2.No(ó cualquier otro número)");
+                int opcion_pctg = Integer.parseInt(input("Por favor seleccione una opción"));    
+                if (opcion_pctg==1){
+                    double pctg=Double.parseDouble(input("Ingrese el nuevo porcentage de tarifa diaria designado al seguro"));
+                    Inventario
+                    .assignSeguro(id_seguro).setPctg_TarifaDiaria(pctg);
+                }
+                System.out.println("\nDesea editar la descripción del seguro?\n");
+                System.out.println("1.Sí");
+                System.out.println("2.No(ó cualquier otro número)");
+                int opcion_desc = Integer.parseInt(input("Por favor seleccione una opción"));    
+                if (opcion_desc==1){
+                    String desc=input("Ingrese la nueva descripcion");
+                    Inventario.assignSeguro(id_seguro).setDescripcion(desc);
+                }
+                continuar=false;
+            }
+            else{System.out.println(">Ingrese el id de un seguro válido ");}}}
+    catch(NumberFormatException e){System.out.println(">Ingrese solo números en los campos correspondientes");}}
+    
+    public static void eliminarSeguro(){
+        try{
+        int id = Integer.parseInt(input("Ingrese el ID del seguro")); 
+        boolean encontrado=false;
+        for (Seguro i: Inventario.getListaSeguros()){
+            if (i.getID()==id){
+                Inventario.getListaSeguros().remove(i);
+                encontrado=true;
+                break;}}
+        if (encontrado==true){System.out.println(">Se eliminó del inventario el seguro con ID "+Integer.toString(id)+".");}
+        else{System.out.println(">No se halló ningun vehículo con la placa "+Integer.toString(id)+".");}
+            }
+        catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
+    
+    public static void nuevaSede(){
+    try{
+    String nombreSede = input("Ingrese el nombre de la nueva sede");
+    String ubicacion = input("Ingrese la ubicación de la nueva sede");
+    List<Integer> horarioSemana= new ArrayList<Integer>();
+    List<Integer> horarioFinSemana= new ArrayList<Integer>();
+    int horaAperturaSemana= Integer.parseInt(input("Ingrese la hora de apertura entre semana en formato hhmm"));
+    int horaCierreSemana= Integer.parseInt(input("Ingrese la hora de cierre entre semana en formato hhmm"));    
+    int horaAperturaFinSemana= Integer.parseInt(input("Ingrese la hora de apertura para fin de semana en formato hhmm"));
+    int horaCierreFinSemana= Integer.parseInt(input("Ingrese la hora de cierre para fin de semana en formato hhmm")); 
+    horarioSemana.add(horaAperturaSemana);
+    horarioSemana.add(horaCierreSemana);
+    horarioFinSemana.add(horaAperturaFinSemana);
+    horarioFinSemana.add(horaCierreFinSemana);
+    Sede sede= new Sede(nombreSede, ubicacion, horarioSemana, horarioFinSemana);
+    Inventario.setListaSedes(sede);
+    System.out.println(">La nueva sede se guardo con el id "+ Integer.toString(sede.getID()));
+    }
+    catch(NumberFormatException e){System.out.println(">Ingrese solo números en los campos correspondientes");}}
+
+    public static void editarSede(){
+    //SedeSur;cra58 #2, Bogotá;[0730,1430];[0730,1530];[]
+    try{
+    for (Sede i:Inventario.getListaSedes()){i.printInfo();}
+    int id_sede= Integer.parseInt(input("Ingrese el ID de la sede que desea modificar"));
+    if ((id_sede>0) &&(id_sede<=Inventario.getListaSedes().size())){
+    System.out.println("\nDesea editar el nombre de la sede?\n");
+    System.out.println("1.Sí");
+    System.out.println("2.No(ó cualquier otro número)");
+    int opcion_nombre = Integer.parseInt(input("Por favor seleccione una opción"));    
+    if (opcion_nombre==1){
+        String nombre=input("Ingrese el nuevo nombre para la sede");
+        Inventario.assignSede(id_sede).setNombre(nombre);
+    }
+    System.out.println("\nDesea editar la ubicación de la sede?\n");
+    System.out.println("1.Sí");
+    System.out.println("2.No(ó cualquier otro número)");
+    int opcion_ubi = Integer.parseInt(input("Por favor seleccione una opción"));    
+    if (opcion_ubi==1){
+        String ubi=input("Ingrese la nueva ubicación");
+        Inventario.assignSede(id_sede).setUbicacion(ubi);;
+    }
+    System.out.println("\nDesea modificar el horario entre semana de la sede?\n");
+    System.out.println("1.Sí");
+    System.out.println("2.No(ó cualquier otro número)");
+    int opcion_hsemana = Integer.parseInt(input("Por favor seleccione una opción"));   
+    if (opcion_hsemana==1){
+        List<Integer> horario= new ArrayList<Integer>();
+        int hapertura=Integer.parseInt(input("Ingrese la nueva hora de entrada"));
+        int hcierre=Integer.parseInt(input("Ingrese la nueva hora de cierre"));
+        boolean hvalida1= Reserva.horaValida(hapertura);
+        boolean hvalida2= Reserva.horaValida(hcierre);
+        if (hvalida1&&hvalida2){
+            horario.add(hapertura);
+            horario.add(hcierre);
+            Inventario.assignSede(id_sede).setHorarioAtencionEnSemana(horario);
+}
+        else{System.out.println("\n>No se pudieron modificar los horarios dado que no se ingresaron valores válidos.");}
+
+    }
+    System.out.println("\nDesea modificar el horario de fin de semana de la sede?\n");
+    System.out.println("1.Sí");
+    System.out.println("2.No(ó cualquier otro número)");
+    int opcion_hFinsemana = Integer.parseInt(input("Por favor seleccione una opción"));   
+    if (opcion_hFinsemana==1){
+        List<Integer> horario= new ArrayList<Integer>();
+        int hapertura=Integer.parseInt(input("Ingrese la nueva hora de entrada"));
+        int hcierre=Integer.parseInt(input("Ingrese la nueva hora de cierre"));
+        boolean hvalida1= Reserva.horaValida(hapertura);
+        boolean hvalida2= Reserva.horaValida(hcierre);
+        if (hvalida1&&hvalida2){
+            horario.add(hapertura);
+            horario.add(hcierre);
+            Inventario.assignSede(id_sede).setHorarioAtencionFinSemana(horario);}
+        else{System.out.println("\n>No se pudieron modificar los horarios dado que no se ingresaron valores válidos.");}
+        
+    }
+    System.out.println("\n> Información actualizada.");
+ 
+    }
+    else{System.out.println("Ingrese el id de un seguro válido ");}}
+
+    catch(NumberFormatException e){
+        System.out.println("Ingrese solo números en los campos correspondientes");}}
+    
+    public static void editarCostoPorConductorAdicional(){
+            try{
+                int costo= Integer.parseInt(input("Ingrese el nuevo costo diario por conductor adicional"));
+                Inventario.setCostoPorConductorAdicional(costo);
+                System.out.println(">>> Costo actualizado"); 
+                }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}
+        }
+        public static void editarCostoPorTrasladoSedes(){        
+            try{
+                int costo= Integer.parseInt(input("Ingrese el nuevo costo por traslado de un vehículo entre sedes tras alquiler"));
+                Inventario.setCostoPorTrasladoSedes(costo);
+                System.out.println(">>> Costo actualizado"); 
+                }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}
+        }
+        public static void editarPeriodoTemporadaAlta(){
+            int fechaInicio= Integer.parseInt(input("Intrese el nuevo inicio de temporada alta en formato mmdd(Ej: 31 de marzo->0331)"));
+            int fechaFin= Integer.parseInt(input("Intrese el nuevo cierre de temporada alta en formato mmdd(Ej: 31 de marzo->0331)"));
+            List<Integer> periodo=Inventario.getPeriodoTemporadaAlta();
+                periodo.clear();
+                periodo.add(fechaInicio);
+                periodo.add(fechaFin);
+                System.out.println(">>> Periodo actualizado");}
+    
+            public static void editarPeriodoTemporadaBaja(){
+            int fechaInicio= Integer.parseInt(input("Intrese el nuevo inicio de temporada baja en formato mmdd(Ej: 31 de marzo->0331)"));
+            int fechaFin= Integer.parseInt(input("Intrese el nuevo cierre de temporada baja en formato mmdd(Ej: 31 de marzo->0331)"));
+            List<Integer> periodo=Inventario.getPeriodoTemporadaBaja();
+                periodo.clear();
+                periodo.add(fechaInicio);
+                periodo.add(fechaFin);
+                System.out.println(">>> Periodo actualizado");}
+
+
 
     public static String input(String mensaje)
 	    {
