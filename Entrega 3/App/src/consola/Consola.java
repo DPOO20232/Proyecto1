@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import Controller.MenuAlquiler;
-import Controller.MenuInventario;
-import Controller.MenuUsuario;
+import Menus.MenuAlquiler;
+import Menus.MenuInventario;
+import Menus.MenuUsuario;
 import alquiler.Reserva;
 import inventario.Inventario;
 import inventario.Sede;

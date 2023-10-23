@@ -2,7 +2,7 @@ package alquiler;
 import java.util.ArrayList;
 import java.util.List;
 
-import Controller.MenuAlquiler;
+import Menus.MenuAlquiler;
 import inventario.Categoria;
 import inventario.Inventario;
 import inventario.Vehiculo;

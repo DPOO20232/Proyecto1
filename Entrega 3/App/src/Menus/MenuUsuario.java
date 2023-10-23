@@ -1,4 +1,4 @@
-package Menu;
+package Menus;
 
 public class MenuUsuario {
     
