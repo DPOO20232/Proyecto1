@@ -26,7 +26,7 @@ public class MenuAlquiler {
     public static void crearReserva(Cliente cliente,boolean reservaEnSede){
         if (cliente==null){
             int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
-            cliente=Usuario.assignCliente(cedulaCliente);
+            cliente=Usuario.assignCliente(cedulaCliente);}
             if(cliente!=null){
             System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
             try {
@@ -121,7 +121,7 @@ public class MenuAlquiler {
                     System.out.println("1.Sí");
                     System.out.println("2.No(ó cualquier otro número)");
                     int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
-                    if(opcion==1){cliente.setTarjeta();}
+                    if(opcion==1){MenuUsuario.setTarjeta(cliente);}
                     else{continuar3=false;continuar2=false;continuar=false;}
                     }}} else{System.out.println("\n>Su licencia caducará/caducó, desea actualizar su licencia?(En caso de no actualizarla se cancelará el proceso de reserva)");
                     System.out.println("1.Sí");
@@ -130,7 +130,7 @@ public class MenuAlquiler {
                     if(opcion==1){
                         Cliente.getListaLicencias().remove(cliente.getLicencia());
                         cliente.setLicencia(null);
-                        Licencia licencia= Licencia.crearLicencia();
+                        Licencia licencia= MenuUsuario.crearLicencia();
                         cliente.setLicencia(licencia);}
                     else{continuar2=false;
                     continuar=false;}
@@ -145,11 +145,11 @@ public class MenuAlquiler {
                 System.out.println(">Debe ingresar los datos requeridos para que la creación de su reserva sea exitosa.");
             }
         }}
-    }
+    
         public static void modificarReserva(Cliente cliente){
             if (cliente==null){
             int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
-            cliente=Usuario.assignCliente(cedulaCliente);
+            cliente=Usuario.assignCliente(cedulaCliente);}
             if(cliente!=null){
             System.out.println("\n¡Bienvenido a nuestro sistema de reservas!\n");
             Reserva reservaPorModificar=encontrarReserva(cliente);
@@ -236,7 +236,7 @@ public class MenuAlquiler {
                         System.out.println("1.Sí");
                         System.out.println("2.No(ó cualquier otro número)");
                         int opcion2_3= Integer.parseInt(input("Porfavor elija una opción"));
-                        if(opcion2_3==1){reservaPorModificar.getCliente().setTarjeta();}
+                        if(opcion2_3==1){MenuUsuario.setTarjeta(reservaPorModificar.getCliente());}
                         else{continuar4=false;continuar3=false;continuar2=false;}}}}
                         else{
                         System.out.println("\n>Su licencia no es válida para el rango de fechas seleccionado, desea actualizar la información de su licencia?\n");
@@ -245,7 +245,7 @@ public class MenuAlquiler {
                         int opcion2_3= Integer.parseInt(input("Porfavor elija una opción"));
                         if(opcion2_3==1){
                             Usuario.getListaLicencias().remove(licenciaOriginal); 
-                            Licencia licencia=Licencia.crearLicencia();
+                            Licencia licencia=MenuUsuario.crearLicencia();
                             reservaPorModificar.getCliente().setLicencia(licencia);}
                         else{continuar3=false;continuar2=false;
                         System.out.println("\n> Se mantienen las fechas previas.");
@@ -341,7 +341,7 @@ public class MenuAlquiler {
                     vehiculoActual.addReservaActiva(reservaPorModificar);
                 }
                 }catch(NumberFormatException e){
-                }}}}
+                }}}
     }
 
     public static Reserva encontrarReserva(Cliente cliente){
@@ -398,6 +398,15 @@ public class MenuAlquiler {
             if (inicio==false){ System.out.println("\n>No tienes reservas activas. ");}
             return idsReservas;
     }
+    public static void eliminarReserva(Cliente cliente){
+        Reserva reservaElejida=encontrarReserva(cliente);
+        if(reservaElejida!=null){
+        int id= reservaElejida.getID();
+        Reserva.getListaReservas().remove(reservaElejida);
+        Vehiculo vehiculoReservaElejida= reservaElejida.getVehiculoAsignado();
+        vehiculoReservaElejida.eliminarReservaActiva(reservaElejida.getID());
+        System.out.println("\n> La reserva con IDreserva "+Integer.toString(id)+" ha sido cancelada, pronto se trasferirá de vuelta el pago del 30% (COP "+Double.toString(reservaElejida.getPagoReserva())+").");
+    }}
 
     public static void crearAlquiler(Sede sedePersonal){
         try{
@@ -494,7 +503,7 @@ public class MenuAlquiler {
                 if(opcion==1){
                     String nombre = input("Ingrese el nombre del conductor");
                     int cedula = Integer.parseInt(input("Por favor ingrese el número de cédula del conductor"));
-                    Licencia licencia = Licencia.crearLicencia(); 
+                    Licencia licencia = MenuUsuario.crearLicencia(); 
                     if (licencia != null){
                         Conductor conductor = new Conductor(nombre, cedula, licencia);
                         alquiler.addConductor(conductor);

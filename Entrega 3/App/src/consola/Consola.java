@@ -7,10 +7,8 @@ import java.util.List;
 import Menus.MenuAlquiler;
 import Menus.MenuInventario;
 import Menus.MenuUsuario;
-import alquiler.Reserva;
 import inventario.Inventario;
 import inventario.Sede;
-import inventario.Vehiculo;
 import usuario.Cliente;
 import usuario.Usuario;
 import usuario.personal;
@@ -169,14 +167,11 @@ public class Consola {
                     System.out.println("6. Cerrar sesión\n");
                     int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
-                    if (opcion_cliente==1){
-                        String nueva_contraseña = input("Ingrese una nueva contraseña");
-                        System.out.println(">Contraseña actualizada\n");
-                        cliente.setPassword(nueva_contraseña);}
-                    if (opcion_cliente==2){cliente.actualizarCliente();}
+                    if (opcion_cliente==1){MenuUsuario.actualizarPassword(cliente);}
+                    if (opcion_cliente==2){MenuUsuario.actualizarCliente(cliente);}
                     else if(opcion_cliente==3){MenuAlquiler.crearReserva(cliente,false);}
                     else if(opcion_cliente==4){MenuAlquiler.modificarReserva(cliente);}
-                    else if(opcion_cliente==5){Reserva.eliminarReserva(cliente);}
+                    else if(opcion_cliente==5){MenuAlquiler.eliminarReserva(cliente);}
                     else if(opcion_cliente==6){continuarCliente=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
                     }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
@@ -185,7 +180,7 @@ public class Consola {
             else{System.out.println("\n\t>>> Credenciales incorrectas, intentelo de nuevo.");}          
             }
             else if(opcion_seleccionada==3){
-                Cliente.nuevoCliente();
+                MenuUsuario.nuevoCliente();
                 
             }
             else if(opcion_seleccionada==4){

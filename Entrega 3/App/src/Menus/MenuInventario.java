@@ -3,11 +3,14 @@ package Menus;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import alquiler.Reserva;
 import inventario.Categoria;
+import inventario.Evento;
 import inventario.Inventario;
 import inventario.Sede;
 import inventario.Seguro;
@@ -315,7 +318,7 @@ public class MenuInventario {
                 periodo.add(fechaFin);
                 System.out.println(">>> Periodo actualizado");}
     
-            public static void editarPeriodoTemporadaBaja(){
+        public static void editarPeriodoTemporadaBaja(){
             int fechaInicio= Integer.parseInt(input("Intrese el nuevo inicio de temporada baja en formato mmdd(Ej: 31 de marzo->0331)"));
             int fechaFin= Integer.parseInt(input("Intrese el nuevo cierre de temporada baja en formato mmdd(Ej: 31 de marzo->0331)"));
             List<Integer> periodo=Inventario.getPeriodoTemporadaBaja();
@@ -324,6 +327,46 @@ public class MenuInventario {
                 periodo.add(fechaFin);
                 System.out.println(">>> Periodo actualizado");}
 
+        public static void crearEvento() {
+
+            try { 
+            String descripcion="";
+            Vehiculo vehiculo=null;
+            String placa = input("\nIngrese la placa del vehículo al que le asignará un nuevo estado");
+            System.out.println("Ingrese que se va a realizar en el vehículo\n");
+            System.out.println("1. Lavado");
+            System.out.println("2. Mantenimiento");
+            int opcion = Integer.parseInt(input("Por favor seleccione una opción"));
+            if (opcion==1){descripcion="EnLimpieza";}
+            else if (opcion==2){descripcion="EnMantenimiento";}
+            vehiculo=Inventario.assignVehiculo(placa);
+            if((vehiculo!=null)&&(!descripcion.equals(""))){
+            boolean continuar=true;
+            while(continuar){
+                int finicio = Integer.parseInt(input("Por favor ingrese la fecha en la que tendrá inicio el evento(en formato aaaammdd)"));
+                int ffinal = Integer.parseInt(input("Por favor ingrese la fecha en la que finalizará el evento(en formato aaaammdd)"));
+                int hinicio = Integer.parseInt(input("Ingrese la hora en la que tendrá inicio el evento(en formato 24h de tipo hhmm)"));
+                int hfinal = Integer.parseInt(input("Ingrese la hora en la que finalizará el evento(en formato 24h de tipo hhmm)"));
+                boolean horaVinicio= Reserva.horaValida(hinicio);
+                boolean horaVfin = Reserva.horaValida(hfinal);
+                int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+                if(horaVinicio&&horaVfin&&finicio>=fechaActual){
+                    Evento evento = new Evento(finicio, ffinal, hinicio, hfinal, descripcion);
+                    vehiculo.addEvento(evento);
+                    continuar=false;
+                } else {
+                    System.out.println(">Las horas ingresadas no son válidas. Desea reintentar?");
+                    System.out.println("1.Si");
+                    System.out.println("2. No(o cualquier otro número)");
+                    int opcion2 =Integer.parseInt(input("Porfavor elija una opción"));
+                    if (opcion2!=1){
+                        continuar=false;
+                    }
+                }
+            }}
+            else{System.out.println("\n>Ingrese una placa de vehículo y/o una opción de nuevo estado del vehículo válida.");}
+        }catch(NumberFormatException e){System.out.println("\n>Ingrese los datos requeridos en el formato especificado.");}
+    }
 
 
     public static String input(String mensaje)

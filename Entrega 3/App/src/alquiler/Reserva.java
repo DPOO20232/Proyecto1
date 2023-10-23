@@ -2,7 +2,6 @@ package alquiler;
 import java.util.ArrayList;
 import java.util.List;
 
-import Menus.MenuAlquiler;
 import inventario.Categoria;
 import inventario.Inventario;
 import inventario.Vehiculo;
@@ -128,16 +127,6 @@ public class Reserva {
         double precio_final=precio_inicial*pctg_temporada;
         this.pagoReserva= precio_final;
     }
-
-    public static void eliminarReserva(Cliente cliente){
-        Reserva reservaElejida=MenuAlquiler.encontrarReserva(cliente);
-        if(reservaElejida!=null){
-        int id= reservaElejida.getID();
-        getListaReservas().remove(reservaElejida);
-        Vehiculo vehiculoReservaElejida= reservaElejida.getVehiculoAsignado();
-        vehiculoReservaElejida.eliminarReservaActiva(reservaElejida.getID());
-        System.out.println("\n> La reserva con IDreserva "+Integer.toString(id)+" ha sido cancelada, pronto se trasferirá de vuelta el pago del 30% (COP "+Double.toString(reservaElejida.getPagoReserva())+").");
-    }}
 
     public static void addReserva(Reserva reserva){
         if (listaReservas==null){
