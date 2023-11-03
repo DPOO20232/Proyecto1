@@ -66,23 +66,23 @@ public class Consola {
                 System.out.println("18. Cerrar sesión\n");
                 int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
                 try{
-                if (opcion_admin==1){MenuInventario.statusVehiculo();}
-                else if (opcion_admin==2){MenuInventario.crearCategoria();}
-                else if(opcion_admin==3){MenuInventario.crearVehiculo();}
-                else if(opcion_admin==4){MenuInventario.eliminarVehiculo();}
-                else if(opcion_admin==5){MenuInventario.logVehiculo();}
-                else if(opcion_admin==6){MenuInventario.trasladoVehiculo();}
-                else if(opcion_admin==7){MenuInventario.nuevoSeguro();}
-                else if(opcion_admin==8){MenuInventario.editarSeguro();}
-                else if(opcion_admin==9){MenuInventario.eliminarSeguro();}
-                else if(opcion_admin==10){MenuInventario.nuevaSede();}
-                else if(opcion_admin==11){MenuInventario.editarSede();}
-                else if(opcion_admin==12){MenuUsuario.registrarAdminLocal();}
-                else if(opcion_admin==13){MenuUsuario.actualizarAdminLocal();}
-                else if(opcion_admin==14){MenuInventario.editarCostoPorConductorAdicional();}
-                else if(opcion_admin==15){MenuInventario.editarCostoPorTrasladoSedes();}
-                else if(opcion_admin==16){MenuInventario.editarPeriodoTemporadaAlta();}
-                else if(opcion_admin==17){MenuInventario.editarPeriodoTemporadaBaja();}
+                if (opcion_admin==1){MenuInventario.statusVehiculo();Inventario.updateSistema();}
+                else if (opcion_admin==2){MenuInventario.crearCategoria();Inventario.updateSistema();}
+                else if(opcion_admin==3){MenuInventario.crearVehiculo();Inventario.updateSistema();}
+                else if(opcion_admin==4){MenuInventario.eliminarVehiculo();Inventario.updateSistema();}
+                else if(opcion_admin==5){MenuInventario.logVehiculo();Inventario.updateSistema();}
+                else if(opcion_admin==6){MenuInventario.trasladoVehiculo();Inventario.updateSistema();}
+                else if(opcion_admin==7){MenuInventario.nuevoSeguro();Inventario.updateSistema();}
+                else if(opcion_admin==8){MenuInventario.editarSeguro();Inventario.updateSistema();}
+                else if(opcion_admin==9){MenuInventario.eliminarSeguro();Inventario.updateSistema();}
+                else if(opcion_admin==10){MenuInventario.nuevaSede();Inventario.updateSistema();}
+                else if(opcion_admin==11){MenuInventario.editarSede();Inventario.updateSistema();}
+                else if(opcion_admin==12){MenuUsuario.registrarAdminLocal();Inventario.updateSistema();}
+                else if(opcion_admin==13){MenuUsuario.actualizarAdminLocal();Inventario.updateSistema();}
+                else if(opcion_admin==14){MenuInventario.editarCostoPorConductorAdicional();Inventario.updateSistema();}
+                else if(opcion_admin==15){MenuInventario.editarCostoPorTrasladoSedes();Inventario.updateSistema();}
+                else if(opcion_admin==16){MenuInventario.editarPeriodoTemporadaAlta();Inventario.updateSistema();}
+                else if(opcion_admin==17){MenuInventario.editarPeriodoTemporadaBaja();Inventario.updateSistema();}
                 else if(opcion_admin==18){continuarAdmin=false;}
                 else{System.out.println("Por favor seleccione una opción válida.");}
                 }
@@ -105,9 +105,12 @@ public class Consola {
                     System.out.println("4. Cerrar sesión\n");
                     int opcion_adminL = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
-                    if (opcion_adminL==1){MenuUsuario.addPersonalSede(adminSede);}
-                    else if(opcion_adminL==2){MenuUsuario.actualizarPersonal(adminSede);}
-                    else if(opcion_adminL==3){personal.printRegistroEmpleados(adminSede);}
+                    if (opcion_adminL==1){MenuUsuario.addPersonalSede(adminSede);
+                            Inventario.updateSistema();}
+                    else if(opcion_adminL==2){MenuUsuario.actualizarPersonal(adminSede);
+                            Inventario.updateSistema();}
+                    else if(opcion_adminL==3){personal.printRegistroEmpleados(adminSede);
+                            Inventario.updateSistema();}
                     else if(opcion_adminL==4){continuarAdminL=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
                     }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
@@ -124,10 +127,14 @@ public class Consola {
                     System.out.println("5. Cerrar sesión\n");
                     int opcion_empleadoA = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
-                        if (opcion_empleadoA==1){MenuAlquiler.crearAlquiler(sedePersonal);}
-                        else if(opcion_empleadoA==2){MenuAlquiler.completarAlquiler(sedePersonal);}
-                        else if(opcion_empleadoA==3){ MenuAlquiler.crearReserva(null, true);}
-                        else if(opcion_empleadoA==4){MenuAlquiler.modificarReserva(null);}
+                        if (opcion_empleadoA==1){MenuAlquiler.crearAlquiler(sedePersonal);
+                            Inventario.updateSistema();}
+                        else if(opcion_empleadoA==2){MenuAlquiler.completarAlquiler(sedePersonal);
+                            Inventario.updateSistema();}
+                        else if(opcion_empleadoA==3){ MenuAlquiler.crearReserva(null, true);
+                            Inventario.updateSistema();}
+                        else if(opcion_empleadoA==4){MenuAlquiler.modificarReserva(null);
+                            Inventario.updateSistema();}
                         else if(opcion_empleadoA==5){continuarPersonal1=false;}
                         else{System.out.println("Por favor seleccione una opción válida.");}
                     } catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}
@@ -145,7 +152,7 @@ public class Consola {
 
                         try {
                             if (opcion_empleadoT==1){MenuInventario.crearEvento();                          
-                            }
+                            Inventario.updateSistema();}
                             else if(opcion_empleadoT==2){continuarPersonal2=false;}
                             else{System.out.println("Por favor seleccione una opción válida.");}
                         } catch(NumberFormatException e){}
@@ -167,11 +174,16 @@ public class Consola {
                     System.out.println("6. Cerrar sesión\n");
                     int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
-                    if (opcion_cliente==1){MenuUsuario.actualizarPassword(cliente);}
-                    if (opcion_cliente==2){MenuUsuario.actualizarCliente(cliente);}
-                    else if(opcion_cliente==3){MenuAlquiler.crearReserva(cliente,false);}
-                    else if(opcion_cliente==4){MenuAlquiler.modificarReserva(cliente);}
-                    else if(opcion_cliente==5){MenuAlquiler.eliminarReserva(cliente);}
+                    if (opcion_cliente==1){MenuUsuario.actualizarPassword(cliente);
+                    Inventario.updateSistema();}
+                    if (opcion_cliente==2){MenuUsuario.actualizarCliente(cliente);
+                    Inventario.updateSistema();}
+                    else if(opcion_cliente==3){MenuAlquiler.crearReserva(cliente,false);
+                    Inventario.updateSistema();}
+                    else if(opcion_cliente==4){MenuAlquiler.modificarReserva(cliente);
+                    Inventario.updateSistema();}
+                    else if(opcion_cliente==5){MenuAlquiler.eliminarReserva(cliente);
+                    Inventario.updateSistema();}
                     else if(opcion_cliente==6){continuarCliente=false;}
                     else{System.out.println("Por favor seleccione una opción válida.");}
                     }catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}
