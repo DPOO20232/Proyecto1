@@ -37,6 +37,19 @@ public class Reserva {
 
     // Constructor
     public Reserva(int fechaRecoger, int fechaEntregar, int horaRecoger, int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar,Categoria categoria, Cliente cliente) {
+        /**
+         * Crea una nueva reserva de vehículo con la información especificada.
+         *
+         * @param fechaRecoger La fecha en la que se recogerá el vehículo (en formato numérico, por ejemplo, YYYYMMDD).
+         * @param fechaEntregar La fecha en la que se entregará el vehículo (en formato numérico, por ejemplo, YYYYMMDD).
+         * @param horaRecoger La hora en la que se recogerá el vehículo (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         * @param horaEntregar La hora en la que se entregará el vehículo (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         * @param reservaEnSede Indica si la reserva se realiza en una sede (true) o no (false).
+         * @param sedeRecoger La sede donde se recogerá el vehículo.
+         * @param sedeEntregar La sede donde se entregará el vehículo.
+         * @param categoria La categoría del vehículo que se va a reservar.
+         * @param cliente El cliente que realiza la reserva.
+         */
         this.setID();
         this.fechaRecoger = fechaRecoger;
         this.fechaEntregar = fechaEntregar;
@@ -49,6 +62,20 @@ public class Reserva {
         this.cliente = cliente;
     }
     public Reserva(int idReserva,int fechaRecoger, int fechaEntregar, int horaRecoger, int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar,Categoria categoria, Cliente cliente) {
+        /**
+         * Crea una nueva reserva de vehículo con la información especificada, incluyendo un identificador de reserva personalizado.
+         *
+         * @param idReserva El identificador único de la reserva.
+         * @param fechaRecoger La fecha en la que se recogerá el vehículo (en formato numérico, por ejemplo, YYYYMMDD).
+         * @param fechaEntregar La fecha en la que se entregará el vehículo (en formato numérico, por ejemplo, YYYYMMDD).
+         * @param horaRecoger La hora en la que se recogerá el vehículo (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         * @param horaEntregar La hora en la que se entregará el vehículo (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         * @param reservaEnSede Indica si la reserva se realiza en una sede (true) o no (false).
+         * @param sedeRecoger La sede donde se recogerá el vehículo.
+         * @param sedeEntregar La sede donde se entregará el vehículo.
+         * @param categoria La categoría del vehículo que se va a reservar.
+         * @param cliente El cliente que realiza la reserva.
+         */
         this.idReserva=idReserva;
         if (idReserva>lastId){lastId=idReserva;}
         this.fechaRecoger = fechaRecoger;
@@ -62,18 +89,90 @@ public class Reserva {
         this.cliente = cliente;
     }
     // Métodos getter
-    public int getID() {return this.idReserva;}
-    public int getFechaRecoger() {return this.fechaRecoger;}
-    public int getFechaEntregar() {return this.fechaEntregar;}
-    public int getHoraRecoger() {return this.horaRecoger;}
-    public int getHoraEntregar() {return this.horaEntregar;}
-    public boolean getReservaEnSede() {return this.reservaEnSede;}
-    public Sede getSedeRecoger() {return this.sedeRecoger;}
-    public Sede getSedeEntregar() {return this.sedeEntregar;}
-    public Categoria getCategoria() {return this.categoria;}
-    public Vehiculo getVehiculoAsignado() {return this.vehiculoAsignado;}
-    public Cliente getCliente(){return this.cliente;}
-    public double getPagoReserva() {return this.pagoReserva;}
+    public int getID() {
+        /**
+         * Obtiene el identificador único de la reserva.
+         *
+         * @return El identificador único de la reserva.
+         */
+        return this.idReserva;}
+    public int getFechaRecoger() {
+        /**
+         * Obtiene la fecha en la que se recogerá el vehículo (en formato numérico, por ejemplo, YYYYMMDD).
+         *
+         * @return La fecha de recogida del vehículo.
+         */
+        return this.fechaRecoger;}
+    public int getFechaEntregar() {
+        /**
+         * Obtiene la fecha en la que se entregará el vehículo (en formato numérico, por ejemplo, YYYYMMDD).
+         *
+         * @return La fecha de entrega del vehículo.
+         */
+        return this.fechaEntregar;}
+    public int getHoraRecoger() {
+        /**
+         * Obtiene la hora en la que se recogerá el vehículo (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         *
+         * @return La hora de recogida del vehículo.
+         */
+        return this.horaRecoger;}
+    public int getHoraEntregar() {
+        /**
+         * Obtiene la hora en la que se entregará el vehículo (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         *
+         * @return La hora de entrega del vehículo.
+         */
+        return this.horaEntregar;}
+    public boolean getReservaEnSede() { 
+        /**
+         * Indica si la reserva se realiza en una sede (true) o no (false).
+         *
+         * @return true si la reserva se realiza en una sede, false en caso contrario.
+         */
+        return this.reservaEnSede;}
+    public Sede getSedeRecoger() {
+        /**
+         * Obtiene la sede donde se recogerá el vehículo.
+         *
+         * @return La sede de recogida del vehículo.
+         */
+        return this.sedeRecoger;}
+    public Sede getSedeEntregar() {
+        /**
+         * Obtiene la sede donde se entregará el vehículo.
+         *
+         * @return La sede de entrega del vehículo.
+         */
+        return this.sedeEntregar;}
+    public Categoria getCategoria() {
+        /**
+         * Obtiene la categoría del vehículo reservado.
+         *
+         * @return La categoría del vehículo reservado.
+         */
+        return this.categoria;} 
+    public Vehiculo getVehiculoAsignado() {
+        /**
+         * Obtiene el vehículo asignado a la reserva.
+         *
+         * @return El vehículo asignado a la reserva, o null si no hay vehículo asignado.
+         */
+        return this.vehiculoAsignado;}
+    public Cliente getCliente(){
+        /**
+         * Obtiene el cliente que realizó la reserva.
+         *
+         * @return El cliente que realizó la reserva.
+         */
+        return this.cliente;}
+    public double getPagoReserva() {
+        /**
+         * Obtiene el monto del pago de la reserva.
+         *
+         * @return El monto del pago de la reserva.
+         */
+        return this.pagoReserva;}
     public static List<Reserva> getListaReservas(){return listaReservas;}
     // Métodos setter
     public void setID() {this.idReserva=lastId+=1;lastId=this.getID();}
@@ -474,6 +573,12 @@ public class Reserva {
         return retorno;
     }       
     private static Reserva encontrarReserva(Cliente cliente){
+        /**
+         * Encuentra y devuelve una reserva activa de un cliente después de mostrar las reservas activas.
+         *
+         * @param cliente: El cliente para el que se desea encontrar una reserva activa.
+         * @return Reserva: La reserva activa encontrada o null si no se encontró una reserva válida.
+         */
         Reserva retorno=null;
         List<Integer> idsReservas= desplegarReservasActivas(cliente);
         if (idsReservas.size()>=1){
@@ -499,6 +604,12 @@ public class Reserva {
         return retorno;    
     }
     private static List<Integer> desplegarReservasActivas(Cliente cliente){
+        /**
+         * Muestra las reservas activas de un cliente y devuelve una lista de los ID de las reservas activas.
+         *
+         * @param cliente: El cliente para el que se desean mostrar las reservas activas.
+         * @return List<Integer>: Una lista de los ID de las reservas activas del cliente.
+         */
         List<Reserva> reservas= getListaReservas();
         List<Integer> idsReservas= new ArrayList<Integer>();
         boolean inicio=false;
@@ -528,7 +639,13 @@ public class Reserva {
             return idsReservas;
     }
 
-        public static boolean horaValida(int hora) {
+    public static boolean horaValida(int hora) {
+        /**
+         * Verifica si una hora en formato "HHMM" es válida.
+         *
+         * @param hora: La hora en formato "HHMM".
+         * @return boolean: Devuelve true si la hora es válida, de lo contrario, devuelve false.
+         */
         int horas = hora / 100; 
         int minutos = hora % 100;
         if (horas >= 0 && horas <= 23 && minutos >= 0 && minutos <= 59) {
@@ -538,6 +655,13 @@ public class Reserva {
         }
     }
     private static boolean fechaValidaReserva(int fecha,int hora) {
+        /**
+         * Verifica si la fecha y hora de reserva son válidas en relación a la fecha y hora actual.
+         *
+         * @param fecha: La fecha de reserva en formato "AAAAMMDD".
+         * @param hora: La hora de reserva en formato "HHMM".
+         * @return boolean: Devuelve true si la fecha y hora de reserva son válidas, de lo contrario, devuelve false.
+         */
         Calendar fechaActual = Calendar.getInstance();
         int diaactual = fechaActual.get(Calendar.DAY_OF_MONTH);
         int mesactual = fechaActual.get(Calendar.MONTH) + 1;
@@ -565,6 +689,15 @@ public class Reserva {
         return retorno;
     }
     private static boolean fechaValidaDevolucion(int recoger, int devolucion, int hrecoger, int hdevolver) {
+        /**
+         * Verifica si la fecha y hora de devolución son válidas en relación a la fecha y hora de recogida.
+         *
+         * @param recoger: La fecha de recogida en formato "AAAAMMDD".
+         * @param devolucion: La fecha de devolución en formato "AAAAMMDD".
+         * @param hrecoger: La hora de recogida en formato "HHMM".
+         * @param hdevolver: La hora de devolución en formato "HHMM".
+         * @return boolean: Devuelve true si la fecha y hora de devolución son válidas, de lo contrario, devuelve false.
+         */
         int diae = recoger % 100;
         int mese = (recoger % 10000) / 100;
         int anioe = recoger / 10000;
@@ -590,7 +723,16 @@ public class Reserva {
         return retorno;
     }
     private int calcularDuracionRenta(int fecha1, int hora1, int fecha2, int hora2) {
-        // Lógica para calcular la duración de la renta
+        /**
+         * Calcula la duración de una renta en días, considerando las fechas y horas de inicio y fin.
+         *
+         * @param fecha1: La fecha de inicio de la renta en formato "YYYYMMDD".
+         * @param hora1: La hora de inicio de la renta en formato "HHMM".
+         * @param fecha2: La fecha de fin de la renta en formato "YYYYMMDD".
+         * @param hora2: La hora de fin de la renta en formato "HHMM".
+         * @return int: La duración de la renta en días.
+         * @throws DateTimeParseException: Si las fechas no están en el formato correcto.
+         */
         String fechaStr1=Integer.toString(fecha1);
         String fechaStr2=Integer.toString(fecha2);
         String fechaString1="";
