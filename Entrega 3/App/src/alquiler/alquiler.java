@@ -161,6 +161,12 @@ public class alquiler{
     }
 
     public Double calcularPagoInicial(){
+        /**
+         * Calcula el monto del pago inicial de la reserva, teniendo en cuenta varios factores, como el costo base de la reserva,
+         * conductores adicionales, seguros y pagos por excedentes.
+         *
+         * @return El monto del pago inicial de la reserva.
+         */
         double pagoReserva=this.reserva.getPagoReserva();
         double costo70=(pagoReserva*7/3);
         double costo100=costo70+pagoReserva;
@@ -182,9 +188,12 @@ public class alquiler{
     }
 
     public Double calcularPagoFinal(Sede sedeActual, int averia){
-        /*
-         seguro id1: no cobramos ningun daño, 
-         seguro id2 ó id3: solo cobramos daños graves, seguro4: no cobramos daños leves.
+        /**
+         * Calcula el monto del pago final de la reserva, teniendo en cuenta múltiples factores, como seguros, averías, limpieza, traslado, y otros eventos programados.
+         *
+         * @param sedeActual La sede actual donde se realizará la devolución del vehículo.
+         * @param averia El nivel de avería del vehículo (1 para leve, 2 para moderada, 3 para total).
+         * @return El monto del pago final de la reserva.
          */
         boolean noPagaLeve=false;
         boolean noPagaModerado=false;

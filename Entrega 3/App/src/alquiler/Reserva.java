@@ -167,19 +167,92 @@ public class Reserva {
          * @return El monto del pago de la reserva.
          */
         return this.pagoReserva;}
-    public static List<Reserva> getListaReservas(){return listaReservas;}
+    public static List<Reserva> getListaReservas(){
+        /**
+         * Obtiene una lista de todas las reservas realizadas.
+         *
+         * @return Una lista de todas las reservas realizadas.
+         */
+        return listaReservas;}
     // Métodos setter
-    public void setID() {this.idReserva=lastId+=1;lastId=this.getID();}
-    public void setFechaRecoger(int fecha) {this.fechaRecoger = fecha;}
-    public void setFechaEntregar(int fecha) {this.fechaEntregar = fecha;}
-    public void setHoraRecoger(int hora) {this.horaRecoger = hora;}
-    public void setHoraEntregar(int hora) {this.horaEntregar = hora;}
-    public void setReservaEnSede(boolean reservaCliente) {this.reservaEnSede = reservaCliente;}
-    public void setSedeRecoger(Sede sede) {this.sedeRecoger = sede;}
-    public void setSedeEntregar(Sede sede) {this.sedeEntregar = sede;}
-    public void setCategoria(Categoria categoria) {this.categoria = categoria;}
-    public void setVehiculoAsignado(Vehiculo vehiculo){this.vehiculoAsignado=vehiculo;}
+    public void setID() {
+        /**
+         * Establece un nuevo identificador único para la reserva.
+         * 
+         * @param idReserva El nuevo identificador único de la reserva.
+         */
+        this.idReserva=lastId+=1;lastId=this.getID();}
+    public void setFechaRecoger(int fecha) {
+        /**
+         * Establece la fecha en la que se recogerá el vehículo (en formato numérico, por ejemplo, YYYYMMDD).
+         *
+         * @param fecha La nueva fecha de recogida del vehículo.
+         */
+        this.fechaRecoger = fecha;}
+    public void setFechaEntregar(int fecha) {
+        /**
+         * Establece la fecha en la que se entregará el vehículo (en formato numérico, por ejemplo, YYYYMMDD).
+         *
+         * @param fecha La nueva fecha de entrega del vehículo.
+         */
+        this.fechaEntregar = fecha;}
+    public void setHoraRecoger(int hora) {
+        /**
+         * Establece la hora en la que se recogerá el vehículo (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         *
+         * @param hora La nueva hora de recogida del vehículo.
+         */
+        this.horaRecoger = hora;}
+    public void setHoraEntregar(int hora) {
+        /**
+         * Establece la hora en la que se entregará el vehículo (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         *
+         * @param hora La nueva hora de entrega del vehículo.
+         */
+        this.horaEntregar = hora;}
+    public void setReservaEnSede(boolean reservaCliente) {
+        /**
+         * Establece si la reserva se realiza en una sede (true) o no (false).
+         *
+         * @param reservaCliente true si la reserva se realiza en una sede, false en caso contrario.
+         */
+        this.reservaEnSede = reservaCliente;}
+    public void setSedeRecoger(Sede sede) {
+        /**
+         * Establece la sede donde se recogerá el vehículo.
+         *
+         * @param sede La nueva sede de recogida del vehículo.
+         */
+        this.sedeRecoger = sede;}
+    public void setSedeEntregar(Sede sede) {
+        /**
+         * Establece la sede donde se entregará el vehículo.
+         *
+         * @param sede La nueva sede de entrega del vehículo.
+         */
+        this.sedeEntregar = sede;}
+    public void setCategoria(Categoria categoria) {
+        /**
+         * Establece la categoría del vehículo reservado.
+         *
+         * @param categoria La nueva categoría del vehículo reservado.
+         */
+        this.categoria = categoria;}
+    public void setVehiculoAsignado(Vehiculo vehiculo){
+        /**
+         * Establece el vehículo asignado a la reserva.
+         *
+         * @param vehiculo El vehículo asignado a la reserva.
+         */
+        this.vehiculoAsignado=vehiculo;}
     public void setVehiculoAsignado() {
+        /**
+         * Asigna un vehículo a la reserva de acuerdo a las condiciones establecidas.
+         * Si se encuentra un vehículo disponible en la misma categoría y sede, se asigna.
+         * Si no se encuentra un vehículo en la misma categoría, se busca un "upgrade" en la categoría padre.
+         * Si se encuentra un vehículo, se le asigna al cliente.
+         * Si no se encuentra ningún vehículo disponible, se muestra un mensaje de error.
+         */
         Vehiculo vehiculoAsignado=null;
         boolean encontreUpgrade=false;
         boolean esUpgrade=true;
@@ -209,9 +282,22 @@ public class Reserva {
         else{System.out.println("\n\t>No se encontraron vehículos disponibles para la categoría dada en el rango de fechas dado.");}
     }
     public void setPagoReserva(double pago) {
+        /**
+         * Establece el monto de pago de la reserva con el valor especificado.
+         *
+         * @param pago El monto de pago de la reserva.
+         */
         pagoReserva = pago;
     }
     public void setPagoReserva(int fecha1, int hora1, int fecha2, int hora2) {
+        /**
+         * Calcula y establece el monto de pago de la reserva en función de las fechas y horas especificadas.
+         *
+         * @param fecha1 La fecha de inicio de la reserva (en formato numérico, por ejemplo, YYYYMMDD).
+         * @param hora1 La hora de inicio de la reserva (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         * @param fecha2 La fecha de finalización de la reserva (en formato numérico, por ejemplo, YYYYMMDD).
+         * @param hora2 La hora de finalización de la reserva (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         */
         Categoria categoria=this.getCategoria();
         int tarifa=categoria.getTarifaDiaria();
         int dias=this.calcularDuracionRenta(fecha1,hora1,fecha2,hora2);
@@ -228,12 +314,23 @@ public class Reserva {
     }
 
     public static void addReserva(Reserva reserva){
+        /**
+         * Agrega una reserva a la lista de reservas.
+         *
+         * @param reserva La reserva que se va a agregar a la lista.
+         */
         if (listaReservas==null){
         listaReservas= new ArrayList<Reserva>();
         }
         listaReservas.add(reserva);
     }
     public static Reserva assignReserva(int idReserva){
+        /**
+         * Asigna una reserva por su identificador único.
+         *
+         * @param idReserva El identificador único de la reserva que se desea asignar.
+         * @return La reserva con el identificador especificado, o null si no se encuentra.
+         */
         Reserva retorno = null;
         for(Reserva i: Reserva.getListaReservas()){
             if(i.getID()==idReserva){
@@ -242,75 +339,6 @@ public class Reserva {
             }}
         return retorno;
     }       
-<<<<<<< HEAD
-    private static Reserva encontrarReserva(Cliente cliente){
-        /**
-         * Encuentra y devuelve una reserva activa de un cliente después de mostrar las reservas activas.
-         *
-         * @param cliente: El cliente para el que se desea encontrar una reserva activa.
-         * @return Reserva: La reserva activa encontrada o null si no se encontró una reserva válida.
-         */
-        Reserva retorno=null;
-        List<Integer> idsReservas= desplegarReservasActivas(cliente);
-        if (idsReservas.size()>=1){
-        boolean continuar=true;
-        while (continuar){
-        int intReservaElejida= Integer.parseInt(input("Porfavor ingrese el idReserva de la reserva que desea modificar/cancelar"));
-        if (idsReservas.contains(intReservaElejida)){
-            retorno=Reserva.assignReserva(intReservaElejida);
-            System.out.println("\n> Reserva encontrada.\n");
-            continuar=false;
-
-        }
-        else{
-            System.out.println("\n> El idReserva ingresado no es válido, desea intentarlo de nuevo?\n");
-            System.out.println("1.Sí");
-            System.out.println("2.No(ó cualquier otro número)");
-            int opcion= Integer.parseInt(input("Porfavor elija una opción"));
-            if(opcion==1){
-                idsReservas=desplegarReservasActivas(cliente);
-            }
-            else{continuar=false;}
-        }}}
-        return retorno;    
-    }
-    private static List<Integer> desplegarReservasActivas(Cliente cliente){
-        /**
-         * Muestra las reservas activas de un cliente y devuelve una lista de los ID de las reservas activas.
-         *
-         * @param cliente: El cliente para el que se desean mostrar las reservas activas.
-         * @return List<Integer>: Una lista de los ID de las reservas activas del cliente.
-         */
-        List<Reserva> reservas= getListaReservas();
-        List<Integer> idsReservas= new ArrayList<Integer>();
-        boolean inicio=false;
-        if (reservas.size()>0){
-        for (int i = 0; i < reservas.size(); i++) {
-            if (reservas.get(i).getCliente().equals(cliente)){
-            if (inicio==false){
-                System.out.println("\nTiene las siguientes Reservas activas:");
-                inicio=true;
-            }
-            Reserva i_reserva=reservas.get(i);
-            idsReservas.add(i_reserva.getID());
-            System.out.println("IDreserva: " + Integer.toString(i_reserva.getID()));
-            int f1= i_reserva.getFechaRecoger();
-            int f2=i_reserva.getFechaEntregar();
-            String categoria=i_reserva.getCategoria().getnombreCategoria();
-            Sede sedeRecoger= i_reserva.getSedeRecoger();
-            Sede sedeDevolver=i_reserva.getSedeEntregar();
-            String fecha1 = String.format("%02d/%02d/%04d",f1 % 100,(f1/ 100) % 100, f1/ 10000);
-            String fecha2 = String.format("%02d/%02d/%04d",f2 % 100,(f2/ 100) % 100, f2/ 10000);
-            System.out.println("    Tipo de vehículo reservado: "+ categoria+ ". Fecha Inicio: " + fecha1+"-> Fecha Final: "+ fecha2);
-            System.out.println("    Sede de recogida del vehículo: "+ sedeRecoger.getNombre()+" ("+sedeRecoger.getUbicacion()+")"+ ". -> Sede de devolución del vehículon: "+ sedeDevolver.getNombre()+" ("+sedeDevolver.getUbicacion()+")");
-
-            System.out.println("------------------------------------------------------------------------------------------------------------------------");
-            }}}
-            if (inicio==false){ System.out.println("\n>No tienes reservas activas. ");}
-            return idsReservas;
-    }
-=======
->>>>>>> main
 
     public static boolean horaValida(int hora) {
         /**
@@ -327,18 +355,14 @@ public class Reserva {
             return false;
         }
     }
-<<<<<<< HEAD
-    private static boolean fechaValidaReserva(int fecha,int hora) {
-        /**
-         * Verifica si la fecha y hora de reserva son válidas en relación a la fecha y hora actual.
-         *
-         * @param fecha: La fecha de reserva en formato "AAAAMMDD".
-         * @param hora: La hora de reserva en formato "HHMM".
-         * @return boolean: Devuelve true si la fecha y hora de reserva son válidas, de lo contrario, devuelve false.
-         */
-=======
     public static boolean fechaValidaReserva(int fecha,int hora) {
->>>>>>> main
+        /**
+         * Verifica si una fecha y hora para una reserva son válidas y están en el futuro.
+         *
+         * @param fecha La fecha de la reserva (en formato numérico, por ejemplo, YYYYMMDD).
+         * @param hora La hora de la reserva (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         * @return true si la fecha y hora son válidas y están en el futuro, false en caso contrario.
+         */
         Calendar fechaActual = Calendar.getInstance();
         int diaactual = fechaActual.get(Calendar.DAY_OF_MONTH);
         int mesactual = fechaActual.get(Calendar.MONTH) + 1;
@@ -365,20 +389,16 @@ public class Reserva {
         } 
         return retorno;
     }
-<<<<<<< HEAD
-    private static boolean fechaValidaDevolucion(int recoger, int devolucion, int hrecoger, int hdevolver) {
-        /**
-         * Verifica si la fecha y hora de devolución son válidas en relación a la fecha y hora de recogida.
-         *
-         * @param recoger: La fecha de recogida en formato "AAAAMMDD".
-         * @param devolucion: La fecha de devolución en formato "AAAAMMDD".
-         * @param hrecoger: La hora de recogida en formato "HHMM".
-         * @param hdevolver: La hora de devolución en formato "HHMM".
-         * @return boolean: Devuelve true si la fecha y hora de devolución son válidas, de lo contrario, devuelve false.
-         */
-=======
     public static boolean fechaValidaDevolucion(int recoger, int devolucion, int hrecoger, int hdevolver) {
->>>>>>> main
+        /**
+         * Verifica si las fechas de recogida y devolución, junto con las horas de recogida y devolución, son válidas y están en el futuro.
+         *
+         * @param recoger La fecha de recogida (en formato numérico, por ejemplo, YYYYMMDD).
+         * @param devolucion La fecha de devolución (en formato numérico, por ejemplo, YYYYMMDD).
+         * @param hrecoger La hora de recogida (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         * @param hdevolver La hora de devolución (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         * @return true si las fechas y horas son válidas y están en el futuro, false en caso contrario.
+         */
         int diae = recoger % 100;
         int mese = (recoger % 10000) / 100;
         int anioe = recoger / 10000;

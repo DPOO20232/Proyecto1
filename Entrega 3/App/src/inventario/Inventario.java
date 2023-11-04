@@ -31,6 +31,11 @@ public class Inventario {
     private static List<Vehiculo> listaVehiculos;
     //Los usuarios guardarlos en una lista de usuario en clase Usuario
     public static void loadSistema(){
+    /**
+     * Carga todos los datos del sistema, incluyendo información general, categorías, sedes, personal, seguros,
+     * licencias, clientes, eventos, reservas, alquileres y vehículos.
+     * Este método es estático y se utiliza para cargar todos los datos del sistema al iniciar la aplicación.
+     */
     loadInfo();
     loadCategorias();
     loadSedes();
@@ -43,18 +48,85 @@ public class Inventario {
     loadAlquileres();
     loadVehiculos();
     }
-    public static String getNombreCompania(){return nombreCompania;}
-    public static int getCostoPorConductorAdicional(){return costoPorConductorAdicional;}
-    public static int getCostoPorTrasladoSedes(){return costoPorTrasladoSedes;}
-    public static List<Integer> getPeriodoTemporadaAlta(){return periodoTemporadaAlta;}
-    public static List<Integer> getPeriodoTemporadaBaja(){return periodoTemporadaBaja;}
-    public static List<Categoria> getListaCategorias(){return listaCategorias;}
-    public static List<Seguro> getListaSeguros(){return listaSeguros;}
-    public static List<Sede> getListaSedes(){return listaSedes;}
-    public static List<Evento> getListaEventos(){return listaEventos;}
-    public static List<Vehiculo> getListaVehiculos(){return listaVehiculos;}
+    public static String getNombreCompania(){
+        /**
+         * Obtiene el nombre de la compañía.
+         *
+         * @return El nombre de la compañía.
+         */
+        return nombreCompania;}
+    public static int getCostoPorConductorAdicional(){
+        /**
+         * Obtiene el costo por conductor adicional.
+         *
+         * @return El costo por conductor adicional.
+         */
+        return costoPorConductorAdicional;}
+    public static int getCostoPorTrasladoSedes(){
+        /**
+         * Obtiene el costo por traslado entre sedes.
+         *
+         * @return El costo por traslado entre sedes.
+         */
+        return costoPorTrasladoSedes;}
+    public static List<Integer> getPeriodoTemporadaAlta(){
+        /**
+         * Obtiene la lista de períodos de temporada alta.
+         *
+         * @return La lista de períodos de temporada alta.
+         */
+        return periodoTemporadaAlta;}
+    public static List<Integer> getPeriodoTemporadaBaja(){
+        /**
+         * Obtiene la lista de períodos de temporada baja.
+         *
+         * @return La lista de períodos de temporada baja.
+         */
+        return periodoTemporadaBaja;}
+    public static List<Categoria> getListaCategorias(){
+        /**
+         * Obtiene la lista de categorías disponibles en el sistema.
+         *
+         * @return La lista de categorías.
+         */
+        return listaCategorias;}
+    public static List<Seguro> getListaSeguros(){
+        /**
+         * Obtiene la lista de seguros disponibles en el sistema.
+         *
+         * @return La lista de seguros.
+         */
+        return listaSeguros;}
+    public static List<Sede> getListaSedes(){
+        /**
+         * Obtiene la lista de sedes disponibles en el sistema.
+         *
+         * @return La lista de sedes.
+         */
+        return listaSedes;}
+    public static List<Evento> getListaEventos(){
+        /**
+         * Obtiene la lista de sedes disponibles en el sistema.
+         *
+         * @return La lista de sedes.
+         */
+        return listaEventos;}
+    public static List<Vehiculo> getListaVehiculos(){
+        /**
+         * Obtiene la lista de sedes disponibles en el sistema.
+         *
+         * @return La lista de sedes.
+         */
+        return listaVehiculos;}
 
     public static boolean esTemporadaAlta(int mmdd1, int mmdd2){
+        /**
+         * Determina si un rango de fechas (mmdd1 y mmdd2) se encuentra dentro del período de temporada alta.
+         *
+         * @param mmdd1 El primer valor de fecha en formato MMDD (mes y día).
+         * @param mmdd2 El segundo valor de fecha en formato MMDD (mes y día).
+         * @return true si el rango de fechas se encuentra en temporada alta, de lo contrario, false.
+         */
         int inicioTemp1=getPeriodoTemporadaAlta().get(0);
         int finTemp1=getPeriodoTemporadaAlta().get(1);
         int inicioTemp2=getPeriodoTemporadaAlta().get(2);
@@ -65,21 +137,75 @@ public class Inventario {
         
     }
     public static boolean esTemporadaBaja(int mmdd1, int mmdd2){
+        /**
+         * Determina si un rango de fechas (mmdd1 y mmdd2) se encuentra dentro del período de temporada baja.
+         *
+         * @param mmdd1 El primer valor de fecha en formato MMDD (mes y día).
+         * @param mmdd2 El segundo valor de fecha en formato MMDD (mes y día).
+         * @return true si el rango de fechas se encuentra en temporada baja, de lo contrario, false.
+         */
         int inicioTemp=getPeriodoTemporadaBaja().get(0);
         int finTemp=getPeriodoTemporadaBaja().get(1);
         return (mmdd1 <= finTemp) && (mmdd1 >= inicioTemp)||(mmdd2 <= finTemp) && (mmdd2 >= inicioTemp);
     }
     public static void setCostoPorConductorAdicional(int costo){
+        /**
+         * Establece el costo por conductor adicional.
+         *
+         * @param costo El costo por conductor adicional a establecer.
+         */
         costoPorConductorAdicional=costo;}
     public static void setCostoPorTrasladoSedes(int costo){
+        /**
+         * Establece el costo por traslado entre sedes.
+         *
+         * @param costo El costo por traslado entre sedes a establecer.
+         */
         costoPorTrasladoSedes=costo;}
-    public static void setListaCategorias(Categoria categoria){getListaCategorias().add(categoria);}
-    public static void setListaSeguros(Seguro seguro){getListaSeguros().add(seguro);}
-    public static void setListaSedes(Sede sede){getListaSedes().add(sede);}
-    public static void setListaEventos(Evento evento){getListaEventos().add(evento);}
-    public static void setListaVehiculos(Vehiculo vehiculo){getListaVehiculos().add(vehiculo);}
+    public static void setListaCategorias(Categoria categoria){
+        /**
+         * Agrega una categoría a la lista de categorías disponibles.
+         *
+         * @param categoria La categoría a agregar a la lista de categorías.
+         */
+        getListaCategorias().add(categoria);}
+    public static void setListaSeguros(Seguro seguro){
+        /**
+         * Agrega un seguro a la lista de seguros disponibles.
+         *
+         * @param seguro El seguro a agregar a la lista de seguros.
+         */
+        getListaSeguros().add(seguro);}
+    public static void setListaSedes(Sede sede){
+        /**
+         * Agrega un seguro a la lista de seguros disponibles.
+         *
+         * @param seguro El seguro a agregar a la lista de seguros.
+         */
+        getListaSedes().add(sede);}
+    public static void setListaEventos(Evento evento){
+        /**
+         * Agrega un evento a la lista de eventos registrados.
+         *
+         * @param evento El evento a agregar a la lista de eventos.
+         */
+        getListaEventos().add(evento);}
+    public static void setListaVehiculos(Vehiculo vehiculo){
+        /**
+         * Agrega un vehículo a la lista de vehículos disponibles.
+         *
+         * @param vehiculo El vehículo a agregar a la lista de vehículos.
+         */
+        getListaVehiculos().add(vehiculo);}
 
     public static void updateSistema() throws IOException{
+    /**
+     * Actualiza la información del sistema, incluyendo la información general, categorías, sedes, personal,
+     * seguros, licencias, reservas, vehículos, eventos, alquileres y clientes.
+     *
+     * @throws IOException Si ocurre un error durante la actualización de datos, se lanza una excepción
+     *                     de tipo IOException.
+     */
     updateInfo();
     updateCategorias();
     updateSedes();
@@ -93,6 +219,11 @@ public class Inventario {
     updateCliente();
     }
     private static void updateInfo() throws IOException{
+        /**
+         * Actualiza y guarda la información general de la empresa en el archivo de texto.
+         *
+         * @throws IOException Si ocurre un error al escribir en el archivo de información, se lanza una excepción de tipo IOException.
+         */
         File archivo = new File("./data/info.txt");
         FileWriter escritor = new FileWriter(archivo);
         String nombrecompania=nombreCompania;
@@ -128,6 +259,11 @@ public class Inventario {
 
     }
     private static void updateCategorias() throws IOException{
+        /**
+         * Actualiza y guarda la información de las categorías de vehículos en el archivo de texto.
+         *
+         * @throws IOException Si ocurre un error al escribir en el archivo de categorías, se lanza una excepción de tipo IOException.
+         */
         File archivo = new File("./data/categorias.txt");
         FileWriter escritor = new FileWriter(archivo);
         List <Categoria> lstcategorias=listaCategorias;
@@ -158,6 +294,11 @@ public class Inventario {
             escritor.close();
         }
     private static void updateSedes() throws IOException{
+        /**
+         * Actualiza y guarda la información de las sedes en el archivo de texto.
+         *
+         * @throws IOException Si ocurre un error al escribir en el archivo de sedes, se lanza una excepción de tipo IOException.
+         */
         File archivo = new File("./data/sedes.txt");
         FileWriter escritor = new FileWriter(archivo);
         List<Sede>lstsedes=listaSedes;
@@ -188,6 +329,11 @@ public class Inventario {
       
     }
     private static void updatePersonal() throws IOException{
+        /**
+         * Actualiza y guarda la información del personal en el archivo de texto.
+         *
+         * @throws IOException Si ocurre un error al escribir en el archivo de personal, se lanza una excepción de tipo IOException.
+         */
         File archivo = new File("./data/personal.txt");
         FileWriter escritor2= new FileWriter(archivo);
         List<personal> lstpersonal= personal.getCredencialesPersonal();
@@ -211,6 +357,11 @@ public class Inventario {
         escritor2.close();
     }
     private static void updateSeguros() throws IOException{
+        /**
+         * Actualiza y guarda la información de los seguros en el archivo de texto.
+         *
+         * @throws IOException Si ocurre un error al escribir en el archivo de seguros, se lanza una excepción de tipo IOException.
+         */
         File archivo = new File("./data/seguros.txt");
         FileWriter escritor2= new FileWriter(archivo);
         List<Seguro> lstseguros=listaSeguros;
@@ -224,6 +375,11 @@ public class Inventario {
         escritor2.close();
     }
     private static void updateLicencia() throws IOException{
+        /**
+         * Actualiza y guarda la información de las licencias en el archivo de texto.
+         *
+         * @throws IOException Si ocurre un error al escribir en el archivo de licencias, se lanza una excepción de tipo IOException.
+         */
         File archivo = new File("./data/licencias.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Licencia> lstlicencia=Usuario.getListaLicencias();
@@ -238,6 +394,11 @@ public class Inventario {
         escritor.close();
     }
     private static void updateReserva() throws IOException{
+        /**
+         * Actualiza y guarda la información de las reservas en el archivo de texto.
+         *
+         * @throws IOException Si ocurre un error al escribir en el archivo de reservas, se lanza una excepción de tipo IOException.
+         */
         File archivo = new File("./data/reservas.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Reserva> lstreserva= Reserva.getListaReservas();
@@ -263,6 +424,11 @@ public class Inventario {
         escritor.close();
     }
     private static void updateVehiculo() throws IOException{
+        /**
+         * Actualiza y guarda la información de los vehículos en el archivo de texto.
+         *
+         * @throws IOException Si ocurre un error al escribir en el archivo de vehículos, se lanza una excepción de tipo IOException.
+         */
         File archivo = new File("./data/vehiculos.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Vehiculo> lstvehiculo=listaVehiculos;
@@ -325,6 +491,11 @@ public class Inventario {
         escritor.close();
     }
     private static void updateEvento() throws IOException{
+        /**
+         * Actualiza y guarda la información de los eventos en el archivo de texto.
+         *
+         * @throws IOException Si ocurre un error al escribir en el archivo de eventos, se lanza una excepción de tipo IOException.
+         */
         File archivo = new File("./data/eventos.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Evento> lsteventos=listaEventos;
@@ -353,6 +524,11 @@ public class Inventario {
         escritor.close();
     }
     private static void updateAlquiler() throws IOException{
+        /**
+         * Actualiza y guarda la información de los alquileres en el archivo de texto.
+         *
+         * @throws IOException Si ocurre un error al escribir en el archivo de alquileres, se lanza una excepción de tipo IOException.
+         */
         File archivo = new File("./data/alquileres.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<alquiler> lstAlquiler=alquiler.getListaAlquileres();
@@ -423,6 +599,11 @@ public class Inventario {
         }
 
     private static void updateCliente() throws IOException{
+        /**
+         * Actualiza y guarda la información de los clientes en el archivo de texto.
+         *
+         * @throws IOException Si ocurre un error al escribir en el archivo de clientes, se lanza una excepción de tipo IOException.
+         */
         File archivo = new File("./data/clientes.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Cliente> clientes=Usuario.getListaClientes();
@@ -457,6 +638,13 @@ public class Inventario {
     }
     
     private static void loadInfo(){
+        /**
+         * Carga la información inicial del sistema desde un archivo de texto. La información cargada incluye el nombre de la compañía,
+         * el costo por conductor adicional, el costo por traslado entre sedes y los periodos de temporada baja y alta.
+         * La información se almacena en las variables estáticas correspondientes.
+         *
+         * @throws IOException Si ocurre un error al leer el archivo de información, se lanza una excepción de tipo IOException.
+         */
         try (BufferedReader br = new BufferedReader(new FileReader("./data/info.txt"))) {
             String linea;
             while ((linea = br.readLine()) != null) {
@@ -500,6 +688,13 @@ public class Inventario {
 
     }
     private static void loadCategorias(){
+        /**
+         * Carga las categorías de vehículos desde un archivo de texto. Las categorías se almacenan en la lista estática listaCategorias.
+         * Cada línea del archivo contiene la información de una categoría, que se parsea y se crea un objeto de la clase Categoria.
+         * Las categorías se añaden a la lista y, si tienen una categoría padre, se establece la relación con la categoría padre.
+         *
+         * @throws IOException Si ocurre un error al leer el archivo de categorías, se lanza una excepción de tipo IOException.
+         */
         try (BufferedReader br = new BufferedReader(new FileReader("./data/categorias.txt"))) {
             listaCategorias= new ArrayList<Categoria>();
             String linea;
@@ -526,6 +721,12 @@ public class Inventario {
         } catch (IOException e) {e.printStackTrace();}
     }
     private static void loadSedes(){
+        /**
+        * Carga la información de las sedes desde un archivo de texto. Cada línea del archivo contiene la información de una sede,
+        * que se parsea y se crea un objeto de la clase Sede. Las sedes se agregan a la lista estática listaSedes.
+        *
+        * @throws IOException Si ocurre un error al leer el archivo de sedes, se lanza una excepción de tipo IOException.
+        */
     //1;SedeChapinero;cra7 #70, Bogotá;[0630,1630];[0630,1230];[]
         try (BufferedReader br = new BufferedReader(new FileReader("./data/sedes.txt"))) {
             listaSedes= new ArrayList<Sede>();
@@ -561,6 +762,13 @@ public class Inventario {
         } catch (IOException e) {e.printStackTrace();}
     }
     private static void loadPersonal(){
+        /**
+         * Carga la información del personal de la compañía desde un archivo de texto. Cada línea del archivo contiene la información
+         * de un miembro del personal, que se parsea y se crea un objeto de la clase Admin o Personal. Los miembros del personal se agregan
+         * a las listas correspondientes (Admin o Personal) y se asignan a las sedes si es necesario.
+         *
+         * @throws IOException Si ocurre un error al leer el archivo de personal, se lanza una excepción de tipo IOException.
+         */
         try (BufferedReader br = new BufferedReader(new FileReader("./data/personal.txt"))) {
             int contador=0;
             String linea;
@@ -596,6 +804,12 @@ public class Inventario {
             } catch (IOException e) {e.printStackTrace();}
     }
     private static void loadSeguros(){
+        /**
+         * Carga la información de los seguros desde un archivo de texto. Cada línea del archivo contiene la información
+         * de un seguro, que se parsea y se crea un objeto de la clase Seguro. Los seguros se agregan a la lista de seguros.
+         *
+         * @throws IOException Si ocurre un error al leer el archivo de seguros, se lanza una excepción de tipo IOException.
+         */
         try (BufferedReader br = new BufferedReader(new FileReader("./data/seguros.txt"))) {
             listaSeguros= new ArrayList<Seguro>();
             String linea;
@@ -615,6 +829,12 @@ public class Inventario {
         } catch (IOException e) {e.printStackTrace();}
 	}
     private static void loadLicencias() {
+        /**
+         * Carga la información de las licencias desde un archivo de texto. Cada línea del archivo contiene la información
+         * de una licencia, que se parsea y se crea un objeto de la clase Licencia. Las licencias se agregan a la lista de licencias de usuarios.
+         *
+         * @throws IOException Si ocurre un error al leer el archivo de licencias, se lanza una excepción de tipo IOException.
+         */
         int contador = 0;
         try (BufferedReader br = new BufferedReader(new FileReader("./data/licencias.txt"))) {
             String linea;
@@ -639,6 +859,12 @@ public class Inventario {
     }
     
     private static void loadClientes(){
+        /**
+         * Carga la información de las licencias desde un archivo de texto. Cada línea del archivo contiene la información
+         * de una licencia, que se parsea y se crea un objeto de la clase Licencia. Las licencias se agregan a la lista de licencias de usuarios.
+         *
+         * @throws IOException Si ocurre un error al leer el archivo de licencias, se lanza una excepción de tipo IOException.
+         */
         int contador=0;
         try (BufferedReader br = new BufferedReader(new FileReader("./data/clientes.txt"))) {
             String linea;
@@ -672,6 +898,12 @@ public class Inventario {
         catch (IOException e) {e.printStackTrace();}
     }
     private static void loadEventos(){
+        /**
+         * Carga la información de eventos desde un archivo de texto. Cada línea del archivo contiene la información
+         * de un evento, que se parsea y se crea un objeto de la clase Evento. Los eventos se agregan a la lista de eventos.
+         *
+         * @throws IOException Si ocurre un error al leer el archivo de eventos, se lanza una excepción de tipo IOException.
+         */
         listaEventos= new ArrayList<Evento>();
         try (BufferedReader br = new BufferedReader(new FileReader("./data/eventos.txt"))) {
             String linea;
@@ -694,6 +926,12 @@ public class Inventario {
         catch (IOException e) {e.printStackTrace();}
     }
     private static void loadReservas(){
+        /**
+         * Carga la información de eventos desde un archivo de texto. Cada línea del archivo contiene la información
+         * de un evento, que se parsea y se crea un objeto de la clase Evento. Los eventos se agregan a la lista de eventos.
+         *
+         * @throws IOException Si ocurre un error al leer el archivo de eventos, se lanza una excepción de tipo IOException.
+         */
         int contador=0;
         try (BufferedReader br = new BufferedReader(new FileReader("./data/reservas.txt"))) {
             String linea;
@@ -727,6 +965,12 @@ public class Inventario {
         catch (IOException e) {e.printStackTrace();}
     }
     private static void loadAlquileres(){
+        /**
+         * Carga la información de alquileres desde un archivo de texto. Cada línea del archivo contiene la información de un alquiler,
+         * que se parsea y se crea un objeto de la clase Alquiler. Los alquileres se agregan a la lista de alquileres.
+         *
+         * @throws IOException Si ocurre un error al leer el archivo de alquileres, se lanza una excepción de tipo IOException.
+         */
         int contador=0;
         try (BufferedReader br = new BufferedReader(new FileReader("./data/alquileres.txt"))) {
             String linea;
@@ -774,6 +1018,11 @@ public class Inventario {
     }
 
     private static void loadVehiculos(){
+        /**
+         * Carga la información de vehículos desde un archivo de texto. Cada línea del archivo contiene la información de un vehículo,
+         * que se parsea y se crea un objeto de la clase Vehiculo. Los vehículos se agregan a la lista de vehículos. Además, se asocian
+         * eventos, alquileres y reservas activas a los vehículos correspondientes.
+         */
         int contadorEventos=0;
         int contadorAlquileres=0;
         int contadorReservasActivas=0;
@@ -839,6 +1088,12 @@ public class Inventario {
         }
     }
     public static Categoria assignCategoria(int id_categoria){
+        /**
+         * Busca y devuelve una instancia de la clase Categoria que coincide con el ID especificado.
+         *
+         * @param id_categoria El ID de la categoría que se desea encontrar.
+         * @return La instancia de la categoría con el ID especificado, o null si no se encuentra ninguna coincidencia.
+         */
         Categoria retorno = null;
         for(Categoria i: Inventario.getListaCategorias()){
             if(i.getID()==id_categoria){
@@ -847,6 +1102,12 @@ public class Inventario {
         return retorno;
     }
     public static Seguro assignSeguro(int id_seguro){
+        /**
+         * Busca y devuelve una instancia de la clase Seguro que coincide con el ID especificado.
+         *
+         * @param id_seguro El ID del seguro que se desea encontrar.
+         * @return La instancia del seguro con el ID especificado, o null si no se encuentra ninguna coincidencia.
+         */
         Seguro retorno = null;
         for(Seguro i: Inventario.getListaSeguros()){
             if(i.getID()==id_seguro){
@@ -855,6 +1116,12 @@ public class Inventario {
         return retorno;
     } 
     public static Sede assignSede(int id_sede){
+        /**
+         * Busca y devuelve una instancia de la clase Sede que coincide con el ID especificado.
+         *
+         * @param id_sede El ID de la sede que se desea encontrar.
+         * @return La instancia de la sede con el ID especificado, o null si no se encuentra ninguna coincidencia.
+         */
         Sede retorno = null;
         for(Sede i: Inventario.getListaSedes()){
             if(i.getID()==id_sede){
@@ -864,6 +1131,12 @@ public class Inventario {
         return retorno;
     } 
     public static Evento assignEvento(int id_evento){
+        /**
+         * Busca y devuelve una instancia de la clase Evento que coincide con el ID especificado.
+         *
+         * @param id_evento El ID del evento que se desea encontrar.
+         * @return La instancia del evento con el ID especificado, o null si no se encuentra ninguna coincidencia.
+         */
         Evento retorno = null;
         for(Evento i: Inventario.getListaEventos()){
             if(i.getID()==id_evento){
@@ -874,6 +1147,12 @@ public class Inventario {
     }
 
     public static Cliente assignCliente(int cedula_cliente){
+        /**
+         * Busca y devuelve una instancia de la clase Cliente que coincide con el número de cédula especificado.
+         *
+         * @param cedula_cliente El número de cédula del cliente que se desea encontrar.
+         * @return La instancia del cliente con el número de cédula especificado, o null si no se encuentra ninguna coincidencia.
+         */
         Cliente retorno = null;
         for(Cliente i: Usuario.getListaClientes()){
             if(i.getNumeroCedula()==cedula_cliente){
@@ -883,6 +1162,12 @@ public class Inventario {
         return retorno;
     } 
     public static Vehiculo assignVehiculo(String placa){
+        /**
+         * Busca y devuelve una instancia de la clase Vehiculo que coincide con la placa especificada.
+         *
+         * @param placa La placa del vehículo que se desea encontrar.
+         * @return La instancia del vehículo con la placa especificada, o null si no se encuentra ninguna coincidencia.
+         */
         Vehiculo retorno = null;
         for(Vehiculo i: Inventario.getListaVehiculos()){
             if(i.getPlaca().equals(placa)){
