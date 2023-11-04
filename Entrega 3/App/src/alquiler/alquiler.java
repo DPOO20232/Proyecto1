@@ -37,49 +37,125 @@ public class alquiler{
         this.pagosExcedentes= new ArrayList<PagoExcedente>();
     }
     public boolean getActivo(){
+        /**
+         * Obtiene el estado de activación del alquiler.
+         *
+         * @return boolean: true si el alquiler está activo, false si no lo está.
+         */
         return this.activo;
     }
     public int getID(){
+        /**
+         * Obtiene el identificador (ID) del alquiler.
+         *
+         * @return int: El ID del alquiler.
+         */
         return this.idAlquiler;
     }
     public double getPagoFinal(){
+        /**
+         * Obtiene el monto total del pago del alquiler.
+         *
+         * @return double: El monto total del pago del alquiler.
+         */
         return this.pagoFinal;
     }
     public ArrayList<Conductor> getConductores(){
+        /**
+         * Obtiene la lista de conductores adicionales asociados al alquiler.
+         *
+         * @return ArrayList<Conductor>: La lista de conductores adicionales del alquiler.
+         */
         return this.conductores;
     }
     public ArrayList<Seguro> getSeguros(){
+        /**
+         * Obtiene la lista de seguros asociados al alquiler.
+         *
+         * @return ArrayList<Seguro>: La lista de seguros asociados al alquiler.
+         */
         return this.seguros;
     }
     public ArrayList<PagoExcedente> getPagosExcedentes(){
+        /**
+         * Obtiene la lista de pagos excedentes asociados al alquiler.
+         *
+         * @return ArrayList<PagoExcedente>: La lista de pagos excedentes asociados al alquiler.
+         */
         return this.pagosExcedentes;
     }
     public Reserva getReserva(){
+        /**
+         * Obtiene la reserva asociada al alquiler.
+         *
+         * @return Reserva: La reserva asociada al alquiler.
+         */
         return this.reserva;
     }
     public static ArrayList<alquiler> getListaAlquileres(){
+        /**
+         * Obtiene la lista de alquileres activos.
+         *
+         * @return ArrayList<alquiler>: La lista de alquileres activos.
+         */
         return listaAlquileres;
     }
     public void setActivo(boolean activo){
+        /**
+         * Establece el estado de activo/inactivo del alquiler.
+         *
+         * @param activo: Un valor booleano que indica si el alquiler está activo (true) o inactivo (false).
+         */
         this.activo=activo;
     }
     public void setPagoFinal(double valor){
+        /**
+         * Establece el monto total del pago del alquiler.
+         *
+         * @param valor: El monto total del pago del alquiler a establecer.
+         */
         this.pagoFinal=valor;
     }
     public void addConductor(Conductor conductor){
+        /**
+         * Agrega un conductor adicional a la lista de conductores adicionales asociados al alquiler.
+         *
+         * @param conductor: El conductor adicional que se desea agregar a la lista.
+         */
         this.conductores.add(conductor);
     }
     public void addSeguro(Seguro seguro){
+        /**
+         * Agrega un seguro a la lista de seguros asociados al alquiler.
+         *
+         * @param seguro: El seguro que se desea agregar a la lista.
+         */
         this.seguros.add(seguro);
     }
     public void addPagoExcedente(PagoExcedente pago){
+        /**
+         * Agrega un pago excedente a la lista de pagos excedentes asociados al alquiler.
+         *
+         * @param pago: El pago excedente que se desea agregar a la lista.
+         */
         this.pagosExcedentes.add(pago);
     }
     public static void addAlquiler(alquiler alquiler){
+        /**
+         * Agrega un alquiler a la lista de alquileres activos.
+         *
+         * @param alquiler: El alquiler que se desea agregar a la lista.
+         */
         if (listaAlquileres==null){ listaAlquileres= new ArrayList<alquiler>();}
         listaAlquileres.add(alquiler);
     }
     public static alquiler assignAlquiler(int id_alquiler){
+        /**
+         * Busca un alquiler específico en la lista de alquileres activos por su ID y lo asigna.
+         *
+         * @param id_alquiler: El ID del alquiler que se desea buscar y asignar.
+         * @return alquiler: El alquiler encontrado o null si no se encuentra un alquiler con el ID especificado.
+         */
         alquiler retorno = null;
         for(alquiler i: alquiler.getListaAlquileres()){
             if(i.getID()==id_alquiler){
@@ -90,6 +166,14 @@ public class alquiler{
     }
 
     private void agregarConductores() {
+        /**
+         * Permite agregar conductores adicionales al alquiler, brindando la opción al cliente de registrar nuevos conductores.
+         *
+         * Muestra un menú que permite al cliente agregar o no conductores adicionales al alquiler. Si se selecciona "Sí," solicita información del conductor, incluyendo nombre, número de cédula y licencia. Luego, registra al conductor en el alquiler.
+         *
+         * @throws NumberFormatException Si se ingresan valores no válidos o en un formato incorrecto.
+         *
+         */
         boolean continuarPersonal1 = true;
         while (continuarPersonal1==true){
             System.out.println("\n¿Desea agregar un conductor adicional?");
@@ -114,9 +198,18 @@ public class alquiler{
                 else if(opcion==2){continuarPersonal1 = false;}
             
         
-    }catch (NumberFormatException e){System.out.println("\n>Ingrese los valores requeridos en el formato solicitado");}}}
+    }
+    catch (NumberFormatException e){System.out.println("\n>Ingrese los valores requeridos en el formato solicitado");}}}
 
     private void agregarSeguros (){
+        /**
+         * Agrega seguros al alquiler, permitiendo al cliente seleccionar entre opciones disponibles.
+         *
+         * Muestra una lista de seguros disponibles con sus detalles, permite al cliente elegir uno o más seguros y los agrega al alquiler.
+         *
+         * @throws NumberFormatException Si se ingresa un ID de seguro no válido.
+         *
+         */
         boolean continuar = true;
         System.out.println();
         while (continuar){
@@ -141,6 +234,12 @@ public class alquiler{
     }
 
     private Double calcularPagoInicial(){
+        /**
+         * Calcula el pago inicial de un alquiler, teniendo en cuenta la reserva, conductores, seguros y excedentes.
+         *
+         * @return Double: El costo total del pago inicial del alquiler.
+         * @throws IllegalArgumentException Si no se pueden calcular los costos iniciales debido a valores no válidos.
+         */
         double pagoReserva=this.reserva.getPagoReserva();
         double costo70=(pagoReserva*7/3);
         double costo100=costo70+pagoReserva;
@@ -162,6 +261,18 @@ public class alquiler{
     }
 
     private Double calcularPagoFinal(Sede sedeActual){
+        /**
+         * Descripción del método: Calcula el pago final de un alquiler considerando seguros, daños y eventos agendados.
+         *
+         * @param sedeActual: Sede - La sede actual del alquiler.
+         * @type sedeActual: Sede
+         *
+         * @throws NumberFormatException: Si no se puede convertir la fecha actual o la hora actual a números enteros.
+         * @throws IllegalArgumentException: Si no se puede completar la reserva debido a la disponibilidad de vehículos.
+         *
+         * @returns Double - El saldo final del alquiler, teniendo en cuenta todos los factores.
+         * @rtype Double
+         */
         /*
          seguro id1: no cobramos ningun daño, 
          seguro id2 ó id3: solo cobramos daños graves, seguro4: no cobramos daños leves.
@@ -319,6 +430,19 @@ public class alquiler{
 
 
     public static void crearAlquiler(List<Reserva>reservas,Cliente cliente, Sede sedePersonal){
+        /**
+         * Descripción del método: Crea un nuevo alquiler a partir de una lista de reservas, un cliente y una sede personalizada.
+         *
+         * @param reservas: List<Reserva> - La lista de reservas disponibles.
+         * @type reservas: List<Reserva>
+         * @param cliente: Cliente - El cliente que realiza el alquiler.
+         * @type cliente: Cliente
+         * @param sedePersonal: Sede - La sede en la que se crea el alquiler.
+         * @type sedePersonal: Sede
+         *
+         * @throws NumberFormatException: Si no se puede convertir la fecha u hora actual a números enteros.
+         * @throws IllegalArgumentException: Si no se puede completar la reserva debido a la disponibilidad de vehículos.
+         */
         System.out.println("Reserva/s activa/s del cliente: ");
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         LocalTime hora = LocalTime.now();
@@ -394,6 +518,17 @@ public class alquiler{
     }
 
     public static void completarAlquiler(Cliente cliente,Sede sedePersonal){
+        /**
+         * Descripción del método: Completa un alquiler para un cliente en una sede personalizada.
+         *
+         * @param cliente: Cliente - El cliente que realiza el alquiler.
+         * @type cliente: Cliente
+         * @param sedePersonal: Sede - La sede en la que se completa el alquiler.
+         * @type sedePersonal: Sede
+         *
+         * @throws NumberFormatException: Si no se puede convertir la fecha actual o la hora actual a números enteros.
+         * @throws IllegalArgumentException: Si se intenta completar un alquiler inexistente o no activo.
+         */
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         LocalTime hora = LocalTime.now();
         int horaActual = hora.getHour() * 100 + hora.getMinute();
