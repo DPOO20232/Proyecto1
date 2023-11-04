@@ -32,49 +32,125 @@ public class alquiler{
         this.pagosExcedentes= new ArrayList<PagoExcedente>();
     }
     public boolean getActivo(){
+        /**
+         * Obtiene el estado de activación del alquiler.
+         *
+         * @return boolean: true si el alquiler está activo, false si no lo está.
+         */
         return this.activo;
     }
     public int getID(){
+        /**
+         * Obtiene el identificador (ID) del alquiler.
+         *
+         * @return int: El ID del alquiler.
+         */
         return this.idAlquiler;
     }
     public double getPagoFinal(){
+        /**
+         * Obtiene el monto total del pago del alquiler.
+         *
+         * @return double: El monto total del pago del alquiler.
+         */
         return this.pagoFinal;
     }
     public ArrayList<Conductor> getConductores(){
+        /**
+         * Obtiene la lista de conductores adicionales asociados al alquiler.
+         *
+         * @return ArrayList<Conductor>: La lista de conductores adicionales del alquiler.
+         */
         return this.conductores;
     }
     public ArrayList<Seguro> getSeguros(){
+        /**
+         * Obtiene la lista de seguros asociados al alquiler.
+         *
+         * @return ArrayList<Seguro>: La lista de seguros asociados al alquiler.
+         */
         return this.seguros;
     }
     public ArrayList<PagoExcedente> getPagosExcedentes(){
+        /**
+         * Obtiene la lista de pagos excedentes asociados al alquiler.
+         *
+         * @return ArrayList<PagoExcedente>: La lista de pagos excedentes asociados al alquiler.
+         */
         return this.pagosExcedentes;
     }
     public Reserva getReserva(){
+        /**
+         * Obtiene la reserva asociada al alquiler.
+         *
+         * @return Reserva: La reserva asociada al alquiler.
+         */
         return this.reserva;
     }
     public static ArrayList<alquiler> getListaAlquileres(){
+        /**
+         * Obtiene la lista de alquileres activos.
+         *
+         * @return ArrayList<alquiler>: La lista de alquileres activos.
+         */
         return listaAlquileres;
     }
     public void setActivo(boolean activo){
+        /**
+         * Establece el estado de activo/inactivo del alquiler.
+         *
+         * @param activo: Un valor booleano que indica si el alquiler está activo (true) o inactivo (false).
+         */
         this.activo=activo;
     }
     public void setPagoFinal(double valor){
+        /**
+         * Establece el monto total del pago del alquiler.
+         *
+         * @param valor: El monto total del pago del alquiler a establecer.
+         */
         this.pagoFinal=valor;
     }
     public void addConductor(Conductor conductor){
+        /**
+         * Agrega un conductor adicional a la lista de conductores adicionales asociados al alquiler.
+         *
+         * @param conductor: El conductor adicional que se desea agregar a la lista.
+         */
         this.conductores.add(conductor);
     }
     public void addSeguro(Seguro seguro){
+        /**
+         * Agrega un seguro a la lista de seguros asociados al alquiler.
+         *
+         * @param seguro: El seguro que se desea agregar a la lista.
+         */
         this.seguros.add(seguro);
     }
     public void addPagoExcedente(PagoExcedente pago){
+        /**
+         * Agrega un pago excedente a la lista de pagos excedentes asociados al alquiler.
+         *
+         * @param pago: El pago excedente que se desea agregar a la lista.
+         */
         this.pagosExcedentes.add(pago);
     }
     public static void addAlquiler(alquiler alquiler){
+        /**
+         * Agrega un alquiler a la lista de alquileres activos.
+         *
+         * @param alquiler: El alquiler que se desea agregar a la lista.
+         */
         if (listaAlquileres==null){ listaAlquileres= new ArrayList<alquiler>();}
         listaAlquileres.add(alquiler);
     }
     public static alquiler assignAlquiler(int id_alquiler){
+        /**
+         * Busca un alquiler específico en la lista de alquileres activos por su ID y lo asigna.
+         *
+         * @param id_alquiler: El ID del alquiler que se desea buscar y asignar.
+         * @return alquiler: El alquiler encontrado o null si no se encuentra un alquiler con el ID especificado.
+         */
         alquiler retorno = null;
         for(alquiler i: alquiler.getListaAlquileres()){
             if(i.getID()==id_alquiler){
