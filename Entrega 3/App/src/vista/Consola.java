@@ -1,17 +1,17 @@
-package consola;
+package vista;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import Menus.MenuAlquiler;
-import Menus.MenuInventario;
-import Menus.MenuUsuario;
-import inventario.Inventario;
-import inventario.Sede;
-import usuario.Cliente;
-import usuario.Usuario;
-import usuario.personal;
+import controlador.MenuAlquiler;
+import controlador.MenuInventario;
+import controlador.MenuUsuario;
+import modelo.Cliente;
+import modelo.Inventario;
+import modelo.Sede;
+import modelo.Usuario;
+import modelo.personal;
 
 public class Consola {
     public static void MenuInicial() throws IOException{

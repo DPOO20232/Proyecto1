@@ -1,4 +1,4 @@
-package alquiler;
+package modelo;
 
 public class PagoExcedente {
 

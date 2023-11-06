@@ -1,4 +1,4 @@
-package inventario;
+package modelo;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -8,16 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import alquiler.alquiler;
-import alquiler.PagoExcedente;
-import alquiler.Reserva;
-import usuario.personal;
-import usuario.Cliente;
-import usuario.Conductor;
-import usuario.Usuario;
-import usuario.Admin;
-import usuario.Licencia;
-import usuario.Tarjeta;
 public class Inventario {
     private static String nombreCompania;
     private static int costoPorConductorAdicional;

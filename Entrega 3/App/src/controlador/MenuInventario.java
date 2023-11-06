@@ -1,4 +1,4 @@
-package Menus;
+package controlador;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,13 +8,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import alquiler.Reserva;
-import inventario.Categoria;
-import inventario.Evento;
-import inventario.Inventario;
-import inventario.Sede;
-import inventario.Seguro;
-import inventario.Vehiculo;
+import modelo.Categoria;
+import modelo.Evento;
+import modelo.Inventario;
+import modelo.Reserva;
+import modelo.Sede;
+import modelo.Seguro;
+import modelo.Vehiculo;
 
 public class MenuInventario {
     public static void statusVehiculo(){

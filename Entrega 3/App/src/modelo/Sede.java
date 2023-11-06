@@ -1,11 +1,10 @@
-package inventario;
+package modelo;
 import java.util.List;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import usuario.personal;;
+import java.util.ArrayList;;
 public class Sede {
     private int idSede;
     private String nombre;

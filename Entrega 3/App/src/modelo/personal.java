@@ -1,6 +1,5 @@
-package usuario;
+package modelo;
 import java.util.List;
-import inventario.Sede;
 import java.util.ArrayList;
 public class personal extends Usuario{
     private String tipoPersonal;

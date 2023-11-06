@@ -1,11 +1,6 @@
-package inventario;
+package modelo;
 import java.util.ArrayList;
 import java.util.List;
-import alquiler.alquiler;
-import usuario.Conductor;
-import alquiler.PagoExcedente;
-import alquiler.Reserva;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;

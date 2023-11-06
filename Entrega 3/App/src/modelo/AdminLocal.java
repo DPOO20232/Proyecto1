@@ -1,6 +1,4 @@
-package usuario;
-
-import inventario.Sede;
+package modelo;
 
 public class AdminLocal extends personal {
     public AdminLocal(String login, String password, String tipoPersonal, Sede sede) {

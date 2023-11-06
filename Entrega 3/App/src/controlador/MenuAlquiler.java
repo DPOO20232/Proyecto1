@@ -1,4 +1,4 @@
-package Menus;
+package controlador;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,18 +9,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import alquiler.Reserva;
-import alquiler.alquiler;
-import inventario.Categoria;
-import inventario.Inventario;
-import inventario.Sede;
-import inventario.Seguro;
-import inventario.Vehiculo;
-import usuario.Cliente;
-import usuario.Conductor;
-import usuario.Licencia;
-import usuario.Tarjeta;
-import usuario.Usuario;
+import modelo.Categoria;
+import modelo.Cliente;
+import modelo.Conductor;
+import modelo.Inventario;
+import modelo.Licencia;
+import modelo.Reserva;
+import modelo.Sede;
+import modelo.Seguro;
+import modelo.Tarjeta;
+import modelo.Usuario;
+import modelo.Vehiculo;
+import modelo.alquiler;
 
 public class MenuAlquiler {
     public static void crearReserva(Cliente cliente,boolean reservaEnSede){

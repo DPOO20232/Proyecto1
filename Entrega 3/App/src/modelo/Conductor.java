@@ -1,4 +1,4 @@
-package usuario;
+package modelo;
 
 public class Conductor {
     private String nombre;

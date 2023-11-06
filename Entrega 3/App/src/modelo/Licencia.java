@@ -1,4 +1,4 @@
-package usuario;
+package modelo;
 
 public class Licencia {
     private int numeroLicencia;

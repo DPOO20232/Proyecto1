@@ -1,4 +1,4 @@
-package inventario;
+package modelo;
 
 public class Evento {
     

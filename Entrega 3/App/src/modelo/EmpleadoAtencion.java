@@ -1,6 +1,4 @@
-package usuario;
-
-import inventario.Sede;
+package modelo;
 
 public class EmpleadoAtencion extends personal{
     public EmpleadoAtencion(String login, String password, String tipoPersonal, Sede sede) {

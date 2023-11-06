@@ -1,4 +1,4 @@
-package Menus;
+package controlador;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,15 +7,15 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import inventario.Inventario;
-import inventario.Sede;
-import usuario.Cliente;
-import usuario.EmpleadoAtencion;
-import usuario.EmpleadoTecnico;
-import usuario.Licencia;
-import usuario.Tarjeta;
-import usuario.Usuario;
-import usuario.personal;
+import modelo.Cliente;
+import modelo.EmpleadoAtencion;
+import modelo.EmpleadoTecnico;
+import modelo.Inventario;
+import modelo.Licencia;
+import modelo.Sede;
+import modelo.Tarjeta;
+import modelo.Usuario;
+import modelo.personal;
 
 public class MenuUsuario {
     

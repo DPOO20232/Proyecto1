@@ -1,12 +1,6 @@
-package alquiler;
+package modelo;
 import java.util.ArrayList;
 import java.util.List;
-
-import inventario.Categoria;
-import inventario.Inventario;
-import inventario.Vehiculo;
-import usuario.Cliente;
-import inventario.Sede;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
