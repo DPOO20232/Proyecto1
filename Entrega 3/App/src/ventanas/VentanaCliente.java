@@ -161,13 +161,44 @@ public class VentanaCliente {
             // Crear pestaña 3
             JPanel pestaña3 = new JPanel();
             tabbedPane.addTab("acceder al personal", null, pestaña3, "Acceder al Personal");
-    
-            // Agregar el panel de nombre de empresa y el panel de pestañas al marco
+            // Crear espacios para mostrar al administrador local, empleados técnicos y empleados de atención
+            JPanel panelAdminLocal = new JPanel();
+            panelAdminLocal.setLayout(new BoxLayout(panelAdminLocal, BoxLayout.Y_AXIS));
+            JLabel adminLocalLabel = new JLabel("Administrador Local:");
+            JTextField adminLocalField = new JTextField();
+            panelAdminLocal.add(adminLocalLabel);
+            panelAdminLocal.add(adminLocalField);
+
+            JPanel panelEmpleadosTecnicos = new JPanel();
+            panelEmpleadosTecnicos.setLayout(new BoxLayout(panelEmpleadosTecnicos, BoxLayout.Y_AXIS));
+            JLabel empleadosTecnicosLabel = new JLabel("Empleados Técnicos:");
+            JTextField empleadosTecnicosField = new JTextField();
+            panelEmpleadosTecnicos.add(empleadosTecnicosLabel);
+            panelEmpleadosTecnicos.add(empleadosTecnicosField);
+
+
+            JPanel panelEmpleadosAtencion = new JPanel();
+            panelEmpleadosAtencion.setLayout(new BoxLayout(panelEmpleadosAtencion, BoxLayout.Y_AXIS));
+            JLabel empleadosAtencionLabel = new JLabel("Empleados de Atención:");
+            JTextField empleadosAtencionField = new JTextField();
+            panelEmpleadosAtencion.add(empleadosAtencionLabel);
+            panelEmpleadosAtencion.add(empleadosAtencionField);
+
+
+            
+            pestaña3.add(panelAdminLocal);
+            pestaña3.setLayout(new GridLayout(0, 1));
+            pestaña3.add(panelEmpleadosTecnicos);
+            pestaña3.setLayout(new GridLayout(0, 1));
+            pestaña3.add(panelEmpleadosAtencion);
+
             frame.add(nombreEmpresaPanel, BorderLayout.NORTH);
             frame.add(tabbedPane, BorderLayout.CENTER);
-    
+
             // Hacer visible la ventana
             frame.setVisible(true);
+    
+           
         }
         
         
