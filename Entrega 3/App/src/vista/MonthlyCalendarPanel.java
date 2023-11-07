@@ -3,12 +3,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.font.TextAttribute;
-import java.text.AttributedString;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 
 public class MonthlyCalendarPanel extends JPanel {
     private JTable table;

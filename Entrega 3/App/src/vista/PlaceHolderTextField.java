@@ -5,11 +5,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 public class PlaceHolderTextField extends JTextField {
-    private String placeholder;
     private boolean isPlaceholderActive;
 
     public PlaceHolderTextField(String placeholder) {
-        this.placeholder = placeholder;
         isPlaceholderActive = true;
         setForeground(Color.GRAY);
         setText(placeholder);

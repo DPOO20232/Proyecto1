@@ -13,15 +13,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
-//TODO pasar por parametro el objeto y editarlo aca
+
 public class EditorObjetos {
     private  JPanel mainPanel;
     private  CardLayout cardLayout;
     private  JPanel cardPanel;
     private  String[] pasos;
     private int pasoActual = 0;
-    private String retorno;
 
     public void editorSede(JPanel mainPanel,Sede sedeEditar) {
         this.mainPanel = mainPanel;

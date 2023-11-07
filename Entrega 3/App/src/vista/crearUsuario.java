@@ -2,10 +2,8 @@ package vista;
 
 import java.awt.GridLayout;
 
-import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
