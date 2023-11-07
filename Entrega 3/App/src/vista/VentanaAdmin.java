@@ -18,7 +18,6 @@ import modelo.Vehiculo;
 import modelo.personal;
 
 import java.awt.*;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -131,27 +130,27 @@ public class VentanaAdmin {
                 // Obtener el índice de la pestaña seleccionada
                 int selectedIndex = panelInferior.getSelectedIndex();
                 if (selectedIndex==1){
-                    refresh(panel1);
+                    VentanaMain.refresh(panel1);
                     panel1.add(menuVehiculos());
                 }
                 else if (selectedIndex==2){
-                    refresh(panel2);
+                    VentanaMain.refresh(panel2);
                     panel2.add(menuCategorias());
                 }
                 else if (selectedIndex==3){
-                    refresh(panel3);
+                    VentanaMain.refresh(panel3);
                     panel3.add(menuSedes());
                 }
                 else if (selectedIndex==4){
-                    refresh(panel4);
+                    VentanaMain.refresh(panel4);
                     panel4.add(menuSeguros());
                 }
                 else if (selectedIndex==5){
-                    refresh(panel5);
+                    VentanaMain.refresh(panel5);
                     panel5.add(menuPersonal());
                 }
                 else{
-                    refresh(panel6);
+                    VentanaMain.refresh(panel6);
                     panel6.add(menuTarifasPeriodos());
                 }
         }});
@@ -306,7 +305,7 @@ public class VentanaAdmin {
         return menu;
     }
         private static void nuevoPanel1Vehiculo(JPanel panel1){
-        refresh(panel1);
+        VentanaMain.refresh(panel1);
         //
         PlaceHolderTextField placa=new PlaceHolderTextField("Ej: ABC123");
         PlaceHolderTextField marca= new PlaceHolderTextField("Ej: Chevrolet");
@@ -394,23 +393,23 @@ public class VentanaAdmin {
                         try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
 
 
-                        CambioGuardadoDialog();
-                        refresh(panel1);
+                        VentanaMain.CambioGuardadoDialog();
+                        VentanaMain.refresh(panel1);
                     }
                     else{
-                    errorDialog("El vehículo con la placa ingresada ya existe.");
+                    VentanaMain.errorDialog("El vehículo con la placa ingresada ya existe.");
 
                     }
                 }
                 else{
-                    errorDialog("Complete todos los campos requeridos.");
+                    VentanaMain.errorDialog("Complete todos los campos requeridos.");
                 }
 
             }
         });
     }
         private static void nuevoPanel2Vehiculo(JPanel panel2){
-        refresh(panel2);
+        VentanaMain.refresh(panel2);
         //
         PlaceHolderTextField placa=new PlaceHolderTextField("Placa");
         //
@@ -460,7 +459,7 @@ public class VentanaAdmin {
                     nuevoPanel2AuxVehiculo(vehiculo,panel2,panel2b);
                     avanzar2a.setVisible(false);}
                 else{
-                    errorDialog("No existen vehículos en el inventario con la placa ingresada.");
+                    VentanaMain.errorDialog("No existen vehículos en el inventario con la placa ingresada.");
                 }
                     
                 }
@@ -491,8 +490,8 @@ public class VentanaAdmin {
                     
                     try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
 
-                    VentanaAdmin.CambioGuardadoDialog();
-                    refresh(panel2);
+                    VentanaMain.CambioGuardadoDialog();
+                    VentanaMain.refresh(panel2);
                 }
             });
                 //Panel archivo log
@@ -504,8 +503,8 @@ public class VentanaAdmin {
                 @Override
                 public void actionPerformed(ActionEvent e){
                     vehiculo.obtenerLog();
-                    VentanaAdmin.logDialog();
-                    refresh(panel2);
+                    VentanaMain.logDialog();
+                    VentanaMain.refresh(panel2);
                 }
             });
 
@@ -533,12 +532,12 @@ public class VentanaAdmin {
                     boolean trasladado=vehiculo.setTrasladoASede(sedeElegida);
                     if (trasladado==true){
                         try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
-                        VentanaAdmin.CambioGuardadoDialog();
+                        VentanaMain.CambioGuardadoDialog();
                     }
                     else{
-                        errorDialog("El vehículo actualmente no puede trasladarse, intentelo otro día.");
+                        VentanaMain.errorDialog("El vehículo actualmente no puede trasladarse, intentelo otro día.");
                     }
-                    refresh(panel2);
+                    VentanaMain.refresh(panel2);
                 }
             });
 
@@ -551,7 +550,7 @@ public class VentanaAdmin {
         
     
         private static void nuevoPanel3Vehiculo(JPanel panel3){
-        refresh(panel3);
+        VentanaMain.refresh(panel3);
         panel3.setLayout(new BoxLayout(panel3, BoxLayout.Y_AXIS));
         panel3.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0)); // Establece un FlowLayout sin relleno
         panel3.add(new JLabel("Elija la sede de la que desea visualizar la gráfica de alto nivel"));
@@ -570,11 +569,11 @@ public class VentanaAdmin {
             public void actionPerformed(ActionEvent e){
                 int idSede= Integer.parseInt(comboBoxGeneral3Vehi.getSelectedItem().toString().split(":")[0]);
                 Sede sedeElegida= Inventario.assignSede(idSede);
-                refresh(panel3);
+                VentanaMain.refresh(panel3);
                 MonthlyCalendarPanel vista= new MonthlyCalendarPanel(sedeElegida);
                 vista.setMonthlyCalendarPanel();
 
-                refresh(panel3);
+                VentanaMain.refresh(panel3);
                 panel3.validate();
                 panel3.repaint();
 
@@ -584,7 +583,7 @@ public class VentanaAdmin {
     }
 
         private static void nuevoPanel1Categorias(JPanel panel1){
-        refresh(panel1);
+        VentanaMain.refresh(panel1);
         //
         PlaceHolderTextField tipoVehiculo= new PlaceHolderTextField("Ej: PickUp");
         JComboBox<String> nivelesLujo = new JComboBox<>();
@@ -677,20 +676,20 @@ public class VentanaAdmin {
                     Categoria categoria = new Categoria(tipoStr+"_"+lujoStr, Integer.parseInt(capacidadStr), Double.parseDouble(temp1Str),  Double.parseDouble(temp2Str), Integer.parseInt(costoLeveStr), Integer.parseInt(costoModeradoStr), Integer.parseInt(costoGraveStr), Integer.parseInt(tarifaStr), Integer.parseInt(idStr));
                     categoria.setPadre(Inventario.assignCategoria(Integer.parseInt(idStr)));
                     Inventario.getListaCategorias().add(categoria);
-                    VentanaAdmin.CambioGuardadoDialog();
+                    VentanaMain.CambioGuardadoDialog();
                     try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
 
-                    refresh(panel1);
+                    VentanaMain.refresh(panel1);
                 }
                 else{
-                    VentanaAdmin.errorDialog("Verifique que todos los campos de texto estén llenos.");
+                    VentanaMain.errorDialog("Verifique que todos los campos de texto estén llenos.");
                 }
           }
         });
         panel1.add(avanzar);
     }
         private static void nuevoPanel1Sedes(JPanel panel1){
-        refresh(panel1);
+        VentanaMain.refresh(panel1);
         //
         PlaceHolderTextField nomSede= new PlaceHolderTextField("Ej: Sede Bosa");
         PlaceHolderTextField ubiSede= new PlaceHolderTextField("Ej: Cl. 57c Sur #87-21");
@@ -788,17 +787,17 @@ public class VentanaAdmin {
         DocumentListener documentListener = new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                avanzar.setVisible(checkFields1Sede(nomSede, ubiSede, comboBoxGeneral1Sede, comboBoxGeneral2Sede, comboBoxGeneral3Sede, comboBoxGeneral4Sede));
+                avanzar.setVisible(VentanaMain.checkFields1Sede(nomSede, ubiSede, comboBoxGeneral1Sede, comboBoxGeneral2Sede, comboBoxGeneral3Sede, comboBoxGeneral4Sede));
             }
     
             @Override
             public void removeUpdate(DocumentEvent e) {
-                avanzar.setVisible(checkFields1Sede(nomSede, ubiSede, comboBoxGeneral1Sede, comboBoxGeneral2Sede, comboBoxGeneral3Sede, comboBoxGeneral4Sede));
+                avanzar.setVisible(VentanaMain.checkFields1Sede(nomSede, ubiSede, comboBoxGeneral1Sede, comboBoxGeneral2Sede, comboBoxGeneral3Sede, comboBoxGeneral4Sede));
             }
     
             @Override
             public void changedUpdate(DocumentEvent e) {
-                avanzar.setVisible(checkFields1Sede(nomSede, ubiSede, comboBoxGeneral1Sede, comboBoxGeneral2Sede, comboBoxGeneral3Sede, comboBoxGeneral4Sede));
+                avanzar.setVisible(VentanaMain.checkFields1Sede(nomSede, ubiSede, comboBoxGeneral1Sede, comboBoxGeneral2Sede, comboBoxGeneral3Sede, comboBoxGeneral4Sede));
             }
         };
     
@@ -835,15 +834,15 @@ public class VentanaAdmin {
                             
                             try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
                             
-                            refresh(panel1);
-                            CambioGuardadoDialog();
+                            VentanaMain.refresh(panel1);
+                            VentanaMain.CambioGuardadoDialog();
                         }
                         else{
-                        VentanaAdmin.errorDialog("Verifique que no haya campos de texto vacios.");
+                        VentanaMain.errorDialog("Verifique que no haya campos de texto vacios.");
                         }
                     }
                     else{
-                        VentanaAdmin.errorDialog("Verifique que la fecha/periodo inicial sea previa a la fecha/periodo final.");
+                        VentanaMain.errorDialog("Verifique que la fecha/periodo inicial sea previa a la fecha/periodo final.");
                     }  
 
             }
@@ -851,7 +850,7 @@ public class VentanaAdmin {
 
     }
         public static void nuevoPanel2Sedes(JPanel panel2){
-        refresh(panel2);
+        VentanaMain.refresh(panel2);
         panel2.setPreferredSize(new Dimension(0, 400));
         panel2.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 0));
         panel2.add(new JLabel("Seleccione la sede que desea modificar"));
@@ -918,7 +917,7 @@ public class VentanaAdmin {
                 frame.repaint();}});
     }
         public static void nuevoPanel1Seguros(JPanel panel1){
-            refresh(panel1);
+            VentanaMain.refresh(panel1);
             //
             PlaceHolderTextField descripcion= new PlaceHolderTextField("Ej: Seguro ante robos");
             JComboBox<String> pctg = new JComboBox<>();
@@ -970,8 +969,8 @@ public class VentanaAdmin {
                     
                     try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
 
-                    CambioGuardadoDialog();
-                    refresh(panel1);
+                    VentanaMain.CambioGuardadoDialog();
+                    VentanaMain.refresh(panel1);
                 }
             });
 
@@ -979,7 +978,7 @@ public class VentanaAdmin {
 
         }
             public static void nuevoPanel2Seguros(JPanel panel2){
-            refresh(panel2);
+            VentanaMain.refresh(panel2);
             GridLayout gridLayout1 = new GridLayout(0, 2);
             gridLayout1.setVgap(10);
             panel2.setPreferredSize(new Dimension(0, 400));
@@ -1032,7 +1031,7 @@ public class VentanaAdmin {
 
         }
             public static void nuevoPanel3Seguros(JPanel panel3){
-            refresh(panel3);
+            VentanaMain.refresh(panel3);
             //
             JComboBox<String> seguros = new JComboBox<>();
 
@@ -1073,8 +1072,8 @@ public class VentanaAdmin {
 
                     try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
 
-                    CambioGuardadoDialog();
-                    refresh(panel3);
+                    VentanaMain.CambioGuardadoDialog();
+                    VentanaMain.refresh(panel3);
                 
                 }
             });
@@ -1084,7 +1083,7 @@ public class VentanaAdmin {
 
 
             public static void nuevoPanel1Personal(JPanel panel1){
-            refresh(panel1);
+            VentanaMain.refresh(panel1);
             //
             PlaceHolderTextField login= new PlaceHolderTextField("Ej: m.acosta");
             PlaceHolderTextField password = new PlaceHolderTextField("acosta123");
@@ -1123,7 +1122,7 @@ public class VentanaAdmin {
                 public void actionPerformed(ActionEvent e){
 
                     if (((Usuario.checkNombresLogins(login.getText().trim()))==false)){
-                        refresh(panel1);
+                        VentanaMain.refresh(panel1);
                         login.setEditable(false);
                         panel1.add(new JLabel("Complete el registro del usuario"));
                         panel1.add(new JLabel(""));
@@ -1169,21 +1168,21 @@ public class VentanaAdmin {
                                 try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
 
 
-                                CambioGuardadoDialog();
-                                refresh(panel1);
+                                VentanaMain.CambioGuardadoDialog();
+                                VentanaMain.refresh(panel1);
                             }
                             else{
-                                errorDialog("La sede seleccionada ya tiene un admin local asignado.");                                
+                                VentanaMain.errorDialog("La sede seleccionada ya tiene un admin local asignado.");                                
                             }
                             }
                         }); 
                     }else{
-                    errorDialog("Ya existen usuarios con el login dado.");
+                    VentanaMain.errorDialog("Ya existen usuarios con el login dado.");
                     }
                 }});}
                         
         public static void nuevoPanel2Personal(JPanel panel2){
-            refresh(panel2);
+            VentanaMain.refresh(panel2);
             //
             PlaceHolderTextField login= new PlaceHolderTextField("Ej: m.acosta");
             //FALTA PASSWORD
@@ -1225,7 +1224,7 @@ public class VentanaAdmin {
                     for(personal i:personal.getCredencialesPersonal()){
                          if ((i.getLogin().equals(login.getText()) && i.getTipoPersonal().equals("AdminLocal"))){
                             found=true;
-                            refresh(panel2);
+                            VentanaMain.refresh(panel2);
                             login.setEditable(false);
                             panel2.add(new JLabel("Complete la actualización del usuario"));
                             panel2.add(new JLabel(""));
@@ -1264,13 +1263,13 @@ public class VentanaAdmin {
                                 int idSede= Integer.parseInt(sedes.getSelectedItem().toString().split(":")[0]);
                                 Sede sedeElegida= Inventario.assignSede(idSede);
                                 if (sedeElegida.getAdminLocal()!=null){
-                                    errorDialog("La sede elegida ya tiene un admin local asignado.");
+                                    VentanaMain.errorDialog("La sede elegida ya tiene un admin local asignado.");
                                 }
                                 else{
                                     i.setSede(sedeElegida);
                                     i.setPassword(password.getText());
-                                    CambioGuardadoDialog();
-                                    refresh(panel2);
+                                    VentanaMain.CambioGuardadoDialog();
+                                    VentanaMain.refresh(panel2);
                                     
                                     try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
 
@@ -1280,12 +1279,12 @@ public class VentanaAdmin {
                             }
                         }
                         if (found==false){
-                        errorDialog("Ingrese el login de un admin local existente.");
+                        VentanaMain.errorDialog("Ingrese el login de un admin local existente.");
                         }
                     }});}
 
             public static void nuevoPanelTarifas(JPanel panel,int opcion) {
-                refresh(panel);
+                VentanaMain.refresh(panel);
                 //
                 NumericOnlyTextField precio = new NumericOnlyTextField();
                 //
@@ -1328,14 +1327,14 @@ public class VentanaAdmin {
                             Inventario.setCostoPorTrasladoSedes(Integer.parseInt(precio.getText()));
                         }
                         try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
-                        CambioGuardadoDialog();
-                        refresh(panel);
+                        VentanaMain.CambioGuardadoDialog();
+                        VentanaMain.refresh(panel);
                     }
             });
          }
                     
         public static void nuevoPanelPeriodos(JPanel panel,int opcion){
-                refresh(panel);
+                VentanaMain.refresh(panel);
 
                 panel.setLayout(new GridLayout(0, 1));
                 panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 80));
@@ -1379,153 +1378,18 @@ public class VentanaAdmin {
                                 periodo.add(Integer.parseInt(text2));
                             }
                             try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
-                            CambioGuardadoDialog();
-                            refresh(panel);
+                            VentanaMain.CambioGuardadoDialog();
+                            VentanaMain.refresh(panel);
                         }
                         else{
-                        VentanaAdmin.errorDialog("Verifique que ningún campo este vacío.");
+                        VentanaMain.errorDialog("Verifique que ningún campo este vacío.");
                         }
 
                     }
                     else{
-                        VentanaAdmin.errorDialog("Verifique que la fecha/periodo inicial sea previa a la fecha/periodo final.");
+                        VentanaMain.errorDialog("Verifique que la fecha/periodo inicial sea previa a la fecha/periodo final.");
                     }
                 }
                 });
-
-            
-        }
-
-        public static void CambioGuardadoDialog() {
-            JDialog dialog = new JDialog();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setTitle("Notificación");
-            dialog.setModalityType(ModalityType.APPLICATION_MODAL);
-            dialog.setSize(300, 150);
-            dialog.setLocationRelativeTo(null);
-            dialog.setLayout(new BorderLayout());
-    
-            JPanel contentPanel = new JPanel();
-            contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-            contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    
-            JLabel label = new JLabel("Cambio(s) guardado(s)");
-            label.setAlignmentX(Component.CENTER_ALIGNMENT);
-            label.setFont(new Font("Arial", Font.BOLD, 12));
-            contentPanel.add(label);
-    
-            JButton okButton = new JButton("OK");
-            okButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-            okButton.addActionListener(e -> {
-                dialog.dispose();
-            });
-            contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-            contentPanel.add(okButton);
-    
-            dialog.add(contentPanel, BorderLayout.CENTER);
-            dialog.setVisible(true);
-        }
-        public static void logDialog() {
-            JDialog dialog = new JDialog();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setTitle("Notificación");
-            dialog.setModalityType(ModalityType.APPLICATION_MODAL);
-            dialog.setSize(300, 150);
-            dialog.setLocationRelativeTo(null);
-            dialog.setLayout(new BorderLayout());
-    
-            JPanel contentPanel = new JPanel();
-            contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-            contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    
-            JLabel label = new JLabel("Log guardado en la carpeta \"historiales\"");
-            label.setAlignmentX(Component.CENTER_ALIGNMENT);
-            label.setFont(new Font("Arial", Font.BOLD, 12));
-            contentPanel.add(label);
-    
-            JButton okButton = new JButton("OK");
-            okButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-            okButton.addActionListener(e -> {
-                dialog.dispose();
-            });
-            contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-            contentPanel.add(okButton);
-    
-            dialog.add(contentPanel, BorderLayout.CENTER);
-            dialog.setVisible(true);
-        }
-        public static void errorDialog(String labelText2) {
-            JDialog dialog = new JDialog();
-            JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            dialog.setTitle("Notificación");
-            dialog.setModalityType(ModalityType.APPLICATION_MODAL);
-            dialog.setSize(450, 200);
-            dialog.setLocationRelativeTo(null);
-        
-            // Cambia el fondo del panel
-            panel.setBackground(Color.WHITE);
-        
-            // Crea un icono para el diálogo (reemplaza "icon.png" con la ubicación de tu propio archivo de imagen)
-            ImageIcon icon = new ImageIcon("icon.png");
-        
-            // Cambia el icono del diálogo
-            dialog.setIconImage(icon.getImage());
-        
-            JLabel label = new JLabel("No se pudieron guardar los cambios:");
-            JLabel label2 = new JLabel(labelText2);
-        
-            // Cambia el color del texto a negro, establece el estilo negrita y el tamaño de fuente
-            label.setForeground(Color.BLACK);
-            label.setFont(new Font("Arial", Font.BOLD, 12));
-        
-            label2.setForeground(Color.BLACK);
-            label2.setFont(new Font("Arial", Font.PLAIN, 12));
-        
-            // Agrega el JLabel al panel para que se autoajuste al contenido
-            JPanel textPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            textPanel.add(label2);
-        
-            panel.add(label);
-            panel.add(textPanel);
-        
-            JButton okButton = new JButton("OK");
-            okButton.addActionListener(e -> {
-                dialog.dispose();
-            });
-        
-            panel.add(okButton);
-        
-            dialog.add(panel);
-            dialog.setVisible(true);
-        }
-        
-        
-        
-        
-
-        private static boolean checkFields1Sede(PlaceHolderTextField nomSede,PlaceHolderTextField  ubiSede, JComboBox<String> hora1,JComboBox<String> min1,JComboBox<String> hora2,JComboBox<String> min2) {
-            // Verificar si todos los campos están llenos
-            String nomSedeText = nomSede.getText().trim();
-            String ubiSedeText = ubiSede.getText().trim();
-            boolean hora1Selected = hora1.getSelectedItem() != null;
-            boolean min1Selected = min1.getSelectedItem() != null;
-            boolean hora2Selected = hora2.getSelectedItem() != null;
-            boolean min2Selected = min2.getSelectedItem() != null;
-        
-            // Habilitar o deshabilitar el botón según el estado de los campos
-            return (!nomSedeText.isEmpty() && !ubiSedeText.isEmpty() &&
-                hora1Selected && min1Selected && hora2Selected && min2Selected);
-        }
-        public static void refresh(JPanel panel){
-            panel.removeAll();
-            panel.repaint();
-            panel.validate();
-        }
-        public static void refresh(JTabbedPane panel){
-            panel.removeAll();
-            panel.repaint();
-            panel.validate();
-        }
-        
-        
+        }     
 }

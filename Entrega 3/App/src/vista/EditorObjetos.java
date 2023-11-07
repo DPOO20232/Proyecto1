@@ -223,7 +223,7 @@ public class EditorObjetos {
                     avanzarAlSiguientePaso(siguientePasoKey);
                 }
                 else{
-                    VentanaAdmin.errorDialog("Verifique que la fecha/periodo inicial sea previa a la fecha/periodo final.");
+                    VentanaMain.errorDialog("Verifique que la fecha/periodo inicial sea previa a la fecha/periodo final.");
                 }  
             }
         });

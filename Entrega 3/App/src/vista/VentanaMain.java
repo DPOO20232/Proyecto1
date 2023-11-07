@@ -10,10 +10,11 @@ import modelo.Usuario;
 import modelo.personal;
 
 import java.awt.*;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VentanaLogin {
+public class VentanaMain {
     public static void main(String[] args) {
         Inventario.loadSistema();
         JFrame frame = new JFrame("Inicio de Sesión");
@@ -147,4 +148,131 @@ public class VentanaLogin {
 
         frame.setVisible(true);
     }
+    public static void CambioGuardadoDialog() {
+        JDialog dialog = new JDialog();
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setTitle("Notificación");
+        dialog.setModalityType(ModalityType.APPLICATION_MODAL);
+        dialog.setSize(300, 150);
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(new BorderLayout());
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JLabel label = new JLabel("Cambio(s) guardado(s)");
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setFont(new Font("Arial", Font.BOLD, 12));
+        contentPanel.add(label);
+
+        JButton okButton = new JButton("OK");
+        okButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        okButton.addActionListener(e -> {
+            dialog.dispose();
+        });
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        contentPanel.add(okButton);
+
+        dialog.add(contentPanel, BorderLayout.CENTER);
+        dialog.setVisible(true);
+    }
+    public static void logDialog() {
+        JDialog dialog = new JDialog();
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setTitle("Notificación");
+        dialog.setModalityType(ModalityType.APPLICATION_MODAL);
+        dialog.setSize(300, 150);
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(new BorderLayout());
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JLabel label = new JLabel("Log guardado en la carpeta \"historiales\"");
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setFont(new Font("Arial", Font.BOLD, 12));
+        contentPanel.add(label);
+
+        JButton okButton = new JButton("OK");
+        okButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        okButton.addActionListener(e -> {
+            dialog.dispose();
+        });
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        contentPanel.add(okButton);
+
+        dialog.add(contentPanel, BorderLayout.CENTER);
+        dialog.setVisible(true);
+    }
+    public static void errorDialog(String labelText2) {
+        JDialog dialog = new JDialog();
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        dialog.setTitle("Notificación");
+        dialog.setModalityType(ModalityType.APPLICATION_MODAL);
+        dialog.setSize(450, 200);
+        dialog.setLocationRelativeTo(null);
+    
+        // Cambia el fondo del panel
+        panel.setBackground(Color.WHITE);
+    
+        // Crea un icono para el diálogo (reemplaza "icon.png" con la ubicación de tu propio archivo de imagen)
+        ImageIcon icon = new ImageIcon("icon.png");
+    
+        // Cambia el icono del diálogo
+        dialog.setIconImage(icon.getImage());
+    
+        JLabel label = new JLabel("No se pudieron guardar los cambios:");
+        JLabel label2 = new JLabel(labelText2);
+    
+        // Cambia el color del texto a negro, establece el estilo negrita y el tamaño de fuente
+        label.setForeground(Color.BLACK);
+        label.setFont(new Font("Arial", Font.BOLD, 12));
+    
+        label2.setForeground(Color.BLACK);
+        label2.setFont(new Font("Arial", Font.PLAIN, 12));
+    
+        // Agrega el JLabel al panel para que se autoajuste al contenido
+        JPanel textPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        textPanel.add(label2);
+    
+        panel.add(label);
+        panel.add(textPanel);
+    
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> {
+            dialog.dispose();
+        });
+    
+        panel.add(okButton);
+    
+        dialog.add(panel);
+        dialog.setVisible(true);
+    }
+    public static boolean checkFields1Sede(PlaceHolderTextField nomSede,PlaceHolderTextField  ubiSede, JComboBox<String> hora1,JComboBox<String> min1,JComboBox<String> hora2,JComboBox<String> min2) {
+        // Verificar si todos los campos están llenos
+        String nomSedeText = nomSede.getText().trim();
+        String ubiSedeText = ubiSede.getText().trim();
+        boolean hora1Selected = hora1.getSelectedItem() != null;
+        boolean min1Selected = min1.getSelectedItem() != null;
+        boolean hora2Selected = hora2.getSelectedItem() != null;
+        boolean min2Selected = min2.getSelectedItem() != null;
+    
+        // Habilitar o deshabilitar el botón según el estado de los campos
+        return (!nomSedeText.isEmpty() && !ubiSedeText.isEmpty() &&
+            hora1Selected && min1Selected && hora2Selected && min2Selected);
+    }
+
+    public static void refresh(JPanel panel){
+        panel.removeAll();
+        panel.repaint();
+        panel.validate();
+    }
+    public static void refresh(JTabbedPane panel){
+        panel.removeAll();
+        panel.repaint();
+        panel.validate();
+    }
+
 }
