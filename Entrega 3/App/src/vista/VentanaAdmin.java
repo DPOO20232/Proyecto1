@@ -1,11 +1,7 @@
 package vista;
-import javax.print.DocFlavor.INPUT_STREAM;
-import javax.sound.midi.Soundbank;
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.colorchooser.ColorChooserComponentFactory;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -22,17 +18,11 @@ import modelo.Vehiculo;
 import modelo.personal;
 
 import java.awt.*;
-import java.awt.Dialog.ModalExclusionType;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.font.TextAttribute;
 import java.io.IOException;
-import java.net.SocketTimeoutException;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class VentanaAdmin {
     static JFrame frame;
@@ -62,7 +52,7 @@ public class VentanaAdmin {
     static JComboBox<String> comboBoxGeneral8Cate;
     static JComboBox<String> comboBoxGeneral1Seg;
     public VentanaAdmin() {
-        this.frame = new JFrame("Menu Administrador");
+        frame = new JFrame("Menu Administrador");
         this.panelSuperior= setPanelSuperior();
         this.panelInferior= setPanelInferior();
         inAction= false;
@@ -381,8 +371,6 @@ public class VentanaAdmin {
                 String modeloStr= modelo.getText().toString();
                 String colorStr= color.getText().toString();
                 ButtonModel selectedTransmision = opcionTransmision.getSelection();
-                String categoriaStr= comboBoxGeneral1Vehi.getSelectedItem().toString();
-                String sedeStr= comboBoxGeneral2Vehi.getSelectedItem().toString();
                 if (!placaStr.equals("")&&!marcaStr.equals("")&&!modeloStr.equals("")&&!colorStr.equals("")&& selectedTransmision!=null){
                     boolean encontrado=false;
                     for (Vehiculo i: Inventario.getListaVehiculos()){
@@ -581,9 +569,8 @@ public class VentanaAdmin {
             public void actionPerformed(ActionEvent e){
                 System.out.println(sedes.getSelectedItem().toString());
                 refresh(panel3);
-                JPanel panel4= new JPanel(new GridLayout(0, 1));
                 
-                //TODO -> panel 4a va a tener la grafica para la sede dada
+                //TODO -> personalizar grafica alto nivel (pasar por param la sede)
                 MonthlyCalendarPanel vista= new MonthlyCalendarPanel("Sede");
                 vista.setMonthlyCalendarPanel();
 
