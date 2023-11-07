@@ -183,11 +183,12 @@ public class Vehiculo {
          * @param averiado Verdadero si el vehículo está averiado, falso si no lo está.
          */
         this.averiado=averiado;}
-    public void setTrasladoASede(Sede nuevaSede){
+    public boolean setTrasladoASede(Sede nuevaSede){
         /**
          * Realiza un traslado del vehículo a una nueva sede y registra un evento asociado.
          *
          * @param nuevaSede La nueva sede a la que se trasladará el vehículo.
+        * @return true si se pudo completar el traslado, false si no se pudo.
          */
         this.sede=nuevaSede;
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
@@ -199,12 +200,11 @@ public class Vehiculo {
         this.addEvento(nuevoEvento);
         Inventario.getListaEventos().add(nuevoEvento);
         this.setEstado("EnTraslado");
-        System.out.println("\n>Solicitud de traslado registrada.\n");
+        return true;
 
         }
         else{
-        System.out.println("\n>El vehículo actualmente no está disponible para trasladar, monitoree el vehículo para solicitar el traslado más adelante.\n");
-
+        return false;
         }
     }
     public void addEvento(Evento evento){
@@ -333,7 +333,7 @@ public class Vehiculo {
                         writer.newLine();
                         }
                 } else {
-                    writer.write("Este vehículo no cuenta con historial de Eventos:");
+                    writer.write("Este vehículo no cuenta con historial de Eventos.");
                     writer.newLine();
                 }
                 writer.newLine();
@@ -364,7 +364,7 @@ public class Vehiculo {
                         writer.newLine();
                         }
                 } else {
-                    writer.write("Este vehículo no cuenta con historial de Alquileres:");
+                    writer.write("Este vehículo no cuenta con historial de Alquileres.");
                     writer.newLine();
                 }
                 List<Reserva> reservasActivas = this.getReservasActivas();
@@ -380,7 +380,7 @@ public class Vehiculo {
                         writer.newLine();
                     } 
                 } else {
-                    writer.write("Este vehículo no cuenta con Reservas Activas:");
+                    writer.write("Este vehículo no cuenta con Reservas Activas.");
                     writer.newLine();
                 } 
                 writer.close(); // Cerrar el BufferedWriter después de terminar de escribir.
@@ -388,18 +388,18 @@ public class Vehiculo {
             System.err.println("Error al escribir en el archivo: " + e.getMessage());
         }}
 
-    public void resumenStatus(){
+    public String resumenStatus(){
         /**
          * Muestra un resumen del estado actual del vehículo, incluyendo su ubicación y disponibilidad.
          * La información se muestra en la consola.
          *
          * @throws DateTimeParseException Si ocurre un error al parsear fechas o horas.
          */
-        boolean resumenHecho=false;
         System.out.println();
         String ubicacion="";
         String infoCliente="";
         String disponibilidad= "";
+        String retorno="";
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         LocalTime hora = LocalTime.now();
         int horaActual = hora.getHour() * 100 + hora.getMinute();
@@ -407,35 +407,31 @@ public class Vehiculo {
         if (estado.equals("Disponible")){
             ubicacion= this.getSede().getNombre();
             disponibilidad=LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-            System.out.println("Estado: "+estado+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".");
-            resumenHecho=true;
+            
+            retorno=("Estado: "+estado+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".");
 
         }
         else if (estado.equals("EnLimpieza")||estado.equals("EnMantenimiento")){
             ubicacion= this.getSede().getNombre();
             for(Evento i: this.getHistorialEventos()){
                 if (i.getFechaFin()>=fechaActual&&i.getFechaInicio()<=fechaActual){
-                    disponibilidad=Integer.toString(i.getFechaFin());
+                    disponibilidad = String.valueOf(i.getFechaFin() / 10000) + "/" + String.valueOf((i.getFechaFin() / 100) % 100) + "/" + String.valueOf(i.getFechaFin() % 100);
                     break;
                 }            
             }
-            System.out.println("Estado: "+estado+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".");
-            resumenHecho=true;
+            retorno=("Estado: "+estado+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".");
         }
         else if(estado.equals("EnReserva")) {
             ubicacion=this.getUbicacionGPS();
             for (Reserva i: this.getReservasActivas()){
                 if (i.getFechaEntregar()>=fechaActual&&i.getFechaRecoger()<=fechaActual){
-                    disponibilidad=Integer.toString(i.getFechaRecoger());
+                    disponibilidad = String.valueOf(i.getFechaRecoger() / 10000) + "/" + String.valueOf((i.getFechaRecoger() / 100) % 100) + "/" + String.valueOf(i.getFechaRecoger() % 100);
                     infoCliente="Cliente en posesión del vehículo: "+i.getCliente().getNombre()+". Cédula: "+Integer.toString(i.getCliente().getNumeroCedula())+".";
                     break;
             }
         }
-            System.out.println("Estado: "+"EnAlquiler"+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".\n"+infoCliente);
-            resumenHecho=true;
-
+            retorno=("Estado: "+"EnAlquiler"+". Ubicación: "+ubicacion+". Disponible a partir de: "+disponibilidad+".\n"+infoCliente);
     }
-    if (resumenHecho==false){System.out.println("Error, intentelo de nuevo");}
-
+    return retorno;
     }
 }

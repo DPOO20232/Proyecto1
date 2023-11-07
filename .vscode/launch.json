@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "VentanaLogin",
+            "request": "launch",
+            "mainClass": "vista.VentanaLogin",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
             "name": "Consola",
             "request": "launch",
             "mainClass": "consola.Consola",

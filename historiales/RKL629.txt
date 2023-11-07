@@ -1,0 +1,21 @@
+Placa: RKL629
+Marca: ford
+Modelo: f150
+Color: verde
+Tipo de Transmisión: automatico
+Estado: no disponible
+Averiado: false
+Sede: SedeChia
+Categoría: pickup_PREMIUM
+Historial de Eventos:
+-> Fecha del inicio del evento: 20231016 .Fecha del fin del evento: 20231026. Descripción: EnMantenimiento
+-> Fecha del inicio del evento: 20231026 .Fecha del fin del evento: 20231027. Descripción: EnLimpieza
+
+Historial de Alquileres:
+->IDAlquiler: 4. Pago Final: COP2504000.0. Fecha inicio: 20231015. Fecha final: 20231016
+      Sede de recogida: SedeChia. Sede de devolución: SedeChia
+      Cliente: Luis Pérez. Cédula: 1034567890
+  ->Conductores:
+  ->Pagos Excedentes:
+
+Este vehículo no cuenta con Reservas Activas:

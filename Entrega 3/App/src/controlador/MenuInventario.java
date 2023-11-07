@@ -21,7 +21,7 @@ public class MenuInventario {
             String placa = input("Ingrese la placa del vehículo que desee consultar");
             Vehiculo vehiculo= Inventario.assignVehiculo(placa);
             if (vehiculo!=null){
-            vehiculo.resumenStatus();}                    
+            String resumen = vehiculo.resumenStatus();}                    
             else{
             System.out.println("\n>La placa ingresada no corresponde a ningún vehículo del inventario.\n");
             }

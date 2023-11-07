@@ -17,6 +17,7 @@ public class Consola {
     public static void MenuInicial() throws IOException{
     boolean continuar=true;
     while (continuar){
+        
         try
 			{
             System.out.println("\n\t\t>>> Menú principal");    
@@ -46,24 +47,24 @@ public class Consola {
                 System.out.println("\n\t\t>>>Hola, Admin!");
                 while (continuarAdmin==true){
                 System.out.println("\nOpciones de la aplicación\n");
-                System.out.println("1. Monitorear un vehículo");
-                System.out.println("2. Crear categoría");
-                System.out.println("3. Añadir vehículo al inventario");
-                System.out.println("4. Eliminar vehículo del inventario");
-                System.out.println("5. Obtener historial de un vehículo (archivo Log)");
-                System.out.println("6. Cambiar sede de un vehículo (traslado interno)");
-                System.out.println("7. Crear un seguro");
-                System.out.println("8. Modificar informacion de un seguro");
-                System.out.println("9. Eliminar seguro");
-                System.out.println("10. Registrar una nueva sede");
-                System.out.println("11. Modificar informacion de una sede");
-                System.out.println("12. Registrar un administrador local");
-                System.out.println("13. Actualizar información de  un administrador local");
-                System.out.println("14. Actualizar costo por conductor adicional");
-                System.out.println("15. Actualizar costo por traslado de sedes para un alquiler");
-                System.out.println("16. Actualizar periodo de temporada alta");
-                System.out.println("17. Actualizar periodo de temporada baja");
-                System.out.println("18. Cerrar sesión\n");
+                System.out.println("1. Monitorear un vehículo");//CHECKED
+                System.out.println("2. Crear categoría"); //CHECKED
+                System.out.println("3. Añadir vehículo al inventario");//CHECKED
+                System.out.println("4. Eliminar vehículo del inventario");//CHECKED
+                System.out.println("5. Obtener historial de un vehículo (archivo Log)");//CHECKED
+                System.out.println("6. Cambiar sede de un vehículo (traslado interno)");//CHECKED
+                System.out.println("7. Crear un seguro");//CHECKED
+                System.out.println("8. Modificar informacion de un seguro");//CHECKED
+                System.out.println("9. Eliminar seguro");//CHECKED
+                System.out.println("10. Registrar una nueva sede");//CHECKED
+                System.out.println("11. Modificar informacion de una sede");//CHECKED
+                System.out.println("12. Registrar un administrador local");//CHECKED
+                System.out.println("13. Actualizar información de  un administrador local");//CHECKED
+                System.out.println("14. Actualizar costo por conductor adicional");//CHECKED
+                System.out.println("15. Actualizar costo por traslado de sedes para un alquiler");//CHECKED
+                System.out.println("16. Actualizar periodo de temporada alta");//CHECKED
+                System.out.println("17. Actualizar periodo de temporada baja");//CHECKED
+                System.out.println("18. Cerrar sesión\n");//CHECKED
                 int opcion_admin = Integer.parseInt(input("Por favor seleccione una opción"));
                 try{
                 if (opcion_admin==1){MenuInventario.statusVehiculo();Inventario.updateSistema();}
@@ -225,11 +226,10 @@ public class Consola {
 		}
 		return null;
     }
-    public static void main(String[] args) throws IOException
-	{
-    Inventario.loadSistema();
-    System.out.println("\n\t\t>>> Bienvenid@ a "+Inventario.getNombreCompania());    
-    MenuInicial();
+    //public static void main(String[] args) throws IOException
+	
+    //Inventario.loadSistema();
+    //MenuInicial();
     
-	}
+	//}
 }

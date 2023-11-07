@@ -664,12 +664,8 @@ public class Inventario {
                         String[] subPartes1=subString1.split(",");
                         int inicioTemp1 = Integer.parseInt(subPartes1[0]);
                         int finTemp1 = Integer.parseInt(subPartes1[1]);
-                        int inicioTemp2 = Integer.parseInt(subPartes1[2]);
-                        int finTemp2 = Integer.parseInt(subPartes1[3]);
                         periodoTemporadaAlta.add(inicioTemp1);
-                        periodoTemporadaAlta.add(finTemp1);   
-                        periodoTemporadaAlta.add(inicioTemp2);
-                        periodoTemporadaAlta.add(finTemp2);  
+                        periodoTemporadaAlta.add(finTemp1);    
                     }
                  }
             }
@@ -707,6 +703,14 @@ public class Inventario {
                     listaCategorias.add(categoriaActual);
                 }
             }
+            Collections.sort(listaCategorias, new Comparator<Categoria>() {
+		    public int compare(Categoria c1, Categoria c2) {
+                int tipo1=c1.getID();
+                int tipo2=c2.getID();
+                if (tipo1>tipo2){return 1;}
+                else{return 2;}
+		    }
+		});
             System.out.println("> "+listaCategorias.size()+" categorías cargadas.");
         } catch (IOException e) {e.printStackTrace();}
     }
