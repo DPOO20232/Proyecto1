@@ -564,14 +564,14 @@ public class VentanaAdmin {
         panel3.add(sedes);
         JButton avanzarButton= new JButton("Continuar");
         panel3.add(avanzarButton);
+        comboBoxGeneral3Vehi=sedes;
         avanzarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                System.out.println(sedes.getSelectedItem().toString());
+                int idSede= Integer.parseInt(comboBoxGeneral3Vehi.getSelectedItem().toString().split(":")[0]);
+                Sede sedeElegida= Inventario.assignSede(idSede);
                 refresh(panel3);
-                
-                //TODO -> personalizar grafica alto nivel (pasar por param la sede)
-                MonthlyCalendarPanel vista= new MonthlyCalendarPanel("Sede");
+                MonthlyCalendarPanel vista= new MonthlyCalendarPanel(sedeElegida);
                 vista.setMonthlyCalendarPanel();
 
                 refresh(panel3);
@@ -1363,8 +1363,6 @@ public class VentanaAdmin {
                 public void actionPerformed(ActionEvent e) {
                     String text1 = date1.getText();
                     String text2 = date2.getText();
-                    System.out.println(text1);
-                    System.out.println(text2);
                     if (Integer.parseInt(text2)>Integer.parseInt(text1)){
                         if(!text1.equals("")&& !text2.equals("")){
 
