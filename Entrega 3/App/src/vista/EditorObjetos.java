@@ -5,8 +5,10 @@ import javax.swing.event.DocumentListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelo.Inventario;
 import modelo.Sede;
 import modelo.Seguro;
+import modelo.personal;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -39,6 +41,15 @@ public class EditorObjetos {
         mainPanel.add(cardPanel);
         crearPasosSeguro(seguro);
     }
+    public void editorPersonal(JPanel mainPanel,personal personal) {
+        this.mainPanel = mainPanel;
+        this.cardLayout = new CardLayout();
+        this.cardPanel = new JPanel(cardLayout);
+        String [] pasosSeguro ={"PreguntaDescripcion", "InputDescripcion", "PreguntaDescripcion2", "InputDescripcion2","Fin"};
+        this.pasos=pasosSeguro ;
+        mainPanel.add(cardPanel);
+        crearPasosPersonal(personal);
+    }
 
     public void editar() {
         // Comienza con el primer paso
@@ -63,6 +74,14 @@ public class EditorObjetos {
         crearPasoDecimales("InputPctg", "Porcentaje de la tarifa diaria a cobrar", "Fin",seguro);
         crearPasoFin("Fin");
     }
+    private void crearPasosPersonal(personal personal) {
+        crearPasoPregunta("PreguntaPassword", "¿Desea modificar la clave del empleado?", "InputPassword", "PreguntaSede");
+        crearPasoInput("InputPassword", "Ingrese la nueva contraseña", "PreguntaSede",personal);
+        crearPasoPregunta("PreguntaSede", "¿Desea modificar la sede?", "InputSede", "Fin");
+        crearPasoInput("InputSede", "Ingrese el ID de la sede", "Fin",personal);
+        crearPasoFin("Fin");
+    }
+
     private void crearPasoPregunta(String preguntaKey, String pregunta, String siguientePasoKeySi, String siguientePasoKeyNo) {
         JPanel panel = new JPanel();
         JLabel label = new JLabel(pregunta);
@@ -135,6 +154,28 @@ public class EditorObjetos {
                 else if (O instanceof Seguro){
                     Seguro seguro= (Seguro) O;
                     seguro.setDescripcion(textField.getText());
+                }
+                else if (O instanceof personal){
+                    personal personal= (personal) O;
+                    if (pasoKey.equals("InputPassword")){
+                        personal.setPassword(textField.getText());
+                    }
+                    else{
+                        try{
+                            int num= Integer.parseInt(textField.getText());
+                            if (num>0 && num<Inventario.getListaSedes().size()){
+                                personal.setSede(Inventario.assignSede(num));
+                            }
+                            else{
+                                VentanaMain.errorDialog("Elija un id de sede válido");
+                            }
+
+                        }
+                        catch(NumberFormatException f){
+
+                        }
+                    }
+                    
                 }
                 avanzarAlSiguientePaso(siguientePasoKey);
             }
