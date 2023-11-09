@@ -2,6 +2,12 @@ package ventanas;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import modelo.EmpleadoAtencion;
+import modelo.Sede;
+import modelo.Usuario;
+import modelo.personal;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +21,7 @@ public class VentanaAdminLocal {
         private  String[] pasos;
         private int pasoActual = 0;
         private static EditorObjetos editorObjetos;
-        public VentanaAdminLocal() {
+        public VentanaAdminLocal(Sede sede) {
             frame = new JFrame("Aplicación de la Empresa");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(800, 600);
@@ -82,7 +88,16 @@ public class VentanaAdminLocal {
                         JOptionPane.showMessageDialog(frame, "Los campos de login y contraseña son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
                         return; // Salir del ActionListener si no se cumple la validación
                     }
-                    if (puedoRegistrar){}
+                    if(Usuario.checkNombresLogins(login)==true){
+                        JOptionPane.showMessageDialog(frame, "Ese login ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    if (puedoRegistrar){
+                        personal empleado= new EmpleadoAtencion(login, password, "", sede);
+                        sede.addPersonalSede(empleado);
+                        personal.addCredencialesPersonal(empleado);
+
+                    }
                     // Limpieza de campos después de crear el usuario
                     loginField.setText("");
                     passwordField.setText("");

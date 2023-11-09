@@ -8,6 +8,7 @@ import modelo.Inventario;
 import modelo.Sede;
 import modelo.Usuario;
 import modelo.personal;
+import ventanas.VentanaAdminLocal;
 
 import java.awt.*;
 import java.awt.Dialog.ModalityType;
@@ -89,7 +90,9 @@ public class VentanaMain {
                     perfil=(personal.checkLoginPersonal(username, password)).getTipoPersonal();
                     Sede sedePersonal= personal.checkLoginPersonal(username, password).getSede();
                     personal adminlocal= personal.checkLoginPersonal(username, password);
-                    if (perfil.equals("AdminLocal")){}
+                    if (perfil.equals("AdminLocal")){
+                        new VentanaAdminLocal(sedePersonal);
+                    }
                     else if (perfil.equals("EmpleadoAtencion")){}
                     else{}
                     }
