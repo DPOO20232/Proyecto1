@@ -47,7 +47,6 @@ public class DateComboBoxPanel extends JPanel {
         if (anio_actual==anio_dado){
             mes_inicio=Calendar.getInstance().get(Calendar.MONTH)+1;
         }
-        System.out.println(mes_inicio);
         for (int i = mes_inicio; i <= 12; i++) {
             String s="";
             if (i<10){s=s+"0";}
@@ -99,36 +98,5 @@ public class DateComboBoxPanel extends JPanel {
     }
     public void setDefaulDayComboBox(){
         this.monthComboBox.setSelectedIndex(0);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Custom ComboBox Panel");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(400, 400);
-            //Implementacion
-            DateComboBoxPanel customPanel = new DateComboBoxPanel(2023);
-            customPanel.setDefaulDayComboBox();
-            customPanel.setDefaultMonthComboBox();
-            //
-            frame.add(customPanel,BorderLayout.NORTH );
-            JPanel panelinf= new JPanel();
-            
-            JLabel resultLabel = new JLabel("Result: ");
-            JButton getTextButton = new JButton("Get Text");
-
-            getTextButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String text = customPanel.getText();
-                    resultLabel.setText("Result: " + text);
-                }
-            });
-            panelinf.add(getTextButton);
-            panelinf.add(resultLabel);
-            frame.add(panelinf, BorderLayout.SOUTH);
-
-            frame.setVisible(true);
-        });
     }
 }

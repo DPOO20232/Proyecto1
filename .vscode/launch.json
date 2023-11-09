@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PanelesModificaciones",
+            "request": "launch",
+            "mainClass": "vista.PanelesModificaciones",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
             "name": "DateComboBoxPanel",
             "request": "launch",
             "mainClass": "vista.DateComboBoxPanel",

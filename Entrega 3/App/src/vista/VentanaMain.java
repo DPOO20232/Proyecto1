@@ -80,13 +80,15 @@ public class VentanaMain {
                 String password = new String(passwordField.getPassword());
 
 
-                
+                boolean found=false;
                 if (personal.checkLoginAdmin(username,password)==true){
+                    found=true;
                     frame.setEnabled(false);
                     new VentanaAdmin();
 
                 }
                 else if (personal.checkLoginPersonal(username, password)!=null){
+                    found=true;
                     perfil=(personal.checkLoginPersonal(username, password)).getTipoPersonal();
                     Sede sedePersonal= personal.checkLoginPersonal(username, password).getSede();
                     personal adminlocal= personal.checkLoginPersonal(username, password);
@@ -97,9 +99,11 @@ public class VentanaMain {
                     else{}
                     }
                 else if (Usuario.checkLoginCliente(username, password)!=null){
-                        Cliente cliente= Usuario.checkLoginCliente(password, password);
+                    found=true;
+                    Cliente cliente= Usuario.checkLoginCliente(password, password);
                 }
-                else{
+                if (found){
+                    frame.setEnabled(true);
 
                 }
             }

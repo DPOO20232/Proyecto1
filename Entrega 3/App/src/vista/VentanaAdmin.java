@@ -83,8 +83,12 @@ public class VentanaAdmin {
         panelSuperior.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
         JPanel panelSupIzq= new JPanel();
-        JLabel imagenEmpresa= new JLabel("imagen");
-        JLabel nomEmpresa= new JLabel("texto");
+        JLabel nomEmpresa= new JLabel(Inventario.getNombreCompania());
+
+        JLabel imagenEmpresa= new JLabel();
+        Icon icon = new ImageIcon("./imagenes/logo2.png");
+        imagenEmpresa.setIcon(icon);
+
         panelSupIzq.add(imagenEmpresa);
         panelSupIzq.add(nomEmpresa);
         panelSuperior.add(panelSupIzq, BorderLayout.WEST);
@@ -103,7 +107,6 @@ public class VentanaAdmin {
     }
 
     private static JTabbedPane setPanelInferior(){
-        inAction=true;
         JTabbedPane panel1= new JTabbedPane();
         panel1.add(menuVehiculos());
         JTabbedPane panel2= new JTabbedPane();
@@ -116,6 +119,8 @@ public class VentanaAdmin {
         panel5.add(menuPersonal());
         JTabbedPane panel6= new JTabbedPane();
         panel6.add(menuTarifasPeriodos());
+        JTabbedPane panel7= new JTabbedPane();
+        panel7.add(menuAltoNivel());
         JTabbedPane panelInferior = new JTabbedPane(JTabbedPane.TOP);
 
         panelInferior.add("Vehículos",panel1);
@@ -124,6 +129,7 @@ public class VentanaAdmin {
         panelInferior.add("Seguros",panel4);
         panelInferior.add("Personal",panel5);
         panelInferior.add("Tarifas/periodos",panel6);
+        panelInferior.add("Visualización de alto nivel",panel7);
         panelInferior.setSelectedIndex(-1);
         panelInferior.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
@@ -149,10 +155,15 @@ public class VentanaAdmin {
                     VentanaMain.refresh(panel5);
                     panel5.add(menuPersonal());
                 }
-                else{
+                else if (selectedIndex==6){
                     VentanaMain.refresh(panel6);
                     panel6.add(menuTarifasPeriodos());
                 }
+                else if (selectedIndex==7){
+                    VentanaMain.refresh(panel7);
+                    panel7.add(menuAltoNivel());
+                }
+
         }});
         return panelInferior;
     }
@@ -168,10 +179,7 @@ public class VentanaAdmin {
         JPanel panel2= new JPanel();
         nuevoPanel2Vehiculo(panel2);
         menu.add("Monitorear/ Actualizar vehículo",panel2);
-        //Opcion 3
-        JPanel panel3= new JPanel();
-        nuevoPanel3Vehiculo(panel3);
-        menu.add("Obtener visualización de alto nivel",panel3);
+        menu.setSelectedIndex(-1);
         menu.addChangeListener(new ChangeListener() {
         public void stateChanged(ChangeEvent e) {
             // Obtener el índice de la pestaña seleccionada
@@ -182,9 +190,7 @@ public class VentanaAdmin {
             else if (selectedIndex==2){
                 nuevoPanel2Vehiculo(panel2);
             }
-            else{nuevoPanel3Vehiculo(panel3);}
         }});
-        menu.setSelectedIndex(-1);
         return menu;
     }
 
@@ -193,11 +199,11 @@ public class VentanaAdmin {
         JPanel panel1= new JPanel();
         nuevoPanel1Categorias(panel1);
         menu.add("Registrar categoría", panel1);
+        menu.setSelectedIndex(-1);
         menu.addChangeListener(new ChangeListener() {
         public void stateChanged(ChangeEvent e) {
                 nuevoPanel1Categorias(panel1);    
         }});
-        menu.setSelectedIndex(-1);
         return menu;
     }
 
@@ -211,6 +217,7 @@ public class VentanaAdmin {
         JPanel panel2= new JPanel();
         nuevoPanel2Sedes(panel2);
         menu.add("Modificar Sede",panel2);
+        menu.setSelectedIndex(-1);
         menu.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 // Obtener el índice de la pestaña seleccionada
@@ -220,9 +227,6 @@ public class VentanaAdmin {
                 }
                 else {nuevoPanel2Sedes(panel2);}
         }});
-
-        
-        menu.setSelectedIndex(-1);
         return menu;
     }
         private static JTabbedPane menuSeguros(){
@@ -239,6 +243,7 @@ public class VentanaAdmin {
         JPanel panel3= new JPanel();
         nuevoPanel3Seguros(panel3);
         menu.add("Eliminar Seguro",panel3);
+        menu.setSelectedIndex(-1);
         menu.addChangeListener(new ChangeListener() {
         public void stateChanged(ChangeEvent e) {
         // Obtener el índice de la pestaña seleccionada
@@ -250,7 +255,6 @@ public class VentanaAdmin {
                     nuevoPanel2Seguros(panel2);}
                 else {nuevoPanel3Seguros(panel3);}
         }});
-        menu.setSelectedIndex(-1);
         return menu;
     }
         private static JTabbedPane menuPersonal(){
@@ -261,6 +265,7 @@ public class VentanaAdmin {
         JPanel panel2= new JPanel();
         nuevoPanel2Personal(panel2);
         menu.add("Actualizar sede de un administrador local",panel2);
+        menu.setSelectedIndex(-1);
         menu.addChangeListener(new ChangeListener() {
         public void stateChanged(ChangeEvent e) {
         // Obtener el índice de la pestaña seleccionada
@@ -270,8 +275,6 @@ public class VentanaAdmin {
                 }
                 else{nuevoPanel2Personal(panel2);}
         }});
-        
-        menu.setSelectedIndex(-1);
         return menu;
     }
         private static JTabbedPane menuTarifasPeriodos(){
@@ -288,6 +291,7 @@ public class VentanaAdmin {
         JPanel panel4= new JPanel();
         nuevoPanelPeriodos(panel4,2);
         menu.add("Actualizar periodo de temporada baja",panel4);
+        menu.setSelectedIndex(-1);
         menu.addChangeListener(new ChangeListener() {
         public void stateChanged(ChangeEvent e) {
         // Obtener el índice de la pestaña seleccionada
@@ -300,9 +304,51 @@ public class VentanaAdmin {
                 else if (selectedIndex==3){nuevoPanelPeriodos(panel3,1);}
                 else {nuevoPanelPeriodos(panel4,2);}
         }});
-        
-        menu.setSelectedIndex(-1);
         return menu;
+    }
+    private static JTabbedPane menuAltoNivel(){
+        JTabbedPane menu = new JTabbedPane(JTabbedPane.LEFT);
+        JPanel panel1= new JPanel();
+        nuevoPanelAltoNivel(panel1);
+        menu.add("Visualizacion de alto nivel",panel1);
+        menu.setSelectedIndex(-1);
+        menu.addChangeListener(new ChangeListener() {
+        public void stateChanged(ChangeEvent e) {
+        // Obtener el índice de la pestaña seleccionada
+            int selectedIndex = menu.getSelectedIndex();
+                if (selectedIndex==1){
+                    nuevoPanelAltoNivel(panel1);
+                }
+
+        }});
+        return menu;
+    }
+    
+    private static void nuevoPanelAltoNivel(JPanel panel1){
+        VentanaMain.refresh(panel1);
+        panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
+        panel1.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0)); // Establece un FlowLayout sin relleno
+        panel1.add(new JLabel("Elija la sede de la que desea visualizar la gráfica de alto nivel"));
+        JComboBox<String> sedes = new JComboBox<>();
+        for (Sede i: Inventario.getListaSedes()){
+            sedes.addItem(Integer.toString(i.getID())+": "+i.getNombre());
+        }
+        sedes.setSelectedIndex(0);
+        sedes.setPreferredSize(new Dimension(200, 30));
+        panel1.add(sedes);
+        JButton avanzarButton= new JButton("Continuar");
+        panel1.add(avanzarButton);
+        comboBoxGeneral3Vehi=sedes;
+        avanzarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                int idSede= Integer.parseInt(comboBoxGeneral3Vehi.getSelectedItem().toString().split(":")[0]);
+                Sede sedeElegida= Inventario.assignSede(idSede);
+                MonthlyCalendarPanel vista= new MonthlyCalendarPanel(sedeElegida);
+                vista.setMonthlyCalendarPanel();
+                //VentanaMain.refresh(panel1);
+            }
+        });
     }
         private static void nuevoPanel1Vehiculo(JPanel panel1){
         VentanaMain.refresh(panel1);
@@ -549,38 +595,6 @@ public class VentanaAdmin {
         }
         
     
-        private static void nuevoPanel3Vehiculo(JPanel panel3){
-        VentanaMain.refresh(panel3);
-        panel3.setLayout(new BoxLayout(panel3, BoxLayout.Y_AXIS));
-        panel3.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 0)); // Establece un FlowLayout sin relleno
-        panel3.add(new JLabel("Elija la sede de la que desea visualizar la gráfica de alto nivel"));
-        JComboBox<String> sedes = new JComboBox<>();
-        for (Sede i: Inventario.getListaSedes()){
-            sedes.addItem(Integer.toString(i.getID())+": "+i.getNombre());
-        }
-        sedes.setSelectedIndex(0);
-        sedes.setPreferredSize(new Dimension(200, 30));
-        panel3.add(sedes);
-        JButton avanzarButton= new JButton("Continuar");
-        panel3.add(avanzarButton);
-        comboBoxGeneral3Vehi=sedes;
-        avanzarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                int idSede= Integer.parseInt(comboBoxGeneral3Vehi.getSelectedItem().toString().split(":")[0]);
-                Sede sedeElegida= Inventario.assignSede(idSede);
-                VentanaMain.refresh(panel3);
-                MonthlyCalendarPanel vista= new MonthlyCalendarPanel(sedeElegida);
-                vista.setMonthlyCalendarPanel();
-
-                VentanaMain.refresh(panel3);
-                panel3.validate();
-                panel3.repaint();
-
-            }
-        });
-
-    }
 
         private static void nuevoPanel1Categorias(JPanel panel1){
         VentanaMain.refresh(panel1);
@@ -1270,7 +1284,7 @@ public class VentanaAdmin {
                                     i.setPassword(password.getText());
                                     VentanaMain.CambioGuardadoDialog();
                                     VentanaMain.refresh(panel2);
-                                    
+
                                     try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
 
                                 }

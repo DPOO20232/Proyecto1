@@ -124,7 +124,6 @@ public class PanelesModificaciones {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String resultado= "";
-                System.out.println(resultado);
                 result.complete(resultado); // Obtener la fecha seleccionada
                 panel.setVisible(false); // Oculta el panel después de la selección.
             }
