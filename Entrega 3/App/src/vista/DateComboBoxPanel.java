@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 
 public class DateComboBoxPanel extends JPanel {
     private JComboBox<String> monthComboBox;
@@ -22,33 +23,49 @@ public class DateComboBoxPanel extends JPanel {
         monthComboBox= new JComboBox<>();
         dayComboBox = new JComboBox<>();
 
-        populateMonthComboBox();
+        int anioActual=Calendar.getInstance().get(Calendar.YEAR);
+        int mesActual=Calendar.getInstance().get(Calendar.MONTH)+1;
+
+        boolean mismoAnio= anioActual==year;
+        
+        int mes_iteracion=populateMonthComboBox(anioActual,year);
         monthComboBox.setSelectedItem("01");
         monthComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    populateDayComboBox(year);
+                    boolean mismoMes= mesActual==mes_iteracion;
+                    populateDayComboBox(year, mismoMes&&mismoAnio);
                     }});
         panelInf.add(monthComboBox);
         panelInf.add(dayComboBox);
         this.add(panelSup);
         this.add(panelInf);
     }
-    private void populateMonthComboBox() {
+    private int populateMonthComboBox(int anio_actual, int anio_dado) {
         monthComboBox.removeAllItems();
-        for (int i = 1; i <= 12; i++) {
+        int mes_inicio=1;
+        if (anio_actual==anio_dado){
+            mes_inicio=Calendar.getInstance().get(Calendar.MONTH)+1;
+        }
+        System.out.println(mes_inicio);
+        for (int i = mes_inicio; i <= 12; i++) {
             String s="";
             if (i<10){s=s+"0";}
             s=s+Integer.toString(i);
             monthComboBox.addItem(s);
         }
+        return mes_inicio;
     }
-    private void populateDayComboBox(int year) {
+    private void populateDayComboBox(int year,boolean mismoMesAnio) {
         dayComboBox.removeAllItems();
         String strdMonth=(String) monthComboBox.getSelectedItem();
         int selectedMonth = Integer.parseInt(strdMonth);
         int maxDay = getMaxDayOfMonth(selectedMonth,year);
-        for (int i = 1; i <= maxDay; i++) {
+        int diaInicio=1;
+        if (mismoMesAnio){
+            diaInicio=Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        }
+        for (int i = diaInicio; i <= maxDay; i++) {
             String s="";
             if (i<10){s=s+"0";}
             s=s+Integer.toString(i);

@@ -77,13 +77,12 @@ public class VentanaMain {
                 String perfil="";
                 String username = nameField.getText();
                 String password = new String(passwordField.getPassword());
-                System.out.println(username);
-                System.out.println(password);
+
 
                 
                 if (personal.checkLoginAdmin(username,password)==true){
                     frame.setEnabled(false);
-                    VentanaAdmin ventanaAdmin= new VentanaAdmin();
+                    new VentanaAdmin();
 
                 }
                 else if (personal.checkLoginPersonal(username, password)!=null){
