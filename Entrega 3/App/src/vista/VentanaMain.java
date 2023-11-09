@@ -8,7 +8,6 @@ import modelo.Inventario;
 import modelo.Sede;
 import modelo.Usuario;
 import modelo.personal;
-import ventanas.VentanaAdminLocal;
 
 import java.awt.*;
 import java.awt.Dialog.ModalityType;
