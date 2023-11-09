@@ -1,16 +1,18 @@
-package ventanas;
+package vista;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import modelo.EmpleadoAtencion;
+import modelo.EmpleadoTecnico;
+import modelo.Inventario;
 import modelo.Sede;
 import modelo.Usuario;
 import modelo.personal;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class VentanaAdminLocal {
         private JFrame frame; // Declarar frame como variable miembro
@@ -75,29 +77,54 @@ public class VentanaAdminLocal {
                     boolean puedoRegistrar=true;
                     if (!esEmpleadoAtencion && !esEmpleadoTecnico) {
                         JOptionPane.showMessageDialog(frame, "Debe seleccionar al menos un tipo de personal.", "Error", JOptionPane.ERROR_MESSAGE);
+                        puedoRegistrar=false;
                         return; // Salir del ActionListener si no se cumple la validación
                     }
                      // Validación: Asegurarse de que solo uno de los JCheckBox esté seleccionado
                     if ((esEmpleadoAtencion && esEmpleadoTecnico) || (!esEmpleadoAtencion && !esEmpleadoTecnico)) {
                         JOptionPane.showMessageDialog(frame, "Debe seleccionar uno y solo uno de los tipos de personal.", "Error", JOptionPane.ERROR_MESSAGE);
+                        puedoRegistrar=false;
                         return; // Salir del ActionListener si no se cumple la validación
                     }
                     
                     // Validación: Asegurarse de que los campos de login y contraseña no estén vacíos
                     if (login.isEmpty() || password.isEmpty()) {
                         JOptionPane.showMessageDialog(frame, "Los campos de login y contraseña son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+                        puedoRegistrar=false;
                         return; // Salir del ActionListener si no se cumple la validación
                     }
                     if(Usuario.checkNombresLogins(login)==true){
                         JOptionPane.showMessageDialog(frame, "Ese login ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+                        puedoRegistrar=false;
                         return;
                     }
                     if (puedoRegistrar){
-                        personal empleado= new EmpleadoAtencion(login, password, "", sede);
-                        sede.addPersonalSede(empleado);
-                        personal.addCredencialesPersonal(empleado);
+                        Usuario.addNombreLogin(password);
+                        if (esEmpleadoAtencion){
+                            EmpleadoAtencion empleadoAtencion=new EmpleadoAtencion(login, password, "EmpleadoAtencion", sede);
+                            sede.addPersonalSede(empleadoAtencion);
+                            personal.addCredencialesPersonal(empleadoAtencion);
+                            try {
+                                Inventario.updateSistema();
+                            } catch (IOException e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                            }
+                        }
+                        else if (esEmpleadoTecnico){
+                            EmpleadoTecnico empleadoTecnico=new EmpleadoTecnico(login, password, "EmpleadoTecnico", sede);
+                            sede.addPersonalSede(empleadoTecnico);
+                            personal.addCredencialesPersonal(empleadoTecnico);
+                            try {
+                                Inventario.updateSistema();
+                            } catch (IOException e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                            }
+                        }
 
                     }
+                    VentanaMain.CambioGuardadoDialog();
                     // Limpieza de campos después de crear el usuario
                     loginField.setText("");
                     passwordField.setText("");
@@ -139,16 +166,31 @@ public class VentanaAdminLocal {
                         JOptionPane.showMessageDialog(frame, "El campo de login es obligatorio.", "Error", JOptionPane.ERROR_MESSAGE);
                         return; // Salir del ActionListener si no se cumple la validación
                     }
-
                     // Aquí puedes agregar la lógica para buscar al empleado con el login proporcionado y actualizar su información
+                    if(Usuario.checkNombresLogins(loginActualizar)==true){
+                        personal empleado=null;
+                        boolean esEpleado=false;
+                        for(personal i: personal.getCredencialesPersonal()){
+                            if ((i.getLogin().equals(loginActualizar))&&(i.getSede().equals(sede))){
+                                empleado=i;
+                                esEpleado=true;
+                            }
+                            
+                        }
+                        if( esEpleado==false){
+                            VentanaMain.errorDialog("el usuario ingresado no existe o no pertenece a la sede del administrador");
+                        }
+                        else{
+                        VentanaMain.refresh(pestaña2);
+                        editorObjetos = new EditorObjetos();
+                        editorObjetos.editorPersonal(pestaña2,empleado );
+                        editorObjetos.editar();
+                        }
+                   
+                        
+                    }
                     // Crear un objeto EditorObjetos y configurarlo
-                        pestaña2.removeAll();
-                        pestaña2.revalidate();
-                        pestaña2.repaint();
-                    
-                    editorObjetos = new EditorObjetos();
-                    editorObjetos.editorPersonal(pestaña2);
-                    editorObjetos.editar();
+                     
                     
                    
                     // Limpieza del campo después de la actualización

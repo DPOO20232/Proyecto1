@@ -164,7 +164,10 @@ public class EditorObjetos {
                         try{
                             int num= Integer.parseInt(textField.getText());
                             if (num>0 && num<Inventario.getListaSedes().size()){
+                                Sede sedeAntigua=personal.getSede();
+                                sedeAntigua.getPersonalSede().remove(personal);
                                 personal.setSede(Inventario.assignSede(num));
+
                             }
                             else{
                                 VentanaMain.errorDialog("Elija un id de sede válido");
