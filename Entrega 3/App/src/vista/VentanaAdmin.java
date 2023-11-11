@@ -1354,9 +1354,11 @@ public class VentanaAdmin {
                 panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 80));
                 JLabel label = new JLabel("Inicio Periodo ");
                 panel.add(label);
+                //Inicialización
                 DateComboBoxPanel date1= new DateComboBoxPanel(Calendar.getInstance().get(Calendar.YEAR)+1);
                 date1.setDefaulDayComboBox();
                 date1.setDefaultMonthComboBox();
+                //Fin inicialización
                 panel.add(date1);
                 JLabel label2 = new JLabel("Fin Periodo ");
                 panel.add(label2);

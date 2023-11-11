@@ -144,7 +144,7 @@ public class VentanaMain {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Agrega la lógica para abrir una ventana de registro o realizar la acción correspondiente.
-                JOptionPane.showMessageDialog(frame, "Abre la ventana de registro aquí.", "Registro", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "La ventana de registro se abrirá aquí.", "Registro", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
