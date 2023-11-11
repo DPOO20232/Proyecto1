@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "VentanaRegistro",
+            "request": "launch",
+            "mainClass": "vista.VentanaRegistro",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
             "name": "PanelesModificaciones",
             "request": "launch",
             "mainClass": "vista.PanelesModificaciones",
