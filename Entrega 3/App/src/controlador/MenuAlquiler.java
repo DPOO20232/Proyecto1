@@ -214,7 +214,7 @@ public class MenuAlquiler {
                     boolean horaVrecoger = Reserva.horaValida(hrecoger);
                     boolean horaVdevolucion = Reserva.horaValida(hentregar);
                     boolean fVrecoger = Reserva.fechaValidaReserva(frecoger,hrecoger);
-                    boolean fVdevolucion = Reserva.fechaValidaDevolucion(frecoger,fentregar,hrecoger,hentregar);;
+                    boolean fVdevolucion = Reserva.fechaValidaDevolucion(frecoger,fentregar,hrecoger,hentregar);
                     boolean posibleRecoger=sedeRecoger.estaAbierta(frecoger,hrecoger);
                     boolean posibleEntregar=sedeEntrega.estaAbierta(fentregar,hentregar);
                     if(horaVrecoger&&horaVdevolucion&&fVrecoger&&fVdevolucion&&posibleRecoger&&posibleEntregar){
@@ -585,9 +585,9 @@ public class MenuAlquiler {
         if (newPago>0){
         System.out.println("\n>El vehículo se ha devuelto correctamente y se han debitado COP "+Double.toString(newPago)+" de su tarjeta terminada en "+ Long.toString(cliente.getTarjeta().getNumeroTarjeta()% 10000)+".");
         }
+        //TODO check hay pagos negativos?
         else{
         System.out.println("\n>El vehículo se ha devuelto correctamente y el cliente tiene un saldo a favor de COP "+Double.toString(Math.abs(newPago))+" que se transferirán a su tarjeta terminada en "+ Long.toString(cliente.getTarjeta().getNumeroTarjeta()% 10000)+".");
-
         }}else{System.out.println("\n>Ingrese un número de cédula de cliente válido");}
         }
         else{

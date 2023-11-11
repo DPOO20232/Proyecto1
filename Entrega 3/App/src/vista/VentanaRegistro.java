@@ -1,6 +1,8 @@
 package vista;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -11,7 +13,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 public class VentanaRegistro extends JFrame {
@@ -22,13 +26,13 @@ public class VentanaRegistro extends JFrame {
     private JLabel etiquetaDatos;
     private JButton botonContinuar;
     private PlaceHolderTextField campoNombre;
+    private String inputFechaNacimiento;
     
 
     public VentanaRegistro(){
         super("Registro de Usuario");
 
         tabbedPane = new JTabbedPane();
-        JPanel panelA = new JPanel(new GridLayout(0,1));
         JPanel panelDatos = new JPanel(new GridLayout(0,2));
 
         nombreEmpresa = new JLabel("<NombreEmpresa>");
@@ -36,10 +40,14 @@ public class VentanaRegistro extends JFrame {
         instrucciones = new JLabel("Necesitamos que por favor ingrese los siguientes datos para crear su cuenta.");
         etiquetaDatos = new JLabel("Datos Personales:");
 
-        panelA.add(nombreEmpresa);
-        panelA.add(textoBienvenida);
-        panelA.add(instrucciones);
-        panelA.add(etiquetaDatos);
+        panelDatos.add(nombreEmpresa);
+        panelDatos.add(new JLabel("\n"));
+        panelDatos.add(textoBienvenida);
+        panelDatos.add(new JLabel("\n"));
+        panelDatos.add(instrucciones);
+        panelDatos.add(new JLabel("\n"));
+        panelDatos.add(etiquetaDatos);
+        panelDatos.add(new JLabel("\n"));
 
         JLabel etiquetaDocumento = new JLabel("Documento de Identidad: ");
         NumericOnlyTextField campoDocumento = new NumericOnlyTextField();
@@ -50,6 +58,62 @@ public class VentanaRegistro extends JFrame {
         JLabel etiquetaTelefono = new JLabel("Número de Teléfono Celular: ");
         NumericOnlyTextField campoTelefono = new NumericOnlyTextField();
         JLabel fechaNacimiento = new JLabel("Fecha de Nacimiento: ");
+
+        //DESDE AQUI VA LO DE FECHA
+        JPanel panelFecha= new JPanel();
+        panelFecha.setLayout(new FlowLayout());
+        DefaultComboBoxModel<String> opcionesAnio = new DefaultComboBoxModel<>();
+
+        int anioActual= Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = anioActual-90; i <= anioActual-19; i++){
+            opcionesAnio.addElement(Integer.toString(i));
+        }
+        JComboBox<String> anioBox= new JComboBox<String>(opcionesAnio);
+        anioBox.setSelectedIndex(0);
+        panelFecha.add(anioBox);
+        anioBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+            String anio=anioBox.getSelectedItem().toString();
+            VentanaMain.refresh(panelFecha);
+            panelFecha.add(anioBox);
+            anioBox.setEnabled(false);
+            DateComboBoxPanel date1= new DateComboBoxPanel(Integer.parseInt(anio));
+            date1.setDefaulDayComboBox();
+            date1.setDefaultMonthComboBox();
+
+            
+
+
+
+            panelFecha.add(date1);
+            JButton updateDatebutton= new JButton("Cambiar Fecha");
+            panelFecha.add(updateDatebutton);
+            JButton saveDatebutton= new JButton("Guardar Fecha");
+            panelFecha.add(saveDatebutton);
+            saveDatebutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    inputFechaNacimiento=anio+date1.getText();
+                    VentanaMain.refresh(panelFecha);
+                    panelFecha.add(anioBox);
+                    panelFecha.add(updateDatebutton);
+                    System.out.println(inputFechaNacimiento);
+                }    
+            });
+            updateDatebutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    inputFechaNacimiento="";
+                    VentanaMain.refresh(panelFecha);
+                    panelFecha.add(anioBox);
+                    anioBox.setEnabled(true);
+                }
+            });
+            }
+        });
+        //hasta aca va -> para verificar si la fecha se guardo preguntar si !inputFechaNacimiento.equals("")
+        
 
         JLabel etiquetaNacionalidad = new JLabel("Nacionalidad");
         PlaceHolderTextField campoNacionalidad = new PlaceHolderTextField("Ej: Colombia");
@@ -63,10 +127,10 @@ public class VentanaRegistro extends JFrame {
         panelDatos.add(campoCorreo);
         panelDatos.add(etiquetaTelefono);
         panelDatos.add(campoTelefono);
+        panelDatos.add(fechaNacimiento);
+        panelDatos.add(panelFecha);
         panelDatos.add(etiquetaNacionalidad);
         panelDatos.add(campoNacionalidad);
-
-        panelA.add(panelDatos);
 
         botonContinuar = new JButton("Continuar");
         botonContinuar.setPreferredSize(new Dimension(50, 30));
@@ -103,17 +167,17 @@ public class VentanaRegistro extends JFrame {
 
         botonContinuar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                tabbedPane.remove(panelA);
+                tabbedPane.remove(panelDatos);
                 crearUsuario();
                 botonContinuar.setEnabled(false);
             }
         });
 
-        panelA.add(botonContinuar);
-        tabbedPane.add("Datos Personales", panelA);
+        panelDatos.add(botonContinuar);
+        tabbedPane.add("Datos Personales", panelDatos);
         add(tabbedPane);
         setLocationRelativeTo(null);
-        setSize(500, 600);
+        setSize(840, 600);
         setVisible(true);
     }
     
@@ -359,8 +423,14 @@ public class VentanaRegistro extends JFrame {
             }
         });
     }
+
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new VentanaRegistro());
+    }
 }
 
     
+
 
 
