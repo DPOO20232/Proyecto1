@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "VentanaRegistro",
+            "request": "launch",
+            "mainClass": "vista.VentanaRegistro",
+            "projectName": "Proyecto1_2bf91998"
+        },
+        {
+            "type": "java",
+            "name": "VentanaReserva",
+            "request": "launch",
+            "mainClass": "vista.VentanaReserva",
+            "projectName": "Proyecto1_2bf91998"
+        },
+        {
+            "type": "java",
             "name": "VentanaMain",
             "request": "launch",
             "mainClass": "vista.VentanaMain",

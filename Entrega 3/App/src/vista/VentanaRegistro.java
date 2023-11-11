@@ -378,7 +378,7 @@ public class VentanaRegistro extends JFrame {
                         !campoNumeroT.getText().isEmpty() &&
                         !campoMarca.getText().isEmpty();
                 botonGuardar.setEnabled(habilitar);
-            }            
+            }
         };
         campoNombreT.getDocument().addDocumentListener(documentListener);
         campoNumeroT.getDocument().addDocumentListener(documentListener);
