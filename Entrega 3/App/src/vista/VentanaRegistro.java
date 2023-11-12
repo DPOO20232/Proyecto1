@@ -61,6 +61,9 @@ public class VentanaRegistro extends JFrame {
         JLabel etiquetaTelefono = new JLabel("Número de Teléfono Celular: ");
         NumericOnlyTextField campoTelefono = new NumericOnlyTextField();
         JLabel fechaNacimiento = new JLabel("Fecha de Nacimiento: ");
+        botonContinuar = new JButton("Continuar");
+        botonContinuar.setPreferredSize(new Dimension(50, 30));
+        botonContinuar.setEnabled(false);
 
         //DESDE AQUI VA LO DE FECHA
         JPanel panelFecha= new JPanel();
@@ -134,9 +137,6 @@ public class VentanaRegistro extends JFrame {
         panelDatos.add(etiquetaNacionalidad);
         panelDatos.add(campoNacionalidad);
 
-        botonContinuar = new JButton("Continuar");
-        botonContinuar.setPreferredSize(new Dimension(50, 30));
-        botonContinuar.setEnabled(false);
         DocumentListener documentListener = new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -157,7 +157,7 @@ public class VentanaRegistro extends JFrame {
                 boolean habilitar = !campoDocumento.getText().isEmpty() &&
                         !campoNombre.getText().isEmpty() &&
                         !campoCorreo.getText().isEmpty() &&
-                        !campoTelefono.getText().isEmpty() && !campoNacionalidad.getText().isEmpty() && !inputFechaNacimiento.equals("");
+                        !campoTelefono.getText().isEmpty() && !campoNacionalidad.getText().isEmpty();
                 botonContinuar.setEnabled(habilitar);
             }
         };
@@ -166,12 +166,18 @@ public class VentanaRegistro extends JFrame {
         campoNombre.getDocument().addDocumentListener(documentListener);
         campoCorreo.getDocument().addDocumentListener(documentListener);
         campoTelefono.getDocument().addDocumentListener(documentListener);
-        campoNacionalidad.getDocument().addDocumentListener(documentListener);        
+        campoNacionalidad.getDocument().addDocumentListener(documentListener);
+
         botonContinuar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (inputFechaNacimiento.equals("")){
+                    VentanaMain.errorDialog("Ingrese la fecha de nacimiento");
+                }
+                else{
                 tabbedPane.remove(panelDatos);
                 crearUsuario();
                 botonContinuar.setEnabled(false);
+                }
             }
         });
 
