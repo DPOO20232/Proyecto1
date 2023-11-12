@@ -53,6 +53,7 @@ public class VentanaReserva extends JFrame {
 
         
         JLabel fechaRecogida = new JLabel(" Fecha y hora de recogida del vehículo");
+        panelDatos.add(fechaRecogida);
         
         // FECHA RECOGIDA ------------------------------------------------------------------------------------------------------------------------------------------
         JPanel panelFecha = new JPanel();       
@@ -66,7 +67,7 @@ public class VentanaReserva extends JFrame {
         
         JComboBox<String> anioBox = new JComboBox<String>(opcionesAnio);
         anioBox.setSelectedIndex(0);
-        panelFecha.add(anioBox);
+        panelFecha.add(anioBox); // Año agregado
         
         anioBox.addActionListener(new ActionListener() {
             @Override
@@ -103,18 +104,67 @@ public class VentanaReserva extends JFrame {
                     anioBox.setEnabled(true);
                 }
             });}});
-        //---------------------------------------------------------------------
-        
-        
-        
-        
-        tabbedPane.add("Datos Personales", panelDatos);
+        //------------------------------------------------------------------------------------------------------------------------------------------
+        //TODO: falta la hora de recogida
+
+        JPanel panelHora = new JPanel();
+        panelHora.setLayout(new FlowLayout());
+
+        DefaultComboBoxModel<String> opcionesHora = new DefaultComboBoxModel<>(); //Se crean y se agregan las opciones disponibles para el año de recogida
+        int horaApertura = 800;
+        for (int i = horaApertura;i < 1700;i+=100){
+            opcionesHora.addElement(Integer.toString(i));
+        }
+        JComboBox<String> horaBox = new JComboBox<String>(opcionesHora);
+        horaBox.setSelectedIndex(0);
+        panelHora.add(horaBox); // Hora agregada
+
+        // --------
+        botonContinuar = new JButton("Continuar");
+        botonContinuar.setPreferredSize(new Dimension(50, 30));
+        botonContinuar.setEnabled(false);
+        DocumentListener documentListener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                habilitarBotonContinuar();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                habilitarBotonContinuar();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                habilitarBotonContinuar();
+            }
+            public void habilitarBotonContinuar() {
+                boolean habilitar = true;
+
+                botonContinuar.setEnabled(habilitar);
+            }
+        };
+
+   
+
+        botonContinuar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.remove(panelDatos);
+                crearUsuario();
+                botonContinuar.setEnabled(false);
+            }
+        });
+
+        panelDatos.add(botonContinuar);
+        tabbedPane.add("Fecha recogida", panelDatos);
         add(tabbedPane);
         setLocationRelativeTo(null);
         setSize(840, 600);
         setVisible(true);
-        
     }
+        
+        
+    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new VentanaReserva());
