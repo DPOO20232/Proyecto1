@@ -259,7 +259,7 @@ public class VentanaMain {
         // Verificar si todos los campos están llenos
         String nomSedeText = nomSede.getText().trim();
         String ubiSedeText = ubiSede.getText().trim();
-        boolean hora1Selected = hora1.getSelectedItem() != null;
+        boolean hora1Selected = hora1.getSelectedItem()!=null;
         boolean min1Selected = min1.getSelectedItem() != null;
         boolean hora2Selected = hora2.getSelectedItem() != null;
         boolean min2Selected = min2.getSelectedItem() != null;

@@ -814,7 +814,6 @@ public class VentanaAdmin {
                 avanzar.setVisible(VentanaMain.checkFields1Sede(nomSede, ubiSede, comboBoxGeneral1Sede, comboBoxGeneral2Sede, comboBoxGeneral3Sede, comboBoxGeneral4Sede));
             }
         };
-    
         nomSede.getDocument().addDocumentListener(documentListener);
         ubiSede.getDocument().addDocumentListener(documentListener);
 
@@ -1378,9 +1377,8 @@ public class VentanaAdmin {
                 public void actionPerformed(ActionEvent e) {
                     String text1 = date1.getText();
                     String text2 = date2.getText();
-                    if (Integer.parseInt(text2)>Integer.parseInt(text1)){
-                        if(!text1.equals("")&& !text2.equals("")){
-
+                    if (!text1.equals("")&& !text2.equals("")){
+                        if(Integer.parseInt(text2)>Integer.parseInt(text1)){
                             if (opcion==1){
                                 List<Integer> periodo=Inventario.getPeriodoTemporadaAlta();
                                 periodo.clear();

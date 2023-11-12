@@ -50,6 +50,8 @@ public class VentanaRegistro extends JFrame {
         panelDatos.add(etiquetaDatos);
         panelDatos.add(new JLabel("\n"));
 
+        inputFechaNacimiento="";
+
         JLabel etiquetaDocumento = new JLabel("Documento de Identidad: ");
         NumericOnlyTextField campoDocumento = new NumericOnlyTextField();
         JLabel etiquetaNombre = new JLabel("Nombre Completo: ");
@@ -82,16 +84,14 @@ public class VentanaRegistro extends JFrame {
             DateComboBoxPanel date1= new DateComboBoxPanel(Integer.parseInt(anio));
             date1.setDefaulDayComboBox();
             date1.setDefaultMonthComboBox();
-
-            
-
-
-
             panelFecha.add(date1);
             JButton updateDatebutton= new JButton("Cambiar Fecha");
             panelFecha.add(updateDatebutton);
             JButton saveDatebutton= new JButton("Guardar Fecha");
             panelFecha.add(saveDatebutton);
+            inputFechaNacimiento="";
+            System.out.println(":"+inputFechaNacimiento);
+
             saveDatebutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e){
@@ -100,12 +100,13 @@ public class VentanaRegistro extends JFrame {
                     panelFecha.add(anioBox);
                     panelFecha.add(updateDatebutton);
                     System.out.println(inputFechaNacimiento);
-                }    
+                } 
             });
             updateDatebutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e){
                     inputFechaNacimiento="";
+                    System.out.println(":"+inputFechaNacimiento);
                     VentanaMain.refresh(panelFecha);
                     panelFecha.add(anioBox);
                     anioBox.setEnabled(true);
@@ -152,10 +153,11 @@ public class VentanaRegistro extends JFrame {
                 habilitarBotonContinuar();
             }
             public void habilitarBotonContinuar() {
+                System.out.println("input fecha actual:"+inputFechaNacimiento);
                 boolean habilitar = !campoDocumento.getText().isEmpty() &&
                         !campoNombre.getText().isEmpty() &&
                         !campoCorreo.getText().isEmpty() &&
-                        !campoTelefono.getText().isEmpty() && !campoNacionalidad.getText().isEmpty();
+                        !campoTelefono.getText().isEmpty() && !campoNacionalidad.getText().isEmpty() && !inputFechaNacimiento.equals("");
                 botonContinuar.setEnabled(habilitar);
             }
         };
@@ -164,8 +166,7 @@ public class VentanaRegistro extends JFrame {
         campoNombre.getDocument().addDocumentListener(documentListener);
         campoCorreo.getDocument().addDocumentListener(documentListener);
         campoTelefono.getDocument().addDocumentListener(documentListener);
-        campoNacionalidad.getDocument().addDocumentListener(documentListener);
-
+        campoNacionalidad.getDocument().addDocumentListener(documentListener);        
         botonContinuar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 tabbedPane.remove(panelDatos);
