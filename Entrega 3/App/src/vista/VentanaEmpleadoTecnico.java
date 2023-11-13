@@ -1,7 +1,4 @@
 package vista;
-import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.JTextFieldDateEditor;
-
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
