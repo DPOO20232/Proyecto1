@@ -639,6 +639,9 @@ public class VentanaRegistro extends JFrame {
     }
     private void cerrarAlGuardar() {
         if (guardarTarjeta  && guardarLicencia) {
+            Usuario.addNombreLogin(login);
+            Usuario.addNumCedulas(numeroCedula);
+            Usuario.addCliente(clienteNuevo);
             dispose();
         }
     }
