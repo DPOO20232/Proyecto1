@@ -1,7 +1,5 @@
 package vista;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import modelo.EmpleadoAtencion;
 import modelo.EmpleadoTecnico;
 import modelo.Inventario;
