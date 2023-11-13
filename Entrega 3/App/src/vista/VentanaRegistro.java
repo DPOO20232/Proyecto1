@@ -533,6 +533,8 @@ public class VentanaRegistro extends JFrame {
                     }catch(NumberFormatException e2){
                         VentanaMain.errorDialog("Guarde fechas");
 
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
                     }
                 }
             }
@@ -654,15 +656,20 @@ public class VentanaRegistro extends JFrame {
                 clienteNuevo.setTarjeta(tarjetaNueva);
                 guardarTarjeta = true;
                 tabbedPane.remove(panelD);
-                cerrarAlGuardar();
+                try {
+                    cerrarAlGuardar();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
     }
-    private void cerrarAlGuardar() {
+    private void cerrarAlGuardar() throws IOException {
         if (guardarTarjeta  && guardarLicencia) {
             Usuario.addNombreLogin(login);
             Usuario.addNumCedulas(numeroCedula);
             Usuario.addCliente(clienteNuevo);
+            Inventario.updateSistema();
             dispose();
             
         }
