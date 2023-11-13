@@ -40,7 +40,14 @@ public class VentanaAdminLocal {
                 public void actionPerformed(ActionEvent e) {
                     // Agregar el código para cerrar la sesión del administrador local
                     // Por ejemplo, puedes cerrar la ventana actual y mostrar una ventana de inicio de sesión.
-                    
+                    try {
+                                Inventario.updateSistema();
+                            } 
+                    catch (IOException e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                            }
+                    frame.dispose();
                 }
             });
             nombreEmpresaPanel.add(cerrarSesionButton);
@@ -184,12 +191,8 @@ public class VentanaAdminLocal {
                             editorObjetos = new EditorObjetos();
                             editorObjetos.editorPersonal(pestaña2,empleado );
                             editorObjetos.editar();
-                             try {
-                                Inventario.updateSistema();
-                            } catch (IOException e1) {
-                                // TODO Auto-generated catch block
-                                e1.printStackTrace();
-                            }
+                            pestaña2.repaint();
+                           
                         }
                         else{
                             VentanaMain.errorDialog("el usuario ingresado no existe o no pertenece a la sede del administrador");
@@ -198,9 +201,9 @@ public class VentanaAdminLocal {
                    
                         
                     }
-                    // Crear un objeto EditorObjetos y configurarlo
-                     
                     
+                    
+
                    
                     // Limpieza del campo después de la actualización
                     loginActualizarField.setText("");
@@ -212,8 +215,8 @@ public class VentanaAdminLocal {
             volverAtrasButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // Cierra la ventana "Actualizar Personal"
-                    panelActualizarPersonal.setVisible(false);
+              
+                    panelActualizarPersonal.repaint();
                 }
             });
             
@@ -235,7 +238,7 @@ public class VentanaAdminLocal {
             System.out.println(administradorLocal);
             String empleadosAtencion = EditorObjetos.extraerInformacion("Empleado(s) de atención", empleados);
             String empleadosTecnicos = EditorObjetos.extraerInformacion("Empleado(s) técnico(s)", empleados);
-    
+            
             JPanel panelAdminLocal = new JPanel();
             panelAdminLocal.setLayout(new BoxLayout(panelAdminLocal, BoxLayout.Y_AXIS));
             JLabel adminLocalLabel = new JLabel("Administrador Local:");
@@ -260,9 +263,9 @@ public class VentanaAdminLocal {
             empleadosAtencionField.setText(empleadosAtencion);
             panelEmpleadosAtencion.add(empleadosAtencionLabel);
             panelEmpleadosAtencion.add(empleadosAtencionField);
+            JLabel AtencionLabel = new JLabel("Estos son los empleados antes de iniciar sesion si hubo cambios cierre sesion:");
 
-
-            
+            pestaña3.add(AtencionLabel);
             pestaña3.add(panelAdminLocal);
             pestaña3.setLayout(new GridLayout(0, 1));
             pestaña3.add(panelEmpleadosTecnicos);
