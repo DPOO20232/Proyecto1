@@ -8,6 +8,7 @@ import java.util.List;
 import modelo.Inventario;
 import modelo.Sede;
 import modelo.Seguro;
+import modelo.Vehiculo;
 import modelo.personal;
 
 import java.awt.*;
@@ -50,7 +51,6 @@ public class EditorObjetos {
         mainPanel.add(cardPanel);
         crearPasosPersonal(personal);
     }
-
     public void editar() {
         // Comienza con el primer paso
         mostrarPasoActual();
@@ -67,6 +67,7 @@ public class EditorObjetos {
         crearPasoHorario("InputHora2", "Horario para fin de semana (hhmm)", "Fin",sede);
         crearPasoFin("Fin");
     }
+
     private void crearPasosSeguro(Seguro seguro) {
         crearPasoPregunta("PreguntaDescripcion", "¿Desea modificar la descripción del seguro?", "InputDescripcion", "PreguntaPctg");
         crearPasoInput("InputDescripcion", "Descripción", "PreguntaPctg",seguro);
@@ -160,7 +161,8 @@ public class EditorObjetos {
                     if (pasoKey.equals("InputPassword")){
                         personal.setPassword(textField.getText());
                     }
-                    else{
+                    else
+                    {
                         try{
                             int num= Integer.parseInt(textField.getText());
                             if (num>0 && num<Inventario.getListaSedes().size()){
@@ -274,7 +276,101 @@ public class EditorObjetos {
     
         cardPanel.add(panel, pasoKey);
     }
+    private void crearPasoFecha(String pasoKey, String nombreCampo, String siguientePasoKey, Object O) {
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Nueva " + nombreCampo + ":");
+        JLabel labela = new JLabel("\t");
     
+        JLabel labelDia1 = new JLabel("Día inicio ");
+        JLabel labelMes1 = new JLabel("Mes inicio ");
+        JLabel labelAnio1 = new JLabel("Año inicio ");
+        JPanel fechaPanel1 = new JPanel();
+    
+        JLabel labelDia2 = new JLabel("Día fin ");
+        JLabel labelMes2 = new JLabel("Mes fin ");
+        JLabel labelAnio2 = new JLabel("Año fin ");
+        JPanel fechaPanel2 = new JPanel();
+    
+        DefaultComboBoxModel<String> opcionesDia1 = new DefaultComboBoxModel<>();
+        DefaultComboBoxModel<String> opcionesDia2 = new DefaultComboBoxModel<>();
+    
+        DefaultComboBoxModel<String> opcionesMes1 = new DefaultComboBoxModel<>();
+        DefaultComboBoxModel<String> opcionesMes2 = new DefaultComboBoxModel<>();
+    
+        DefaultComboBoxModel<String> opcionesAnio1 = new DefaultComboBoxModel<>();
+        DefaultComboBoxModel<String> opcionesAnio2 = new DefaultComboBoxModel<>();
+    
+        // Llenar las opciones para días, meses y años
+        for (int i = 1; i <= 31; i++) {
+            opcionesDia1.addElement(Integer.toString(i));
+            opcionesDia2.addElement(Integer.toString(i));
+        }
+    
+        String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+        for (String mes : meses) {
+            opcionesMes1.addElement(mes);
+            opcionesMes2.addElement(mes);
+        }
+    
+        for (int i = 2022; i <= 2030; i++) {
+            opcionesAnio1.addElement(Integer.toString(i));
+            opcionesAnio2.addElement(Integer.toString(i));
+        }
+    
+        JComboBox<String> diaComboBox1 = new JComboBox<>(opcionesDia1);
+        JComboBox<String> mesComboBox1 = new JComboBox<>(opcionesMes1);
+        JComboBox<String> anioComboBox1 = new JComboBox<>(opcionesAnio1);
+    
+        JComboBox<String> diaComboBox2 = new JComboBox<>(opcionesDia2);
+        JComboBox<String> mesComboBox2 = new JComboBox<>(opcionesMes2);
+        JComboBox<String> anioComboBox2 = new JComboBox<>(opcionesAnio2);
+    
+        JButton avanzarButton = new JButton("Avanzar");
+    
+        fechaPanel1.add(diaComboBox1);
+        fechaPanel1.add(mesComboBox1);
+        fechaPanel1.add(anioComboBox1);
+    
+        fechaPanel2.add(diaComboBox2);
+        fechaPanel2.add(mesComboBox2);
+        fechaPanel2.add(anioComboBox2);
+    
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.add(label);
+        panel.add(labela);
+        panel.add(labelDia1);
+        panel.add(fechaPanel1);
+        panel.add(labelDia2);
+        panel.add(fechaPanel2);
+        panel.add(avanzarButton);
+    
+        avanzarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Obtener la fecha seleccionada
+                String dia1 = diaComboBox1.getSelectedItem().toString();
+                String mes1 = String.valueOf(mesComboBox1.getSelectedIndex() + 1); // Sumar 1 porque los meses en Java comienzan desde 0
+                String anio1 = anioComboBox1.getSelectedItem().toString();
+    
+                String dia2 = diaComboBox2.getSelectedItem().toString();
+                String mes2 = String.valueOf(mesComboBox2.getSelectedIndex() + 1);
+                String anio2 = anioComboBox2.getSelectedItem().toString();
+    
+                String fechaInicio = anio1 + "-" + mes1 + "-" + dia1;
+                String fechaFin = anio2 + "-" + mes2 + "-" + dia2;
+    
+                System.out.println("Fecha inicio: " + fechaInicio);
+                System.out.println("Fecha fin: " + fechaFin);
+    
+                
+    
+                // Avanzar al siguiente paso
+                avanzarAlSiguientePaso(siguientePasoKey);
+            }
+        });
+    
+        cardPanel.add(panel, pasoKey);
+    }
     private void crearPasoDecimales(String pasoKey, String nombreCampo, String siguientePasoKey,Object O) {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Nuevo " + nombreCampo + ":");
@@ -356,5 +452,28 @@ public class EditorObjetos {
 
     private void mostrarPasoActual() {
         cardLayout.show(cardPanel, pasos[pasoActual]);
+    }
+    static String extraerInformacion(String tipo, String informacion) {
+        // Buscamos la posición del tipo en el string
+        int startIndex = informacion.indexOf(tipo);
+
+        // Si no se encuentra, retornamos una cadena vacía
+        if (startIndex == -1) {
+            return "";
+        }
+
+        // Avanzamos hasta el primer carácter después de los dos puntos
+        startIndex = startIndex + tipo.length() + 2;
+
+        // Buscamos la posición del punto
+        int endIndex = informacion.indexOf(";", startIndex);
+
+        // Si no se encuentra el punto, retornamos la cadena desde startIndex hasta el final
+        if (endIndex == -1) {
+            return informacion.substring(startIndex);
+        }
+
+        // Retornamos la subcadena desde startIndex hasta endIndex
+        return informacion.substring(startIndex, endIndex);
     }
 }

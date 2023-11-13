@@ -126,7 +126,7 @@ public class personal extends Usuario{
          */
         return credencialesPersonal;
     }
-    public static void printRegistroEmpleados(Sede sede){
+    public static String printRegistroEmpleados(Sede sede){
         /**
          * Imprime en la consola un resumen del registro de empleados de una sede específica.
          *
@@ -143,7 +143,7 @@ public class personal extends Usuario{
         String value2 = "";
     
         if (sede.getAdminLocal() != null) {
-            inicio =inicio+ "1 Administrador Local: " + sede.getAdminLocal().getLogin() + ". ";
+            inicio =inicio+ "1 Administrador Local: " + sede.getAdminLocal().getLogin() + "; ";
         } else {
             inicio =inicio+ "0 Administradores Locales. ";
         }
@@ -154,15 +154,16 @@ public class personal extends Usuario{
             if (tipo.equals("EmpleadoAtencion")) {
                 cantidadPersonalAtencion+=1;
                 key1 = cantidadPersonalAtencion + " Empleado(s) de atención: ";
-                value1 =value1+ login + ", ";
+                value1 =value1+ login + " , ";
             } else if (i.getTipoPersonal().equals("EmpleadoTecnico")) {
                 cantidadPersonalTecnico+=1;
                 key2 =cantidadPersonalTecnico + " Empleado(s) técnico(s): ";
-                value2 =value2+ login + ", ";
+                value2 =value2+ login + " , ";
             }
         }
     
-        System.out.println(inicio + key1 + value1.substring(0, value1.length() - 2) +". "+ key2 + value2.substring(0, value2.length() - 2) + ".");
-    }
+        String empleados=(inicio + key1 + value1.substring(0, value1.length() - 2) +";"+ key2 + value2.substring(0, value2.length() - 2) + ";");
+        return empleados;
+    }   
 
 }
