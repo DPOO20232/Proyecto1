@@ -51,9 +51,10 @@ public class VentanaEmpleadoTecnico {
     protected static int inputHoraInicio;
     protected static String accionSeleccionada;
     protected static Vehiculo vehiculo;
+    static JFrame frame = new JFrame("Actualizar Estado de Vehículo");
     public VentanaEmpleadoTecnico() {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Actualizar Estado de Vehículo");
+         
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(400, 300);
 
@@ -183,19 +184,20 @@ public class VentanaEmpleadoTecnico {
                 Date fechaFin = (Date) fechaFinSpinner.getValue();
 
                 // Validar las fechas ingresadas
-                if (validarFechas(fechaInicio, fechaFin)) {
-                    int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-                    SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
-                    inputFechaInicio = Integer.parseInt(formato.format(fechaInicio));
-                    inputFechaFin = Integer.parseInt(formato.format(fechaFin));
-                    
-                    if (inputFechaInicio<inputFechaFin&&inputFechaInicio>=fechaActual){
+                 int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+                SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
+                inputFechaInicio = Integer.parseInt(formato.format(fechaInicio));
+                inputFechaFin = Integer.parseInt(formato.format(fechaFin));
+                 if (inputFechaInicio<inputFechaFin&&inputFechaInicio>=fechaActual){
                         // Actualizar la información en el panel pestaña2
                         pedirHoras(pestaña2);
-                    }
+                    }   
+                    
+                   
+                   
                     
                 
-                } else {
+                else {
                     JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser anterior a la fecha de fin y mayor o igual a la fecha actual.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -231,14 +233,6 @@ public class VentanaEmpleadoTecnico {
         JComboBox<String> minComboBox1 = new JComboBox<>(opcionesmin1);
         JComboBox<String> minComboBox2 = new JComboBox<>(opcionesmin2);
 
-
-
-
-        JSpinner minutosInicioSpinner = new JSpinner(new SpinnerNumberModel(0, 00, 59, 1));
-        String minutosInicioString = String.valueOf(minutosInicioSpinner.getValue());
-        JSpinner minutosFinSpinner = new JSpinner(new SpinnerNumberModel(0, 00, 59, 1));
-        String minutosFInString = String.valueOf(minutosFinSpinner.getValue());
-
         // Crear un panel para mostrar los componentes
         JPanel panelHoras = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -254,7 +248,7 @@ public class VentanaEmpleadoTecnico {
         gbc.gridy = 1;
         panelHoras.add(new JLabel("Minutos de Inicio:"), gbc);
         gbc.gridx = 1;
-        panelHoras.add(minutosInicioSpinner, gbc);
+        panelHoras.add(minComboBox1, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -266,7 +260,7 @@ public class VentanaEmpleadoTecnico {
         gbc.gridy = 3;
         panelHoras.add(new JLabel("Minutos de Fin:"), gbc);
         gbc.gridx = 1;
-        panelHoras.add(minutosFinSpinner, gbc);
+        panelHoras.add(minComboBox2, gbc);
 
         // Crear el botón para continuar
         JButton continuarButton = new JButton("Continuar");
@@ -282,12 +276,12 @@ public class VentanaEmpleadoTecnico {
             public void actionPerformed(ActionEvent e) {
                 // Obtener las horas y minutos seleccionados
                 String horaInicio = horaInicioComboBox.getSelectedItem().toString();
-                String minutosInicio = minutosInicioSpinner.getValue().toString();
+                String minutosInicio = minComboBox1.getSelectedItem().toString();
                 String horaFin = horaFinComboBox.getSelectedItem().toString();
-                String minutosFin = minutosFinSpinner.getValue().toString();
+                String minutosFin = minComboBox2.getSelectedItem().toString();
 
                 // Validar las horas y minutos ingresados
-                if (validarHoras(horaInicio, minutosInicioString, horaFin, minutosFInString)) {
+                if (validarHoras(horaInicio, minutosInicio, horaFin, minutosFin)) {
                     inputHoraInicio = Integer.parseInt(horaInicio + minutosInicio);
                     inputHoraFin = Integer.parseInt(horaFin + minutosFin);
                     Evento evento = new Evento(inputFechaInicio, inputFechaFin, inputHoraInicio, inputHoraFin, accionSeleccionada);
@@ -298,6 +292,8 @@ public class VentanaEmpleadoTecnico {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
+                    VentanaMain.CambioGuardadoDialog();
+                    frame.dispose();
                     
                     
                 } else {
