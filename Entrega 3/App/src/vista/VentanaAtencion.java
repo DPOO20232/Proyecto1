@@ -294,6 +294,45 @@ public class VentanaAtencion {
         return panel;
     }
 
+    private static JPanel agregarConductores(alquiler alquiler_u){
+        JPanel panel= new JPanel();
+        panel.add(Box.createRigidArea(new Dimension(0, 100)));                    
+        panel.add(new JLabel("Seleccione los seguros que desee agregar al alquiler"));
+        JPanel subPanel= new JPanel(new GridLayout(0,1));
+        panel.add(subPanel);
+        for (Seguro i: Inventario.getListaSeguros()){
+            JCheckBox i_CheckBox= new JCheckBox(i.getID()+":"+i.getDescripcion().toString(),false);
+            subPanel.add(i_CheckBox);
+        }
+        panel.add(Box.createRigidArea(new Dimension(0, 100)));
+        JButton avanzar= new JButton("Avanzar");
+        panel.add(avanzar);
+        avanzar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                Component[] componentes = subPanel.getComponents();
+                for (Component componente : componentes) {
+                    if (componente instanceof JCheckBox) {
+                        JCheckBox checkBox = (JCheckBox) componente;
+                        if (checkBox.isSelected()) {
+                            // Obtener el ID del seguro del texto del CheckBox y agregarlo a la lista
+                            String[] partes = checkBox.getText().split(":");
+                            if (partes.length == 2) {
+                                int idseguro=Integer.parseInt(partes[0]);
+                                Seguro seguro = Inventario.assignSeguro(idseguro);
+                                alquiler_u.addSeguro(seguro);
+
+                            }
+                        }
+                    }
+                }
+                VentanaMain.CambioGuardadoDialog();
+                VentanaMain.refresh(panel);
+            }
+        });                   
+        return panel;
+    }
+
         private static JTabbedPane menuSedes(){
         JTabbedPane menu = new JTabbedPane(JTabbedPane.LEFT);
         //Opcion 1
