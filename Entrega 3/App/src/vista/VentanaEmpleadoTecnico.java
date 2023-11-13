@@ -74,8 +74,8 @@ public class VentanaEmpleadoTecnico {
                                     JOptionPane.showMessageDialog(frame, "Se realizará " + accionSeleccionada +
                                             " para el vehículo con placa: " + placa);
                                      // Pedir fechas de inicio y fin con JDateChooser
-                                     Date fechaInicio = pedirFecha("Fecha de Inicio:");
-                                     Date fechaFin = pedirFecha("Fecha de Fin:");
+                                    Date fechaInicio = pedirFecha("Fecha de Inicio:");
+                                    Date fechaFin = pedirFecha("Fecha de Fin:");
                                     // Limpiar el campo de la placa después de realizar la acción
                                     placaField.setText("");
 
