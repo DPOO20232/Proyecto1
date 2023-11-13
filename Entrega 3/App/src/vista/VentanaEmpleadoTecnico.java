@@ -47,8 +47,8 @@ public class VentanaEmpleadoTecnico {
     protected static int inputFechaInicio;
     protected static int inputHoraFin;
     protected static int inputHoraInicio;
-    protected String accionSeleccionada;
-    protected Vehiculo vehiculo;
+    protected static String accionSeleccionada;
+    protected static Vehiculo vehiculo;
     public VentanaEmpleadoTecnico() {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Actualizar Estado de Vehículo");
@@ -82,8 +82,8 @@ public class VentanaEmpleadoTecnico {
                         JPanel panelSeleccionAccion = new JPanel();
                         JLabel labelSeleccion = new JLabel("Seleccione la acción a realizar:");
 
-                        JRadioButton lavadoRadioButton = new JRadioButton("Lavado");
-                        JRadioButton mantenimientoRadioButton = new JRadioButton("Mantenimiento");
+                        JRadioButton lavadoRadioButton = new JRadioButton("EnLavado");
+                        JRadioButton mantenimientoRadioButton = new JRadioButton("EnMantenimiento");
 
                         ButtonGroup buttonGroup = new ButtonGroup();
                         buttonGroup.add(lavadoRadioButton);
@@ -181,15 +181,17 @@ public class VentanaEmpleadoTecnico {
                 Date fechaFin = (Date) fechaFinSpinner.getValue();
 
                 // Validar las fechas ingresadas
-                if (validarFechas(fechaInicio, fechaFin)) {
-                    inputFechaInicio = Integer.parseInt(dateEditorInicio.getFormat().format(fechaInicio));
-                    inputFechaFin = Integer.parseInt(dateEditorFin.getFormat().format(fechaFin));
+                int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+                inputFechaInicio = Integer.parseInt(dateEditorInicio.getFormat().format(fechaInicio));
+                inputFechaFin = Integer.parseInt(dateEditorFin.getFormat().format(fechaFin));
+                if (validarFechas(fechaInicio, fechaFin)&&inputFechaInicio>=fechaActual) {
+
 
                     // Actualizar la información en el panel pestaña2
                     pedirHoras(pestaña2);
                 
                 } else {
-                    JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser anterior a la fecha de fin.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser anterior a la fecha de fin y mayor o igual a la fecha actual.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -264,6 +266,10 @@ public class VentanaEmpleadoTecnico {
                 if (validarHoras(horaInicio, minutosInicio, horaFin, minutosFin)) {
                     inputHoraInicio = Integer.parseInt(horaInicio + minutosInicio);
                     inputHoraFin = Integer.parseInt(horaFin + minutosFin);
+                        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+                    if(inputFechaInicio>=fechaActual){
+                        Evento evento = new Evento(inputFechaInicio, inputFechaFin, inputHoraInicio, inputHoraFin, accionSeleccionada);
+                        vehiculo.addEvento(evento);}
                     
                 } else {
                     JOptionPane.showMessageDialog(null, "La hora de inicio debe ser anterior a la hora de fin.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -291,16 +297,8 @@ public class VentanaEmpleadoTecnico {
         String horaFinCompleta = horaFin + minutosFin;
 
         return Integer.parseInt(horaInicioCompleta) < Integer.parseInt(horaFinCompleta);
-    }
-
-    int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-    if(inputHoraInicio&&inputHoraFin&&inputFechaInicio>=fechaActual){
-        Evento evento = new Evento(inputFechaInicio, inputFechaFin, inputHoraInicio, inputHoraFin, accionSeleccionada);
-        vehiculo.addEvento(evento);}
-   
-    
+    }            
 }
- 
 
 
 
