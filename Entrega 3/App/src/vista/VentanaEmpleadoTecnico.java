@@ -1,8 +1,5 @@
 package vista;
 
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,17 +8,11 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
 import javax.swing.JTabbedPane;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Properties;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -34,10 +25,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 import modelo.Evento;
@@ -208,10 +197,6 @@ public class VentanaEmpleadoTecnico {
         pestaña2.add(panelFechas);
         pestaña2.revalidate();
         pestaña2.repaint();
-    }
-
-    private static boolean validarFechas(Date fechaInicio, Date fechaFin) {
-        return fechaInicio.before(fechaFin);
     }
      private static void pedirHoras(JPanel pestaña2) {
         // Crear ComboBoxes para las horas de inicio y fin

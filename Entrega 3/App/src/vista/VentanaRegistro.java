@@ -6,15 +6,18 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentListener;
+import modelo.Cliente;
 import modelo.Inventario;
+import modelo.Licencia;
+import modelo.Tarjeta;
+import modelo.Usuario;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +29,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Window;
 
 
 public class VentanaRegistro extends JFrame {
@@ -38,11 +40,26 @@ public class VentanaRegistro extends JFrame {
     private JButton botonContinuar;
     private PlaceHolderTextField campoNombre;
     private String inputFechaNacimiento;
+    private int fnacimiento;
     private boolean guardarLicencia;
     private boolean guardarTarjeta;
-    private String inputFechaNacimiento1;
-    private String inputFechaNacimiento2;
+    private String inputFechaL1;
+    private String inputFechaL2;
     private String inputFechaT;
+    private String login;
+    private String password;
+    private int numeroCedula;
+    private String nombre;
+    private String mail;
+    private long telefono;
+    private String nacionalidad;
+    private int numerolicencia; 
+    private String pais;
+    private long numeroT; 
+    private String titular;
+    private String marca;
+    private Cliente clienteNuevo;
+
     
 
     public VentanaRegistro(){
@@ -108,7 +125,6 @@ public class VentanaRegistro extends JFrame {
             JButton saveDatebutton= new JButton("Guardar Fecha");
             panelFecha.add(saveDatebutton);
             inputFechaNacimiento="";
-            System.out.println(":"+inputFechaNacimiento);
 
             saveDatebutton.addActionListener(new ActionListener() {
                 @Override
@@ -117,14 +133,12 @@ public class VentanaRegistro extends JFrame {
                     VentanaMain.refresh(panelFecha);
                     panelFecha.add(anioBox);
                     panelFecha.add(updateDatebutton);
-                    System.out.println(inputFechaNacimiento);
                 } 
             });
             updateDatebutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e){
                     inputFechaNacimiento="";
-                    System.out.println(":"+inputFechaNacimiento);
                     VentanaMain.refresh(panelFecha);
                     panelFecha.add(anioBox);
                     anioBox.setEnabled(true);
@@ -169,7 +183,6 @@ public class VentanaRegistro extends JFrame {
                 habilitarBotonContinuar();
             }
             public void habilitarBotonContinuar() {
-                System.out.println("input fecha actual:"+inputFechaNacimiento);
                 boolean habilitar = !campoDocumento.getText().isEmpty() &&
                         !campoNombre.getText().isEmpty() &&
                         !campoCorreo.getText().isEmpty() &&
@@ -189,8 +202,28 @@ public class VentanaRegistro extends JFrame {
                 if (inputFechaNacimiento.equals("")){
                     VentanaMain.errorDialog("Ingrese la fecha de nacimiento");
                 }
+                else if (Usuario.checkCedulas(Integer.parseInt(campoDocumento.getText())) == true) {
+                    JOptionPane.showMessageDialog(null, "Este número de cédula ya fue utilizado. Por favor, ingrese otro.", "Registro", JOptionPane.INFORMATION_MESSAGE);
+                    campoDocumento.setText("");
+                    campoNombre.setText("");
+                    campoCorreo.setText("");
+                    campoTelefono.setText("");
+                    campoNacionalidad.setText("");
+                }
                 else{
                 tabbedPane.remove(panelDatos);
+                nombre = campoNombre.getText();
+                numeroCedula = Integer.parseInt(campoDocumento.getText());
+                mail = campoCorreo.getText();
+                telefono = Long.parseLong(campoTelefono.getText());
+                nacionalidad = campoNacionalidad.getText();
+                System.out.println(nombre);
+                System.out.println(numeroCedula);
+                System.out.println(mail);
+                System.out.println(telefono);
+                System.out.println(inputFechaNacimiento);
+                System.out.println(nacionalidad);
+
                 crearUsuario();
                 botonContinuar.setEnabled(false);
                 }
@@ -203,7 +236,7 @@ public class VentanaRegistro extends JFrame {
         tabbedPane.add("Datos Personales", panelDatos);
         add(tabbedPane);
         setLocationRelativeTo(null);
-        setSize(840, 600);
+        setSize(840, 700);
         setVisible(true);
     }
     
@@ -218,10 +251,12 @@ public class VentanaRegistro extends JFrame {
         labelContraseña.setVisible(false);
         campoContraseña.setVisible(false);
 
+        JButton botonCrearUsuario = new JButton("Crear Usuario");
         JButton botonLicencia = new JButton("Añadir Licencia de Conducción");
         JButton botonTarjeta = new JButton("Añadir Método de Pago");
         botonLicencia.setPreferredSize(new Dimension(50, 30));
         botonTarjeta.setPreferredSize(new Dimension(50, 30));
+        botonCrearUsuario.setEnabled(false);
         botonLicencia.setEnabled(false);
         botonTarjeta.setEnabled(false);
 
@@ -246,19 +281,42 @@ public class VentanaRegistro extends JFrame {
                 boolean contraseñaNoVacia = campoContraseña.getPassword().length > 0;
 
                 mostrarContraseña(usuarioNoVacio);
-                habilitarBotones(usuarioNoVacio && contraseñaNoVacia);
+                habilitarBoton(usuarioNoVacio && contraseñaNoVacia);
+
             }
             private void mostrarContraseña(boolean mostrar) {
                 labelContraseña.setVisible(mostrar);
                 campoContraseña.setVisible(mostrar);
             }
-            private void habilitarBotones(boolean habilitar) {
-                botonLicencia.setEnabled(habilitar);
-                botonTarjeta.setEnabled(habilitar);
+            private void habilitarBoton(boolean habilitar) {
+                botonCrearUsuario.setEnabled(habilitar);
             }
         };
         campoUsuario.getDocument().addDocumentListener(documentListener);
         campoContraseña.getDocument().addDocumentListener(documentListener);
+        
+        botonCrearUsuario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                boolean usuarioYaExiste = Usuario.checkNombresLogins(campoUsuario.getText().toString());
+        
+                botonLicencia.setEnabled(!usuarioYaExiste);
+                botonTarjeta.setEnabled(!usuarioYaExiste);
+        
+                // Mostrar mensaje si el usuario ya existe
+                if (usuarioYaExiste) {
+                    JOptionPane.showMessageDialog(null, "El nombre de usuario ya ha sido utilizado. Por favor, elija otro.", "Registro", JOptionPane.INFORMATION_MESSAGE);
+                    campoUsuario.setText("");
+                } else {
+                    login = campoUsuario.getText();
+                    password = new String(campoContraseña.getPassword());
+                    System.out.println(login);
+                    System.out.println(password);
+                    clienteNuevo = new Cliente(login, password, numeroCedula, nombre, mail, telefono, fnacimiento, nacionalidad);
+                }
+            }
+        });
         
         ActionListener botonListener = new ActionListener() {
             @Override
@@ -285,8 +343,11 @@ public class VentanaRegistro extends JFrame {
         JLabel labelbienvenida = new JLabel("Bienvenido " + campoNombre.getText());
         panelB.add(labelbienvenida);
         panelB.add(panelUsuarioContraseña);
+        panelB.add(botonCrearUsuario);
         panelB.add(botonLicencia);
         panelB.add(botonTarjeta);
+
+        
 
         tabbedPane.add("Usuario y Contraseña", panelB);
     
@@ -304,7 +365,7 @@ public class VentanaRegistro extends JFrame {
         JLabel labelFechaE = new JLabel("Fecha de Expedición: ");
         JLabel labelFechaV = new JLabel("Fecha de Vencimiento: ");
 
-        inputFechaNacimiento1 = "";
+        inputFechaL1 = "";
         JPanel panelFecha1= new JPanel();
         panelFecha1.setLayout(new FlowLayout());
         DefaultComboBoxModel<String> opcionesAnio = new DefaultComboBoxModel<>();
@@ -331,24 +392,21 @@ public class VentanaRegistro extends JFrame {
             panelFecha1.add(updateDatebutton);
             JButton saveDatebutton= new JButton("Guardar Fecha");
             panelFecha1.add(saveDatebutton);
-            inputFechaNacimiento1="";
-            System.out.println(":"+inputFechaNacimiento1);
+            inputFechaL1="";
 
             saveDatebutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e){
-                    inputFechaNacimiento1=anio+date2.getText();
+                    inputFechaL1=anio+date2.getText();
                     VentanaMain.refresh(panelFecha1);
                     panelFecha1.add(anioBox);
                     panelFecha1.add(updateDatebutton);
-                    System.out.println(inputFechaNacimiento1);
                 } 
             });
             updateDatebutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e){
-                    inputFechaNacimiento1="";
-                    System.out.println(":"+inputFechaNacimiento1);
+                    inputFechaL1="";
                     VentanaMain.refresh(panelFecha1);
                     panelFecha1.add(anioBox);
                     anioBox.setEnabled(true);
@@ -357,7 +415,7 @@ public class VentanaRegistro extends JFrame {
             }
         });
 
-        inputFechaNacimiento2 = "";
+        inputFechaL2 = "";
         JPanel panelFecha2= new JPanel();
         panelFecha2.setLayout(new FlowLayout());
         DefaultComboBoxModel<String> opcionesAnio2 = new DefaultComboBoxModel<>();
@@ -383,24 +441,21 @@ public class VentanaRegistro extends JFrame {
             panelFecha2.add(updateDatebutton);
             JButton saveDatebutton= new JButton("Guardar Fecha");
             panelFecha2.add(saveDatebutton);
-            inputFechaNacimiento1="";
-            System.out.println(":"+inputFechaNacimiento1);
+            inputFechaL2="";
 
             saveDatebutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e){
-                    inputFechaNacimiento1=anio+date2.getText();
+                    inputFechaL2=anio+date2.getText();
                     VentanaMain.refresh(panelFecha2);
                     panelFecha2.add(anioBox2);
                     panelFecha2.add(updateDatebutton);
-                    System.out.println(inputFechaNacimiento1);
                 } 
             });
             updateDatebutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e){
-                    inputFechaNacimiento1="";
-                    System.out.println(":"+inputFechaNacimiento1);
+                    inputFechaL2="";
                     VentanaMain.refresh(panelFecha1);
                     panelFecha1.add(anioBox2);
                     anioBox2.setEnabled(true);
@@ -441,7 +496,8 @@ public class VentanaRegistro extends JFrame {
                 boolean habilitar = !campoNumeroL.getText().isEmpty() &&
                         !campoPais.getText().isEmpty();
                 botonGuardar.setEnabled(habilitar);
-            }            
+            }
+                       
         };
         campoNumeroL.getDocument().addDocumentListener(documentListener);
         campoPais.getDocument().addDocumentListener(documentListener);
@@ -454,17 +510,40 @@ public class VentanaRegistro extends JFrame {
         botonGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                guardarLicencia = true;
-                tabbedPane.remove(panelC);
-                cerrarAlGuardar();
+                if (Usuario.checkLicencia(Integer.parseInt(campoNumeroL.getText()))){
+                    JOptionPane.showMessageDialog(null, "Este número de licencia ya fue utilizado. Por favor, ingrese otro.", "Registro", JOptionPane.INFORMATION_MESSAGE);
+                    campoNumeroL.setText("");
+                    campoPais.setText("");
+                }
+                else {
+                    try{
+                        numerolicencia = Integer.parseInt(campoNumeroL.getText());
+                        pais = campoPais.getText();
+                        int expedicionL = Integer.parseInt(inputFechaL1);
+                        int vencimientoL = Integer.parseInt(inputFechaL2);
+                        System.out.println(numerolicencia);
+                        System.out.println(pais);
+                        System.out.println(expedicionL);
+                        System.out.println(vencimientoL);
+                        Licencia licenciaNueva = new Licencia(numerolicencia, expedicionL, vencimientoL, pais);
+                        clienteNuevo.setLicencia(licenciaNueva);
+                        guardarLicencia = true;
+                        tabbedPane.remove(panelC);
+                        cerrarAlGuardar();
+                    }catch(NumberFormatException e2){
+                        VentanaMain.errorDialog("Guarde fechas");
+
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
             }
         });
     }
     public void crearTarjeta() {
         inputFechaT = "";
         guardarTarjeta = false;
-        JPanel panelD = new JPanel(new GridLayout(0,1));
-        JPanel panelTarjeta = new JPanel(new GridLayout(0, 2));
+        JPanel panelD = new JPanel(new GridLayout(0,2));
         JLabel labelMensajeU = new JLabel("Por último, ingrese la informacion de su Método de Pago");
         JLabel labelAdvertencia = new JLabel("Nuestro sistema solamente acepta Tarjetas de Crédito");
 
@@ -514,14 +593,6 @@ public class VentanaRegistro extends JFrame {
         panelFechaT.add(guardarFechaT);
         panelFechaT.add(cambiarFechaT);
                
-        panelTarjeta.add(labelNombreT);
-        panelTarjeta.add(campoNombreT);
-        panelTarjeta.add(labelNumeroT);
-        panelTarjeta.add(campoNumeroT);
-        panelTarjeta.add(labelMarca);
-        panelTarjeta.add(campoMarca);
-        panelTarjeta.add(labelFechaV);
-        panelTarjeta.add(panelFechaT);
         
         JButton botonGuardar = new JButton("Guardar");
         botonGuardar.setEnabled(false);
@@ -555,23 +626,52 @@ public class VentanaRegistro extends JFrame {
         campoMarca.getDocument().addDocumentListener(documentListener);
 
         panelD.add(labelMensajeU);
+        panelD.add(new JLabel("\n"));
         panelD.add(labelAdvertencia);
-        panelD.add(panelTarjeta);
+        panelD.add(new JLabel("\n"));
+        panelD.add(labelNombreT);
+        panelD.add(campoNombreT);
+        panelD.add(labelNumeroT);
+        panelD.add(campoNumeroT);
+        panelD.add(labelFechaV);
+        panelD.add(panelFechaT);
+        panelD.add(labelMarca);
+        panelD.add(campoMarca);
+        panelD.add(new JLabel("\n"));
         panelD.add(botonGuardar);
 
         tabbedPane.add("Medio de Pago", panelD);
         botonGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
+                numeroT = Long.parseLong(campoNumeroT.getText());
+                marca = campoMarca.getText();
+                titular = campoNombreT.getText();
+                int vencimientoT = Integer.parseInt(inputFechaT);
+                System.out.println(numeroT);
+                System.out.println(marca);
+                System.out.println(titular);
+                System.out.println(vencimientoT);
+                Tarjeta tarjetaNueva = new Tarjeta(numeroT, vencimientoT, marca, titular);
+                clienteNuevo.setTarjeta(tarjetaNueva);
                 guardarTarjeta = true;
                 tabbedPane.remove(panelD);
-                cerrarAlGuardar();
+                try {
+                    cerrarAlGuardar();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
     }
-    private void cerrarAlGuardar() {
+    private void cerrarAlGuardar() throws IOException {
         if (guardarTarjeta  && guardarLicencia) {
+            Usuario.addNombreLogin(login);
+            Usuario.addNumCedulas(numeroCedula);
+            Usuario.addCliente(clienteNuevo);
+            Inventario.updateSistema();
             dispose();
+            
         }
     }
     private static JPanel setPanelSuperior(JTabbedPane pane) {
@@ -611,9 +711,9 @@ public class VentanaRegistro extends JFrame {
 
 
     
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new VentanaRegistro());
-    }
+    //public static void main(String[] args) {
+    //    SwingUtilities.invokeLater(() -> new VentanaRegistro());
+    //}
 }
 
     
