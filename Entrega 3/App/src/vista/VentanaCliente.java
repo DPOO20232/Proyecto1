@@ -10,6 +10,7 @@ import javax.swing.text.JTextComponent;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Categoria;
+import modelo.Cliente;
 import modelo.Inventario;
 import modelo.Sede;
 import modelo.Seguro;
@@ -23,7 +24,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Calendar;
 
-public class VentanaAdmin {
+public class VentanaCliente {
     static JFrame frame;
     JPanel panelSuperior;
     JTabbedPane panelInferior;
@@ -50,8 +51,10 @@ public class VentanaAdmin {
     static JComboBox<String> comboBoxGeneral7Cate;
     static JComboBox<String> comboBoxGeneral8Cate;
     static JComboBox<String> comboBoxGeneral1Seg;
-    public VentanaAdmin() {
-        frame = new JFrame("Menu Administrador");
+    static Cliente cliente;
+    public VentanaCliente(Cliente cliente_u) {
+        cliente=cliente_u;
+        frame = new JFrame("Menu Cliente");
         this.panelSuperior= VentanaMain.setPanelSuperior(frame);
         this.panelInferior= setPanelInferior();
         inAction= false;
@@ -64,12 +67,11 @@ public class VentanaAdmin {
 
         // Panel superior
         
-        frame.add(this.panelSuperior,BorderLayout.NORTH);
-
 
         // Panel inferior
         
 
+        frame.add(this.panelSuperior,BorderLayout.NORTH);
         frame.add(this.panelInferior);
         JScrollPane scrollPane= new JScrollPane(panelInferior);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -79,32 +81,27 @@ public class VentanaAdmin {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
-
     private static JTabbedPane setPanelInferior(){
+        metodosReserva metodos= new metodosReserva();
         JTabbedPane panel1= new JTabbedPane();
-        panel1.add(menuVehiculos());
+        panel1.add(cambiarClave());
         JTabbedPane panel2= new JTabbedPane();
-        panel2.add(menuCategorias());
+
         JTabbedPane panel3= new JTabbedPane();
-        panel3.add(menuSedes());
+        panel3.add(metodos.menuReserva());
+
         JTabbedPane panel4= new JTabbedPane();
-        panel4.add(menuSeguros());
+
         JTabbedPane panel5= new JTabbedPane();
-        panel5.add(menuPersonal());
-        JTabbedPane panel6= new JTabbedPane();
-        panel6.add(menuTarifasPeriodos());
-        JTabbedPane panel7= new JTabbedPane();
-        panel7.add(menuAltoNivel());
+
         JTabbedPane panelInferior = new JTabbedPane(JTabbedPane.TOP);
 
-        panelInferior.add("Vehículos",panel1);
-        panelInferior.add("Categorías",panel2);
-        panelInferior.add("Sedes",panel3);
-        panelInferior.add("Seguros",panel4);
-        panelInferior.add("Personal",panel5);
-        panelInferior.add("Tarifas/periodos",panel6);
-        panelInferior.add("Visualización de alto nivel",panel7);
+        panelInferior.add("Cambiar Contraseña",panel1);
+        panelInferior.add("Actualizar información personal",panel2);
+        panelInferior.add("Crear reserva",panel3);
+        panelInferior.add("Modificar reserva",panel4);
+        panelInferior.add("Cancelar reserva",panel5);
+
         panelInferior.setSelectedIndex(-1);
         panelInferior.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
@@ -112,76 +109,102 @@ public class VentanaAdmin {
                 int selectedIndex = panelInferior.getSelectedIndex();
                 if (selectedIndex==1){
                     VentanaMain.refresh(panel1);
-                    panel1.add(menuVehiculos());
+                    panel1.add(cambiarClave());
                 }
                 else if (selectedIndex==2){
                     VentanaMain.refresh(panel2);
-                    panel2.add(menuCategorias());
                 }
                 else if (selectedIndex==3){
                     VentanaMain.refresh(panel3);
-                    panel3.add(menuSedes());
+                    panel3.add(metodos.menuReserva());
                 }
                 else if (selectedIndex==4){
                     VentanaMain.refresh(panel4);
-                    panel4.add(menuSeguros());
                 }
                 else if (selectedIndex==5){
                     VentanaMain.refresh(panel5);
-                    panel5.add(menuPersonal());
-                }
-                else if (selectedIndex==6){
-                    VentanaMain.refresh(panel6);
-                    panel6.add(menuTarifasPeriodos());
-                }
-                else if (selectedIndex==7){
-                    VentanaMain.refresh(panel7);
-                    panel7.add(menuAltoNivel());
                 }
 
         }});
         return panelInferior;
     }
+        private static JPanel cambiarClave(){
+        JPanel panel = new JPanel();
+        panel.add(Box.createRigidArea(new Dimension(0, 200)));
+        JPanel menu = new JPanel(new GridLayout(0, 3,40,100));
 
-    private static JTabbedPane menuVehiculos(){
-        JTabbedPane menu = new JTabbedPane(JTabbedPane.LEFT);
-        menu.setPreferredSize(new Dimension(600,0));
-        //Opción 1
-        JPanel panel1= new JPanel();
-        nuevoPanel1Vehiculo(panel1);
-        menu.add("Registrar Vehículo",panel1);
-        //Opcion 2
-        JPanel panel2= new JPanel();
-        nuevoPanel2Vehiculo(panel2);
-        menu.add("Monitorear/ Actualizar vehículo",panel2);
-        menu.setSelectedIndex(-1);
-        menu.addChangeListener(new ChangeListener() {
-        public void stateChanged(ChangeEvent e) {
-            // Obtener el índice de la pestaña seleccionada
-            int selectedIndex = menu.getSelectedIndex();
-            if (selectedIndex==1){
-                nuevoPanel1Vehiculo(panel1);
+        menu.add(new JLabel("Ingrese la nueva contraseña:"));
+        PlaceHolderTextField password= new PlaceHolderTextField("Ej: esteban12");
+        JButton avanzar= new JButton("Actualizar contraseña");
+        menu.add(password);
+        avanzar.setVisible(false);
+        menu.add(avanzar);
+        panel.add(menu);
+        DocumentListener documentListener = new DocumentListener() {
+            @Override
+                public void insertUpdate(DocumentEvent e) {
+                    avanzar.setVisible(!password.getText().trim().isEmpty());
                 }
-            else if (selectedIndex==2){
-                nuevoPanel2Vehiculo(panel2);
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    avanzar.setVisible(!password.getText().trim().isEmpty());
+                }
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    avanzar.setVisible(!password.getText().trim().isEmpty());
+                }
+            };
+        password.getDocument().addDocumentListener(documentListener);
+        avanzar.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                cliente.setPassword(password.getText());
+                VentanaMain.CambioGuardadoDialog();
+                try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
             }
-        }});
-        return menu;
+        });
+        panel.add(Box.createRigidArea(new Dimension(0, 200)));
+        return panel;
     }
 
-        private static JTabbedPane menuCategorias(){
-        JTabbedPane menu = new JTabbedPane(JTabbedPane.LEFT);
-        JPanel panel1= new JPanel();
-        nuevoPanel1Categorias(panel1);
-        menu.add("Registrar categoría", panel1);
-        menu.setSelectedIndex(-1);
-        menu.addChangeListener(new ChangeListener() {
-        public void stateChanged(ChangeEvent e) {
-                nuevoPanel1Categorias(panel1);    
-        }});
-        return menu;
-    }
+     private static JPanel cancelarReserva(){
+        JPanel panel = new JPanel();
+        panel.add(Box.createRigidArea(new Dimension(0, 200)));
+        JPanel menu = new JPanel(new GridLayout(0, 3,40,100));
 
+        menu.add(new JLabel("Ingrese la nueva contraseña:"));
+        PlaceHolderTextField password= new PlaceHolderTextField("Ej: esteban12");
+        JButton avanzar= new JButton("Actualizar contraseña");
+        menu.add(password);
+        avanzar.setVisible(false);
+        menu.add(avanzar);
+        panel.add(menu);
+        DocumentListener documentListener = new DocumentListener() {
+            @Override
+                public void insertUpdate(DocumentEvent e) {
+                    avanzar.setVisible(!password.getText().trim().isEmpty());
+                }
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    avanzar.setVisible(!password.getText().trim().isEmpty());
+                }
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    avanzar.setVisible(!password.getText().trim().isEmpty());
+                }
+            };
+        password.getDocument().addDocumentListener(documentListener);
+        avanzar.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                cliente.setPassword(password.getText());
+                VentanaMain.CambioGuardadoDialog();
+                try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
+            }
+        });
+        panel.add(Box.createRigidArea(new Dimension(0, 200)));
+        return panel;
+    }
         private static JTabbedPane menuSedes(){
         JTabbedPane menu = new JTabbedPane(JTabbedPane.LEFT);
         //Opcion 1
@@ -1382,3 +1405,4 @@ public class VentanaAdmin {
                 });
         }     
 }
+

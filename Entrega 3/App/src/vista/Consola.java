@@ -40,7 +40,7 @@ public class Consola {
             String perfil;
             String login = input("Usuario");
             String password = input("Contraseña");
-            //MENU ADMIN
+            //MENU ADMIN -> DONE
             if (personal.checkLoginAdmin(login,password)==true){
                 boolean continuarAdmin=true;
                 perfil="Admin";
@@ -100,9 +100,9 @@ public class Consola {
                     System.out.println("\n\t\t>>>Hola, Admin local!");
                     while (continuarAdminL==true){
                     System.out.println("\nOpciones de la aplicación\n");
-                    System.out.println("1. Registrar empleado en la sede: "+nomSede);
-                    System.out.println("2. Actualizar información de un empleado de la sede: "+nomSede);
-                    System.out.println("3. Obtener registro de los empleados de la sede: "+nomSede);
+                    System.out.println("1. Registrar empleado en la sede: "+nomSede);//CHECKED
+                    System.out.println("2. Actualizar información de un empleado de la sede: "+nomSede);//CHECKED
+                    System.out.println("3. Obtener registro de los empleados de la sede: "+nomSede);//CHECKED
                     System.out.println("4. Cerrar sesión\n");
                     int opcion_adminL = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
@@ -121,7 +121,7 @@ public class Consola {
                 System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área de atención!");
                 while (continuarPersonal1==true){
                     System.out.println("\nOpciones de la aplicación\n");
-                    System.out.println("1. Registrar un alquiler");
+                    System.out.println("1. Registrar un alquiler");//CHECKED
                     System.out.println("2. Completar un alquiler");
                     System.out.println("3. Registrar una reserva");
                     System.out.println("4. Modificar una reserva");
@@ -141,13 +141,13 @@ public class Consola {
                     } catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}
                     }
                 }
-                //MENU PERSONAL TÉCNICO
+                //MENU PERSONAL TÉCNICO -> DONE
                 else {
                     System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área técnica!");
                     boolean continuarPersonal2=true;
                     while (continuarPersonal2==true){
                         System.out.println("\nOpciones de la aplicación\n");
-                        System.out.println("1. Actualizar estado de un vehículo: ");
+                        System.out.println("1. Actualizar estado de un vehículo: ");//CHECKED
                         System.out.println("2. Cerrar sesión\n");
                         int opcion_empleadoT = Integer.parseInt(input("Por favor seleccione una opción"));
 
@@ -167,7 +167,7 @@ public class Consola {
                 System.out.println("\n\t\t>>>Hola, "+cliente.getNombre()+" :)");
                 while (continuarCliente){
                     System.out.println("\nOpciones de la aplicación\n");
-                    System.out.println("1. Cambiar contraseña");
+                    System.out.println("1. Cambiar contraseña");//CHECKED
                     System.out.println("2. Actualizar información personal");
                     System.out.println("3. Crear una reserva");
                     System.out.println("4. Modificar datos de mi reserva");
@@ -193,7 +193,7 @@ public class Consola {
             else{System.out.println("\n\t>>> Credenciales incorrectas, intentelo de nuevo.");}          
             }
             else if(opcion_seleccionada==3){
-                MenuUsuario.nuevoCliente();
+                MenuUsuario.nuevoCliente();//CHECKED
                 
             }
             else if(opcion_seleccionada==4){
@@ -226,10 +226,8 @@ public class Consola {
 		}
 		return null;
     }
-    //public static void main(String[] args) throws IOException
-	
-    //Inventario.loadSistema();
-    //MenuInicial();
-    
-	//}
+    public static void main(String[] args) throws IOException{	
+    Inventario.loadSistema();
+    MenuInicial();
+	}
 }

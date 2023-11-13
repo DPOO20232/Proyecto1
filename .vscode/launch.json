@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "metodosReserva",
+            "request": "launch",
+            "mainClass": "vista.metodosReserva",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
+            "name": "Consola",
+            "request": "launch",
+            "mainClass": "vista.Consola",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
+            "name": "VentanaRegistro",
+            "request": "launch",
+            "mainClass": "vista.VentanaRegistro",
+            "projectName": "Proyecto1-1_7f3fd5b8"
+        },
+        {
+            "type": "java",
             "name": "VentanaMain",
             "request": "launch",
             "mainClass": "vista.VentanaMain",
