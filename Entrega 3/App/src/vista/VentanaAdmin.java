@@ -143,7 +143,8 @@ public class VentanaAdmin {
         return panelInferior;
     }
 
-    private static JTabbedPane menuVehiculos(){
+    private static JTabbedPane 
+    menuVehiculos(){
         JTabbedPane menu = new JTabbedPane(JTabbedPane.LEFT);
         menu.setPreferredSize(new Dimension(600,0));
         //Opción 1

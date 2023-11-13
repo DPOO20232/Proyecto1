@@ -16,42 +16,19 @@ import java.io.IOException;
 public class VentanaAdminLocal {
         private JFrame frame; // Declarar frame como variable miembro
         private JTabbedPane tabbedPane; // Declarar tabbedPane como variable miembro
-        private  JPanel mainPanel;
-        private  CardLayout cardLayout;
-        private  JPanel cardPanel;
-        private  String[] pasos;
-        private int pasoActual = 0;
+        JPanel panelSuperior;
+        JTabbedPane panelInferior;
         private static EditorObjetos editorObjetos;
         public VentanaAdminLocal(Sede sede) {
-            frame = new JFrame("Aplicación de la Empresa");
+            frame = new JFrame("Menu Admin Local");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(800, 600);
-    
+            
             // Crear un panel superior para el nombre de la empresa
             JPanel nombreEmpresaPanel = new JPanel();
-            nombreEmpresaPanel.setBackground(Color.LIGHT_GRAY);
-            JLabel nombreEmpresaLabel = new JLabel("Nombre de la Empresa");
-            nombreEmpresaPanel.add(nombreEmpresaLabel);
-    
-            // Botón de "Cerrar Sesión"
-            JButton cerrarSesionButton = new JButton("Cerrar Sesión");
-            cerrarSesionButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // Agregar el código para cerrar la sesión del administrador local
-                    // Por ejemplo, puedes cerrar la ventana actual y mostrar una ventana de inicio de sesión.
-                    try {
-                                Inventario.updateSistema();
-                            } 
-                    catch (IOException e1) {
-                                // TODO Auto-generated catch block
-                                e1.printStackTrace();
-                            }
-                    frame.dispose();
-                }
-            });
-            nombreEmpresaPanel.add(cerrarSesionButton);
-    
+            this.panelSuperior= VentanaMain.setPanelSuperior(frame);
+
+            nombreEmpresaPanel.add(panelSuperior);
             // Crear el panel de pestañas
             tabbedPane = new JTabbedPane();
     
@@ -155,12 +132,12 @@ public class VentanaAdminLocal {
             panelAgregarPersonal.add(crearUsuarioButton);
             pestaña1.add(panelAgregarPersonal); // Agrega el panel de "Agregar Personal" a la pestaña 1
             // Crear pestaña 2
+             
             JPanel pestaña2 = new JPanel();
             tabbedPane.addTab("actualizar personal", null, pestaña2, "Actualizar Personal");
             JPanel panelActualizarPersonal = new JPanel(new GridLayout(3, 2));
             JLabel loginActualizarLabel = new JLabel("Login del Empleado a Actualizar:");
             JTextField loginActualizarField = new JTextField();
-            
             JButton actualizarUsuarioButton = new JButton("Actualizar Usuario");
             actualizarUsuarioButton.addActionListener(new ActionListener() {
                 @Override
@@ -189,9 +166,9 @@ public class VentanaAdminLocal {
                            
                             VentanaMain.refresh(pestaña2);
                             editorObjetos = new EditorObjetos();
-                            editorObjetos.editorPersonal(pestaña2,empleado );
+                            editorObjetos.editorPersonal(pestaña2,empleado,panelActualizarPersonal);
                             editorObjetos.editar();
-                            pestaña2.repaint();
+                           
                            
                         }
                         else{

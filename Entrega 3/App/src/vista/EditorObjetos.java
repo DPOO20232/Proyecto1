@@ -45,14 +45,14 @@ public class EditorObjetos {
         mainPanel.add(cardPanel);
         crearPasosSeguro(seguro);
     }
-    public void editorPersonal(JPanel mainPanel,personal personal) {
+    public void editorPersonal(JPanel mainPanel,personal personal, JPanel panel) {
         this.mainPanel = mainPanel;
         this.cardLayout = new CardLayout();
         this.cardPanel = new JPanel(cardLayout);
         String [] pasosSeguro ={"PreguntaDescripcion", "InputDescripcion", "PreguntaDescripcion2", "InputDescripcion2","Fin"};
         this.pasos=pasosSeguro ;
         mainPanel.add(cardPanel);
-        crearPasosPersonal(personal);
+        crearPasosPersonal(personal, panel);
     }
     public void agregarConductores(JPanel mainPanel,alquiler alquiler_u) {
         this.mainPanel = mainPanel;
@@ -89,12 +89,12 @@ public class EditorObjetos {
         crearPasoDecimales("InputPctg", "Porcentaje de la tarifa diaria a cobrar", "Fin",seguro);
         crearPasoFin("Fin");
     }
-    private void crearPasosPersonal(personal personal) {
+    private void crearPasosPersonal(personal personal, JPanel panel) {
         crearPasoPregunta("PreguntaPassword", "¿Desea modificar la clave del empleado?", "InputPassword", "PreguntaSede");
         crearPasoInput("InputPassword", "Ingrese la nueva contraseña", "PreguntaSede",personal);
         crearPasoPregunta("PreguntaSede", "¿Desea modificar la sede?", "InputSede", "Fin");
         crearPasoInput("InputSede", "Ingrese el ID de la sede", "Fin",personal);
-        crearPasoFin("Fin");
+        crearPasoFin2("Fin", panel);
     }
     private void crearPasosConductor(alquiler alquiler_u) {
         crearPasoPregunta("PreguntaConductor", "¿Desea agregar un conductor?", "InputConductor", "Fin");
@@ -230,6 +230,7 @@ public class EditorObjetos {
                     if (pasoKey.equals("InputPassword")){
                         personal.setPassword(textField.getText());
                     }
+                    
                     else
                     {
                         try{
@@ -514,7 +515,37 @@ public class EditorObjetos {
 
         cardPanel.add(panel, pasoKey);
     }
+      private void crearPasoFin2(String pasoKey, JPanel panelActualizarPersonal) {
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Cambios registrados");
+        JLabel label1 = new JLabel("\t\t\t\t");
 
+        JLabel label2 = new JLabel("Los cambios estarán disponibles tras cerrar sesión");
+
+        JButton finalizarButton = new JButton("Finalizar");
+
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.add(label);
+        panel.add(label1);
+        panel.add(label2);
+
+        panel.add(finalizarButton);
+
+        finalizarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Cerrar el frame y dejarlo vacío
+                // Oculta el panel actual
+                cardPanel.removeAll();
+                // Muestra el panel inicial
+                cardPanel.add(panelActualizarPersonal, "PreguntaPassword");
+                cardLayout.show(cardPanel, "PreguntaPassword");
+            }
+        });
+
+        cardPanel.add(panel, pasoKey);
+    }
+       
     private void avanzarAlSiguientePaso(String siguientePasoKey) {
         cardLayout.show(cardPanel, siguientePasoKey);
     }
