@@ -333,6 +333,12 @@ public class VentanaMain {
                 for (alquiler alq: alquiler.getListaAlquileres()){
                     System.out.println(alq.getID());
                 }
+                try {
+                    Inventario.updateSistema();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
         panelSupDere.add(cerrarSesionButton);
