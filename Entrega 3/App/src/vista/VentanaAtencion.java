@@ -185,12 +185,7 @@ public class VentanaAtencion {
             String categoria = i.getCategoria().getnombreCategoria();
             String fechaRecoger = Integer.toString(i.getFechaRecoger());
             String fechaEntregar = Integer.toString(i.getFechaEntregar());
-            //String horaRecoger = Integer.toString(i.getHoraRecoger());
-            //String horaEntregar = Integer.toString(i.getHoraEntregar());
-            //String sedeEntrega = i.getSedeEntregar().getNombre();
-            //String sedeRecoger = i.getSedeRecoger().getNombre();
-            //double pago = i.getPagoReserva();
-            modeloReservas.addElement("id: "+idreseva+":"+". Categoría:" +categoria+"("+fechaRecoger+"->"+fechaEntregar+")" );
+            modeloReservas.addElement("id: "+idreseva+" / Categoría:" +categoria+" ("+fechaRecoger+"->"+fechaEntregar+")" );
         }
         }
         if (numReservas>0){
@@ -207,7 +202,10 @@ public class VentanaAtencion {
             @Override
             public void actionPerformed(ActionEvent e){
                 String opcion= comboBoxReservas.getSelectedItem().toString();
-                int id= Integer.parseInt(opcion.split(":")[1]);
+                String[] partes=opcion.split("/");
+                String[] idreserva= partes[0].split(":");
+                int id= Integer.parseInt(idreserva[1].trim());
+                System.out.println(id);
                 Reserva reserva= Reserva.assignReserva(id);
                 //Verificación
                 Vehiculo vehiculo=reserva.getVehiculoAsignado();
@@ -237,15 +235,16 @@ public class VentanaAtencion {
                 else{
                     Reserva.addReserva(reserva);
                     alquiler alquiler_u = new alquiler(reserva);
-                    //panel.add(agregarConductores(alquiler_u));
                     panel.add(agregarSeguros(alquiler_u));
-                    VentanaMain.CambioGuardadoDialog();
+                    panel.repaint();
+                    panel.validate();
+
                     try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
                 }
 
         }});}
         else{
-            panel.add(new JLabel("El usuario no tiene reservas activas"));
+            panel.add(new JLabel("El usuario no tiene reservas activas disponibles para completar el día de hoy"));
         }
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
         return panel;
@@ -275,6 +274,7 @@ public class VentanaAtencion {
                             String[] partes = checkBox.getText().split(":");
                             if (partes.length == 2) {
                                 int idseguro=Integer.parseInt(partes[0]);
+                                System.out.println(idseguro);
                                 Seguro seguro = Inventario.assignSeguro(idseguro);
                                 alquiler_u.addSeguro(seguro);
 
@@ -284,6 +284,9 @@ public class VentanaAtencion {
                 }
                 VentanaMain.CambioGuardadoDialog();
                 VentanaMain.refresh(panel);
+                panel.add(agregarConductores(alquiler_u));
+                panel.repaint();
+                panel.revalidate();
             }
         });                   
         return panel;
@@ -292,39 +295,45 @@ public class VentanaAtencion {
     private static JPanel agregarConductores(alquiler alquiler_u){
         JPanel panel= new JPanel();
         panel.add(Box.createRigidArea(new Dimension(0, 100)));                    
-        panel.add(new JLabel("Seleccione los seguros que desee agregar al alquiler"));
-        JPanel subPanel= new JPanel(new GridLayout(0,1));
-        panel.add(subPanel);
-        for (Seguro i: Inventario.getListaSeguros()){
-            JCheckBox i_CheckBox= new JCheckBox(i.getID()+":"+i.getDescripcion().toString(),false);
-            subPanel.add(i_CheckBox);
-        }
-        panel.add(Box.createRigidArea(new Dimension(0, 100)));
-        JButton avanzar= new JButton("Avanzar");
-        panel.add(avanzar);
-        avanzar.addActionListener(new ActionListener() {
+        panel.add(new JLabel("El cliente va a agregar conductores al registro del alquiler?"));
+        ButtonGroup opcion= new ButtonGroup();
+        JRadioButton si=new JRadioButton("Si");
+        JRadioButton no= new JRadioButton("No");
+        opcion.add(si);
+        opcion.add(no);
+        si.setActionCommand("si");
+        no.setActionCommand("no");
+        JButton avanzarButton= new JButton("Siguiente");
+        panel.add(si);
+        panel.add(no);
+        panel.add(avanzarButton);
+        avanzarButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                Component[] componentes = subPanel.getComponents();
-                for (Component componente : componentes) {
-                    if (componente instanceof JCheckBox) {
-                        JCheckBox checkBox = (JCheckBox) componente;
-                        if (checkBox.isSelected()) {
-                            // Obtener el ID del seguro del texto del CheckBox y agregarlo a la lista
-                            String[] partes = checkBox.getText().split(":");
-                            if (partes.length == 2) {
-                                int idseguro=Integer.parseInt(partes[0]);
-                                Seguro seguro = Inventario.assignSeguro(idseguro);
-                                alquiler_u.addSeguro(seguro);
-
-                            }
-                        }
+                ButtonModel selectedItem = opcion.getSelection();
+                if (selectedItem!=null){
+                    VentanaMain.refresh(panel);
+                    String itemStr = selectedItem.getActionCommand(); // Obtener el texto de la opción seleccionada
+                    if (itemStr.equals("si")){
+                        panel.add(Box.createRigidArea(new Dimension(0, 100)));                    
+                        JPanel panelConductor= new JPanel();
+                        panel.add(panelConductor);
+                        EditorObjetos editor = new EditorObjetos();
+                        editor.agregarConductores(panel, alquiler_u);
+                        editor.editar();
+                    }
+                    else{
+                        VentanaMain.CambioGuardadoDialog();
                     }
                 }
-                VentanaMain.CambioGuardadoDialog();
-                VentanaMain.refresh(panel);
+                else{
+                    VentanaMain.errorDialog("Seleccione una opción.");
+                }
+
+
             }
-        });                   
+        });
+        panel.add(Box.createRigidArea(new Dimension(0, 100)));                    
         return panel;
     }
 

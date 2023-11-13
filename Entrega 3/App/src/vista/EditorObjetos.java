@@ -3,12 +3,14 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import modelo.Inventario;
 import modelo.Sede;
 import modelo.Seguro;
 import modelo.Vehiculo;
+import modelo.alquiler;
 import modelo.personal;
 
 import java.awt.*;
@@ -18,6 +20,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 public class EditorObjetos {
+    private static String inputFecha1;
     private  JPanel mainPanel;
     private  CardLayout cardLayout;
     private  JPanel cardPanel;
@@ -51,6 +54,15 @@ public class EditorObjetos {
         mainPanel.add(cardPanel);
         crearPasosPersonal(personal);
     }
+    public void agregarConductores(JPanel mainPanel,alquiler alquiler_u) {
+        this.mainPanel = mainPanel;
+        this.cardLayout = new CardLayout();
+        this.cardPanel = new JPanel(cardLayout);
+        String [] pasosConductor ={"PreguntaConductor", "InputConductor","Fin"};
+        this.pasos=pasosConductor ;
+        mainPanel.add(cardPanel);
+        crearPasosConductor(alquiler_u);
+    }
 
     public void editar() {
         // Comienza con el primer paso
@@ -83,6 +95,61 @@ public class EditorObjetos {
         crearPasoPregunta("PreguntaSede", "¿Desea modificar la sede?", "InputSede", "Fin");
         crearPasoInput("InputSede", "Ingrese el ID de la sede", "Fin",personal);
         crearPasoFin("Fin");
+    }
+    private void crearPasosConductor(alquiler alquiler_u) {
+        crearPasoPregunta("PreguntaConductor", "¿Desea agregar un conductor?", "InputConductor", "Fin");
+        crearPasoInfoConductor("InputConductor", "Ingrese la información del nuevo conductor","PreguntaConductor",alquiler_u);
+        crearPasoFin("Fin");
+    }
+
+    private void crearPasoInfoConductor(String pasoKey, String enunciado, String siguientePasoKey, Object O) {
+        JPanel panel = new JPanel(new GridLayout(0,1 ));
+        JLabel label = new JLabel(enunciado);
+        JLabel label1 = new JLabel("Nombre:");
+        JTextField nombre = new JTextField(20);
+        JLabel label2 = new JLabel("Cédula:");
+        NumericOnlyTextField cedula= new NumericOnlyTextField();
+        JButton avanzar = new JButton("Avanzar");
+        JPanel panelLicencia= new JPanel();
+        panelLicencia.add(Box.createRigidArea(new Dimension(0,200)));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.add(label);
+        panel.add(label1);
+        panel.add(nombre);
+        panel.add(label2);
+        panel.add(cedula);
+        panel.add(panelLicencia);
+        crearLicencia();
+        panel.add(avanzar);
+        avanzar.setVisible(false);
+        DocumentListener documentListener = new DocumentListener() {
+        @Override
+            public void insertUpdate(DocumentEvent e) {
+                avanzar.setVisible(!cedula.getText().trim().isEmpty()&&!nombre.getText().trim().isEmpty());
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                avanzar.setVisible(!cedula.getText().trim().isEmpty()&&!nombre.getText().trim().isEmpty());
+            }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                avanzar.setVisible(!cedula.getText().trim().isEmpty()&&!nombre.getText().trim().isEmpty());
+            }
+        };
+        nombre.getDocument().addDocumentListener(documentListener);
+        cedula.getDocument().addDocumentListener(documentListener);
+
+        avanzar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Realiza la operación correspondiente con el nuevo valor
+                if (O instanceof alquiler){
+                    alquiler alquiler_u= (alquiler) O;
+                }
+                avanzarAlSiguientePaso(siguientePasoKey);
+            }
+        });
+        cardPanel.add(panel, pasoKey);
     }
 
     private void crearPasoPregunta(String preguntaKey, String pregunta, String siguientePasoKeySi, String siguientePasoKeyNo) {
@@ -478,4 +545,74 @@ public class EditorObjetos {
         // Retornamos la subcadena desde startIndex hasta endIndex
         return informacion.substring(startIndex, endIndex);
     }
+
+
+    public static JPanel crearLicencia() {
+        boolean guardarLicencia = false;
+        JPanel panelLicencia = new JPanel(new GridLayout(0, 2));
+        JLabel labelNumeroL = new JLabel("Número de Licencia: ");
+        NumericOnlyTextField campoNumeroL = new NumericOnlyTextField();
+        JLabel labelPais = new JLabel("País de Expedición: ");
+        PlaceHolderTextField campoPais = new PlaceHolderTextField("Ej: Colombia");
+        JLabel labelFechaE = new JLabel("Fecha de Expedición: ");
+        JLabel labelFechaV = new JLabel("Fecha de Vencimiento: ");
+        panelLicencia.add(labelPais);
+        panelLicencia.add(campoPais);
+        panelLicencia.add(labelFechaE);
+        
+
+        inputFecha1 = "";
+        JPanel panelFecha1= new JPanel();
+        panelFecha1.setLayout(new FlowLayout());
+        DefaultComboBoxModel<String> opcionesAnio = new DefaultComboBoxModel<>();
+
+        int anioActual= Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = anioActual-20; i <= anioActual; i++){
+            opcionesAnio.addElement(Integer.toString(i));
+        }
+        JComboBox<String> anioBox= new JComboBox<String>(opcionesAnio);
+        anioBox.setSelectedIndex(0);
+        panelFecha1.add(anioBox);
+        anioBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+            String anio=anioBox.getSelectedItem().toString();
+            VentanaMain.refresh(panelFecha1);
+            panelFecha1.add(anioBox);
+            anioBox.setEnabled(false);
+            DateComboBoxPanel date2= new DateComboBoxPanel(Integer.parseInt(anio));
+            date2.setDefaulDayComboBox();
+            date2.setDefaultMonthComboBox();
+            panelFecha1.add(date2);
+            JButton updateDatebutton= new JButton("Cambiar Fecha");
+            panelFecha1.add(updateDatebutton);
+            JButton saveDatebutton= new JButton("Guardar Fecha");
+            panelFecha1.add(saveDatebutton);
+            inputFecha1="";
+            System.out.println(":"+inputFecha1);
+
+            saveDatebutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    inputFecha1=anio+date2.getText();
+                    VentanaMain.refresh(panelFecha1);
+                    panelFecha1.add(anioBox);
+                    panelFecha1.add(updateDatebutton);
+                    System.out.println(inputFecha1);
+                } 
+            });
+            updateDatebutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    inputFecha1="";
+                    System.out.println(":"+inputFecha1);
+                    VentanaMain.refresh(panelFecha1);
+                    panelFecha1.add(anioBox);
+                    anioBox.setEnabled(true);
+                }
+            });
+            }
+        });
+        return panelLicencia;
+        }
 }
