@@ -2,7 +2,6 @@ package vista;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import modelo.EmpleadoAtencion;
 import modelo.EmpleadoTecnico;
 import modelo.Inventario;
@@ -41,6 +40,7 @@ public class VentanaAdminLocal {
                 public void actionPerformed(ActionEvent e) {
                     // Agregar el código para cerrar la sesión del administrador local
                     // Por ejemplo, puedes cerrar la ventana actual y mostrar una ventana de inicio de sesión.
+                    
                 }
             });
             nombreEmpresaPanel.add(cerrarSesionButton);
@@ -174,17 +174,26 @@ public class VentanaAdminLocal {
                             if ((i.getLogin().equals(loginActualizar))&&(i.getSede().equals(sede))){
                                 empleado=i;
                                 esEpleado=true;
+                                break;
                             }
                             
                         }
-                        if( esEpleado==false){
-                            VentanaMain.errorDialog("el usuario ingresado no existe o no pertenece a la sede del administrador");
+                        if( esEpleado){
+                           
+                            VentanaMain.refresh(pestaña2);
+                            editorObjetos = new EditorObjetos();
+                            editorObjetos.editorPersonal(pestaña2,empleado );
+                            editorObjetos.editar();
+                             try {
+                                Inventario.updateSistema();
+                            } catch (IOException e1) {
+                                // TODO Auto-generated catch block
+                                e1.printStackTrace();
+                            }
                         }
                         else{
-                        VentanaMain.refresh(pestaña2);
-                        editorObjetos = new EditorObjetos();
-                        editorObjetos.editorPersonal(pestaña2,empleado );
-                        editorObjetos.editar();
+                            VentanaMain.errorDialog("el usuario ingresado no existe o no pertenece a la sede del administrador");
+                       
                         }
                    
                         
@@ -221,10 +230,17 @@ public class VentanaAdminLocal {
             JPanel pestaña3 = new JPanel();
             tabbedPane.addTab("acceder al personal", null, pestaña3, "Acceder al Personal");
             // Crear espacios para mostrar al administrador local, empleados técnicos y empleados de atención
+            String empleados=personal.printRegistroEmpleados(sede);
+            String administradorLocal = EditorObjetos.extraerInformacion("Administrador Local", empleados);
+            System.out.println(administradorLocal);
+            String empleadosAtencion = EditorObjetos.extraerInformacion("Empleado(s) de atención", empleados);
+            String empleadosTecnicos = EditorObjetos.extraerInformacion("Empleado(s) técnico(s)", empleados);
+    
             JPanel panelAdminLocal = new JPanel();
             panelAdminLocal.setLayout(new BoxLayout(panelAdminLocal, BoxLayout.Y_AXIS));
             JLabel adminLocalLabel = new JLabel("Administrador Local:");
             JTextField adminLocalField = new JTextField();
+            adminLocalField.setText(administradorLocal);
             panelAdminLocal.add(adminLocalLabel);
             panelAdminLocal.add(adminLocalField);
 
@@ -232,6 +248,7 @@ public class VentanaAdminLocal {
             panelEmpleadosTecnicos.setLayout(new BoxLayout(panelEmpleadosTecnicos, BoxLayout.Y_AXIS));
             JLabel empleadosTecnicosLabel = new JLabel("Empleados Técnicos:");
             JTextField empleadosTecnicosField = new JTextField();
+            empleadosTecnicosField.setText(empleadosTecnicos);
             panelEmpleadosTecnicos.add(empleadosTecnicosLabel);
             panelEmpleadosTecnicos.add(empleadosTecnicosField);
 
@@ -240,6 +257,7 @@ public class VentanaAdminLocal {
             panelEmpleadosAtencion.setLayout(new BoxLayout(panelEmpleadosAtencion, BoxLayout.Y_AXIS));
             JLabel empleadosAtencionLabel = new JLabel("Empleados de Atención:");
             JTextField empleadosAtencionField = new JTextField();
+            empleadosAtencionField.setText(empleadosAtencion);
             panelEmpleadosAtencion.add(empleadosAtencionLabel);
             panelEmpleadosAtencion.add(empleadosAtencionField);
 
