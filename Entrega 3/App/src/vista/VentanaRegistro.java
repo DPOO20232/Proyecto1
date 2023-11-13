@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentListener;
 import modelo.Cliente;
 import modelo.Inventario;
@@ -497,7 +496,8 @@ public class VentanaRegistro extends JFrame {
                 boolean habilitar = !campoNumeroL.getText().isEmpty() &&
                         !campoPais.getText().isEmpty();
                 botonGuardar.setEnabled(habilitar);
-            }            
+            }
+                       
         };
         campoNumeroL.getDocument().addDocumentListener(documentListener);
         campoPais.getDocument().addDocumentListener(documentListener);
@@ -510,23 +510,30 @@ public class VentanaRegistro extends JFrame {
         botonGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                try{
-                numerolicencia = Integer.parseInt(campoNumeroL.getText());
-                pais = campoPais.getText();
-                int expedicionL = Integer.parseInt(inputFechaL1);
-                int vencimientoL = Integer.parseInt(inputFechaL2);
-                System.out.println(numerolicencia);
-                System.out.println(pais);
-                System.out.println(expedicionL);
-                System.out.println(vencimientoL);
-                Licencia licenciaNueva = new Licencia(numerolicencia, expedicionL, vencimientoL, pais);
-                clienteNuevo.setLicencia(licenciaNueva);
-                guardarLicencia = true;
-                tabbedPane.remove(panelC);
-                cerrarAlGuardar();
-                }catch(NumberFormatException e2){
-                    VentanaMain.errorDialog("Guarde fechas");
+                if (Usuario.checkLicencia(Integer.parseInt(campoNumeroL.getText()))){
+                    JOptionPane.showMessageDialog(null, "Este número de licencia ya fue utilizado. Por favor, ingrese otro.", "Registro", JOptionPane.INFORMATION_MESSAGE);
+                    campoNumeroL.setText("");
+                    campoPais.setText("");
+                }
+                else {
+                    try{
+                        numerolicencia = Integer.parseInt(campoNumeroL.getText());
+                        pais = campoPais.getText();
+                        int expedicionL = Integer.parseInt(inputFechaL1);
+                        int vencimientoL = Integer.parseInt(inputFechaL2);
+                        System.out.println(numerolicencia);
+                        System.out.println(pais);
+                        System.out.println(expedicionL);
+                        System.out.println(vencimientoL);
+                        Licencia licenciaNueva = new Licencia(numerolicencia, expedicionL, vencimientoL, pais);
+                        clienteNuevo.setLicencia(licenciaNueva);
+                        guardarLicencia = true;
+                        tabbedPane.remove(panelC);
+                        cerrarAlGuardar();
+                    }catch(NumberFormatException e2){
+                        VentanaMain.errorDialog("Guarde fechas");
 
+                    }
                 }
             }
         });
