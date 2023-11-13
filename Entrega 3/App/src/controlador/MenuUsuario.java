@@ -209,7 +209,7 @@ public class MenuUsuario {
                 while (continuar){
                 //COMPARACION
                 String login = input("Por favor ingrese su nombre de usuario");
-                if(((Usuario.checkNombresLogins(login)==false))) {   
+                if(((Usuario.checkNombresLogins(login)==false))) {  
                     String password = input("Por favor ingrese una contraseña");
                     Cliente cliente = new Cliente(login, password, cedula, nombre, correo, telefono, fnacimiento, nacionalidad);
                     System.out.println("\n>A continuación tiene que ingresar una licencia de conducción y un medio de pago.");
