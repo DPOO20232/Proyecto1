@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class VentanaMain {
     public static void main(String[] args) {
@@ -99,7 +100,8 @@ public class VentanaMain {
                     }
                 else if (Usuario.checkLoginCliente(username, password)!=null){
                     found=true;
-                    Cliente cliente= Usuario.checkLoginCliente(password, password);
+                    Cliente cliente= Usuario.checkLoginCliente(username, password);
+                    new VentanaCliente(cliente);
                 }
                 if (found){
                     frame.setEnabled(true);
@@ -255,6 +257,34 @@ public class VentanaMain {
         dialog.add(panel);
         dialog.setVisible(true);
     }
+    public static JPanel setPanelSuperior(JFrame frame){
+        JPanel panelSuperior= new JPanel();
+        panelSuperior.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+
+        JPanel panelSupIzq= new JPanel();
+        JLabel nomEmpresa= new JLabel(Inventario.getNombreCompania());
+
+        JLabel imagenEmpresa= new JLabel();
+        Icon icon = new ImageIcon("./imagenes/logo2.png");
+        imagenEmpresa.setIcon(icon);
+
+        panelSupIzq.add(imagenEmpresa);
+        panelSupIzq.add(nomEmpresa);
+        panelSuperior.add(panelSupIzq, BorderLayout.WEST);
+        JPanel panelSupDere= new JPanel();
+        JButton cerrarSesionButton = new JButton("Cerrar Sesión");
+        cerrarSesionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
+                frame.dispose();
+            }
+        });
+        panelSupDere.add(cerrarSesionButton);
+        panelSuperior.add(panelSupDere, BorderLayout.EAST);
+        return panelSuperior;
+    }
+
     public static boolean checkFields1Sede(PlaceHolderTextField nomSede,PlaceHolderTextField  ubiSede, JComboBox<String> hora1,JComboBox<String> min1,JComboBox<String> hora2,JComboBox<String> min2) {
         // Verificar si todos los campos están llenos
         String nomSedeText = nomSede.getText().trim();

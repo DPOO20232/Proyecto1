@@ -167,7 +167,7 @@ public class Consola {
                 System.out.println("\n\t\t>>>Hola, "+cliente.getNombre()+" :)");
                 while (continuarCliente){
                     System.out.println("\nOpciones de la aplicación\n");
-                    System.out.println("1. Cambiar contraseña");
+                    System.out.println("1. Cambiar contraseña");//CHECKED
                     System.out.println("2. Actualizar información personal");
                     System.out.println("3. Crear una reserva");
                     System.out.println("4. Modificar datos de mi reserva");
