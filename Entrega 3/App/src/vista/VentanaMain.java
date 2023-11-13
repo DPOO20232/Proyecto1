@@ -95,7 +95,9 @@ public class VentanaMain {
                     if (perfil.equals("AdminLocal")){
                         new VentanaAdminLocal(sedePersonal);
                     }
-                    else if (perfil.equals("EmpleadoAtencion")){}
+                    else if (perfil.equals("EmpleadoAtencion")){
+                        new VentanaAtencion(sedePersonal);
+                    }
                     else{}
                     }
                 else if (Usuario.checkLoginCliente(username, password)!=null){
