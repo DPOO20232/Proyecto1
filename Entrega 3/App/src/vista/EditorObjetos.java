@@ -548,7 +548,6 @@ public class EditorObjetos {
 
 
     public static JPanel crearLicencia() {
-        boolean guardarLicencia = false;
         JPanel panelLicencia = new JPanel(new GridLayout(0, 2));
         JLabel labelNumeroL = new JLabel("Número de Licencia: ");
         NumericOnlyTextField campoNumeroL = new NumericOnlyTextField();
