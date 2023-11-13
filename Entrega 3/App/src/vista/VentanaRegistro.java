@@ -28,6 +28,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Window;
 
+
 public class VentanaRegistro extends JFrame {
     private JTabbedPane tabbedPane;
     JPanel panelSuperior;
@@ -39,6 +40,9 @@ public class VentanaRegistro extends JFrame {
     private String inputFechaNacimiento;
     private boolean guardarLicencia;
     private boolean guardarTarjeta;
+    private String inputFechaNacimiento1;
+    private String inputFechaNacimiento2;
+    private String inputFechaT;
     
 
     public VentanaRegistro(){
@@ -166,7 +170,7 @@ public class VentanaRegistro extends JFrame {
                 boolean habilitar = !campoDocumento.getText().isEmpty() &&
                         !campoNombre.getText().isEmpty() &&
                         !campoCorreo.getText().isEmpty() &&
-                        !campoTelefono.getText().isEmpty() && !campoNacionalidad.getText().isEmpty();
+                        !campoTelefono.getText().isEmpty() && !campoNacionalidad.getText().isEmpty() && !inputFechaNacimiento.isEmpty();
                 botonContinuar.setEnabled(habilitar);
             }
         };
@@ -296,13 +300,120 @@ public class VentanaRegistro extends JFrame {
         PlaceHolderTextField campoPais = new PlaceHolderTextField("Ej: Colombia");
         JLabel labelFechaE = new JLabel("Fecha de Expedición: ");
         JLabel labelFechaV = new JLabel("Fecha de Vencimiento: ");
-        
+
+        inputFechaNacimiento1 = "";
+        JPanel panelFecha1= new JPanel();
+        panelFecha1.setLayout(new FlowLayout());
+        DefaultComboBoxModel<String> opcionesAnio = new DefaultComboBoxModel<>();
+
+        int anioActual= Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = anioActual-20; i <= anioActual; i++){
+            opcionesAnio.addElement(Integer.toString(i));
+        }
+        JComboBox<String> anioBox= new JComboBox<String>(opcionesAnio);
+        anioBox.setSelectedIndex(0);
+        panelFecha1.add(anioBox);
+        anioBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+            String anio=anioBox.getSelectedItem().toString();
+            VentanaMain.refresh(panelFecha1);
+            panelFecha1.add(anioBox);
+            anioBox.setEnabled(false);
+            DateComboBoxPanel date2= new DateComboBoxPanel(Integer.parseInt(anio));
+            date2.setDefaulDayComboBox();
+            date2.setDefaultMonthComboBox();
+            panelFecha1.add(date2);
+            JButton updateDatebutton= new JButton("Cambiar Fecha");
+            panelFecha1.add(updateDatebutton);
+            JButton saveDatebutton= new JButton("Guardar Fecha");
+            panelFecha1.add(saveDatebutton);
+            inputFechaNacimiento1="";
+            System.out.println(":"+inputFechaNacimiento1);
+
+            saveDatebutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    inputFechaNacimiento1=anio+date2.getText();
+                    VentanaMain.refresh(panelFecha1);
+                    panelFecha1.add(anioBox);
+                    panelFecha1.add(updateDatebutton);
+                    System.out.println(inputFechaNacimiento1);
+                } 
+            });
+            updateDatebutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    inputFechaNacimiento1="";
+                    System.out.println(":"+inputFechaNacimiento1);
+                    VentanaMain.refresh(panelFecha1);
+                    panelFecha1.add(anioBox);
+                    anioBox.setEnabled(true);
+                }
+            });
+            }
+        });
+
+        inputFechaNacimiento2 = "";
+        JPanel panelFecha2= new JPanel();
+        panelFecha2.setLayout(new FlowLayout());
+        DefaultComboBoxModel<String> opcionesAnio2 = new DefaultComboBoxModel<>();
+
+        for (int j = anioActual; j <= anioActual+20; j++){
+            opcionesAnio2.addElement(Integer.toString(j));
+        }
+        JComboBox<String> anioBox2= new JComboBox<String>(opcionesAnio2);
+        anioBox2.setSelectedIndex(0);
+        panelFecha2.add(anioBox2);
+        anioBox2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+            String anio=anioBox2.getSelectedItem().toString();
+            VentanaMain.refresh(panelFecha2);
+            panelFecha2.add(anioBox2);
+            anioBox2.setEnabled(false);
+            DateComboBoxPanel date2= new DateComboBoxPanel(Integer.parseInt(anio));
+            date2.setDefaulDayComboBox();
+            date2.setDefaultMonthComboBox();
+            panelFecha2.add(date2);
+            JButton updateDatebutton= new JButton("Cambiar Fecha");
+            panelFecha2.add(updateDatebutton);
+            JButton saveDatebutton= new JButton("Guardar Fecha");
+            panelFecha2.add(saveDatebutton);
+            inputFechaNacimiento1="";
+            System.out.println(":"+inputFechaNacimiento1);
+
+            saveDatebutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    inputFechaNacimiento1=anio+date2.getText();
+                    VentanaMain.refresh(panelFecha2);
+                    panelFecha2.add(anioBox2);
+                    panelFecha2.add(updateDatebutton);
+                    System.out.println(inputFechaNacimiento1);
+                } 
+            });
+            updateDatebutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    inputFechaNacimiento1="";
+                    System.out.println(":"+inputFechaNacimiento1);
+                    VentanaMain.refresh(panelFecha1);
+                    panelFecha1.add(anioBox2);
+                    anioBox2.setEnabled(true);
+                }
+            });
+            }
+        });
+
         panelLicencia.add(labelNumeroL);
         panelLicencia.add(campoNumeroL);
         panelLicencia.add(labelPais);
         panelLicencia.add(campoPais);
         panelLicencia.add(labelFechaE);
+        panelLicencia.add(panelFecha1);
         panelLicencia.add(labelFechaV);
+        panelLicencia.add(panelFecha2);
         
         JButton botonGuardar = new JButton("Guardar");
         botonGuardar.setEnabled(false);
@@ -347,6 +458,7 @@ public class VentanaRegistro extends JFrame {
         });
     }
     public void crearTarjeta() {
+        inputFechaT = "";
         guardarTarjeta = false;
         JPanel panelD = new JPanel(new GridLayout(0,1));
         JPanel panelTarjeta = new JPanel(new GridLayout(0, 2));
@@ -371,11 +483,34 @@ public class VentanaRegistro extends JFrame {
         }
         JComboBox<String> monthComboBox = new JComboBox<>(meses);
         JComboBox<String> yearComboBox = new JComboBox<>(años.toArray(new String[0]));
+        JButton guardarFechaT = new JButton("Guardar Fecha");
+        JButton cambiarFechaT = new JButton("Cambiar Fecha");
+        cambiarFechaT.setEnabled(false);
+        guardarFechaT.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                inputFechaT = monthComboBox.getSelectedItem().toString() + yearComboBox.getSelectedItem();
+                cambiarFechaT.setEnabled(true);
+                monthComboBox.setEnabled(false);
+                yearComboBox.setEnabled(false);
+            }
+        });
+        cambiarFechaT.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                inputFechaT = "";
+                monthComboBox.setEnabled(true);
+                yearComboBox.setEnabled(true);
+            }
+        });
+
+
+
         panelFechaT.add(monthComboBox);
         panelFechaT.add(yearComboBox);
-        String input;
-        
-        
+        panelFechaT.add(guardarFechaT);
+        panelFechaT.add(cambiarFechaT);
+               
         panelTarjeta.add(labelNombreT);
         panelTarjeta.add(campoNombreT);
         panelTarjeta.add(labelNumeroT);
@@ -407,7 +542,8 @@ public class VentanaRegistro extends JFrame {
             private void habilitarGuardar() {
                 boolean habilitar = !campoNombreT.getText().isEmpty() &&
                         !campoNumeroT.getText().isEmpty() &&
-                        !campoMarca.getText().isEmpty();
+                        !campoMarca.getText().isEmpty() &&
+                        !inputFechaT.isEmpty();
                 botonGuardar.setEnabled(habilitar);
             }            
         };
@@ -459,15 +595,17 @@ public class VentanaRegistro extends JFrame {
                     Inventario.updateSistema();
                 } catch (IOException e1) {
                 e1.printStackTrace();
-            }
+                }   
             
-        }
-    });
-    panelSupDere.add(cerrarButton);
-    panelSuperior.add(panelSupDere, BorderLayout.EAST);
+            }   
+        });
+        panelSupDere.add(cerrarButton);
+        panelSuperior.add(panelSupDere, BorderLayout.EAST);
 
-    return panelSuperior;
-}
+        return panelSuperior;
+    }
+
+
 
     
     public static void main(String[] args) {
