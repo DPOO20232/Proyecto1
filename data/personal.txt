@@ -4,7 +4,7 @@ m.gonzalez;clave;1;EmpleadoAtencion
 j.rodriguez;juan90;1;EmpleadoTecnico
 a.paredes;ana12;2;EmpleadoTecnico
 x.caldas;xavier34;2;EmpleadoAtencion
-l.lopez;laura65;1;EmpleadoAtencion
+l.lopez;laura65;3;EmpleadoAtencion
 a.sanchez;alejandro78;3;EmpleadoTecnico
 n.perezr;32;4;AdminLocal
 d.luiz;david96;1;EmpleadoTecnico
