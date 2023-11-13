@@ -218,7 +218,9 @@ public class VentanaEmpleadoTecnico {
 
         // Crear Spinners para los minutos de inicio y fin
         JSpinner minutosInicioSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
+        String minutosInicioString = String.valueOf(minutosInicioSpinner.getValue());
         JSpinner minutosFinSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
+        String minutosFInString = String.valueOf(minutosFinSpinner.getValue());
 
         // Crear un panel para mostrar los componentes
         JPanel panelHoras = new JPanel(new GridBagLayout());
@@ -268,7 +270,7 @@ public class VentanaEmpleadoTecnico {
                 String minutosFin = minutosFinSpinner.getValue().toString();
 
                 // Validar las horas y minutos ingresados
-                if (validarHoras(horaInicio, minutosInicio, horaFin, minutosFin)) {
+                if (validarHoras(horaInicio, minutosInicioString, horaFin, minutosFInString)) {
                     inputHoraInicio = Integer.parseInt(horaInicio + minutosInicio);
                     inputHoraFin = Integer.parseInt(horaFin + minutosFin);
                     Evento evento = new Evento(inputFechaInicio, inputFechaFin, inputHoraInicio, inputHoraFin, accionSeleccionada);
@@ -279,6 +281,7 @@ public class VentanaEmpleadoTecnico {
                         // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
+                    
                     
                 } else {
                     JOptionPane.showMessageDialog(null, "La hora de inicio debe ser anterior a la hora de fin.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -305,6 +308,7 @@ public class VentanaEmpleadoTecnico {
         if (minutosInicio.length() == 1) {
             minutosInicio = "0" + minutosInicio;
         }
+       
     
         if (minutosFin.length() == 1) {
             minutosFin = "0" + minutosFin;
