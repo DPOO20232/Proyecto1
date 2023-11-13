@@ -111,7 +111,7 @@ public class EditorObjetos {
         NumericOnlyTextField cedula= new NumericOnlyTextField();
         JButton avanzar = new JButton("Avanzar");
         JPanel panelLicencia= new JPanel();
-        panelLicencia.add(Box.createRigidArea(new Dimension(0,200)));
+        panelLicencia.add(crearLicencia());
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         panel.add(label);
         panel.add(label1);

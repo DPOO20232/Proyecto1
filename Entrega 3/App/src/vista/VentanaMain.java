@@ -6,7 +6,9 @@ import javax.swing.event.DocumentListener;
 import modelo.Cliente;
 import modelo.Inventario;
 import modelo.Sede;
+import modelo.Seguro;
 import modelo.Usuario;
+import modelo.alquiler;
 import modelo.personal;
 
 import java.awt.*;
@@ -14,6 +16,7 @@ import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class VentanaMain {
     public static void main(String[] args) {
@@ -91,7 +94,6 @@ public class VentanaMain {
                     found=true;
                     perfil=(personal.checkLoginPersonal(username, password)).getTipoPersonal();
                     Sede sedePersonal= personal.checkLoginPersonal(username, password).getSede();
-                    personal adminlocal= personal.checkLoginPersonal(username, password);
                     if (perfil.equals("AdminLocal")){
                         new VentanaAdminLocal(sedePersonal);
                     }
@@ -285,6 +287,10 @@ public class VentanaMain {
             public void actionPerformed(ActionEvent e){
                 try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
                 frame.dispose();
+                //TODO quitar
+                for (alquiler alq: alquiler.getListaAlquileres()){
+                    System.out.println(alq.getID());
+                }
             }
         });
         panelSupDere.add(cerrarSesionButton);

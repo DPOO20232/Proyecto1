@@ -216,7 +216,6 @@ public class VentanaAtencion {
                 double pagoReserva=reserva.getPagoReserva();
                 //termina verificación
                 if (estadoActualVehiculo.equals("Disponible")){
-                    vehiculo.addReservaActiva(reserva);
                     sePuedeCompletarReserva=true;
                 }
                 else{
@@ -234,7 +233,11 @@ public class VentanaAtencion {
                 }
                 else{
                     Reserva.addReserva(reserva);
+                    vehiculo.addReservaActiva(reserva);
                     alquiler alquiler_u = new alquiler(reserva);
+                    vehiculo.addAlquiler(alquiler_u);
+                    alquiler.addAlquiler(alquiler_u);
+
                     panel.add(agregarSeguros(alquiler_u));
                     panel.repaint();
                     panel.validate();
@@ -282,6 +285,7 @@ public class VentanaAtencion {
                         }
                     }
                 }
+                try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
                 VentanaMain.CambioGuardadoDialog();
                 VentanaMain.refresh(panel);
                 panel.add(agregarConductores(alquiler_u));
@@ -321,10 +325,20 @@ public class VentanaAtencion {
                         EditorObjetos editor = new EditorObjetos();
                         editor.agregarConductores(panel, alquiler_u);
                         editor.editar();
+                        
                     }
-                    else{
-                        VentanaMain.CambioGuardadoDialog();
-                    }
+                    double pagoInicial=alquiler_u.calcularPagoInicial();
+
+
+
+                    //System.out.println("\n>Se debitaron COP " +Double.toString(pagoInicial) + " de su tarjeta terminada en "+ Long.toString(ultimos_digitos)+"."); 
+                    System.out.println("(Pago correspondiente al 70% del alquiler + pago por seguros + pago por conductores adicionales)"); 
+                    System.out.println("\n>En este momento se puede entregar el vehículo al cliente."); 
+                    alquiler_u.setPagoFinal(pagoInicial);
+                    alquiler_u.setActivo(true);
+                    VentanaMain.CambioGuardadoDialog();
+                    try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
+                    
                 }
                 else{
                     VentanaMain.errorDialog("Seleccione una opción.");
