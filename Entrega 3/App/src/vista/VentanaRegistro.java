@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentListener;
 import modelo.Cliente;
 import modelo.Inventario;
@@ -202,6 +201,14 @@ public class VentanaRegistro extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (inputFechaNacimiento.equals("")){
                     VentanaMain.errorDialog("Ingrese la fecha de nacimiento");
+                }
+                else if (Usuario.checkCedulas(Integer.parseInt(campoDocumento.getText())) == true) {
+                    JOptionPane.showMessageDialog(null, "Este número de cédula ya fue utilizado. Por favor, ingrese otro.", "Registro", JOptionPane.INFORMATION_MESSAGE);
+                    campoDocumento.setText("");
+                    campoNombre.setText("");
+                    campoCorreo.setText("");
+                    campoTelefono.setText("");
+                    campoNacionalidad.setText("");
                 }
                 else{
                 tabbedPane.remove(panelDatos);
@@ -489,7 +496,8 @@ public class VentanaRegistro extends JFrame {
                 boolean habilitar = !campoNumeroL.getText().isEmpty() &&
                         !campoPais.getText().isEmpty();
                 botonGuardar.setEnabled(habilitar);
-            }            
+            }
+                       
         };
         campoNumeroL.getDocument().addDocumentListener(documentListener);
         campoPais.getDocument().addDocumentListener(documentListener);
@@ -502,23 +510,32 @@ public class VentanaRegistro extends JFrame {
         botonGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                try{
-                numerolicencia = Integer.parseInt(campoNumeroL.getText());
-                pais = campoPais.getText();
-                int expedicionL = Integer.parseInt(inputFechaL1);
-                int vencimientoL = Integer.parseInt(inputFechaL2);
-                System.out.println(numerolicencia);
-                System.out.println(pais);
-                System.out.println(expedicionL);
-                System.out.println(vencimientoL);
-                Licencia licenciaNueva = new Licencia(numerolicencia, expedicionL, vencimientoL, pais);
-                clienteNuevo.setLicencia(licenciaNueva);
-                guardarLicencia = true;
-                tabbedPane.remove(panelC);
-                cerrarAlGuardar();
-                }catch(NumberFormatException e2){
-                    VentanaMain.errorDialog("Guarde fechas");
+                if (Usuario.checkLicencia(Integer.parseInt(campoNumeroL.getText()))){
+                    JOptionPane.showMessageDialog(null, "Este número de licencia ya fue utilizado. Por favor, ingrese otro.", "Registro", JOptionPane.INFORMATION_MESSAGE);
+                    campoNumeroL.setText("");
+                    campoPais.setText("");
+                }
+                else {
+                    try{
+                        numerolicencia = Integer.parseInt(campoNumeroL.getText());
+                        pais = campoPais.getText();
+                        int expedicionL = Integer.parseInt(inputFechaL1);
+                        int vencimientoL = Integer.parseInt(inputFechaL2);
+                        System.out.println(numerolicencia);
+                        System.out.println(pais);
+                        System.out.println(expedicionL);
+                        System.out.println(vencimientoL);
+                        Licencia licenciaNueva = new Licencia(numerolicencia, expedicionL, vencimientoL, pais);
+                        clienteNuevo.setLicencia(licenciaNueva);
+                        guardarLicencia = true;
+                        tabbedPane.remove(panelC);
+                        cerrarAlGuardar();
+                    }catch(NumberFormatException e2){
+                        VentanaMain.errorDialog("Guarde fechas");
 
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         });
@@ -616,10 +633,10 @@ public class VentanaRegistro extends JFrame {
         panelD.add(campoNombreT);
         panelD.add(labelNumeroT);
         panelD.add(campoNumeroT);
-        panelD.add(labelMarca);
-        panelD.add(campoMarca);
         panelD.add(labelFechaV);
         panelD.add(panelFechaT);
+        panelD.add(labelMarca);
+        panelD.add(campoMarca);
         panelD.add(new JLabel("\n"));
         panelD.add(botonGuardar);
 
@@ -639,15 +656,20 @@ public class VentanaRegistro extends JFrame {
                 clienteNuevo.setTarjeta(tarjetaNueva);
                 guardarTarjeta = true;
                 tabbedPane.remove(panelD);
-                cerrarAlGuardar();
+                try {
+                    cerrarAlGuardar();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
     }
-    private void cerrarAlGuardar() {
+    private void cerrarAlGuardar() throws IOException {
         if (guardarTarjeta  && guardarLicencia) {
             Usuario.addNombreLogin(login);
             Usuario.addNumCedulas(numeroCedula);
             Usuario.addCliente(clienteNuevo);
+            Inventario.updateSistema();
             dispose();
             
         }
