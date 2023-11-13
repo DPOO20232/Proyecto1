@@ -229,7 +229,7 @@ public class VentanaRegistro extends JFrame {
         tabbedPane.add("Datos Personales", panelDatos);
         add(tabbedPane);
         setLocationRelativeTo(null);
-        setSize(840, 600);
+        setSize(840, 700);
         setVisible(true);
     }
     
@@ -291,7 +291,8 @@ public class VentanaRegistro extends JFrame {
         botonCrearUsuario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean usuarioYaExiste = Usuario.checkNombresLogins(campoUsuario.getText());
+
+                boolean usuarioYaExiste = Usuario.checkNombresLogins(campoUsuario.getText().toString());
         
                 botonLicencia.setEnabled(!usuarioYaExiste);
                 botonTarjeta.setEnabled(!usuarioYaExiste);
@@ -501,6 +502,7 @@ public class VentanaRegistro extends JFrame {
         botonGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
+                try{
                 numerolicencia = Integer.parseInt(campoNumeroL.getText());
                 pais = campoPais.getText();
                 int expedicionL = Integer.parseInt(inputFechaL1);
@@ -514,6 +516,10 @@ public class VentanaRegistro extends JFrame {
                 guardarLicencia = true;
                 tabbedPane.remove(panelC);
                 cerrarAlGuardar();
+                }catch(NumberFormatException e2){
+                    VentanaMain.errorDialog("Guarde fechas");
+
+                }
             }
         });
     }
@@ -643,6 +649,7 @@ public class VentanaRegistro extends JFrame {
             Usuario.addNumCedulas(numeroCedula);
             Usuario.addCliente(clienteNuevo);
             dispose();
+            
         }
     }
     private static JPanel setPanelSuperior(JTabbedPane pane) {
@@ -682,9 +689,9 @@ public class VentanaRegistro extends JFrame {
 
 
     
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new VentanaRegistro());
-    }
+    //public static void main(String[] args) {
+    //    SwingUtilities.invokeLater(() -> new VentanaRegistro());
+    //}
 }
 
     

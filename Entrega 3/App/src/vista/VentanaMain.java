@@ -6,7 +6,6 @@ import javax.swing.event.DocumentListener;
 import modelo.Cliente;
 import modelo.Inventario;
 import modelo.Sede;
-import modelo.Seguro;
 import modelo.Usuario;
 import modelo.alquiler;
 import modelo.personal;
@@ -16,7 +15,6 @@ import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class VentanaMain {
     public static void main(String[] args) {
