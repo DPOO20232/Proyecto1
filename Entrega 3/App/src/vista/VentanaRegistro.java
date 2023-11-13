@@ -203,6 +203,14 @@ public class VentanaRegistro extends JFrame {
                 if (inputFechaNacimiento.equals("")){
                     VentanaMain.errorDialog("Ingrese la fecha de nacimiento");
                 }
+                else if (Usuario.checkCedulas(Integer.parseInt(campoDocumento.getText())) == true) {
+                    JOptionPane.showMessageDialog(null, "Este número de cédula ya fue utilizado. Por favor, ingrese otro.", "Registro", JOptionPane.INFORMATION_MESSAGE);
+                    campoDocumento.setText("");
+                    campoNombre.setText("");
+                    campoCorreo.setText("");
+                    campoTelefono.setText("");
+                    campoNacionalidad.setText("");
+                }
                 else{
                 tabbedPane.remove(panelDatos);
                 nombre = campoNombre.getText();
@@ -616,10 +624,10 @@ public class VentanaRegistro extends JFrame {
         panelD.add(campoNombreT);
         panelD.add(labelNumeroT);
         panelD.add(campoNumeroT);
-        panelD.add(labelMarca);
-        panelD.add(campoMarca);
         panelD.add(labelFechaV);
         panelD.add(panelFechaT);
+        panelD.add(labelMarca);
+        panelD.add(campoMarca);
         panelD.add(new JLabel("\n"));
         panelD.add(botonGuardar);
 
