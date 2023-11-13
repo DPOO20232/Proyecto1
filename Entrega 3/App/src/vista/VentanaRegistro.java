@@ -1,8 +1,12 @@
 package vista;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,24 +14,31 @@ import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentListener;
+import modelo.Inventario;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Window;
 
 public class VentanaRegistro extends JFrame {
     private JTabbedPane tabbedPane;
     JPanel panelSuperior;
-    private JLabel nombreEmpresa;
     private JLabel textoBienvenida;
     private JLabel instrucciones;
     private JLabel etiquetaDatos;
     private JButton botonContinuar;
     private PlaceHolderTextField campoNombre;
     private String inputFechaNacimiento;
+    private boolean guardarLicencia;
+    private boolean guardarTarjeta;
     
 
     public VentanaRegistro(){
@@ -35,18 +46,16 @@ public class VentanaRegistro extends JFrame {
 
         tabbedPane = new JTabbedPane();
         JPanel panelDatos = new JPanel(new GridLayout(0,2));
+        panelSuperior = setPanelSuperior(tabbedPane);
 
-        nombreEmpresa = new JLabel("<NombreEmpresa>");
         textoBienvenida = new JLabel("¡Bienvenido a nuestro sistema!");
-        instrucciones = new JLabel("Necesitamos que por favor ingrese los siguientes datos para crear su cuenta.");
+        instrucciones = new JLabel("Necesitamos que por favor ingrese los siguientes datos para crear ");
         etiquetaDatos = new JLabel("Datos Personales:");
 
-        panelDatos.add(nombreEmpresa);
-        panelDatos.add(new JLabel("\n"));
         panelDatos.add(textoBienvenida);
         panelDatos.add(new JLabel("\n"));
         panelDatos.add(instrucciones);
-        panelDatos.add(new JLabel("\n"));
+        panelDatos.add(new JLabel(" su cuenta."));
         panelDatos.add(etiquetaDatos);
         panelDatos.add(new JLabel("\n"));
 
@@ -180,8 +189,10 @@ public class VentanaRegistro extends JFrame {
                 }
             }
         });
-
+        panelDatos.add(new JLabel("\n"));
         panelDatos.add(botonContinuar);
+
+        add(this.panelSuperior,BorderLayout.NORTH);
         tabbedPane.add("Datos Personales", panelDatos);
         add(tabbedPane);
         setLocationRelativeTo(null);
@@ -274,6 +285,7 @@ public class VentanaRegistro extends JFrame {
     
     }
     public void crearLicencia() {
+        guardarLicencia = false;
         JPanel panelC = new JPanel(new GridLayout(0,1));
         JPanel panelLicencia = new JPanel(new GridLayout(0, 2));
         JLabel labelMensaje = new JLabel("Ahora, ingrese la información de su Licencia");
@@ -328,12 +340,14 @@ public class VentanaRegistro extends JFrame {
         botonGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                //TODO verificar fechas y guardar, usar booleans
+                guardarLicencia = true;
                 tabbedPane.remove(panelC);
+                cerrarAlGuardar();
             }
         });
     }
     public void crearTarjeta() {
+        guardarTarjeta = false;
         JPanel panelD = new JPanel(new GridLayout(0,1));
         JPanel panelTarjeta = new JPanel(new GridLayout(0, 2));
         JLabel labelMensajeU = new JLabel("Por último, ingrese la informacion de su Método de Pago");
@@ -346,6 +360,21 @@ public class VentanaRegistro extends JFrame {
         JLabel labelMarca = new JLabel("Marca de la Tarjeta: ");
         PlaceHolderTextField campoMarca = new PlaceHolderTextField("Ej: Visa/Mastercard");
         JLabel labelFechaV = new JLabel("Fecha de Vencimiento: ");
+        JPanel panelFechaT = new JPanel(new GridLayout(0, 2));
+        
+        String[] meses = {"01", "02", "03", "04", "05", "06", 
+                            "07", "08", "09", "10", "11", "12", };
+        ArrayList<String> años = new ArrayList<>();
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = currentYear; i < currentYear +16; i++){
+            años.add(Integer.toString(i));
+        }
+        JComboBox<String> monthComboBox = new JComboBox<>(meses);
+        JComboBox<String> yearComboBox = new JComboBox<>(años.toArray(new String[0]));
+        panelFechaT.add(monthComboBox);
+        panelFechaT.add(yearComboBox);
+        String input;
+        
         
         panelTarjeta.add(labelNombreT);
         panelTarjeta.add(campoNombreT);
@@ -354,6 +383,7 @@ public class VentanaRegistro extends JFrame {
         panelTarjeta.add(labelMarca);
         panelTarjeta.add(campoMarca);
         panelTarjeta.add(labelFechaV);
+        panelTarjeta.add(panelFechaT);
         
         JButton botonGuardar = new JButton("Guardar");
         botonGuardar.setEnabled(false);
@@ -394,11 +424,50 @@ public class VentanaRegistro extends JFrame {
         botonGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                //TODO verificar fechas y guardar
+                guardarTarjeta = true;
                 tabbedPane.remove(panelD);
+                cerrarAlGuardar();
             }
         });
     }
+    private void cerrarAlGuardar() {
+        if (guardarTarjeta  && guardarLicencia) {
+            dispose();
+        }
+    }
+    private static JPanel setPanelSuperior(JTabbedPane pane) {
+        JPanel panelSuperior = new JPanel(new BorderLayout());
+        panelSuperior.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+    
+        JPanel panelSupIzq = new JPanel();
+        JLabel nomEmpresa = new JLabel(Inventario.getNombreCompania());
+    
+        JLabel imagenEmpresa = new JLabel();
+        Icon icon = new ImageIcon("./imagenes/logo2.png");
+        imagenEmpresa.setIcon(icon);
+    
+        panelSupIzq.add(imagenEmpresa);
+        panelSupIzq.add(nomEmpresa);
+        panelSuperior.add(panelSupIzq, BorderLayout.WEST);
+    
+        JPanel panelSupDere = new JPanel();
+        JButton cerrarButton = new JButton("Cancelar");
+        cerrarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Inventario.updateSistema();
+                } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            
+        }
+    });
+    panelSupDere.add(cerrarButton);
+    panelSuperior.add(panelSupDere, BorderLayout.EAST);
+
+    return panelSuperior;
+}
 
     
     public static void main(String[] args) {

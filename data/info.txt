@@ -1,5 +1,0 @@
-nombreCompania;RentAcarSA
-costoPorConductorAdicional;120000
-costoPorTrasladoSedes;230000
-periodoTemporadaBaja;[1002,1129]
-periodoTemporadaAlta;[101,401]
