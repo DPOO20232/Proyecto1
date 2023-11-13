@@ -82,11 +82,13 @@ public class VentanaCliente {
         frame.setVisible(true);
     }
     private static JTabbedPane setPanelInferior(){
+        metodosReserva metodos= new metodosReserva();
         JTabbedPane panel1= new JTabbedPane();
         panel1.add(cambiarClave());
         JTabbedPane panel2= new JTabbedPane();
 
         JTabbedPane panel3= new JTabbedPane();
+        panel3.add(metodos.menuReserva());
 
         JTabbedPane panel4= new JTabbedPane();
 
@@ -114,6 +116,7 @@ public class VentanaCliente {
                 }
                 else if (selectedIndex==3){
                     VentanaMain.refresh(panel3);
+                    panel3.add(metodos.menuReserva());
                 }
                 else if (selectedIndex==4){
                     VentanaMain.refresh(panel4);

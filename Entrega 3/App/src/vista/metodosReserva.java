@@ -29,14 +29,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
-public class VentanaReserva extends JFrame {
+public class metodosReserva extends JFrame {
     private JTabbedPane tabbedPane;
     JPanel panelSuperior;
     private JButton botonContinuar;
     
-    public VentanaReserva() {
+    public JTabbedPane menuReserva() {
 
-        super("Reserva de Vehículo");
+        //super("Reserva de Vehículo");
         tabbedPane = new JTabbedPane(); //Creación de la ventana
         
         // Pestaña 1: Fecha y hora de recogida y sede de recogida -----------------------------------------------------------------------------------------------------------------------------------------
@@ -253,13 +253,15 @@ public class VentanaReserva extends JFrame {
         tabbedPane.add("Información de devolucion", panel2);
         tabbedPane.add("Selección de categoría", panel3);
 
-        add(tabbedPane);
-        setLocationRelativeTo(null);
-        setSize(840, 600);
-        setVisible(true);
-        
+        return tabbedPane;
     }
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new VentanaReserva());
+        Inventario.loadSistema();
+        JFrame frame = new JFrame();
+        frame.setSize(400,400);
+        metodosReserva metodos = new metodosReserva();
+        frame.add(metodos.menuReserva());
+        frame.setVisible(true);
+        
     }
 }

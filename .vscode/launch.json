@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "metodosReserva",
+            "request": "launch",
+            "mainClass": "vista.metodosReserva",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
             "name": "Consola",
             "request": "launch",
             "mainClass": "vista.Consola",
