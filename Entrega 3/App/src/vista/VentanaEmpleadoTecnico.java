@@ -10,6 +10,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import javax.swing.JTabbedPane;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -94,8 +96,8 @@ public class VentanaEmpleadoTecnico {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 // Verificar qué opción fue seleccionada
-                                accionSeleccionada = lavadoRadioButton.isSelected() ? "Lavado" :
-                                        (mantenimientoRadioButton.isSelected() ? "Mantenimiento" : "");
+                                accionSeleccionada = lavadoRadioButton.isSelected() ? "EnLavado" :
+                                        (mantenimientoRadioButton.isSelected() ? "EnMantenimiento" : "");
 
                                 if (!accionSeleccionada.isEmpty()) {
 
@@ -181,14 +183,17 @@ public class VentanaEmpleadoTecnico {
                 Date fechaFin = (Date) fechaFinSpinner.getValue();
 
                 // Validar las fechas ingresadas
-                int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-                inputFechaInicio = Integer.parseInt(dateEditorInicio.getFormat().format(fechaInicio));
-                inputFechaFin = Integer.parseInt(dateEditorFin.getFormat().format(fechaFin));
-                if (validarFechas(fechaInicio, fechaFin)&&inputFechaInicio>=fechaActual) {
-
-
-                    // Actualizar la información en el panel pestaña2
-                    pedirHoras(pestaña2);
+                if (validarFechas(fechaInicio, fechaFin)) {
+                    int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
+                    inputFechaInicio = Integer.parseInt(formato.format(fechaInicio));
+                    inputFechaFin = Integer.parseInt(formato.format(fechaFin));
+                    
+                    if (inputFechaInicio<inputFechaFin&&inputFechaInicio>=fechaActual){
+                        // Actualizar la información en el panel pestaña2
+                        pedirHoras(pestaña2);
+                    }
+                    
                 
                 } else {
                     JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser anterior a la fecha de fin y mayor o igual a la fecha actual.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -266,10 +271,14 @@ public class VentanaEmpleadoTecnico {
                 if (validarHoras(horaInicio, minutosInicio, horaFin, minutosFin)) {
                     inputHoraInicio = Integer.parseInt(horaInicio + minutosInicio);
                     inputHoraFin = Integer.parseInt(horaFin + minutosFin);
-                        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-                    if(inputFechaInicio>=fechaActual){
-                        Evento evento = new Evento(inputFechaInicio, inputFechaFin, inputHoraInicio, inputHoraFin, accionSeleccionada);
-                        vehiculo.addEvento(evento);}
+                    Evento evento = new Evento(inputFechaInicio, inputFechaFin, inputHoraInicio, inputHoraFin, accionSeleccionada);
+                    vehiculo.addEvento(evento);
+                    try {
+                        Inventario.updateSistema();
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                     
                 } else {
                     JOptionPane.showMessageDialog(null, "La hora de inicio debe ser anterior a la hora de fin.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -293,12 +302,25 @@ public class VentanaEmpleadoTecnico {
     }
 
     private static boolean validarHoras(String horaInicio, String minutosInicio, String horaFin, String minutosFin) {
-        String horaInicioCompleta = horaInicio + minutosInicio;
-        String horaFinCompleta = horaFin + minutosFin;
-
-        return Integer.parseInt(horaInicioCompleta) < Integer.parseInt(horaFinCompleta);
-    }            
+        if (minutosInicio.length() == 1) {
+            minutosInicio = "0" + minutosInicio;
+        }
+    
+        if (minutosFin.length() == 1) {
+            minutosFin = "0" + minutosFin;
+        }
+    
+        int minutosInicioInt = Integer.parseInt(minutosInicio);
+        int minutosFinInt = Integer.parseInt(minutosFin);
+    
+        if (minutosInicioInt > 59 || minutosFinInt > 59) {
+            return false;
+        }
+    
+        return true;
+    }
 }
+ 
 
 
 

@@ -97,6 +97,8 @@ public class VentanaMain {
                     }
                     else if (perfil.equals("EmpleadoAtencion")){
                         new VentanaAtencion(sedePersonal);}
+
+                        
                     else if (perfil.equals("EmpleadoTecnico")){
                         new VentanaEmpleadoTecnico();
                     }
