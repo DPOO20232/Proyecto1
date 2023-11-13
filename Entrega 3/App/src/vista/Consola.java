@@ -193,7 +193,7 @@ public class Consola {
             else{System.out.println("\n\t>>> Credenciales incorrectas, intentelo de nuevo.");}          
             }
             else if(opcion_seleccionada==3){
-                MenuUsuario.nuevoCliente();
+                MenuUsuario.nuevoCliente();//CHECKED
                 
             }
             else if(opcion_seleccionada==4){
