@@ -465,9 +465,9 @@ public class MenuAlquiler {
             if (sePuedeCompletarReserva){
             Reserva.addReserva(reserva);//ya
             alquiler alquiler_u = new alquiler(reserva);//ya
-            agregarConductores(alquiler_u);//en proceso
+            agregarConductores(alquiler_u);//ya?
             agregarSeguros(alquiler_u);//ya
-            double pagoInicial=alquiler_u.calcularPagoInicial();//no
+            double pagoInicial=alquiler_u.calcularPagoInicial();//ya
             System.out.println("\n>Se debitaron COP " +Double.toString(pagoInicial) + " de su tarjeta terminada en "+ Long.toString(ultimos_digitos)+"."); 
             System.out.println("(Pago correspondiente al 70% del alquiler + pago por seguros + pago por conductores adicionales)"); 
             System.out.println("\n>En este momento se puede entregar el vehículo al cliente."); 

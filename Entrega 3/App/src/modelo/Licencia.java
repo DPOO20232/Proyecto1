@@ -19,7 +19,7 @@ public class Licencia {
         this.numeroLicencia = numeroLicencia;
         this.fechaExpedicion = fechaExpedicion;
         this.fechaVencimiento = fechaVencimiento;
-        this.paisExpedicion = paisExpedicion;
+        this.paisExpedicion = paisExpedicion.toUpperCase();
         this.imagenLicencia="No disponible :c";
     }
     

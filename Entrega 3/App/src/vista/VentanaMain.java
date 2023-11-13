@@ -264,6 +264,50 @@ public class VentanaMain {
         dialog.add(panel);
         dialog.setVisible(true);
     }
+        public static void Dialog(String labelText2) {
+        JDialog dialog = new JDialog();
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        dialog.setTitle("Notificación");
+        dialog.setModalityType(ModalityType.APPLICATION_MODAL);
+        dialog.setSize(450, 200);
+        dialog.setLocationRelativeTo(null);
+    
+        // Cambia el fondo del panel
+        panel.setBackground(Color.WHITE);
+    
+        // Crea un icono para el diálogo (reemplaza "icon.png" con la ubicación de tu propio archivo de imagen)
+        ImageIcon icon = new ImageIcon("icon.png");
+    
+        // Cambia el icono del diálogo
+        dialog.setIconImage(icon.getImage());
+    
+        JLabel label = new JLabel("No se pudieron guardar los cambios:");
+        JLabel label2 = new JLabel(labelText2);
+    
+        // Cambia el color del texto a negro, establece el estilo negrita y el tamaño de fuente
+        label.setForeground(Color.BLACK);
+        label.setFont(new Font("Arial", Font.BOLD, 12));
+    
+        label2.setForeground(Color.BLACK);
+        label2.setFont(new Font("Arial", Font.PLAIN, 12));
+    
+        // Agrega el JLabel al panel para que se autoajuste al contenido
+        JPanel textPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        textPanel.add(label2);
+    
+        panel.add(label);
+        panel.add(textPanel);
+    
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> {
+            dialog.dispose();
+        });
+    
+        panel.add(okButton);
+    
+        dialog.add(panel);
+        dialog.setVisible(true);
+    }
     public static JPanel setPanelSuperior(JFrame frame){
         JPanel panelSuperior= new JPanel();
         panelSuperior.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
