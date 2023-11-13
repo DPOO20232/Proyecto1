@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class VentanaMain {
     public static void main(String[] args) {
@@ -79,26 +80,33 @@ public class VentanaMain {
                 String password = new String(passwordField.getPassword());
 
 
-                
+                boolean found=false;
                 if (personal.checkLoginAdmin(username,password)==true){
+                    found=true;
                     frame.setEnabled(false);
                     new VentanaAdmin();
 
                 }
                 else if (personal.checkLoginPersonal(username, password)!=null){
+                    found=true;
                     perfil=(personal.checkLoginPersonal(username, password)).getTipoPersonal();
                     Sede sedePersonal= personal.checkLoginPersonal(username, password).getSede();
                     personal adminlocal= personal.checkLoginPersonal(username, password);
                     if (perfil.equals("AdminLocal")){
                         new VentanaAdminLocal(sedePersonal);
                     }
-                    else if (perfil.equals("EmpleadoAtencion")){}
+                    else if (perfil.equals("EmpleadoAtencion")){
+                        new VentanaAtencion(sedePersonal);
+                    }
                     else{}
                     }
                 else if (Usuario.checkLoginCliente(username, password)!=null){
-                        Cliente cliente= Usuario.checkLoginCliente(password, password);
+                    found=true;
+                    Cliente cliente= Usuario.checkLoginCliente(username, password);
+                    new VentanaCliente(cliente);
                 }
-                else{
+                if (found){
+                    frame.setEnabled(true);
 
                 }
             }
@@ -140,7 +148,7 @@ public class VentanaMain {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Agrega la lógica para abrir una ventana de registro o realizar la acción correspondiente.
-                JOptionPane.showMessageDialog(frame, "Abre la ventana de registro aquí.", "Registro", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "La ventana de registro se abrirá aquí.", "Registro", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -251,11 +259,39 @@ public class VentanaMain {
         dialog.add(panel);
         dialog.setVisible(true);
     }
+    public static JPanel setPanelSuperior(JFrame frame){
+        JPanel panelSuperior= new JPanel();
+        panelSuperior.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+
+        JPanel panelSupIzq= new JPanel();
+        JLabel nomEmpresa= new JLabel(Inventario.getNombreCompania());
+
+        JLabel imagenEmpresa= new JLabel();
+        Icon icon = new ImageIcon("./imagenes/logo2.png");
+        imagenEmpresa.setIcon(icon);
+
+        panelSupIzq.add(imagenEmpresa);
+        panelSupIzq.add(nomEmpresa);
+        panelSuperior.add(panelSupIzq, BorderLayout.WEST);
+        JPanel panelSupDere= new JPanel();
+        JButton cerrarSesionButton = new JButton("Cerrar Sesión");
+        cerrarSesionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
+                frame.dispose();
+            }
+        });
+        panelSupDere.add(cerrarSesionButton);
+        panelSuperior.add(panelSupDere, BorderLayout.EAST);
+        return panelSuperior;
+    }
+
     public static boolean checkFields1Sede(PlaceHolderTextField nomSede,PlaceHolderTextField  ubiSede, JComboBox<String> hora1,JComboBox<String> min1,JComboBox<String> hora2,JComboBox<String> min2) {
         // Verificar si todos los campos están llenos
         String nomSedeText = nomSede.getText().trim();
         String ubiSedeText = ubiSede.getText().trim();
-        boolean hora1Selected = hora1.getSelectedItem() != null;
+        boolean hora1Selected = hora1.getSelectedItem()!=null;
         boolean min1Selected = min1.getSelectedItem() != null;
         boolean hora2Selected = hora2.getSelectedItem() != null;
         boolean min2Selected = min2.getSelectedItem() != null;

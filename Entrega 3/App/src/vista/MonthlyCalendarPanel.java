@@ -110,6 +110,8 @@ public class MonthlyCalendarPanel extends JPanel {
         JLabel formato= new JLabel();
         Icon icon = new ImageIcon("./imagenes/flecha.png");
         formato.setIcon(icon);
+        formato.setSize(80, 80);
+
         formato.setText("            Nota1: Lea los datos desde la fecha mas reciente a la mas antigua en el sentido de la flecha:");
         formato.setVerticalTextPosition(JLabel.TOP);
         formato.setHorizontalTextPosition(JLabel.CENTER);
@@ -125,7 +127,6 @@ public class MonthlyCalendarPanel extends JPanel {
     public void setMonthlyCalendarPanel() {
         JFrame frame = new JFrame("Vista de alto nivel");
         frame.add(this);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1600, 500);
         frame.setVisible(true);
     }

@@ -6,6 +6,34 @@
     "configurations": [
         {
             "type": "java",
+            "name": "VentanaRegistro",
+            "request": "launch",
+            "mainClass": "vista.VentanaRegistro",
+            "projectName": "Proyecto1-1_7f3fd5b8"
+        },
+        {
+            "type": "java",
+            "name": "VentanaMain",
+            "request": "launch",
+            "mainClass": "vista.VentanaMain",
+            "projectName": "Proyecto1-1_7f3fd5b8"
+        },
+        {
+            "type": "java",
+            "name": "VentanaRegistro",
+            "request": "launch",
+            "mainClass": "vista.VentanaRegistro",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
+            "name": "PanelesModificaciones",
+            "request": "launch",
+            "mainClass": "vista.PanelesModificaciones",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
             "name": "DateComboBoxPanel",
             "request": "launch",
             "mainClass": "vista.DateComboBoxPanel",

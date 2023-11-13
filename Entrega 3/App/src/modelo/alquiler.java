@@ -239,7 +239,8 @@ public class alquiler{
             Inventario.getListaEventos().add(mantenimiento);
             
 
-            int finLimpieza=Integer.parseInt((LocalDate.now()).plusDays(6).format(DateTimeFormatter.ofPattern("yyyyMMdd")));            
+            int finLimpieza=Integer.parseInt((LocalDate.now()).plusDays(6).format(DateTimeFormatter.ofPattern("yyyyMMdd")));  
+            //TODO fuera de los if meter mantenimiento en listas          
             Evento limpieza= new Evento(fechaMas5, finLimpieza, horaActual, horaActual, "EnLimpieza");
             this.getReserva().getVehiculoAsignado().addEvento(limpieza);
             Inventario.getListaEventos().add(limpieza);
