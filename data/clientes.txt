@@ -3,5 +3,4 @@ l.perez;luis34;1034567890;Luis Pérez;luis.perez@email.com;3209876543;19851222;A
 m.rodriguez;maria56;1045678901;María Rodriguez;maria.rodriguez@email.com;3101234567;19970404;ESPAÑA;[7777666655554444,20280404,American Express,María Rodriguez];1045678902
 c.lopez;carlos78;1056789012;Carlos López;carlos.lopez@email.com;3178901234;19880128;CHILE;[3333222211110000,20250128,Discover,Carlos López];1056789013
 l.fernandez;laura90;1067890123;Laura Fernández;laura.fernandez@email.com;3189012345;19920510;PERÚ;[4444555566667777,20301019,Diners Club,Laura Fernández];1067890124
-m.calderon;clave;1014903362;Martin Calderon;martin@email.com;3017271732;20040329;ECUADOR;[2222222222222222,20231212,Visa,FiberComm];1014903362
-j.perez;clave;1023434343;Juan Perez;correo@gmail.com;310717171732;0;COLOMBIA;[1111111111,42028,Visa,Juan Perez];1111111111
+m.calderon;clave;101

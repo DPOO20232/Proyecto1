@@ -101,8 +101,8 @@ public class Consola {
                     while (continuarAdminL==true){
                     System.out.println("\nOpciones de la aplicación\n");
                     System.out.println("1. Registrar empleado en la sede: "+nomSede);//CHECKED
-                    System.out.println("2. Actualizar información de un empleado de la sede: "+nomSede);
-                    System.out.println("3. Obtener registro de los empleados de la sede: "+nomSede);
+                    System.out.println("2. Actualizar información de un empleado de la sede: "+nomSede);//CHECKED
+                    System.out.println("3. Obtener registro de los empleados de la sede: "+nomSede);//CHECKED
                     System.out.println("4. Cerrar sesión\n");
                     int opcion_adminL = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{
@@ -121,7 +121,7 @@ public class Consola {
                 System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área de atención!");
                 while (continuarPersonal1==true){
                     System.out.println("\nOpciones de la aplicación\n");
-                    System.out.println("1. Registrar un alquiler");
+                    System.out.println("1. Registrar un alquiler");//CHECKED
                     System.out.println("2. Completar un alquiler");
                     System.out.println("3. Registrar una reserva");
                     System.out.println("4. Modificar una reserva");

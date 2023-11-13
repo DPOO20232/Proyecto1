@@ -364,7 +364,7 @@ public class VentanaRegistro extends JFrame {
         PlaceHolderTextField campoPais = new PlaceHolderTextField("Ej: Colombia");
         JLabel labelFechaE = new JLabel("Fecha de Expedición: ");
         JLabel labelFechaV = new JLabel("Fecha de Vencimiento: ");
-
+        //desde aqui
         inputFechaL1 = "";
         JPanel panelFecha1= new JPanel();
         panelFecha1.setLayout(new FlowLayout());
@@ -414,6 +414,7 @@ public class VentanaRegistro extends JFrame {
             });
             }
         });
+        //hasta aqui
 
         inputFechaL2 = "";
         JPanel panelFecha2= new JPanel();

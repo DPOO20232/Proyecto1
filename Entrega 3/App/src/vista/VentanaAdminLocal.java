@@ -23,6 +23,7 @@ public class VentanaAdminLocal {
             frame = new JFrame("Menu Admin Local");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(800, 600);
+            frame.setLocationRelativeTo(null);
             
             // Crear un panel superior para el nombre de la empresa
             JPanel nombreEmpresaPanel = new JPanel();
