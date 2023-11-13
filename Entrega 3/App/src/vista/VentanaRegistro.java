@@ -96,11 +96,12 @@ public class VentanaRegistro extends JFrame {
             public void actionPerformed(ActionEvent e){
             String anio=anioBox.getSelectedItem().toString();
             VentanaMain.refresh(panelFecha);
-            panelFecha.add(anioBox);
             anioBox.setEnabled(false);
             DateComboBoxPanel date1= new DateComboBoxPanel(Integer.parseInt(anio));
             date1.setDefaulDayComboBox();
             date1.setDefaultMonthComboBox();
+            VentanaMain.refresh(panelFecha);
+            panelFecha.add(anioBox);
             panelFecha.add(date1);
             JButton updateDatebutton= new JButton("Cambiar Fecha");
             panelFecha.add(updateDatebutton);
