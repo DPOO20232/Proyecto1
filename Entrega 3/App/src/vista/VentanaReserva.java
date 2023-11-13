@@ -110,31 +110,34 @@ public class VentanaReserva extends JFrame {
         // ----------
         
         panel1.add(botonContinuar);
-        tabbedPane.add("Fecha recogida", panel1);
-        add(tabbedPane);
-        setLocationRelativeTo(null);
-        setSize(840, 600);
-        setVisible(true);
+        
 
+       // Pestaña 2: Fecha y hora de devolucion
+        
+        JPanel panel2 = new JPanel(new GridLayout(0,2));
+        
+        JLabel fechaDevTitle = new JLabel("Fecha de recogida del vehículo");
+        
+        botonContinuar = new JButton("Continuar");
+        botonContinuar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedIndex(1);
+            }
+        });
+        
+        panel2.add(fechaDevTitle);
        
-        // Pestaña 2: Fecha y hora de devolucion
-        JPanel panel2 = new JPanel(new GridLayout(0,2)); 
-        JLabel fechaDevolucion = new JLabel("Fecha de recogida del vehículo");
-        panel2.add(fechaDevolucion);
-
-        // FECHA DEVOLUCION ------------------------------------------------------------------------------------------------------------------------------------------
+        // FECHA RECOGIDA ------------------------------------------------------------------------------------------------------------------------------------------
         JPanel panelFechaDev = new JPanel();       
-        panelFechaDev.setLayout(new FlowLayout());
-
+        panelFechaRec.setLayout(new FlowLayout());
         DefaultComboBoxModel<String> opcionesAnio2 = new DefaultComboBoxModel<>(); //Se crean y se agregan las opciones disponibles para el año de recogida
+        
         opcionesAnio2.addElement(Integer.toString(anioActual));
         opcionesAnio2.addElement(Integer.toString(anioActual+1));
         
-        
-        JComboBox<String> anioBox2 = new JComboBox<String>(opcionesAnio2);
+        JComboBox<String> anioBox2 = new JComboBox<String>(opcionesAnio);
         anioBox2.setSelectedIndex(0);
-        panelFechaDev.add(anioBox2); // Año agregado
-        
         anioBox2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -144,10 +147,10 @@ public class VentanaReserva extends JFrame {
                 panelFechaDev.add(anioBox2);
                 anioBox2.setEnabled(false);
 
-                DateComboBoxPanel date2 = new DateComboBoxPanel(Integer.parseInt(anio));
-                date2.setDefaulDayComboBox();
-                date2.setDefaultMonthComboBox();
-                panelFechaDev.add(date2);
+                DateComboBoxPanel date1 = new DateComboBoxPanel(Integer.parseInt(anio));
+                date1.setDefaulDayComboBox();
+                date1.setDefaultMonthComboBox();
+                panelFechaRec.add(date1);
 
                 JButton updateDatebutton = new JButton("Cambiar Fecha");
                 panelFechaDev.add(updateDatebutton);
@@ -157,10 +160,10 @@ public class VentanaReserva extends JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e){
                         
-                        VentanaMain.refresh(panelFechaRec);
-                        panelFechaRec.add(anioBox);
-                        panelFechaRec.add(updateDatebutton);
-                        
+                        VentanaMain.refresh(panelFechaDev);
+                        panelFechaDev.add(anioBox2);
+                        panelFechaDev.add(updateDatebutton);
+                       
                     }
                 });
                 updateDatebutton.addActionListener(new ActionListener() {
@@ -171,11 +174,20 @@ public class VentanaReserva extends JFrame {
                         panelFechaDev.add(anioBox2);
                         anioBox2.setEnabled(true);
                     }
-            });}});
-        //------------------------------------------------------------------------------------------------------------------------------------------
-
-        
-
+                });
+            }
+        });
+        panelFechaDev.add(anioBox2); // Año agregado
+        panel2.add(panelFechaDev);
+        //
+        //TODO: falta la hora de recogida
+        // ----------
+        tabbedPane.add("Fecha recogida", panel1);
+        tabbedPane.add("Fecha devolucion", panel2);
+        add(tabbedPane);
+        setLocationRelativeTo(null);
+        setSize(840, 600);
+        setVisible(true);
         
     }
     public static void main(String[] args) {
