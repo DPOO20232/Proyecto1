@@ -27,45 +27,43 @@ import java.awt.GridLayout;
 public class VentanaReserva extends JFrame {
     private JTabbedPane tabbedPane;
     JPanel panelSuperior;
-    private JLabel nombreEmpresa;
-    private JLabel textoBienvenida;
     private JButton botonContinuar;
-    
-    
-    
-    
     
     public VentanaReserva() {
 
-        super("Registro de Usuario");
-
+        super("Reserva de Vehículo");
         tabbedPane = new JTabbedPane(); //Creación de la ventana
-
-
-        JPanel panel1 = new JPanel(new GridLayout(0,2)); 
-
-        nombreEmpresa = new JLabel("<NombreEmpresa> \n");
-        textoBienvenida = new JLabel("¡Bienvenido a nuestro sistema de Reserva! \n");
-        JLabel fechaRecogida = new JLabel("Fecha de recogida del vehículo");
+        
         // Pestaña 1: Fecha y hora de recogida
+        
+        JPanel panel1 = new JPanel(new GridLayout(0,2));
+        
+        JLabel nombreEmpresa = new JLabel("<NombreEmpresa> \n");
+        JLabel textoBienvenida = new JLabel("¡Bienvenido a nuestro sistema de Reserva! \n");
+        JLabel fechaRecTitle = new JLabel("Fecha de recogida del vehículo");
+        
+        botonContinuar = new JButton("Continuar");
+        botonContinuar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tabbedPane.setSelectedIndex(1);
+            }
+        });
+        
         panel1.add(nombreEmpresa);
         panel1.add(textoBienvenida);
-        panel1.add(fechaRecogida);
-        
+        panel1.add(fechaRecTitle);
+       
         // FECHA RECOGIDA ------------------------------------------------------------------------------------------------------------------------------------------
         JPanel panelFechaRec = new JPanel();       
         panelFechaRec.setLayout(new FlowLayout());
-
         DefaultComboBoxModel<String> opcionesAnio = new DefaultComboBoxModel<>(); //Se crean y se agregan las opciones disponibles para el año de recogida
         int anioActual = Calendar.getInstance().get(Calendar.YEAR);
         opcionesAnio.addElement(Integer.toString(anioActual));
         opcionesAnio.addElement(Integer.toString(anioActual+1));
         
-        
         JComboBox<String> anioBox = new JComboBox<String>(opcionesAnio);
         anioBox.setSelectedIndex(0);
-        panelFechaRec.add(anioBox); // Año agregado
-        
         anioBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -102,9 +100,15 @@ public class VentanaReserva extends JFrame {
                         panelFechaRec.add(anioBox);
                         anioBox.setEnabled(true);
                     }
-            });}});
-        //------------------------------------------------------------------------------------------------------------------------------------------
+                });
+            }
+        });
+        panelFechaRec.add(anioBox); // Año agregado
+        panel1.add(panelFechaRec);
+        //
         //TODO: falta la hora de recogida
+        // ----------
+        
         panel1.add(botonContinuar);
         tabbedPane.add("Fecha recogida", panel1);
         add(tabbedPane);
