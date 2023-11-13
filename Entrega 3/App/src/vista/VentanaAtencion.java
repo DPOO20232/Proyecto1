@@ -30,9 +30,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 public class VentanaAtencion {
-    static JFrame frame;
-    JPanel panelSuperior;
-    JTabbedPane panelInferior;
+    private static JFrame frame;
+    private static JPanel panelSuperior;
+    private static JTabbedPane panelInferior;
     static boolean inAction;
     static boolean boolModificar;
     static JComboBox<String> comboBoxGeneral1Vehi;
@@ -61,24 +61,13 @@ public class VentanaAtencion {
     public VentanaAtencion(Sede sede_u) {
         sede_personal=sede_u;
         frame = new JFrame("Menu Personal de Atención");
-        this.panelSuperior= VentanaMain.setPanelSuperior(frame);
-        this.panelInferior= setPanelInferior();
-        inAction= false;
-
-        panelInferior.setEnabled(!inAction);
-
+        panelSuperior= VentanaMain.setPanelSuperior(frame);
+        panelInferior= hallarCliente();
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setSize(1100, 600);
         frame.setLayout(new BorderLayout());
-
-        // Panel superior
-        
-
-        // Panel inferior
-        
-
-        frame.add(this.panelSuperior,BorderLayout.NORTH);
-        frame.add(this.panelInferior);
+        frame.add(panelSuperior,BorderLayout.NORTH);
+        frame.add(panelInferior);
         JScrollPane scrollPane= new JScrollPane(panelInferior);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -99,9 +88,8 @@ public class VentanaAtencion {
         JTabbedPane panel5= new JTabbedPane();
 
         JTabbedPane panelInferior = new JTabbedPane(JTabbedPane.TOP);
-
-        panelInferior.add("Registrar Alquiler",panel1);
-        panelInferior.add("Completar Alquiler",panel2);
+        panelInferior.add("Iniciar Alquiler",panel1);
+        panelInferior.add("Finalizar Alquiler",panel2);
         panelInferior.add("Crear reserva",panel3);
         panelInferior.add("Modificar reserva",panel4);
 
@@ -130,7 +118,8 @@ public class VentanaAtencion {
         }});
         return panelInferior;
     }
-        private static JPanel hallarCliente(){
+        private static JTabbedPane hallarCliente(){
+        JTabbedPane tabbedPane= new JTabbedPane();        
         JPanel panel= new JPanel();
         cliente_i=null;
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
@@ -138,7 +127,7 @@ public class VentanaAtencion {
         
         menu.add(new JLabel("Ingrese la cédula del cliente:"));
         NumericOnlyTextField cedula= new NumericOnlyTextField();
-        JButton avanzar= new JButton("Actualizar contraseña");
+        JButton avanzar= new JButton("Buscar");
         menu.add(cedula);
         avanzar.setVisible(false);
         menu.add(avanzar);
@@ -163,41 +152,43 @@ public class VentanaAtencion {
             public void actionPerformed(ActionEvent e){
                 int cedulaCliente = Integer.parseInt(cedula.getText().trim());
                 cliente_i=Usuario.assignCliente(cedulaCliente);
+                if(cliente_i==null){
+                    VentanaMain.errorDialog("Ingrese una cédula válida");
+                }
+                else{
+                    frame.setTitle("Menu Personal de atención. Cliente en revisión: "+ cliente_i.getNombre());
+                    VentanaMain.refresh(panelInferior);
+                    panelInferior.add(setPanelInferior());
+                    inAction= false;
+                    panelInferior.setEnabled(!inAction);
+                }
             }
         });
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
-        return panel;
+        tabbedPane.add(panel);
+        return tabbedPane;
     }
 
         private static JPanel crearAlquiler(){
         JPanel panel= new JPanel();
-        panel.add(hallarCliente());
-        if (cliente_i==null){
-            VentanaMain.errorDialog("No existen usuarios con la cédula dada");
-            VentanaMain.refresh(panel);
-        }
-        else{
-            VentanaMain.refresh(panel);
-            JPanel panel_1= new JPanel(new FlowLayout());
-            panel.add(Box.createRigidArea(new Dimension(0, 200)));
-            int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-            LocalTime hora = LocalTime.now();
-            int horaActual = hora.getHour() * 100 + hora.getMinute();
-            DefaultComboBoxModel<String> modeloReservas= new DefaultComboBoxModel<>();
-            for(Reserva i: Reserva.getListaReservas()){
+        JPanel panel_1= new JPanel(new FlowLayout());
+        panel.add(Box.createRigidArea(new Dimension(0, 200)));
+        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        LocalTime hora = LocalTime.now();
+        int horaActual = hora.getHour() * 100 + hora.getMinute();
+        DefaultComboBoxModel<String> modeloReservas= new DefaultComboBoxModel<>();
+        int numReservas=0;
+        for(Reserva i: Reserva.getListaReservas()){
             if(i.getFechaRecoger()==fechaActual&&i.getCliente().getNumeroCedula()==cliente_i.getNumeroCedula()&& sede_personal.getID()==i.getSedeRecoger().getID()){
+            numReservas+=1;
             String idreseva = Integer.toString(i.getID());
             String categoria = i.getCategoria().getnombreCategoria();
             String fechaRecoger = Integer.toString(i.getFechaRecoger());
             String fechaEntregar = Integer.toString(i.getFechaEntregar());
-            //String horaRecoger = Integer.toString(i.getHoraRecoger());
-            //String horaEntregar = Integer.toString(i.getHoraEntregar());
-            //String sedeEntrega = i.getSedeEntregar().getNombre();
-            //String sedeRecoger = i.getSedeRecoger().getNombre();
-            //double pago = i.getPagoReserva();
-            modeloReservas.addElement("id: "+idreseva+":"+". Categoría:" +categoria+"("+fechaRecoger+"->"+fechaEntregar+")" );
+            modeloReservas.addElement("id: "+idreseva+" / Categoría:" +categoria+" ("+fechaRecoger+"->"+fechaEntregar+")" );
         }
         }
+        if (numReservas>0){
         JComboBox<String> comboBoxReservas= new JComboBox<>(modeloReservas);
         comboBoxReservas.setSelectedIndex(0);
         panel_1.add(new JLabel("Elija la reserva que desea completar"));
@@ -211,7 +202,10 @@ public class VentanaAtencion {
             @Override
             public void actionPerformed(ActionEvent e){
                 String opcion= comboBoxReservas.getSelectedItem().toString();
-                int id= Integer.parseInt(opcion.split(":")[1]);
+                String[] partes=opcion.split("/");
+                String[] idreserva= partes[0].split(":");
+                int id= Integer.parseInt(idreserva[1].trim());
+                System.out.println(id);
                 Reserva reserva= Reserva.assignReserva(id);
                 //Verificación
                 Vehiculo vehiculo=reserva.getVehiculoAsignado();
@@ -219,7 +213,6 @@ public class VentanaAtencion {
                 Reserva.getListaReservas().remove(reserva);
                 boolean sePuedeCompletarReserva=false;
                 String estadoActualVehiculo=vehiculo.actualizarEstado(fechaActual, horaActual,reserva.getFechaEntregar(),reserva.getHoraEntregar());
-                long ultimos_digitos=(reserva.getCliente().getTarjeta().getNumeroTarjeta()% 10000);
                 double pagoReserva=reserva.getPagoReserva();
                 //termina verificación
                 if (estadoActualVehiculo.equals("Disponible")){
@@ -242,17 +235,18 @@ public class VentanaAtencion {
                 else{
                     Reserva.addReserva(reserva);
                     alquiler alquiler_u = new alquiler(reserva);
-                     
-                    //panel.add(agregarConductores(alquiler_u));
                     panel.add(agregarSeguros(alquiler_u));
-                    VentanaMain.refresh(panel);
+                    panel.repaint();
+                    panel.validate();
 
-
+                    try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
                 }
 
-        }});
-        panel.add(Box.createRigidArea(new Dimension(0, 200)));
+        }});}
+        else{
+            panel.add(new JLabel("El usuario no tiene reservas activas disponibles para completar el día de hoy"));
         }
+        panel.add(Box.createRigidArea(new Dimension(0, 200)));
         return panel;
     }
     private static JPanel agregarSeguros(alquiler alquiler_u){
@@ -280,6 +274,7 @@ public class VentanaAtencion {
                             String[] partes = checkBox.getText().split(":");
                             if (partes.length == 2) {
                                 int idseguro=Integer.parseInt(partes[0]);
+                                System.out.println(idseguro);
                                 Seguro seguro = Inventario.assignSeguro(idseguro);
                                 alquiler_u.addSeguro(seguro);
 
@@ -289,8 +284,56 @@ public class VentanaAtencion {
                 }
                 VentanaMain.CambioGuardadoDialog();
                 VentanaMain.refresh(panel);
+                panel.add(agregarConductores(alquiler_u));
+                panel.repaint();
+                panel.revalidate();
             }
         });                   
+        return panel;
+    }
+
+    private static JPanel agregarConductores(alquiler alquiler_u){
+        JPanel panel= new JPanel();
+        panel.add(Box.createRigidArea(new Dimension(0, 100)));                    
+        panel.add(new JLabel("El cliente va a agregar conductores al registro del alquiler?"));
+        ButtonGroup opcion= new ButtonGroup();
+        JRadioButton si=new JRadioButton("Si");
+        JRadioButton no= new JRadioButton("No");
+        opcion.add(si);
+        opcion.add(no);
+        si.setActionCommand("si");
+        no.setActionCommand("no");
+        JButton avanzarButton= new JButton("Siguiente");
+        panel.add(si);
+        panel.add(no);
+        panel.add(avanzarButton);
+        avanzarButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                ButtonModel selectedItem = opcion.getSelection();
+                if (selectedItem!=null){
+                    VentanaMain.refresh(panel);
+                    String itemStr = selectedItem.getActionCommand(); // Obtener el texto de la opción seleccionada
+                    if (itemStr.equals("si")){
+                        panel.add(Box.createRigidArea(new Dimension(0, 100)));                    
+                        JPanel panelConductor= new JPanel();
+                        panel.add(panelConductor);
+                        EditorObjetos editor = new EditorObjetos();
+                        editor.agregarConductores(panel, alquiler_u);
+                        editor.editar();
+                    }
+                    else{
+                        VentanaMain.CambioGuardadoDialog();
+                    }
+                }
+                else{
+                    VentanaMain.errorDialog("Seleccione una opción.");
+                }
+
+
+            }
+        });
+        panel.add(Box.createRigidArea(new Dimension(0, 100)));                    
         return panel;
     }
 
@@ -523,7 +566,6 @@ public class VentanaAtencion {
                         Vehiculo vehiculo = new Vehiculo(placaStr, marcaStr, modeloStr, colorStr, transmisionStr, "No disponible :c", "disponible", false, categoriaElejida, sedeElejida);
                         Inventario.getListaVehiculos().add(vehiculo);
                         
-                        try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
 
 
                         VentanaMain.CambioGuardadoDialog();

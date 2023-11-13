@@ -97,6 +97,7 @@ public class VentanaRegistro extends JFrame {
         botonContinuar.setEnabled(false);
 
         //DESDE AQUI VA LO DE FECHA
+        
         JPanel panelFecha= new JPanel();
         panelFecha.setLayout(new FlowLayout());
         DefaultComboBoxModel<String> opcionesAnio = new DefaultComboBoxModel<>();
@@ -113,11 +114,12 @@ public class VentanaRegistro extends JFrame {
             public void actionPerformed(ActionEvent e){
             String anio=anioBox.getSelectedItem().toString();
             VentanaMain.refresh(panelFecha);
-            panelFecha.add(anioBox);
             anioBox.setEnabled(false);
             DateComboBoxPanel date1= new DateComboBoxPanel(Integer.parseInt(anio));
             date1.setDefaulDayComboBox();
             date1.setDefaultMonthComboBox();
+            VentanaMain.refresh(panelFecha);
+            panelFecha.add(anioBox);
             panelFecha.add(date1);
             JButton updateDatebutton= new JButton("Cambiar Fecha");
             panelFecha.add(updateDatebutton);
@@ -145,6 +147,7 @@ public class VentanaRegistro extends JFrame {
             });
             }
         });
+        
         //hasta aca va -> para verificar si la fecha se guardo preguntar si !inputFechaNacimiento.equals("")
         
 

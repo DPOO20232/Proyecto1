@@ -96,10 +96,15 @@ public class VentanaMain {
                         new VentanaAdminLocal(sedePersonal);
                     }
                     else if (perfil.equals("EmpleadoAtencion")){
-                        new VentanaAtencion(sedePersonal);
+                        new VentanaAtencion(sedePersonal);}
+
+                        
+                    else if (perfil.equals("EmpleadoTecnico")){
+                        new VentanaEmpleadoTecnico();
                     }
                     else{}
                     }
+              
                 else if (Usuario.checkLoginCliente(username, password)!=null){
                     found=true;
                     Cliente cliente= Usuario.checkLoginCliente(username, password);

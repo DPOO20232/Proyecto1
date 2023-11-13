@@ -119,11 +119,8 @@ public class Inventario {
          */
         int inicioTemp1=getPeriodoTemporadaAlta().get(0);
         int finTemp1=getPeriodoTemporadaAlta().get(1);
-        int inicioTemp2=getPeriodoTemporadaAlta().get(2);
-        int finTemp2=getPeriodoTemporadaAlta().get(3);
         boolean condicion1=(mmdd1 <= finTemp1) && (mmdd1 >= inicioTemp1)||(mmdd2 <= finTemp1) && (mmdd2 >= inicioTemp1);
-        boolean condicion2=(mmdd1 <= finTemp2) && (mmdd1 >= inicioTemp2)||(mmdd2 <= finTemp2) && (mmdd2 >= inicioTemp2);
-        return condicion1||condicion2;
+        return condicion1;
         
     }
     public static boolean esTemporadaBaja(int mmdd1, int mmdd2){
