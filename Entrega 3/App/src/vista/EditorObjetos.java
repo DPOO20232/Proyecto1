@@ -51,6 +51,7 @@ public class EditorObjetos {
         mainPanel.add(cardPanel);
         crearPasosPersonal(personal);
     }
+
     public void editar() {
         // Comienza con el primer paso
         mostrarPasoActual();
@@ -67,6 +68,7 @@ public class EditorObjetos {
         crearPasoHorario("InputHora2", "Horario para fin de semana (hhmm)", "Fin",sede);
         crearPasoFin("Fin");
     }
+
 
     private void crearPasosSeguro(Seguro seguro) {
         crearPasoPregunta("PreguntaDescripcion", "¿Desea modificar la descripción del seguro?", "InputDescripcion", "PreguntaPctg");
