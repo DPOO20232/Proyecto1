@@ -84,7 +84,7 @@ public class VentanaEmpleadoTecnico {
                         JPanel panelSeleccionAccion = new JPanel();
                         JLabel labelSeleccion = new JLabel("Seleccione la acción a realizar:");
 
-                        JRadioButton lavadoRadioButton = new JRadioButton("EnLavado");
+                        JRadioButton lavadoRadioButton = new JRadioButton("EnLimpieza");
                         JRadioButton mantenimientoRadioButton = new JRadioButton("EnMantenimiento");
 
                         ButtonGroup buttonGroup = new ButtonGroup();
@@ -217,9 +217,26 @@ public class VentanaEmpleadoTecnico {
         JComboBox<String> horaFinComboBox = new JComboBox<>(obtenerOpcionesHoras());
 
         // Crear Spinners para los minutos de inicio y fin
-        JSpinner minutosInicioSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
+        DefaultComboBoxModel<String> opcionesmin1 = new DefaultComboBoxModel<>();
+        DefaultComboBoxModel<String> opcionesmin2 = new DefaultComboBoxModel<>();
+
+        for (int i = 0; i <= 59; i++) {
+            String s="";
+            if (i<10){
+                s=s+"0";
+            }
+            opcionesmin1.addElement(s+Integer.toString(i));
+            opcionesmin2.addElement(s+Integer.toString(i));
+        }
+        JComboBox<String> minComboBox1 = new JComboBox<>(opcionesmin1);
+        JComboBox<String> minComboBox2 = new JComboBox<>(opcionesmin2);
+
+
+
+
+        JSpinner minutosInicioSpinner = new JSpinner(new SpinnerNumberModel(0, 00, 59, 1));
         String minutosInicioString = String.valueOf(minutosInicioSpinner.getValue());
-        JSpinner minutosFinSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
+        JSpinner minutosFinSpinner = new JSpinner(new SpinnerNumberModel(0, 00, 59, 1));
         String minutosFInString = String.valueOf(minutosFinSpinner.getValue());
 
         // Crear un panel para mostrar los componentes
