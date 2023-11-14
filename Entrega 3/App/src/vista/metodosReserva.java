@@ -219,7 +219,7 @@ public class metodosReserva extends JFrame {
                     Reserva reserva_u= new Reserva(Integer.parseInt(fecha1.getText()),Integer.parseInt(fecha2.getText()) ,horaRec ,horaDev ,reservaEnSede , eleccionSedeRec, eleccionSedeDev,categoria , cliente);
                     reserva_u.setVehiculoAsignado();
                     if (reserva_u.getVehiculoAsignado()!=null){
-                        reserva_u.setPagoReserva(Integer.parseInt(fecha1.getText()),Integer.parseInt(fecha2.getText()) ,horaRec ,horaDev);
+                        reserva_u.setPagoReserva(Integer.parseInt(fecha1.getText()),horaRec,Integer.parseInt(fecha2.getText()) ,horaDev);
                         Reserva.addReserva(reserva_u);
                         VentanaMain.Dialog("Se debitaron COP "+ Double.toString(reserva_u.getPagoReserva())+".");
                         VentanaMain.Dialog("Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_u.getID()));
