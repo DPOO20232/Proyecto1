@@ -273,7 +273,6 @@ public class VentanaAtencion {
                             String[] partes = checkBox.getText().split(":");
                             if (partes.length == 2) {
                                 int idseguro=Integer.parseInt(partes[0]);
-                                System.out.println(idseguro);
                                 Seguro seguro = Inventario.assignSeguro(idseguro);
                                 alquiler_u.addSeguro(seguro);
 
@@ -349,6 +348,7 @@ public class VentanaAtencion {
     private static JPanel completarAlquiler(){
         JPanel panel= new JPanel();
         JPanel panel_1= new JPanel(new FlowLayout());
+        panel.add(panel_1);
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         LocalTime hora = LocalTime.now();
@@ -391,32 +391,67 @@ public class VentanaAtencion {
                     reserva.setSedeEntregar(sede_personal);
                     reserva.setFechaEntregar(fechaActual);
                     reserva.setHoraEntregar(horaActual);
-                        VentanaMain.refresh(panel_1);
-                        panel_1.add(new JLabel("Seleccione los daños que tenga el vehículo"));
-                        panel_1.add(Box.createRigidArea(new Dimension(0,100)));
-                        ButtonGroup averias= new ButtonGroup();
-                        JRadioButton cero= new JRadioButton("0. Ningún daño ");
-                        JRadioButton uno= new JRadioButton("1. Daño Leve ");
-                        JRadioButton dos= new JRadioButton("2. Daño Moderado ");                        
-                        JRadioButton tres= new JRadioButton("3. Daño Grave ");
-                        averias.add(cero);
-                        averias.add(uno);
-                        averias.add(dos);
-                        averias.add(tres);
-                        panel_1.add(cero);
-                        panel_1.add(uno);
-                        panel_1.add(dos);
-                        panel_1.add(tres);
-                        JButton avanzar2= new JButton("Concluir alquiler");
+                    VentanaMain.refresh(panel_1);
+                    panel_1.add(new JLabel("Seleccione los daños que tenga el vehículo"));
+                    panel_1.add(Box.createRigidArea(new Dimension(0,100)));
+                    ButtonGroup averias= new ButtonGroup();
+                    JRadioButton cero= new JRadioButton("0. Ningún daño ");
+                    JRadioButton uno= new JRadioButton("1. Daño Leve ");
+                    JRadioButton dos= new JRadioButton("2. Daño Moderado ");                        
+                    JRadioButton tres= new JRadioButton("3. Daño Grave ");
+                    cero.setActionCommand("0");
+                    uno.setActionCommand("1");
+                    dos.setActionCommand("2");
+                    tres.setActionCommand("3");
+                    averias.add(cero);
+                    averias.add(uno);
+                    averias.add(dos);
+                    averias.add(tres);
+                    panel_1.add(cero);
+                    panel_1.add(uno);
+                    panel_1.add(dos);
+                    panel_1.add(tres);
+                    JButton avanzar2= new JButton("Concluir alquiler");
+                    panel_1.add(avanzar2);
+                    panel_1.repaint();
+                    avanzar2.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e){
+                            ButtonModel selectedButtonModel = averias.getSelection();
+                            if (selectedButtonModel != null) {
+                                String opcionElegida = selectedButtonModel.getActionCommand();
+                                int averia= Integer.parseInt(opcionElegida);
+                                double newPago=alquiler_u.calcularPagoFinal(sede_personal,averia);
+                                alquiler_u.setPagoFinal(newPago+pago70);
+                                vehiculo.eliminarReservaActiva(id);
+                                alquiler_u.setActivo(false);
+                                if (newPago>0){
+                                    VentanaMain.Dialog("El vehículo se ha devuelto correctamente y se han debitado COP "+Double.toString(newPago)+" de su tarjeta terminada en "+ Long.toString(cliente_i.getTarjeta().getNumeroTarjeta()% 10000)+".");
+                                    VentanaMain.refresh(panel_1);
+                                    }
+                                    else{
+                                    VentanaMain.Dialog("El vehículo se ha devuelto correctamente y el cliente tiene un saldo a favor de COP "+Double.toString(Math.abs(newPago))+" que se transferirán a su tarjeta terminada en "+ Long.toString(cliente_i.getTarjeta().getNumeroTarjeta()% 10000)+".");
+                                    VentanaMain.refresh(panel_1);
+                                    }
+                                    try {
+                                        Inventario.updateSistema();
+                                    } catch (IOException e1) {
+                                        // TODO Auto-generated catch block
+                                        e1.printStackTrace();
+                                    }
+                            }                            
+                            else{
+                               VentanaMain.errorDialog("Seleccione una opción.");
+                            }
+                        }}); 
                         
-                        int averia= Integer.parseInt(("Porfavor seleccione una opción"));
-                        double newPago=alquiler_u.calcularPagoFinal(sede_personal,averia);
-                        alquiler_u.setPagoFinal(newPago+pago70);
+
 
             }});
         }
         else{
             panel.add(new JLabel("El usuario no tiene alquileres activos"));
+            VentanaMain.refresh(panel_1);
         }
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
         return panel;

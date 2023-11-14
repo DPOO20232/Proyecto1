@@ -7,7 +7,6 @@ import modelo.Cliente;
 import modelo.Inventario;
 import modelo.Sede;
 import modelo.Usuario;
-import modelo.alquiler;
 import modelo.personal;
 
 import java.awt.*;
@@ -281,7 +280,7 @@ public class VentanaMain {
         // Cambia el icono del diálogo
         dialog.setIconImage(icon.getImage());
     
-        JLabel label = new JLabel("No se pudieron guardar los cambios:");
+        JLabel label = new JLabel("Ten en cuenta:");
         JLabel label2 = new JLabel(labelText2);
     
         // Cambia el color del texto a negro, establece el estilo negrita y el tamaño de fuente
@@ -329,10 +328,6 @@ public class VentanaMain {
             public void actionPerformed(ActionEvent e){
                 try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
                 frame.dispose();
-                //TODO quitar
-                for (alquiler alq: alquiler.getListaAlquileres()){
-                    System.out.println(alq.getID());
-                }
                 try {
                     Inventario.updateSistema();
                 } catch (IOException e1) {
