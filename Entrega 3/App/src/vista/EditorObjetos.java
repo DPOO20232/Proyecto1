@@ -10,14 +10,12 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-<<<<<<< HEAD
 import modelo.Conductor;
 import modelo.Inventario;
 import modelo.Licencia;
 import modelo.Sede;
 import modelo.Seguro;
 import modelo.Usuario;
-=======
 import modelo.Cliente;
 import modelo.Conductor;
 import modelo.Inventario;
@@ -27,7 +25,6 @@ import modelo.Sede;
 import modelo.Seguro;
 import modelo.Usuario;
 import modelo.Vehiculo;
->>>>>>> fc434b59c8e064e2d8f77c7ffb3abb2f4bc7aee1
 import modelo.alquiler;
 import modelo.personal;
 
@@ -46,12 +43,9 @@ public class EditorObjetos {
     private int pasoActual = 0;
     private String inputFechaL1;
     private String inputFechaL2;
-<<<<<<< HEAD
-=======
     private Reserva reserva_i;
     private Reserva copiaReserva_i;
     private boolean encontro_carro_i;
->>>>>>> fc434b59c8e064e2d8f77c7ffb3abb2f4bc7aee1
 
     public void editorSede(JPanel mainPanel,Sede sedeEditar) {
         this.mainPanel = mainPanel;
@@ -132,16 +126,11 @@ public class EditorObjetos {
     }
     private void crearPasosConductor(alquiler alquiler_u) {
         crearPasoPregunta("PreguntaConductor", "¿Desea agregar un conductor?", "InputConductor", "Fin");
-<<<<<<< HEAD
         //crearPasoInfoConductor("InputConductor", "Ingrese la información del nuevo conductor","PreguntaConductor",alquiler_u);
-=======
->>>>>>> fc434b59c8e064e2d8f77c7ffb3abb2f4bc7aee1
         crearLicencia(new JPanel(),"InputConductor",alquiler_u,"PreguntaConductor");
         crearPasoFin("Fin");
     }
 
-<<<<<<< HEAD
-=======
 
         private void crearPasosReserva(Reserva reserva) {
         reserva_i=reserva;
@@ -165,7 +154,6 @@ public class EditorObjetos {
         crearPasoFin("Fin");
     }
 
->>>>>>> fc434b59c8e064e2d8f77c7ffb3abb2f4bc7aee1
     private void crearPasoPregunta(String preguntaKey, String pregunta, String siguientePasoKeySi, String siguientePasoKeyNo) {
         JPanel panel = new JPanel();
         JLabel label = new JLabel(pregunta);
@@ -389,15 +377,12 @@ public class EditorObjetos {
                             sede.setHorarioAtencionFinSemana(horario);
                         }
                     }
-<<<<<<< HEAD
-=======
                     else if (O instanceof Reserva){
                         Reserva reserva= (Reserva) O;
                         reserva.setHoraRecoger(Integer.parseInt(inicio));
                         reserva.setHoraEntregar(Integer.parseInt(fin));
                     }
                 avanzarAlSiguientePaso(siguientePasoKey);
->>>>>>> fc434b59c8e064e2d8f77c7ffb3abb2f4bc7aee1
                 }
                 else{
                     VentanaMain.errorDialog("Verifique que la fecha/periodo inicial sea previa a la fecha/periodo final.");
@@ -407,11 +392,8 @@ public class EditorObjetos {
     
         cardPanel.add(panel, pasoKey);
     }
-<<<<<<< HEAD
     /*
-=======
     
->>>>>>> fc434b59c8e064e2d8f77c7ffb3abb2f4bc7aee1
     private void crearPasoFecha(String pasoKey, String nombreCampo, String siguientePasoKey, Object O) {
         JPanel panelC= new JPanel();
         panelC.add(new JLabel(nombreCampo));
@@ -523,11 +505,8 @@ public class EditorObjetos {
         panelC.add(panelFecha2);
         cardPanel.add(panelC, pasoKey);
     }
-<<<<<<< HEAD
     */
-=======
     
->>>>>>> fc434b59c8e064e2d8f77c7ffb3abb2f4bc7aee1
     private void crearPasoDecimales(String pasoKey, String nombreCampo, String siguientePasoKey,Object O) {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Nuevo " + nombreCampo + ":");
@@ -881,10 +860,7 @@ public class EditorObjetos {
         cardPanel.add(panelC, pasoKey);
 
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> fc434b59c8e064e2d8f77c7ffb3abb2f4bc7aee1
 }
 
 
