@@ -171,7 +171,7 @@ public class Consola {
                     System.out.println("2. Actualizar información personal");
                     System.out.println("3. Crear una reserva");
                     System.out.println("4. Modificar datos de mi reserva");
-                    System.out.println("5. Cancelar reserva");
+                    System.out.println("5. Cancelar reserva");//CHECKED
                     System.out.println("6. Cerrar sesión\n");
                     int opcion_cliente = Integer.parseInt(input("Por favor seleccione una opción"));
                     try{

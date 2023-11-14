@@ -280,7 +280,7 @@ public class VentanaMain {
         // Cambia el icono del diálogo
         dialog.setIconImage(icon.getImage());
     
-        JLabel label = new JLabel("No se pudieron guardar los cambios:");
+        JLabel label = new JLabel("Ten en cuenta:");
         JLabel label2 = new JLabel(labelText2);
     
         // Cambia el color del texto a negro, establece el estilo negrita y el tamaño de fuente

@@ -15,6 +15,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class VentanaCliente {
     static JFrame frame;
@@ -43,9 +45,9 @@ public class VentanaCliente {
     static JComboBox<String> comboBoxGeneral7Cate;
     static JComboBox<String> comboBoxGeneral8Cate;
     static JComboBox<String> comboBoxGeneral1Seg;
-    static Cliente cliente;
+    static Cliente cliente_i;
     public VentanaCliente(Cliente cliente_u) {
-        cliente=cliente_u;
+        cliente_i=cliente_u;
         frame = new JFrame("Menu Cliente");
         this.panelSuperior= VentanaMain.setPanelSuperior(frame);
         this.panelInferior= setPanelInferior();
@@ -152,7 +154,7 @@ public class VentanaCliente {
         avanzar.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                cliente.setPassword(password.getText());
+                cliente_i.setPassword(password.getText());
                 VentanaMain.CambioGuardadoDialog();
                 try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
             }
@@ -163,12 +165,12 @@ public class VentanaCliente {
 
      private static JPanel cancelarReserva(){
         JPanel panel = new JPanel();
-
+        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         DefaultComboBoxModel<String> modeloReservas= new DefaultComboBoxModel<>();
         int numReservas=0;
         for(Reserva i: Reserva.getListaReservas()){
             if (alquiler.assignAlquiler(i.getID())==null){
-            if(i.getFechaRecoger()==fechaActual&&i.getCliente().getNumeroCedula()==cliente_i.getNumeroCedula()&& sede_personal.getID()==i.getSedeRecoger().getID()){
+            if(i.getCliente().equals(cliente_i)&& i.getFechaEntregar()>=fechaActual){
             numReservas+=1;
             String idreseva = Integer.toString(i.getID());
             String categoria = i.getCategoria().getnombreCategoria();
@@ -180,40 +182,33 @@ public class VentanaCliente {
         if (numReservas>0){
         JComboBox<String> comboBoxReservas= new JComboBox<>(modeloReservas);
         comboBoxReservas.setSelectedIndex(0);
-
-
-
-
-
-
-
-
-
-
-
-
-        panel.add(Box.createRigidArea(new Dimension(0, 200)));
-        JPanel menu = new JPanel(new GridLayout(0, 3,40,100));
-
-        menu.add(new JLabel("Seleccione la reserva que desea cancelar:"));
-        JButton avanzar= new JButton("Actualizar contraseña");
-        avanzar.setVisible(true);
-        menu.add(avanzar);
-        panel.add(menu);
+        panel.add(Box.createRigidArea(new Dimension(0,100)));
+        panel.add(new JLabel("Elija la reserva que desea cancelar"));
+        panel.add(comboBoxReservas);
+        JButton avanzar= new JButton("Cancelar reserva");
+        panel.add(avanzar);
         avanzar.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                
-                int id= reservaElejida.getID();
+                String opcion= comboBoxReservas.getSelectedItem().toString();
+                String[] partes=opcion.split("/");
+                String[] idreserva= partes[0].split(":");
+                int id= Integer.parseInt(idreserva[1].trim());
+                Reserva reservaElejida= Reserva.assignReserva(id);
                 Reserva.getListaReservas().remove(reservaElejida);
                 Vehiculo vehiculoReservaElejida= reservaElejida.getVehiculoAsignado();
                 vehiculoReservaElejida.eliminarReservaActiva(reservaElejida.getID());
-                VentanaMain.CambioGuardadoDialog();
+                VentanaMain.Dialog("La reserva con IDreserva "+Integer.toString(id)+" ha sido cancelada, pronto se trasferirá de vuelta el pago del 30% (COP "+Double.toString(reservaElejida.getPagoReserva())+").");
                 try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
             }
         });
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
-        return panel;
+    }
+    else{
+        panel.add(new JLabel());
+    }
+    panel.add(Box.createRigidArea(new Dimension(0,100)));
+    return panel;
     }
         
 
