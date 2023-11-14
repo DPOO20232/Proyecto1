@@ -5,7 +5,6 @@ import javax.swing.event.DocumentListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,14 +15,9 @@ import modelo.Licencia;
 import modelo.Sede;
 import modelo.Seguro;
 import modelo.Usuario;
-import modelo.Cliente;
-import modelo.Conductor;
-import modelo.Inventario;
-import modelo.Licencia;
+
 import modelo.Reserva;
-import modelo.Sede;
-import modelo.Seguro;
-import modelo.Usuario;
+
 import modelo.Vehiculo;
 import modelo.alquiler;
 import modelo.personal;
