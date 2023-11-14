@@ -1,9 +1,7 @@
 package vista;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -11,22 +9,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentListener;
 
 import modelo.Categoria;
 import modelo.Inventario;
 import modelo.Sede;
 
-import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.io.IOException;
+
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 public class VentanaReserva extends JFrame {
@@ -61,55 +53,13 @@ public class VentanaReserva extends JFrame {
        
         // Fecha de recogida 
         JPanel panelFechaRec = new JPanel();       
-        panelFechaRec.setLayout(new FlowLayout());
-        DefaultComboBoxModel<String> opcionesAnio = new DefaultComboBoxModel<>(); //Se crean y se agregan las opciones disponibles para el año de recogida
-        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
-        opcionesAnio.addElement(Integer.toString(anioActual));
-        opcionesAnio.addElement(Integer.toString(anioActual+1));
+        panelFechaRec.setLayout(new GridLayout(0,1));
         
-        JComboBox<String> anioBox = new JComboBox<String>(opcionesAnio);
-        anioBox.setSelectedIndex(0);
-        anioBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                
-                String anio = anioBox.getSelectedItem().toString();
-                VentanaMain.refresh(panelFechaRec);
-                panelFechaRec.add(anioBox);
-                anioBox.setEnabled(false);
-
-                DateComboBoxPanel date1 = new DateComboBoxPanel(Integer.parseInt(anio));
-                date1.setDefaulDayComboBox();
-                date1.setDefaultMonthComboBox();
-                panelFechaRec.add(date1);
-
-                JButton updateDatebutton = new JButton("Cambiar Fecha");
-                panelFechaRec.add(updateDatebutton);
-                JButton saveDatebutton = new JButton("Guardar Fecha");
-                panelFechaRec.add(saveDatebutton);
-                saveDatebutton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e){
-                        
-                        VentanaMain.refresh(panelFechaRec);
-                        panelFechaRec.add(anioBox);
-                        panelFechaRec.add(updateDatebutton);
-                       
-                    }
-                });
-                updateDatebutton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e){
-                        
-                        VentanaMain.refresh(panelFechaRec);
-                        panelFechaRec.add(anioBox);
-                        anioBox.setEnabled(true);
-                    }
-                });
-            }
-        });
-        panelFechaRec.add(anioBox); // Año agregado
+    
+        panelFechaRec.add(new JLabel("Ingrese la fecha de recogida del vehículo en formato aaaammdd"));
+        NumericOnlyTextField fecha1= new NumericOnlyTextField(); 
         panel1.add(panelFechaRec);
+        panel1.add(fecha1);
         
         // Hora de recogida
         JPanel panelHoraRec = new JPanel();
@@ -155,58 +105,16 @@ public class VentanaReserva extends JFrame {
         });
         
         // Fecha devolución
-
         JPanel panelFechaDev = new JPanel();       
-        panelFechaRec.setLayout(new FlowLayout());
-        DefaultComboBoxModel<String> opcionesAnio2 = new DefaultComboBoxModel<>(); //Se crean y se agregan las opciones disponibles para el año de recogida
-        
-        opcionesAnio2.addElement(Integer.toString(anioActual));
-        opcionesAnio2.addElement(Integer.toString(anioActual+1));
-        
-        JComboBox<String> anioBox2 = new JComboBox<String>(opcionesAnio);
-        anioBox2.setSelectedIndex(0);
-        anioBox2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                
-                String anio = anioBox2.getSelectedItem().toString();
-                VentanaMain.refresh(panelFechaDev);
-                panelFechaDev.add(anioBox2);
-                anioBox2.setEnabled(false);
-
-                DateComboBoxPanel date1 = new DateComboBoxPanel(Integer.parseInt(anio));
-                date1.setDefaulDayComboBox();
-                date1.setDefaultMonthComboBox();
-                panelFechaRec.add(date1);
-
-                JButton updateDatebutton = new JButton("Cambiar Fecha");
-                panelFechaDev.add(updateDatebutton);
-                JButton saveDatebutton = new JButton("Guardar Fecha");
-                panelFechaDev.add(saveDatebutton);
-                saveDatebutton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e){
-                        VentanaMain.refresh(panelFechaDev);
-                        panelFechaDev.add(anioBox2);
-                        panelFechaDev.add(updateDatebutton);
-                    }
-                });
-                updateDatebutton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e){
-                        
-                        VentanaMain.refresh(panelFechaDev);
-                        panelFechaDev.add(anioBox2);
-                        anioBox2.setEnabled(true);
-                    }
-                });
-            }
-        });
-        panelFechaDev.add(anioBox2); // Año agregado
+        panelFechaDev.setLayout(new GridLayout(0,1));
+        panelFechaDev.add(new JLabel("Ingrese la fecha de devolución del vehículo en formato aaaammdd"));
+        NumericOnlyTextField fecha2= new NumericOnlyTextField(); 
         panel2.add(panelFechaDev);
+        panel2.add(fecha2);
 
         //Hora de devolución
         JPanel panelHoraDev = new JPanel();
+
 
         String[] opcionesMinutosDev = {"00"};
         DefaultComboBoxModel<String> opcionesHoraDev = new DefaultComboBoxModel<>();
@@ -239,7 +147,7 @@ public class VentanaReserva extends JFrame {
         panel3.setPreferredSize(new Dimension(200, 400)); // Ajustar las dimensiones 
         panel3.setLayout(new BorderLayout(20, 0));
         panel3.add(new JLabel("Seleccione la categoría"), BorderLayout.NORTH);// El JLabel se coloca en la parte superior del panel
-        
+        JButton finalizar= new JButton("Registrar reserva");
         JPanel panelCategorias = new JPanel();
         JComboBox<String> categBox = new JComboBox<>(); // El JComboBox se coloca en el centro del panel
         for (Categoria i : Inventario.getListaCategorias()) {
@@ -247,6 +155,41 @@ public class VentanaReserva extends JFrame {
         }
         categBox.setSelectedIndex(0);
         panelCategorias.add(categBox, BorderLayout.CENTER);
+        panelCategorias.add(finalizar,BorderLayout.SOUTH);
+        finalizar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                try {
+                    Categoria categoria= Inventario.assignCategoria(Integer.parseInt(categBox.getSelectedItem().toString().split(":")[0]));
+                    int horaRec=Integer.parseInt(horaRecBox.getSelectedItem().toString()+minRecBox.getSelectedItem().toString());
+                    int horaDev=Integer.parseInt(horaDevBox.getSelectedItem().toString()+minDevBox.getSelectedItem().toString());
+                    //System.out.println(fechaRecSelected);
+                    System.out.println(horaRec);
+                    //System.out.println(fechaDevSelected);
+                    System.out.println(horaDev);
+                    //System.out.println(eleccionSedeRec.getID());
+                    //System.out.println(eleccionSedeDev.getID());
+                    System.out.println(categoria.getID());
+                    //Reserva reserva_u= new Reserva(Integer.parseInt(fechaRecSelected),Integer.parseInt(fechaDevSelected) ,horaRec ,horaDev ,reservaEnSede , eleccionSedeRec, eleccionSedeDev,categoria , cliente);
+                    //reserva_u.setVehiculoAsignado();
+                    //if (reserva_u.getVehiculoAsignado()!=null){
+                    //    reserva_u.setPagoReserva(Integer.parseInt(fechaRecSelected),Integer.parseInt(fechaDevSelected) ,horaRec ,horaDev);
+                    //    Reserva.addReserva(reserva_u);
+                    //    VentanaMain.Dialog("Se debitaron COP "+ Double.toString(reserva_u.getPagoReserva())+".");
+                    //    VentanaMain.Dialog("Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_u.getID()));
+                    //    try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
+
+                    //}
+                    //else{
+
+                    //}
+
+
+                } catch (Exception e2) {
+
+                }
+            }
+        });
         
         panel3.add(panelCategorias);
         tabbedPane.add("Información de recogida", panel1);
@@ -259,7 +202,5 @@ public class VentanaReserva extends JFrame {
         setVisible(true);
         
     }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new VentanaReserva());
-    }
+
 }
