@@ -1,4 +1,9 @@
 package vista;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.TextStyle;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.BorderFactory;
@@ -21,8 +26,12 @@ import modelo.Sede;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 import java.io.IOException;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -69,6 +78,13 @@ public class metodosReserva extends JFrame {
         
         JComboBox<String> anioBox = new JComboBox<String>(opcionesAnio);
         anioBox.setSelectedIndex(0);
+
+        String anio = anioBox.getSelectedItem().toString();
+        DateComboBoxPanel date1 = new DateComboBoxPanel(Integer.parseInt(anio));
+        date1.setDefaulDayComboBox();
+        date1.setDefaultMonthComboBox();
+        panelFechaRec.add(date1);
+        
         anioBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -111,24 +127,9 @@ public class metodosReserva extends JFrame {
         panelFechaRec.add(anioBox); // Año agregado
         panel1.add(panelFechaRec);
         
-        // Hora de recogida
-        JPanel panelHoraRec = new JPanel();
-
-        String[] opcionesMinutosRec = {"00"};
-        DefaultComboBoxModel<String> opcionesHoraRec = new DefaultComboBoxModel<>();
-        
-        JComboBox<String> horaRecBox = new JComboBox<>(opcionesHoraRec);
-        JComboBox<String> minRecBox = new JComboBox<>(opcionesMinutosRec);
-                
-        horaRecBox.setSelectedIndex(0);
-        minRecBox.setSelectedIndex(0);
-
-        panelHoraRec.add(horaRecBox);
-        panelHoraRec.add(minRecBox);
-        panel1.add(panelHoraRec);
-
         // Sede de recogida
         JPanel panelSedeRec = new JPanel();
+        
         JComboBox<String> sedesRec = new JComboBox<>(); // El JComboBox se coloca en el centro del panel
         for (Sede i : Inventario.getListaSedes()) {
             sedesRec.addItem(Integer.toString(i.getID()) + ": " + i.getNombre());
@@ -136,6 +137,51 @@ public class metodosReserva extends JFrame {
         sedesRec.setSelectedIndex(0);
         panelSedeRec.add(sedesRec, BorderLayout.CENTER);
         panel1.add(panelSedeRec);
+
+        int idSede = Integer.parseInt(sedesRec.getSelectedItem().toString().split(":")[0]);
+        Sede eleccionSedeRec = Inventario.assignSede(idSede);
+        
+        // Hora de recogida
+        JPanel panelHoraRec = new JPanel();
+            //En este pedazo de código se saca el día de la semana...
+        String fechaRecSelected = anioBox.getSelectedItem().toString() + date1.getText();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate fecha = LocalDate.parse(fechaRecSelected, formatter);
+        DayOfWeek diaSemana = fecha.getDayOfWeek(); // Obtiene el día de la semana (enum DayOfWeek)
+        String nombreDia = diaSemana.getDisplayName(TextStyle.FULL, Locale.getDefault()); // Convierte el enum a una cadena (Lunes, Martes, ..., Domingo)
+            // Hasta aquí.
+        
+            //Aquí se define el horario de atención correcto
+        
+        List<Integer> horarioAtencionRec = new ArrayList<>();
+        
+        if (!nombreDia.toLowerCase().equals("domingo") && !nombreDia.toLowerCase().equals("sabado") && !nombreDia.toLowerCase().equals("sábado")){
+            horarioAtencionRec = eleccionSedeRec.getHorarioAtencionEnSemana();}
+        else {
+            horarioAtencionRec = eleccionSedeRec.getHorarioAtencionFinSemana();}
+
+        System.out.println(horarioAtencionRec);
+
+        DefaultComboBoxModel<String> opcionesHoraRec = new DefaultComboBoxModel<String>();
+        int horaInicio = (int) Math.floor(horarioAtencionRec.get(0)/100);
+        int horaCierre = (int) Math.floor(horarioAtencionRec.get(1)/100);
+        for(int i = horaInicio; i == horaCierre; i++){
+            opcionesHoraRec.addElement(Integer.toString(i));};
+
+        DefaultComboBoxModel<String> opcionesMinutosRec = new DefaultComboBoxModel<String>();
+        opcionesMinutosRec.addElement("00");
+        opcionesMinutosRec.addElement("30");
+
+        JComboBox<String> horaRecBox = new JComboBox<>(opcionesHoraRec);
+        JComboBox<String> minRecBox = new JComboBox<>(opcionesMinutosRec);
+    
+        horaRecBox.setSelectedIndex(0);
+        minRecBox.setSelectedIndex(0);
+
+        panelHoraRec.add(horaRecBox);
+        panelHoraRec.add(minRecBox);
+        panel1.add(panelHoraRec);
+
         
         //Continuar
         panel1.add(botonContinuar);
@@ -174,10 +220,10 @@ public class metodosReserva extends JFrame {
                 panelFechaDev.add(anioBox2);
                 anioBox2.setEnabled(false);
 
-                DateComboBoxPanel date1 = new DateComboBoxPanel(Integer.parseInt(anio));
-                date1.setDefaulDayComboBox();
-                date1.setDefaultMonthComboBox();
-                panelFechaRec.add(date1);
+                DateComboBoxPanel date2 = new DateComboBoxPanel(Integer.parseInt(anio));
+                date2.setDefaulDayComboBox();
+                date2.setDefaultMonthComboBox();
+                panelFechaRec.add(date2);
 
                 JButton updateDatebutton = new JButton("Cambiar Fecha");
                 panelFechaDev.add(updateDatebutton);
