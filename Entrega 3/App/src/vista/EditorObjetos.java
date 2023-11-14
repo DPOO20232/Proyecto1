@@ -104,17 +104,6 @@ public class EditorObjetos {
         crearPasoFin("Fin");
     }
 
-     private void crearPasosReserva(Reserva reserva) {
-        crearPasoPregunta("PreguntaSede", "¿Desea modificar la sede de entrega y/o devolucion?", "InputSede", "PreguntaFechas");
-        crearPasoInput("InputSede", "Sede", "PreguntaFechas",reserva);
-        crearPasoPregunta("PreguntaFechas", "¿Desea modificar las fechas de entrega y/o devolución?", "InputFechas", "PreguntaHora1");
-        crearPasoInput("InputUbicacion", "Ubicación", "PreguntaHora1",reserva);
-        crearPasoPregunta("PreguntaHora1", "¿Desea modificar el horario entre semana?", "InputHora1", "PreguntaHora2");
-        crearPasoHorario("InputHora1", "Horario entre semana(hhmm)", "PreguntaHora2",reserva);
-        crearPasoPregunta("PreguntaHora2", "¿Desea modificar el horario para fin de semana?", "InputHora2", "Fin");
-        crearPasoHorario("InputHora2", "Horario para fin de semana (hhmm)", "Fin",reserva);
-        crearPasoFin("Fin");
-    }
     private void crearPasosSeguro(Seguro seguro) {
         crearPasoPregunta("PreguntaDescripcion", "¿Desea modificar la descripción del seguro?", "InputDescripcion", "PreguntaPctg");
         crearPasoInput("InputDescripcion", "Descripción", "PreguntaPctg",seguro);
@@ -454,6 +443,7 @@ public class EditorObjetos {
         });
 
         JPanel panelFecha2= new JPanel();
+        panelC.add(panelFecha2);
         panelFecha2.setLayout(new GridLayout(1,0));
         DefaultComboBoxModel<String> opcionesAnio2 = new DefaultComboBoxModel<>();
 
