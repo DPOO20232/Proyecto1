@@ -127,7 +127,6 @@ public class EditorObjetos {
     }
     private void crearPasosConductor(alquiler alquiler_u) {
         crearPasoPregunta("PreguntaConductor", "¿Desea agregar un conductor?", "InputConductor", "Fin");
-        //crearPasoInfoConductor("InputConductor", "Ingrese la información del nuevo conductor","PreguntaConductor",alquiler_u);
         crearLicencia(new JPanel(),"InputConductor",alquiler_u,"PreguntaConductor");
         crearPasoFin("Fin");
     }
