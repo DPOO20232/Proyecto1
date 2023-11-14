@@ -226,8 +226,8 @@ public class Consola {
 		}
 		return null;
     }
-    public static void main(String[] args) throws IOException{	
-    Inventario.loadSistema();
-    MenuInicial();
-	}
+    //public static void main(String[] args) throws IOException{	
+    //Inventario.loadSistema();
+    //MenuInicial();
+	//}
 }

@@ -306,7 +306,7 @@ public class VentanaEmpleadoTecnico {
         return opcionesHoras;
     }
 
-    private static boolean validarHoras(String horaInicio, String minutosInicio, String horaFin, String minutosFin) {
+    static boolean validarHoras(String horaInicio, String minutosInicio, String horaFin, String minutosFin) {
         if (minutosInicio.length() == 1) {
             minutosInicio = "0" + minutosInicio;
         }
