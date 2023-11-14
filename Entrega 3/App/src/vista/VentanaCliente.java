@@ -92,7 +92,7 @@ public class VentanaCliente {
         panel3.add(crearReserva(false));
         
         JTabbedPane panel4= new JTabbedPane();
-        panel4.add(modificarReserva());
+        panel4.add(modificarReserva(cliente_i));
 
         JTabbedPane panel5= new JTabbedPane();
         panel5.add(cancelarReserva());
@@ -125,7 +125,7 @@ public class VentanaCliente {
                 }
                 else if (selectedIndex==4){
                     VentanaMain.refresh(panel4);
-                    panel4.add(modificarReserva());
+                    panel4.add(modificarReserva(cliente_i));
                 }
                 else if (selectedIndex==5){
                     VentanaMain.refresh(panel5);
@@ -135,7 +135,7 @@ public class VentanaCliente {
         }});
         return panelInferior;
     }
-    private static JPanel modificarReserva(){
+    public static JPanel modificarReserva(Cliente cliente_i){
         JPanel panel = new JPanel();
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         DefaultComboBoxModel<String> modeloReservas= new DefaultComboBoxModel<>();
