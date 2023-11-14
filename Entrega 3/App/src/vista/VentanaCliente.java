@@ -8,8 +8,6 @@ import javax.swing.event.DocumentListener;
 import modelo.Cliente;
 import modelo.Inventario;
 import modelo.Licencia;
-import modelo.Sede;
-import modelo.Seguro;
 import modelo.Tarjeta;
 import modelo.Usuario;
 import modelo.Reserva;
@@ -91,7 +89,7 @@ public class VentanaCliente {
         JTabbedPane panel2= new JTabbedPane();
         panel2.add(cambiar_datos());
         JTabbedPane panel3= new JTabbedPane();
-        panel3.add(crearReserva());
+        panel3.add(crearReserva(false));
         
         JTabbedPane panel4= new JTabbedPane();
 
@@ -122,7 +120,7 @@ public class VentanaCliente {
                 }
                 else if (selectedIndex==3){
                     VentanaMain.refresh(panel3);
-                    panel3.add(crearReserva());
+                    panel3.add(crearReserva(false));
                 }
                 else if (selectedIndex==4){
                     VentanaMain.refresh(panel4);
@@ -173,10 +171,10 @@ public class VentanaCliente {
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
         return panel;
     }
-    private static JPanel crearReserva(){
+    public static JPanel crearReserva(boolean reservaEnSede){
         JPanel panel = new JPanel();
         metodosReserva metodos= new metodosReserva();
-        panel.add(metodos.menuReserva(cliente_i,  false));
+        panel.add(metodos.menuReserva(cliente_i,  reservaEnSede));
         return panel;
     }
     private static JTabbedPane cambiar_datos(){
