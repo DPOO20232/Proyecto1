@@ -68,6 +68,15 @@ public class EditorObjetos {
         mainPanel.add(cardPanel);
         crearPasosPersonal(personal, panel);
     }
+    public void editorReserva(JPanel mainPanel,Reserva reserva, JPanel panel) {
+        this.mainPanel = mainPanel;
+        this.cardLayout = new CardLayout();
+        this.cardPanel = new JPanel(cardLayout);
+        String [] pasosSeguro ={"PreguntaSede", "InputSede", "PreguntaFechas", "InputFechas","Fin"};
+        this.pasos=pasosSeguro ;
+        mainPanel.add(cardPanel);
+        crearPasosReserva(reserva);
+    }
     public void agregarConductores(JPanel mainPanel,alquiler alquiler_u) {
         this.mainPanel = mainPanel;
         this.cardLayout = new CardLayout();
@@ -95,7 +104,17 @@ public class EditorObjetos {
         crearPasoFin("Fin");
     }
 
-
+     private void crearPasosReserva(Reserva reserva) {
+        crearPasoPregunta("PreguntaSede", "¿Desea modificar la sede de entrega y/o devolucion?", "InputSede", "PreguntaFechas");
+        crearPasoInput("InputSede", "Sede", "PreguntaFechas",reserva);
+        crearPasoPregunta("PreguntaFechas", "¿Desea modificar las fechas de entrega y/o devolución?", "InputFechas", "PreguntaHora1");
+        crearPasoInput("InputUbicacion", "Ubicación", "PreguntaHora1",reserva);
+        crearPasoPregunta("PreguntaHora1", "¿Desea modificar el horario entre semana?", "InputHora1", "PreguntaHora2");
+        crearPasoHorario("InputHora1", "Horario entre semana(hhmm)", "PreguntaHora2",reserva);
+        crearPasoPregunta("PreguntaHora2", "¿Desea modificar el horario para fin de semana?", "InputHora2", "Fin");
+        crearPasoHorario("InputHora2", "Horario para fin de semana (hhmm)", "Fin",reserva);
+        crearPasoFin("Fin");
+    }
     private void crearPasosSeguro(Seguro seguro) {
         crearPasoPregunta("PreguntaDescripcion", "¿Desea modificar la descripción del seguro?", "InputDescripcion", "PreguntaPctg");
         crearPasoInput("InputDescripcion", "Descripción", "PreguntaPctg",seguro);
