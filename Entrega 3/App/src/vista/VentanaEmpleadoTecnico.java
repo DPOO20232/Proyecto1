@@ -40,6 +40,7 @@ public class VentanaEmpleadoTecnico {
     protected static int inputHoraInicio;
     protected static String accionSeleccionada;
     protected static Vehiculo vehiculo;
+    JPanel panelSuperior;
     static JFrame frame = new JFrame("Actualizar Estado de Vehículo");
     public VentanaEmpleadoTecnico() {
         SwingUtilities.invokeLater(() -> {
@@ -49,6 +50,9 @@ public class VentanaEmpleadoTecnico {
 
             // Crear el panel de la pestaña
             JPanel pestaña2 = new JPanel(new FlowLayout());
+            this.panelSuperior= VentanaMain.setPanelSuperior(frame);
+
+            pestaña2.add(panelSuperior);
 
             // Crear el label para ingresar la placa del vehículo
             JLabel labelPlaca = new JLabel("Ingrese la placa del vehículo:");

@@ -9,6 +9,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import modelo.Categoria;
 import modelo.Conductor;
 import modelo.Inventario;
 import modelo.Licencia;
@@ -126,7 +127,7 @@ public class EditorObjetos {
     }
 
 
-        private void crearPasosReserva(Reserva reserva) {
+    private void crearPasosReserva(Reserva reserva) {
         reserva_i=reserva;
         Vehiculo vehiculoActual= reserva.getVehiculoAsignado();
         reserva.setVehiculoAsignado(null);
@@ -137,12 +138,13 @@ public class EditorObjetos {
         encontro_carro_i=false;
 
         crearPasoPregunta("PreguntaConductor", "¿Desea modificar las sedes de recogida y devolución del vehículo?", "InputSedes", "InputFechas");
-        //crearPasoSedes(reserva);
+        crearPasoSede("InputSedes", "sedes","PreguntaFechas",reserva);
         //crearPasoFecha(reserva);
         crearPasoHorario("InputHoras", "Horarios para la reserva", "PreguntaCategoria",reserva);
         //PREGUNTARME SI HAY VEHÍCULOS DISPONIBLES
 
-        crearPasoPregunta("PreguntaCategoria", "¿Desea cambiar de categoría?", "InputSedes", "InputFechas");
+        crearPasoPregunta("PreguntaCategoria", "¿Desea cambiar de categoría?", "InputCategoria", "InputFechas");
+        crearPasoCategoria("InputCategoria", "categorias", "pregunta Fecha", reserva);
         //crearPasoVehiculo(reserva);
         crearPasoPregunta("PreguntaFecha", "¿Desea modificar las sedes de recogida y devolución del vehículo?", "InputConductor", "PreguntaFecha");
         crearPasoFin("Fin");
@@ -176,6 +178,71 @@ public class EditorObjetos {
         });
 
         cardPanel.add(panel, preguntaKey);
+    }
+    private void crearPasoSede(String preguntaKey, String nombreCampo, String siguientePasoKey, Reserva reserva){
+        JPanel panel = new JPanel();
+        JButton siButton = new JButton("Avanzar");
+        panel.setLayout(new FlowLayout());
+        panel.add(siButton);
+        panel.add(new JLabel("Sede entrega:"));
+        JComboBox <String>sedeEntrega= new JComboBox<String>();
+        sedeEntrega = new JComboBox<>();
+        for (Sede i: Inventario.getListaSedes()){
+            sedeEntrega.addItem(Integer.toString(i.getID())+": "+i.getNombre());
+                    }
+        sedeEntrega.setSelectedIndex(0);
+        sedeEntrega.setPreferredSize(new Dimension(200, 30));
+        panel.add(sedeEntrega);
+        String sedeEntregaS= sedeEntrega.getSelectedItem().toString();
+       
+        panel.add(new JLabel("Sede devolucion:"));
+        JComboBox <String>sedeDevolucion= new JComboBox<String>();
+        sedeDevolucion= new JComboBox<>();
+            for (Sede i: Inventario.getListaSedes()){
+                sedeDevolucion.addItem(Integer.toString(i.getID())+": "+i.getNombre());
+                }
+        sedeDevolucion.setSelectedIndex(0);
+        sedeDevolucion.setPreferredSize(new Dimension(200, 30));
+        panel.add(sedeDevolucion);
+        String sedeDevolucionS = sedeDevolucion.getSelectedItem().toString();
+               
+        siButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Si el usuario selecciona "Sí", avanza al siguiente paso "si"
+                Sede nuevaSedeEntrega=Inventario.assignSede(Integer.parseInt(sedeEntregaS));
+                reserva.setSedeRecoger(nuevaSedeEntrega);
+
+                Sede nuevaSedeDevolucion=Inventario.assignSede(Integer.parseInt(sedeDevolucionS));
+                reserva.setSedeEntregar(nuevaSedeDevolucion);
+                avanzarAlSiguientePaso(siguientePasoKey);
+            }
+        });
+    }
+    private void crearPasoCategoria(String pasoKey, String nombreCampo, String siguientePasoKey, Reserva reserva){
+        JPanel panel = new JPanel();
+        JButton siButton = new JButton("Avanzar");
+        panel.setLayout(new FlowLayout());
+        panel.add(siButton);
+   
+        JComboBox<String> categBox = new JComboBox<>(); // El JComboBox se coloca en el centro del panel
+        for (Categoria i : Inventario.getListaCategorias()) {
+            categBox.addItem(Integer.toString(i.getID()) + ": " + i.getnombreCategoria());
+        }
+        Categoria categoria = Inventario.assignCategoria(Integer.parseInt(categBox.getSelectedItem().toString().split(":")[0]));
+        siButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            if (categoria.getID()!=reserva.getCategoria().getID()){
+                reserva.setCategoria(categoria);
+                avanzarAlSiguientePaso(siguientePasoKey);
+            }
+            else{
+                VentanaMain.errorDialog("La nueva categoria debe ser distinta");
+            }
+            }
+        });
+        
     }
 
     private void crearPasoInput(String pasoKey, String nombreCampo, String siguientePasoKey, Object O) {
