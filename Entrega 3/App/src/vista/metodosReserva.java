@@ -20,7 +20,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentListener;
 
 import modelo.Categoria;
+import modelo.Cliente;
 import modelo.Inventario;
+import modelo.Reserva;
 import modelo.Sede;
 
 import javax.swing.event.DocumentEvent;
@@ -43,7 +45,7 @@ public class metodosReserva extends JFrame {
     JPanel panelSuperior;
     private JButton botonContinuar;
     
-    public JTabbedPane menuReserva() {
+    public JTabbedPane menuReserva(Cliente cliente, boolean reservaEnSede) {
 
         //super("Reserva de Vehículo");
         tabbedPane = new JTabbedPane(); //Creación de la ventana
@@ -57,12 +59,7 @@ public class metodosReserva extends JFrame {
         
         
         botonContinuar = new JButton("Continuar");
-        botonContinuar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tabbedPane.setSelectedIndex(1);
-            }
-        });
+
         
         panel1.add(nombreEmpresa);
         panel1.add(textoBienvenida);
@@ -83,7 +80,6 @@ public class metodosReserva extends JFrame {
         DateComboBoxPanel date1 = new DateComboBoxPanel(Integer.parseInt(anio));
         date1.setDefaulDayComboBox();
         date1.setDefaultMonthComboBox();
-        panelFechaRec.add(date1);
         
         anioBox.addActionListener(new ActionListener() {
             @Override
@@ -136,7 +132,6 @@ public class metodosReserva extends JFrame {
         panelSedeRec.add(sedesRec, BorderLayout.CENTER);
         panel1.add(new JLabel("Sede de recogida"));
         panel1.add(panelSedeRec);
-
         int idSede = Integer.parseInt(sedesRec.getSelectedItem().toString().split(":")[0]);
         Sede eleccionSedeRec = Inventario.assignSede(idSede);
         
@@ -165,7 +160,6 @@ public class metodosReserva extends JFrame {
 
         DefaultComboBoxModel<String> opcionesMinutosRec = new DefaultComboBoxModel<String>();
         opcionesMinutosRec.addElement("00");
-        opcionesMinutosRec.addElement("30");
 
         JComboBox<String> horaRecBox = new JComboBox<>(opcionesHoraRec);
         JComboBox<String> minRecBox = new JComboBox<>(opcionesMinutosRec);
@@ -178,6 +172,19 @@ public class metodosReserva extends JFrame {
         panel1.add(new JLabel("Hora de recogida"));
         panel1.add(panelHoraRec);
 
+        botonContinuar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+                System.out.println(fechaRecSelected);
+                if (!fechaRecSelected.equals("")){
+                tabbedPane.setSelectedIndex(1);
+                }
+                else{
+                    VentanaMain.errorDialog("Ingrese una fecha");
+                }
+            }
+        });
+
         
         //Continuar
         panel1.add(botonContinuar);
@@ -187,13 +194,8 @@ public class metodosReserva extends JFrame {
         
         JPanel panel2 = new JPanel(new GridLayout(0,2));
         
-        botonContinuar = new JButton("Continuar");
-        botonContinuar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tabbedPane.setSelectedIndex(1);
-            }
-        });
+        JButton botonContinuar2 = new JButton("Continuar");
+
         
         // Fecha devolución
 
@@ -203,6 +205,9 @@ public class metodosReserva extends JFrame {
         
         opcionesAnio2.addElement(Integer.toString(anioActual));
         opcionesAnio2.addElement(Integer.toString(anioActual+1));
+        DateComboBoxPanel date2 = new DateComboBoxPanel(Integer.parseInt(anio));
+        date2.setDefaulDayComboBox();
+        date2.setDefaultMonthComboBox();
         
         JComboBox<String> anioBox2 = new JComboBox<String>(opcionesAnio);
         anioBox2.setSelectedIndex(0);
@@ -218,7 +223,7 @@ public class metodosReserva extends JFrame {
                 DateComboBoxPanel date2 = new DateComboBoxPanel(Integer.parseInt(anio));
                 date2.setDefaulDayComboBox();
                 date2.setDefaultMonthComboBox();
-                panelFechaRec.add(date2);
+                panelFechaDev.add(date2);
 
                 JButton updateDatebutton = new JButton("Cambiar Fecha");
                 panelFechaDev.add(updateDatebutton);
@@ -265,7 +270,7 @@ public class metodosReserva extends JFrame {
         // Hora de devolución
         JPanel panelHoraDev = new JPanel();
             //En este pedazo de código se saca el día de la semana...
-        String fechaDevSelected = anioBox.getSelectedItem().toString() + date1.getText();
+        String fechaDevSelected = anioBox2.getSelectedItem().toString() + date2.getText();
         DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate fecha2 = LocalDate.parse(fechaDevSelected, formater);
         DayOfWeek diaSemana2 = fecha2.getDayOfWeek(); // Obtiene el día de la semana (enum DayOfWeek)
@@ -287,7 +292,6 @@ public class metodosReserva extends JFrame {
 
         DefaultComboBoxModel<String> opcionesMinutosDev = new DefaultComboBoxModel<String>();
         opcionesMinutosDev.addElement("00");
-        opcionesMinutosDev.addElement("30");
 
         JComboBox<String> horaDevBox = new JComboBox<>(opcionesHoraDev);
         JComboBox<String> minDevBox = new JComboBox<>(opcionesMinutosDev);
@@ -299,9 +303,24 @@ public class metodosReserva extends JFrame {
         panelHoraDev.add(minDevBox);
         panel2.add(new JLabel("Hora de devolución"));
         panel2.add(panelHoraDev);
+
+        botonContinuar2.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+                System.out.println(fechaDevSelected);
+                System.out.println();
+                if (!fechaDevSelected.equals("")&&Integer.parseInt(fechaDevSelected)>Integer.parseInt(fechaRecSelected)){
+                tabbedPane.setSelectedIndex(2);
+                }
+                else{
+                    VentanaMain.errorDialog("Ingrese una fecha válida.");
+                }
+            }
+        });
         
         //Continuar
-        panel2.add(botonContinuar);
+        JButton botonContinuar3 = new JButton("Continuar");
+        panel2.add(botonContinuar3);
         
         // ----------
         // Pestaña 3: Seleccionar categoría -----------------------------------------------------------------------------------------------------------------------------------------
@@ -309,16 +328,29 @@ public class metodosReserva extends JFrame {
         panel3.setPreferredSize(new Dimension(200, 400)); // Ajustar las dimensiones 
         panel3.setLayout(new BorderLayout(20, 0));
         panel3.add(new JLabel("Seleccione la categoría"), BorderLayout.NORTH);// El JLabel se coloca en la parte superior del panel
-        
+        JButton finalizar= new JButton("Registrar reserva");
         JPanel panelCategorias = new JPanel();
         JComboBox<String> categBox = new JComboBox<>(); // El JComboBox se coloca en el centro del panel
         for (Categoria i : Inventario.getListaCategorias()) {
-            categBox.addItem(Integer.toString(i.getID()) + ": " + i);
+            categBox.addItem(Integer.toString(i.getID()) + ": " + i.getnombreCategoria());
         }
         categBox.setSelectedIndex(0);
         panelCategorias.add(categBox, BorderLayout.CENTER);
-        
         panel3.add(panelCategorias);
+        finalizar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                try {
+                    Categoria categoria= Inventario.assignCategoria(Integer.parseInt(categBox.getSelectedItem().toString().split(":")[0]));
+                    new Reserva(horaCierre, idSede2, horaInicio2, horaCierre2, rootPaneCheckingEnabled, eleccionSedeRec, eleccionSedeDev, null, null);
+                    Reserva newReserva= new Reserva(Integer.parseInt(fechaRecSelected),Integer.parseInt(fechaDevSelected) , , ,reservaEnSede , eleccionSedeRec, eleccionSedeDev,categoria , cliente);
+                    
+                } catch (Exception e2) {
+
+                }
+            }
+        });
+        panel3.add(finalizar);
         tabbedPane.add("Información de recogida", panel1);
         tabbedPane.add("Información de devolucion", panel2);
         tabbedPane.add("Selección de categoría", panel3);
