@@ -4,6 +4,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 public class EditorObjetos {
     private  JPanel mainPanel;
@@ -41,6 +43,10 @@ public class EditorObjetos {
     private Reserva reserva_i;
     private Reserva copiaReserva_i;
     private boolean encontro_carro_i;
+    protected static int inputFechaFin;
+    protected static int inputFechaInicio;
+    protected static int inputHoraFin;
+    protected static int inputHoraInicio;
 
     public void editorSede(JPanel mainPanel,Sede sedeEditar) {
         this.mainPanel = mainPanel;
@@ -181,6 +187,8 @@ public class EditorObjetos {
     }
     private void crearPasoSede(String preguntaKey, String nombreCampo, String siguientePasoKey, Reserva reserva){
         JPanel panel = new JPanel();
+        JLabel label = new JLabel("Nuevo " + nombreCampo + ":");
+        panel.add(label);
         JButton siButton = new JButton("Avanzar");
         panel.setLayout(new FlowLayout());
         panel.add(siButton);
@@ -221,6 +229,8 @@ public class EditorObjetos {
     }
     private void crearPasoCategoria(String pasoKey, String nombreCampo, String siguientePasoKey, Reserva reserva){
         JPanel panel = new JPanel();
+        JLabel label = new JLabel("Nuevo " + nombreCampo + ":");
+        panel.add(label);
         JButton siButton = new JButton("Avanzar");
         panel.setLayout(new FlowLayout());
         panel.add(siButton);
@@ -244,7 +254,142 @@ public class EditorObjetos {
         });
         
     }
+    private void crearPasoFecha(String pasoKey, String nombreCampo, String siguientePasoKey, Reserva reserva){
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Nuevo " + nombreCampo + ":");
+        panel.add(label);
+        JSpinner fechaInicioSpinner = new JSpinner(new SpinnerDateModel());
+        JSpinner fechaFinSpinner = new JSpinner(new SpinnerDateModel());
 
+        // Establecer el formato de fecha para los Spinners
+        JSpinner.DateEditor dateEditorInicio = new JSpinner.DateEditor(fechaInicioSpinner, "dd/MM/yyyy");
+        JSpinner.DateEditor dateEditorFin = new JSpinner.DateEditor(fechaFinSpinner, "dd/MM/yyyy");
+        fechaInicioSpinner.setEditor(dateEditorInicio);
+        fechaFinSpinner.setEditor(dateEditorFin);
+
+        // Crear un panel para mostrar los Spinners
+        JPanel panelFechas = new JPanel(new GridLayout(3, 2));
+        panelFechas.add(new JLabel("Fecha de Inicio:"));
+        panelFechas.add(fechaInicioSpinner);
+        panelFechas.add(new JLabel("Fecha de Fin:"));
+        panelFechas.add(fechaFinSpinner);
+
+        // Crear el botón para continuar
+        JButton continuarButton = new JButton("Avanzar");
+        panelFechas.add(continuarButton);
+        continuarButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date fechaInicio = (Date) fechaInicioSpinner.getValue();
+                Date fechaFin = (Date) fechaFinSpinner.getValue();
+
+                // Validar las fechas ingresadas
+                int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+                SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
+                inputFechaInicio = Integer.parseInt(formato.format(fechaInicio));
+                inputFechaFin = Integer.parseInt(formato.format(fechaFin));
+                 if (inputFechaInicio<inputFechaFin&&inputFechaInicio>=fechaActual){
+                        // Actualizar la información en el panel pestaña2
+                        reserva.setFechaRecoger(inputFechaInicio);
+                        reserva.setFechaEntregar(inputFechaFin);
+                    }   
+                
+                else {
+                    JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser anterior a la fecha de fin y mayor o igual a la fecha actual.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
+        });
+    
+        
+
+    }
+    private static String[] obtenerOpcionesHoras() {
+        String[] opcionesHoras = new String[24];
+        for (int i = 0; i < 24; i++) {
+            opcionesHoras[i] = String.format("%02d", i);
+        }
+        return opcionesHoras;
+    }
+    private void crearPasoHora(String pasoKey, String nombreCampo, String siguientePasoKey, Reserva reserva){
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Nuevo " + nombreCampo + ":");
+        panel.add(label);
+        JComboBox<String> horaInicioComboBox = new JComboBox<>(obtenerOpcionesHoras());
+        JComboBox<String> horaFinComboBox = new JComboBox<>(obtenerOpcionesHoras());
+
+        // Crear Spinners para los minutos de inicio y fin
+        DefaultComboBoxModel<String> opcionesmin1 = new DefaultComboBoxModel<>();
+        DefaultComboBoxModel<String> opcionesmin2 = new DefaultComboBoxModel<>();
+
+        for (int i = 0; i <= 59; i++) {
+            String s="";
+            if (i<10){
+                s=s+"0";
+            }
+            opcionesmin1.addElement(s+Integer.toString(i));
+            opcionesmin2.addElement(s+Integer.toString(i));
+        }
+        JComboBox<String> minComboBox1 = new JComboBox<>(opcionesmin1);
+        JComboBox<String> minComboBox2 = new JComboBox<>(opcionesmin2);
+
+        // Crear un panel para mostrar los componentes
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(5, 5, 5, 5);  // Espaciado entre componentes
+
+        panel.add(new JLabel("Hora de Inicio:"), gbc);
+        gbc.gridx = 1;
+        panel.add(horaInicioComboBox, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(new JLabel("Minutos de Inicio:"), gbc);
+        gbc.gridx = 1;
+        panel.add(minComboBox1, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(new JLabel("Hora de Fin:"), gbc);
+        gbc.gridx = 1;
+        panel.add(horaFinComboBox, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(new JLabel("Minutos de Fin:"), gbc);
+        gbc.gridx = 1;
+        panel.add(minComboBox2, gbc);
+
+        // Crear el botón para continuar
+        JButton continuarButton = new JButton("Continuar");
+        
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;  // Ocupar las dos columnas
+        gbc.anchor = GridBagConstraints.PAGE_END;  // Colocar al final
+        panel.add(continuarButton, gbc);
+        continuarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Obtener las horas y minutos seleccionados
+                String horaInicio = horaInicioComboBox.getSelectedItem().toString();
+                String minutosInicio = minComboBox1.getSelectedItem().toString();
+                String horaFin = horaFinComboBox.getSelectedItem().toString();
+                String minutosFin = minComboBox2.getSelectedItem().toString();
+
+                // Validar las horas y minutos ingresados
+                if (VentanaEmpleadoTecnico.validarHoras(horaInicio, minutosInicio, horaFin, minutosFin)) {
+                    inputHoraInicio = Integer.parseInt(horaInicio + minutosInicio);
+                    inputHoraFin = Integer.parseInt(horaFin + minutosFin);
+                    reserva.setHoraRecoger(inputHoraInicio);
+                    reserva.setHoraEntregar(inputHoraFin);
+                }
+            }
+        });
+
+    }
     private void crearPasoInput(String pasoKey, String nombreCampo, String siguientePasoKey, Object O) {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Nuevo " + nombreCampo + ":");
