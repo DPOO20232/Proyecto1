@@ -170,7 +170,7 @@ public class VentanaCliente {
         int numReservas=0;
         for(Reserva i: Reserva.getListaReservas()){
             if (alquiler.assignAlquiler(i.getID())==null){
-            if(i.getCliente().equals(cliente_i)&& i.getFechaEntregar()>=fechaActual){
+            if(i.getCliente().equals(cliente_i)&& i.getFechaRecoger()>=fechaActual){
             numReservas+=1;
             String idreseva = Integer.toString(i.getID());
             String categoria = i.getCategoria().getnombreCategoria();

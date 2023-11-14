@@ -5,13 +5,20 @@ import javax.swing.event.DocumentListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+import modelo.Cliente;
 import modelo.Conductor;
 import modelo.Inventario;
 import modelo.Licencia;
+import modelo.Reserva;
 import modelo.Sede;
 import modelo.Seguro;
 import modelo.Usuario;
+import modelo.Vehiculo;
 import modelo.alquiler;
 import modelo.personal;
 
@@ -30,6 +37,9 @@ public class EditorObjetos {
     private int pasoActual = 0;
     private String inputFechaL1;
     private String inputFechaL2;
+    private Reserva reserva_i;
+    private Reserva copiaReserva_i;
+    private boolean encontro_carro_i;
 
     public void editorSede(JPanel mainPanel,Sede sedeEditar) {
         this.mainPanel = mainPanel;
@@ -102,8 +112,30 @@ public class EditorObjetos {
     }
     private void crearPasosConductor(alquiler alquiler_u) {
         crearPasoPregunta("PreguntaConductor", "¿Desea agregar un conductor?", "InputConductor", "Fin");
-        //crearPasoInfoConductor("InputConductor", "Ingrese la información del nuevo conductor","PreguntaConductor",alquiler_u);
         crearLicencia(new JPanel(),"InputConductor",alquiler_u,"PreguntaConductor");
+        crearPasoFin("Fin");
+    }
+
+
+        private void crearPasosReserva(Reserva reserva) {
+        reserva_i=reserva;
+        Vehiculo vehiculoActual= reserva.getVehiculoAsignado();
+        reserva.setVehiculoAsignado(null);
+        vehiculoActual.eliminarReservaActiva(reserva.getID());
+        Reserva.getListaReservas().remove(reserva);
+        //Se realiza una copia de la reserva en caso de que el usuario no complete la modificación de la reserva
+        copiaReserva_i= new Reserva(reserva.getID(),reserva.getFechaRecoger(),reserva.getFechaEntregar(),reserva.getHoraRecoger(),reserva.getHoraEntregar(),reserva.getReservaEnSede(),reserva.getSedeRecoger(),reserva.getSedeEntregar(),reserva.getCategoria(),reserva.getCliente());
+        encontro_carro_i=false;
+
+        crearPasoPregunta("PreguntaConductor", "¿Desea modificar las sedes de recogida y devolución del vehículo?", "InputSedes", "InputFechas");
+        //crearPasoSedes(reserva);
+        //crearPasoFecha(reserva);
+        crearPasoHorario("InputHoras", "Horarios para la reserva", "PreguntaCategoria",reserva);
+        //PREGUNTARME SI HAY VEHÍCULOS DISPONIBLES
+
+        crearPasoPregunta("PreguntaCategoria", "¿Desea cambiar de categoría?", "InputSedes", "InputFechas");
+        //crearPasoVehiculo(reserva);
+        crearPasoPregunta("PreguntaFecha", "¿Desea modificar las sedes de recogida y devolución del vehículo?", "InputConductor", "PreguntaFecha");
         crearPasoFin("Fin");
     }
 
@@ -224,13 +256,52 @@ public class EditorObjetos {
 
         DefaultComboBoxModel<String> opcionesHora1 = new DefaultComboBoxModel<>();
         DefaultComboBoxModel<String> opcionesHora2 = new DefaultComboBoxModel<>();
+        int inicio1=0;
+        int fin1=23;
+        int inicio2=0;
+        int fin2=23;
+        if (O instanceof Reserva){
+            Reserva reserva= (Reserva) O;
+            int fechafin= reserva.getFechaEntregar();
+            int fechainicio = reserva.getFechaRecoger();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+            LocalDate localDatefin = LocalDate.parse(Integer.toString(fechafin), formatter);
+            LocalDate localDateinicio = LocalDate.parse(Integer.toString(fechainicio), formatter);
+            DayOfWeek dayOfWeekfin = localDatefin.getDayOfWeek();
+            DayOfWeek dayofWeekinicio = localDateinicio.getDayOfWeek();
+            boolean esDiaLaboralfin = (dayOfWeekfin != DayOfWeek.SATURDAY && dayOfWeekfin != DayOfWeek.SUNDAY);
+            boolean esDiaLaboralinicio = (dayofWeekinicio != DayOfWeek.SATURDAY && dayofWeekinicio != DayOfWeek.SUNDAY);
+            if (esDiaLaboralfin){
+                inicio1=reserva.getSedeEntregar().getHorarioAtencionEnSemana().get(0)/100;
+                fin1=reserva.getSedeEntregar().getHorarioAtencionEnSemana().get(1)/100;
+            }
+            else{
+                inicio1=reserva.getSedeEntregar().getHorarioAtencionFinSemana().get(0)/100;
+                fin1=reserva.getSedeEntregar().getHorarioAtencionFinSemana().get(1)/100;
+            }
+            if (esDiaLaboralinicio){
+                inicio2=reserva.getSedeRecoger().getHorarioAtencionEnSemana().get(0)/100;
+                fin2=reserva.getSedeRecoger().getHorarioAtencionEnSemana().get(1)/100;
+            }
+            else{
+                inicio2=reserva.getSedeRecoger().getHorarioAtencionFinSemana().get(0)/100;
+                fin2=reserva.getSedeRecoger().getHorarioAtencionFinSemana().get(1)/100;
+            }
 
-        for (int i = 0; i <= 23; i++) {
+        }
+
+        for (int i = inicio1; i <= fin1; i++) {
             String s="";
             if (i<10){
                 s=s+"0";
             }
             opcionesHora1.addElement(s+Integer.toString(i));
+        }
+        for (int i = inicio2; i <= fin2; i++) {
+            String s="";
+            if (i<10){
+                s=s+"0";
+            }
             opcionesHora2.addElement(s+Integer.toString(i));
         }
         JComboBox<String> horaComboBox1 = new JComboBox<>(opcionesHora1);
@@ -291,112 +362,133 @@ public class EditorObjetos {
                             sede.setHorarioAtencionFinSemana(horario);
                         }
                     }
+                    else if (O instanceof Reserva){
+                        Reserva reserva= (Reserva) O;
+                        reserva.setHoraRecoger(Integer.parseInt(inicio));
+                        reserva.setHoraEntregar(Integer.parseInt(fin));
+                    }
+                avanzarAlSiguientePaso(siguientePasoKey);
                 }
                 else{
                     VentanaMain.errorDialog("Verifique que la fecha/periodo inicial sea previa a la fecha/periodo final.");
                 }  
-            }
-        });
+            
+        }});
     
         cardPanel.add(panel, pasoKey);
     }
-    /*
+    
     private void crearPasoFecha(String pasoKey, String nombreCampo, String siguientePasoKey, Object O) {
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Nueva " + nombreCampo + ":");
-        JLabel labela = new JLabel("\t");
-    
-        JLabel labelDia1 = new JLabel("Día inicio ");
-        JLabel labelMes1 = new JLabel("Mes inicio ");
-        JLabel labelAnio1 = new JLabel("Año inicio ");
-        JPanel fechaPanel1 = new JPanel();
-    
-        JLabel labelDia2 = new JLabel("Día fin ");
-        JLabel labelMes2 = new JLabel("Mes fin ");
-        JLabel labelAnio2 = new JLabel("Año fin ");
-        JPanel fechaPanel2 = new JPanel();
-    
-        DefaultComboBoxModel<String> opcionesDia1 = new DefaultComboBoxModel<>();
-        DefaultComboBoxModel<String> opcionesDia2 = new DefaultComboBoxModel<>();
-    
-        DefaultComboBoxModel<String> opcionesMes1 = new DefaultComboBoxModel<>();
-        DefaultComboBoxModel<String> opcionesMes2 = new DefaultComboBoxModel<>();
-    
-        DefaultComboBoxModel<String> opcionesAnio1 = new DefaultComboBoxModel<>();
-        DefaultComboBoxModel<String> opcionesAnio2 = new DefaultComboBoxModel<>();
-    
-        // Llenar las opciones para días, meses y años
-        for (int i = 1; i <= 31; i++) {
-            opcionesDia1.addElement(Integer.toString(i));
-            opcionesDia2.addElement(Integer.toString(i));
+        JPanel panelC= new JPanel();
+        panelC.add(new JLabel(nombreCampo));
+        JPanel panelFecha1= new JPanel();
+        panelFecha1.setLayout(new GridLayout(1,0));
+        DefaultComboBoxModel<String> opcionesAnio = new DefaultComboBoxModel<>();
+
+        int anioActual= Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = anioActual; i <= anioActual+2; i++){
+            opcionesAnio.addElement(Integer.toString(i));
         }
-    
-        String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
-        for (String mes : meses) {
-            opcionesMes1.addElement(mes);
-            opcionesMes2.addElement(mes);
-        }
-    
-        for (int i = 2022; i <= 2030; i++) {
-            opcionesAnio1.addElement(Integer.toString(i));
-            opcionesAnio2.addElement(Integer.toString(i));
-        }
-    
-        JComboBox<String> diaComboBox1 = new JComboBox<>(opcionesDia1);
-        JComboBox<String> mesComboBox1 = new JComboBox<>(opcionesMes1);
-        JComboBox<String> anioComboBox1 = new JComboBox<>(opcionesAnio1);
-    
-        JComboBox<String> diaComboBox2 = new JComboBox<>(opcionesDia2);
-        JComboBox<String> mesComboBox2 = new JComboBox<>(opcionesMes2);
-        JComboBox<String> anioComboBox2 = new JComboBox<>(opcionesAnio2);
-    
-        JButton avanzarButton = new JButton("Avanzar");
-    
-        fechaPanel1.add(diaComboBox1);
-        fechaPanel1.add(mesComboBox1);
-        fechaPanel1.add(anioComboBox1);
-    
-        fechaPanel2.add(diaComboBox2);
-        fechaPanel2.add(mesComboBox2);
-        fechaPanel2.add(anioComboBox2);
-    
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        panel.add(label);
-        panel.add(labela);
-        panel.add(labelDia1);
-        panel.add(fechaPanel1);
-        panel.add(labelDia2);
-        panel.add(fechaPanel2);
-        panel.add(avanzarButton);
-    
-        avanzarButton.addActionListener(new ActionListener() {
+        JComboBox<String> anioBox= new JComboBox<String>(opcionesAnio);
+        anioBox.setSelectedIndex(0);
+        panelFecha1.add(anioBox);
+        anioBox.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // Obtener la fecha seleccionada
-                String dia1 = diaComboBox1.getSelectedItem().toString();
-                String mes1 = String.valueOf(mesComboBox1.getSelectedIndex() + 1); // Sumar 1 porque los meses en Java comienzan desde 0
-                String anio1 = anioComboBox1.getSelectedItem().toString();
-    
-                String dia2 = diaComboBox2.getSelectedItem().toString();
-                String mes2 = String.valueOf(mesComboBox2.getSelectedIndex() + 1);
-                String anio2 = anioComboBox2.getSelectedItem().toString();
-    
-                String fechaInicio = anio1 + "-" + mes1 + "-" + dia1;
-                String fechaFin = anio2 + "-" + mes2 + "-" + dia2;
-    
-                System.out.println("Fecha inicio: " + fechaInicio);
-                System.out.println("Fecha fin: " + fechaFin);
-    
-                
-    
-                // Avanzar al siguiente paso
-                avanzarAlSiguientePaso(siguientePasoKey);
+            public void actionPerformed(ActionEvent e){
+            panelC.repaint();
+            String anio=anioBox.getSelectedItem().toString();
+            VentanaMain.refresh(panelFecha1);
+            panelFecha1.add(anioBox);
+            anioBox.setEnabled(false);
+            DateComboBoxPanel date1= new DateComboBoxPanel(Integer.parseInt(anio));
+            date1.setDefaulDayComboBox();
+            date1.setDefaultMonthComboBox();
+            panelFecha1.add(date1);
+            panelFecha1.repaint();
+            JButton updateDatebutton= new JButton("Cambiar Fecha");
+            panelFecha1.add(updateDatebutton);
+            JButton saveDatebutton= new JButton("Guardar Fecha");
+            panelFecha1.add(saveDatebutton);
+            inputFechaL1="";
+
+            saveDatebutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    if (!date1.getText().trim().isEmpty()) {
+                        inputFechaL1 = anio + date1.getText();
+                    }
+                    VentanaMain.refresh(panelFecha1);
+                    panelFecha1.add(anioBox);
+                    panelFecha1.add(updateDatebutton);
+                } 
+            });
+            updateDatebutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    inputFechaL1="";
+                    VentanaMain.refresh(panelFecha1);
+                    panelFecha1.add(anioBox);
+                    anioBox.setEnabled(true);
+                }
+            });
             }
         });
-    
-        cardPanel.add(panel, pasoKey);
+
+        JPanel panelFecha2= new JPanel();
+        panelFecha2.setLayout(new GridLayout(1,0));
+        DefaultComboBoxModel<String> opcionesAnio2 = new DefaultComboBoxModel<>();
+
+        for (int j = anioActual; j <= anioActual+20; j++){
+            opcionesAnio2.addElement(Integer.toString(j));
+        }
+        JComboBox<String> anioBox2= new JComboBox<String>(opcionesAnio2);
+        anioBox2.setSelectedIndex(0);
+        panelFecha2.add(anioBox2);
+        anioBox2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+            panelC.repaint();
+            String anio=anioBox2.getSelectedItem().toString();
+            VentanaMain.refresh(panelFecha2);
+            panelFecha2.add(anioBox2);
+            anioBox2.setEnabled(false);
+            DateComboBoxPanel date2= new DateComboBoxPanel(Integer.parseInt(anio));
+            date2.setDefaulDayComboBox();
+            date2.setDefaultMonthComboBox();
+            panelFecha2.add(date2);
+            JButton updateDatebutton= new JButton("Cambiar Fecha");
+            panelFecha2.add(updateDatebutton);
+            JButton saveDatebutton= new JButton("Guardar Fecha");
+            panelFecha2.add(saveDatebutton);
+            inputFechaL2="";
+
+            saveDatebutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    if (!date2.getText().trim().isEmpty()) {
+                        inputFechaL2 = anio + date2.getText();
+                    }
+                    VentanaMain.refresh(panelFecha2);
+                    panelFecha2.add(anioBox2);
+                    panelFecha2.add(updateDatebutton);
+                } 
+            });
+            updateDatebutton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    inputFechaL2="";
+                    VentanaMain.refresh(panelFecha2);
+                    panelFecha2.add(anioBox2);
+                    anioBox2.setEnabled(true);
+                }
+            });
+            }
+        });
+        panelC.add(panelFecha1);
+        panelC.add(panelFecha2);
+        cardPanel.add(panelC, pasoKey);
     }
-    */
+    
     private void crearPasoDecimales(String pasoKey, String nombreCampo, String siguientePasoKey,Object O) {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Nuevo " + nombreCampo + ":");
