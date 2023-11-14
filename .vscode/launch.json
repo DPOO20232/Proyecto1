@@ -9,6 +9,13 @@
             "name": "metodosReserva",
             "request": "launch",
             "mainClass": "vista.metodosReserva",
+            "projectName": "Proyecto1_2bf91998"
+        },
+        {
+            "type": "java",
+            "name": "metodosReserva",
+            "request": "launch",
+            "mainClass": "vista.metodosReserva",
             "projectName": "Proyecto1_76c48379"
         },
         {
@@ -24,6 +31,27 @@
             "request": "launch",
             "mainClass": "vista.VentanaRegistro",
             "projectName": "Proyecto1-1_7f3fd5b8"
+        },
+        {
+            "type": "java",
+            "name": "VentanaMain",
+            "request": "launch",
+            "mainClass": "vista.VentanaMain",
+            "projectName": "Proyecto1_2bf91998"
+        },
+        {
+            "type": "java",
+            "name": "VentanaRegistro",
+            "request": "launch",
+            "mainClass": "vista.VentanaRegistro",
+            "projectName": "Proyecto1_2bf91998"
+        },
+        {
+            "type": "java",
+            "name": "VentanaReserva",
+            "request": "launch",
+            "mainClass": "vista.VentanaReserva",
+            "projectName": "Proyecto1_2bf91998"
         },
         {
             "type": "java",

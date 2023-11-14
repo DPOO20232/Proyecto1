@@ -4,6 +4,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.TextStyle;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.BorderFactory;
@@ -32,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.List;
+import java.util.Locale;
 import java.io.IOException;
 
 import java.awt.BorderLayout;
@@ -58,11 +65,13 @@ public class metodosReserva extends JFrame {
         JLabel textoBienvenida = new JLabel("¡Bienvenido a nuestro sistema de Reserva! \n");
         
         
+        
         botonContinuar = new JButton("Continuar");
 
         
         panel1.add(nombreEmpresa);
         panel1.add(textoBienvenida);
+        
         
        
         // Fecha de recogida 
@@ -119,6 +128,7 @@ public class metodosReserva extends JFrame {
         });
         panelFechaRec.add(anioBox); // Año agregado
         panel1.add(new JLabel("Fecha de recogida"));
+        panel1.add(new JLabel("Fecha de recogida"));
         panel1.add(panelFechaRec);
         
         // Sede de recogida
@@ -164,11 +174,13 @@ public class metodosReserva extends JFrame {
         JComboBox<String> horaRecBox = new JComboBox<>(opcionesHoraRec);
         JComboBox<String> minRecBox = new JComboBox<>(opcionesMinutosRec);
     
+    
         horaRecBox.setSelectedIndex(0);
         minRecBox.setSelectedIndex(0);
 
         panelHoraRec.add(horaRecBox);
         panelHoraRec.add(minRecBox);
+        panel1.add(new JLabel("Hora de recogida"));
         panel1.add(new JLabel("Hora de recogida"));
         panel1.add(panelHoraRec);
 
@@ -250,7 +262,9 @@ public class metodosReserva extends JFrame {
         });
         panelFechaDev.add(anioBox2); // Año agregado
         panel2.add(new JLabel("Fecha de devolución"));
+        panel2.add(new JLabel("Fecha de devolución"));
         panel2.add(panelFechaDev);
+        
         
         // Sede de devolución
         JPanel panelSedeDev = new JPanel();
@@ -261,6 +275,7 @@ public class metodosReserva extends JFrame {
         }
         sedesDev.setSelectedIndex(0);
         panelSedeDev.add(sedesDev, BorderLayout.CENTER);
+        panel2.add(new JLabel("Sede de devolución"));
         panel2.add(new JLabel("Sede de devolución"));
         panel2.add(panelSedeDev);
 
