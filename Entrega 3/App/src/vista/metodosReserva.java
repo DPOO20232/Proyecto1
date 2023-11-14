@@ -1,9 +1,6 @@
 package vista;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,13 +16,10 @@ import modelo.Sede;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.io.IOException;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 
@@ -79,7 +73,6 @@ public class metodosReserva extends JFrame {
         // Hora de recogida
         JPanel panelHoraRec = new JPanel();
             //En este pedazo de código se saca el día de la semana...
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
             // Hasta aquí.
         
         List<Integer> horarioAtencionRec = new ArrayList<>(); //Aquí se define el horario de atención correcto
