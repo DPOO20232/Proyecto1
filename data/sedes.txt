@@ -1,4 +1,4 @@
-1;SedeChapinero;cra7 #70, Bogotá;[600,1900];[700,2200]
-2;SedeSur;cra58 #2, Bogotá;[700,1800];[800,1500]
-3;SedeChia;Cra. 3 #20-2 a 20-146, Chía, Cundinamarca;[600,1600];[600,1300]
-4;Sede Centro;Cl 100;[100,400];[100,2200]
+1;SedeChia;Cra. 3 #20-2 a 20-146, Chía, Cundinamarca;[700,1600];[900,1200]
+2;SedeChapinero;cra7 #70, Bogotá;[600,1900];[700,2200]
+3;SedeSur;cra58 #2, Bogotá;[700,1800];[800,1500]
+4;Sede Centro;Cl 100;[100,1800];[100,2200]

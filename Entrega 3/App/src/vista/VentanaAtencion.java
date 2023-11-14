@@ -344,6 +344,8 @@ public class VentanaAtencion {
         });
         panel.add(Box.createRigidArea(new Dimension(0, 100)));                  
         return panel;
+<<<<<<< HEAD
+=======
     }
     private static JPanel completarAlquiler(){
         JPanel panel= new JPanel();
@@ -455,6 +457,7 @@ public class VentanaAtencion {
         }
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
         return panel;
+>>>>>>> fc434b59c8e064e2d8f77c7ffb3abb2f4bc7aee1
     }    
 }
 
