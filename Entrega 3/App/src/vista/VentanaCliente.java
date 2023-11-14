@@ -117,6 +117,8 @@ public class VentanaCliente {
                 }
                 else if (selectedIndex==2){
                     VentanaMain.refresh(panel2);
+                    panel2.add(cambiar_datos());
+
                 }
                 else if (selectedIndex==3){
                     VentanaMain.refresh(panel3);
@@ -260,6 +262,11 @@ public class VentanaCliente {
         panelContacto.add(btnActualizarCorreo);
         panelContacto.add(campoCorreo);
         panelContacto.add(btnGuardarCorreo);
+        try {
+            Inventario.updateSistema();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
         return panelContacto;
     }
     public static JPanel cambiarLicencia() {
@@ -390,20 +397,26 @@ public class VentanaCliente {
                 if (numerolicencia.isEmpty() || pais.isEmpty() || inputFechaL1.isEmpty() || inputFechaL2.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    if (Usuario.checkLicencia(Integer.parseInt(campoNumeroL.getText()))){
-                        JOptionPane.showMessageDialog(null, "Este número de licencia ya fue utilizado. Por favor, ingrese otro.", "Registro", JOptionPane.INFORMATION_MESSAGE);
-                        campoNumeroL.setText("");
-                        campoPais.setText("");
-                    } else {
                         try{
                             int numeroLicencia = Integer.parseInt(campoNumeroL.getText());
                             pais = campoPais.getText();
                             int expedicionL = Integer.parseInt(inputFechaL1);
                             int vencimientoL = Integer.parseInt(inputFechaL2);
                             Licencia licenciaNueva = new Licencia(numeroLicencia, expedicionL, vencimientoL, pais);
+                            Cliente.getListaLicencias().remove(cliente_i.getLicencia());
+                            cliente_i.setTarjeta(null);
                             cliente_i.setLicencia(licenciaNueva);
                             campoNumeroL.setText("");
                             campoPais.setText("");
+
+
+                            Usuario.addLicencia(licenciaNueva);
+
+                            try {
+                                Inventario.updateSistema();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
                             JOptionPane.showMessageDialog(null, "Su Licencia se ha guardado con éxito.", "¡Éxito!", JOptionPane.INFORMATION_MESSAGE);
                         }catch(NumberFormatException e2){
                             VentanaMain.errorDialog("Guarde fechas");
@@ -411,7 +424,7 @@ public class VentanaCliente {
                     }
                 }
             }
-        });
+        );
         
         return panelLicencia;
     }
@@ -484,9 +497,13 @@ public class VentanaCliente {
                 if (titular.isEmpty() || campoNumeroT.getText().isEmpty() || marca.isEmpty() || inputFechaT.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    
+
                     Tarjeta tarjetaNueva = new Tarjeta(numeroT, vencimientoT, marca, titular);
                     cliente_i.setTarjeta(tarjetaNueva);
+
+
+
+
                     JOptionPane.showMessageDialog(null, "Su tarjeta fue guardada con éxito.", "¡Éxito!", JOptionPane.INFORMATION_MESSAGE);
                     campoTitular.setText("");
                     campoNumeroT.setText("");
