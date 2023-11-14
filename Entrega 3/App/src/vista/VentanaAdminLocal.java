@@ -1,6 +1,5 @@
 package vista;
 import javax.swing.*;
-
 import modelo.EmpleadoAtencion;
 import modelo.EmpleadoTecnico;
 import modelo.Inventario;
@@ -15,32 +14,20 @@ import java.io.IOException;
 public class VentanaAdminLocal {
         private JFrame frame; // Declarar frame como variable miembro
         private JTabbedPane tabbedPane; // Declarar tabbedPane como variable miembro
+        JPanel panelSuperior;
+        JTabbedPane panelInferior;
         private static EditorObjetos editorObjetos;
         public VentanaAdminLocal(Sede sede) {
-            frame = new JFrame("Aplicación de la Empresa");
+            frame = new JFrame("Menu Admin Local");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(800, 600);
-    
+            frame.setLocationRelativeTo(null);
+            
             // Crear un panel superior para el nombre de la empresa
             JPanel nombreEmpresaPanel = new JPanel();
-            nombreEmpresaPanel.setBackground(Color.LIGHT_GRAY);
-            JLabel nombreEmpresaLabel = new JLabel("Nombre de la Empresa");
-            nombreEmpresaPanel.add(nombreEmpresaLabel);
-    
-            // Botón de "Cerrar Sesión"
-            JButton cerrarSesionButton = new JButton("Cerrar Sesión");
-            cerrarSesionButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        Inventario.updateSistema();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
-            nombreEmpresaPanel.add(cerrarSesionButton);
-    
+            this.panelSuperior= VentanaMain.setPanelSuperior(frame);
+
+            nombreEmpresaPanel.add(panelSuperior);
             // Crear el panel de pestañas
             tabbedPane = new JTabbedPane();
     
@@ -103,6 +90,7 @@ public class VentanaAdminLocal {
                             try {
                                 Inventario.updateSistema();
                             } catch (IOException e1) {
+                                // TODO Auto-generated catch block
                                 e1.printStackTrace();
                             }
                         }
@@ -113,6 +101,7 @@ public class VentanaAdminLocal {
                             try {
                                 Inventario.updateSistema();
                             } catch (IOException e1) {
+                                // TODO Auto-generated catch block
                                 e1.printStackTrace();
                             }
                         }
@@ -142,12 +131,12 @@ public class VentanaAdminLocal {
             panelAgregarPersonal.add(crearUsuarioButton);
             pestaña1.add(panelAgregarPersonal); // Agrega el panel de "Agregar Personal" a la pestaña 1
             // Crear pestaña 2
+             
             JPanel pestaña2 = new JPanel();
             tabbedPane.addTab("actualizar personal", null, pestaña2, "Actualizar Personal");
             JPanel panelActualizarPersonal = new JPanel(new GridLayout(3, 2));
             JLabel loginActualizarLabel = new JLabel("Login del Empleado a Actualizar:");
             JTextField loginActualizarField = new JTextField();
-            
             JButton actualizarUsuarioButton = new JButton("Actualizar Usuario");
             actualizarUsuarioButton.addActionListener(new ActionListener() {
                 @Override
@@ -163,25 +152,23 @@ public class VentanaAdminLocal {
                     // Aquí puedes agregar la lógica para buscar al empleado con el login proporcionado y actualizar su información
                     if(Usuario.checkNombresLogins(loginActualizar)==true){
                         personal empleado=null;
-                        boolean esEmpleado=false;
+                        boolean esEpleado=false;
                         for(personal i: personal.getCredencialesPersonal()){
                             if ((i.getLogin().equals(loginActualizar))&&(i.getSede().equals(sede))){
                                 empleado=i;
-                                esEmpleado=true;
+                                esEpleado=true;
                                 break;
                             }
                             
                         }
-                        if(esEmpleado){
+                        if( esEpleado){
+                           
                             VentanaMain.refresh(pestaña2);
                             editorObjetos = new EditorObjetos();
-                            editorObjetos.editorPersonal(pestaña2,empleado );
+                            editorObjetos.editorPersonal(pestaña2,empleado,panelActualizarPersonal);
                             editorObjetos.editar();
-                             try {
-                                Inventario.updateSistema();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
+                           
+                           
                         }
                         else{
                             VentanaMain.errorDialog("el usuario ingresado no existe o no pertenece a la sede del administrador");
@@ -190,9 +177,9 @@ public class VentanaAdminLocal {
                    
                         
                     }
-                    // Crear un objeto EditorObjetos y configurarlo
-                     
                     
+                    
+
                    
                     // Limpieza del campo después de la actualización
                     loginActualizarField.setText("");
@@ -204,8 +191,8 @@ public class VentanaAdminLocal {
             volverAtrasButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // Cierra la ventana "Actualizar Personal"
-                    panelActualizarPersonal.setVisible(false);
+              
+                    panelActualizarPersonal.repaint();
                 }
             });
             
@@ -224,10 +211,9 @@ public class VentanaAdminLocal {
             // Crear espacios para mostrar al administrador local, empleados técnicos y empleados de atención
             String empleados=personal.printRegistroEmpleados(sede);
             String administradorLocal = EditorObjetos.extraerInformacion("Administrador Local", empleados);
-            System.out.println(administradorLocal);
             String empleadosAtencion = EditorObjetos.extraerInformacion("Empleado(s) de atención", empleados);
             String empleadosTecnicos = EditorObjetos.extraerInformacion("Empleado(s) técnico(s)", empleados);
-    
+            
             JPanel panelAdminLocal = new JPanel();
             panelAdminLocal.setLayout(new BoxLayout(panelAdminLocal, BoxLayout.Y_AXIS));
             JLabel adminLocalLabel = new JLabel("Administrador Local:");
@@ -252,9 +238,9 @@ public class VentanaAdminLocal {
             empleadosAtencionField.setText(empleadosAtencion);
             panelEmpleadosAtencion.add(empleadosAtencionLabel);
             panelEmpleadosAtencion.add(empleadosAtencionField);
+            JLabel AtencionLabel = new JLabel("Estos son los empleados antes de iniciar sesion si hubo cambios cierre sesion:");
 
-
-            
+            pestaña3.add(AtencionLabel);
             pestaña3.add(panelAdminLocal);
             pestaña3.setLayout(new GridLayout(0, 1));
             pestaña3.add(panelEmpleadosTecnicos);
