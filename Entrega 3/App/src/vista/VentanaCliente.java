@@ -76,13 +76,12 @@ public class VentanaCliente {
         frame.setVisible(true);
     }
     private static JTabbedPane setPanelInferior(){
-        metodosReserva metodos= new metodosReserva();
         JTabbedPane panel1= new JTabbedPane();
         panel1.add(cambiarClave());
         JTabbedPane panel2= new JTabbedPane();
 
         JTabbedPane panel3= new JTabbedPane();
-        //panel3.add(metodos.menuReserva());
+        panel3.add(crearReserva());
 
         JTabbedPane panel4= new JTabbedPane();
 
@@ -111,7 +110,7 @@ public class VentanaCliente {
                 }
                 else if (selectedIndex==3){
                     VentanaMain.refresh(panel3);
-                    //panel3.add(metodos.menuReserva());
+                    panel3.add(crearReserva());
                 }
                 else if (selectedIndex==4){
                     VentanaMain.refresh(panel4);
@@ -160,6 +159,12 @@ public class VentanaCliente {
             }
         });
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
+        return panel;
+    }
+    private static JPanel crearReserva(){
+        JPanel panel = new JPanel();
+        metodosReserva metodos= new metodosReserva();
+        panel.add(metodos.menuReserva(cliente_i,  false));
         return panel;
     }
 

@@ -336,21 +336,42 @@ public class metodosReserva extends JFrame {
         }
         categBox.setSelectedIndex(0);
         panelCategorias.add(categBox, BorderLayout.CENTER);
+        panelCategorias.add(finalizar, BorderLayout.SOUTH);
         panel3.add(panelCategorias);
         finalizar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
                 try {
                     Categoria categoria= Inventario.assignCategoria(Integer.parseInt(categBox.getSelectedItem().toString().split(":")[0]));
-                    new Reserva(horaCierre, idSede2, horaInicio2, horaCierre2, rootPaneCheckingEnabled, eleccionSedeRec, eleccionSedeDev, null, null);
-                    Reserva newReserva= new Reserva(Integer.parseInt(fechaRecSelected),Integer.parseInt(fechaDevSelected) , , ,reservaEnSede , eleccionSedeRec, eleccionSedeDev,categoria , cliente);
-                    
+                    int horaRec=Integer.parseInt(horaRecBox.getSelectedItem().toString()+minRecBox.getSelectedItem().toString());
+                    int horaDev=Integer.parseInt(horaDevBox.getSelectedItem().toString()+minDevBox.getSelectedItem().toString());
+                    System.out.println(fechaRecSelected);
+                    System.out.println(horaRec);
+                    System.out.println(fechaDevSelected);
+                    System.out.println(horaDev);
+                    System.out.println(eleccionSedeRec.getID());
+                    System.out.println(eleccionSedeDev.getID());
+                    System.out.println(categoria.getID());
+                    Reserva reserva_u= new Reserva(Integer.parseInt(fechaRecSelected),Integer.parseInt(fechaDevSelected) ,horaRec ,horaDev ,reservaEnSede , eleccionSedeRec, eleccionSedeDev,categoria , cliente);
+                    reserva_u.setVehiculoAsignado();
+                    if (reserva_u.getVehiculoAsignado()!=null){
+                        reserva_u.setPagoReserva(Integer.parseInt(fechaRecSelected),Integer.parseInt(fechaDevSelected) ,horaRec ,horaDev);
+                        Reserva.addReserva(reserva_u);
+                        VentanaMain.Dialog("Se debitaron COP "+ Double.toString(reserva_u.getPagoReserva())+".");
+                        VentanaMain.Dialog("Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_u.getID()));
+                        try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
+
+                    }
+                    else{
+
+                    }
+
+
                 } catch (Exception e2) {
 
                 }
             }
         });
-        panel3.add(finalizar);
         tabbedPane.add("Información de recogida", panel1);
         tabbedPane.add("Información de devolucion", panel2);
         tabbedPane.add("Selección de categoría", panel3);
@@ -363,7 +384,7 @@ public class metodosReserva extends JFrame {
         JFrame frame = new JFrame();
         frame.setSize(400,400);
         metodosReserva metodos = new metodosReserva();
-        frame.add(metodos.menuReserva());
+        //frame.add(metodos.menuReserva());
         frame.setVisible(true);
         
     }
