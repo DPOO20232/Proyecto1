@@ -215,17 +215,18 @@ public class metodosReserva extends JFrame {
                     Categoria categoria= Inventario.assignCategoria(Integer.parseInt(categBox.getSelectedItem().toString().split(":")[0]));
                     int horaRec=Integer.parseInt(horaRecBox.getSelectedItem().toString()+minRecBox.getSelectedItem().toString());
                     int horaDev=Integer.parseInt(horaDevBox.getSelectedItem().toString()+minDevBox.getSelectedItem().toString());
-                    System.out.println(fecha1.toString());
+                    System.out.println(categoria.getnombreCategoria());
+                    System.out.println(fecha1.getText());
                     System.out.println(horaRec);
-                    System.out.println(fecha2.toString());
+                    System.out.println(fecha2.getText());
                     System.out.println(horaDev);
                     System.out.println(eleccionSedeRec.getID());
                     System.out.println(eleccionSedeDev.getID());
                     System.out.println(categoria.getID());
-                    Reserva reserva_u= new Reserva(Integer.parseInt(fecha1.toString()),Integer.parseInt(fecha2.toString()) ,horaRec ,horaDev ,reservaEnSede , eleccionSedeRec, eleccionSedeDev,categoria , cliente);
+                    Reserva reserva_u= new Reserva(Integer.parseInt(fecha1.getText()),Integer.parseInt(fecha2.getText()) ,horaRec ,horaDev ,reservaEnSede , eleccionSedeRec, eleccionSedeDev,categoria , cliente);
                     reserva_u.setVehiculoAsignado();
                     if (reserva_u.getVehiculoAsignado()!=null){
-                        reserva_u.setPagoReserva(Integer.parseInt(fecha2.toString()),Integer.parseInt(fecha2.toString()) ,horaRec ,horaDev);
+                        reserva_u.setPagoReserva(Integer.parseInt(fecha1.getText()),Integer.parseInt(fecha2.getText()) ,horaRec ,horaDev);
                         Reserva.addReserva(reserva_u);
                         VentanaMain.Dialog("Se debitaron COP "+ Double.toString(reserva_u.getPagoReserva())+".");
                         VentanaMain.Dialog("Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_u.getID()));
@@ -233,6 +234,7 @@ public class metodosReserva extends JFrame {
 
                     }
                     else{
+                        VentanaMain.errorDialog("No se encontraron vehículos disponibles para la categoría dada");
 
                     }
 
