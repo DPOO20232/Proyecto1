@@ -1,56 +1,40 @@
 package vista;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.TextStyle;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.TextStyle;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentListener;
-
 import modelo.Categoria;
 import modelo.Cliente;
 import modelo.Inventario;
 import modelo.Reserva;
 import modelo.Sede;
-
-import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.List;
-import java.util.Locale;
 import java.io.IOException;
-
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+
+
 
 public class metodosReserva extends JFrame {
     private JTabbedPane tabbedPane;
     JPanel panelSuperior;
     private JButton botonContinuar;
+    private JButton botonContinuar2;
     
     public JTabbedPane menuReserva(Cliente cliente, boolean reservaEnSede) {
 
@@ -61,15 +45,9 @@ public class metodosReserva extends JFrame {
         
         JPanel panel1 = new JPanel(new GridLayout(0,2));
         
-        JLabel nombreEmpresa = new JLabel("<NombreEmpresa> \n");
         JLabel textoBienvenida = new JLabel("¡Bienvenido a nuestro sistema de Reserva! \n");
         
-        
-        
         botonContinuar = new JButton("Continuar");
-
-        
-        panel1.add(nombreEmpresa);
         panel1.add(textoBienvenida);
         
         
@@ -206,7 +184,7 @@ public class metodosReserva extends JFrame {
         
         JPanel panel2 = new JPanel(new GridLayout(0,2));
         
-        JButton botonContinuar2 = new JButton("Continuar");
+        botonContinuar2 = new JButton("Continuar");
 
         
         // Fecha devolución
@@ -217,22 +195,26 @@ public class metodosReserva extends JFrame {
         
         opcionesAnio2.addElement(Integer.toString(anioActual));
         opcionesAnio2.addElement(Integer.toString(anioActual+1));
-        DateComboBoxPanel date2 = new DateComboBoxPanel(Integer.parseInt(anio));
+    
+        
+        JComboBox<String> anioBox2 = new JComboBox<String>(opcionesAnio2);
+        anioBox2.setSelectedIndex(0);
+        String anio2 = anioBox2.getSelectedItem().toString();
+        DateComboBoxPanel date2 = new DateComboBoxPanel(Integer.parseInt(anio2));
         date2.setDefaulDayComboBox();
         date2.setDefaultMonthComboBox();
+
         
-        JComboBox<String> anioBox2 = new JComboBox<String>(opcionesAnio);
-        anioBox2.setSelectedIndex(0);
         anioBox2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
                 
-                String anio = anioBox2.getSelectedItem().toString();
+                String anio2 = anioBox2.getSelectedItem().toString();
                 VentanaMain.refresh(panelFechaDev);
                 panelFechaDev.add(anioBox2);
                 anioBox2.setEnabled(false);
 
-                DateComboBoxPanel date2 = new DateComboBoxPanel(Integer.parseInt(anio));
+                DateComboBoxPanel date2 = new DateComboBoxPanel(Integer.parseInt(anio2));
                 date2.setDefaulDayComboBox();
                 date2.setDefaultMonthComboBox();
                 panelFechaDev.add(date2);
@@ -323,8 +305,9 @@ public class metodosReserva extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
                 System.out.println(fechaDevSelected);
-                System.out.println();
-                if (!fechaDevSelected.equals("")&&Integer.parseInt(fechaDevSelected)>Integer.parseInt(fechaRecSelected)){
+                System.out.println(fechaRecSelected);
+                if (!fechaDevSelected.equals("") &&
+                ((Integer.parseInt(fechaDevSelected)) > (Integer.parseInt(fechaRecSelected)))){
                 tabbedPane.setSelectedIndex(2);
                 }
                 else{
@@ -334,8 +317,8 @@ public class metodosReserva extends JFrame {
         });
         
         //Continuar
-        JButton botonContinuar3 = new JButton("Continuar");
-        panel2.add(botonContinuar3);
+        
+        panel2.add(botonContinuar2);
         
         // ----------
         // Pestaña 3: Seleccionar categoría -----------------------------------------------------------------------------------------------------------------------------------------
