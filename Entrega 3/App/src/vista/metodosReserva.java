@@ -54,60 +54,13 @@ public class metodosReserva extends JFrame {
        
         // Fecha de recogida 
         JPanel panelFechaRec = new JPanel();       
-        panelFechaRec.setLayout(new FlowLayout());
-        DefaultComboBoxModel<String> opcionesAnio = new DefaultComboBoxModel<>(); //Se crean y se agregan las opciones disponibles para el año de recogida
-        int anioActual = Calendar.getInstance().get(Calendar.YEAR);
-        opcionesAnio.addElement(Integer.toString(anioActual));
-        opcionesAnio.addElement(Integer.toString(anioActual+1));
+        panelFechaRec.setLayout(new GridLayout(0,1));
         
-        JComboBox<String> anioBox = new JComboBox<String>(opcionesAnio);
-        anioBox.setSelectedIndex(0);
-
-        String anio = anioBox.getSelectedItem().toString();
-        DateComboBoxPanel date1 = new DateComboBoxPanel(Integer.parseInt(anio));
-        date1.setDefaulDayComboBox();
-        date1.setDefaultMonthComboBox();
-        
-        anioBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                
-                String anio = anioBox.getSelectedItem().toString();
-                VentanaMain.refresh(panelFechaRec);
-                panelFechaRec.add(anioBox);
-                anioBox.setEnabled(false);
-
-                DateComboBoxPanel date1 = new DateComboBoxPanel(Integer.parseInt(anio));
-                date1.setDefaulDayComboBox();
-                date1.setDefaultMonthComboBox();
-                panelFechaRec.add(date1);
-                JButton updateDatebutton = new JButton("Cambiar Fecha");
-                panelFechaRec.add(updateDatebutton);
-                JButton saveDatebutton = new JButton("Guardar Fecha");
-                panelFechaRec.add(saveDatebutton);
-                saveDatebutton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e){
-                        VentanaMain.refresh(panelFechaRec);
-                        panelFechaRec.add(anioBox);
-                        panelFechaRec.add(updateDatebutton);
-                    }
-                });
-                updateDatebutton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e){
-                        
-                        VentanaMain.refresh(panelFechaRec);
-                        panelFechaRec.add(anioBox);
-                        anioBox.setEnabled(true);
-                    }
-                });
-            }
-        });
-        panelFechaRec.add(anioBox); // Año agregado
-        panel1.add(new JLabel("Fecha de recogida"));
-        panel1.add(new JLabel("Fecha de recogida"));
+    
+        panelFechaRec.add(new JLabel("Ingrese la fecha de recogida del vehículo en formato aaaammdd"));
+        NumericOnlyTextField fecha1= new NumericOnlyTextField(); 
         panel1.add(panelFechaRec);
+        panel1.add(fecha1);
         
         // Sede de recogida
         JPanel panelSedeRec = new JPanel();
@@ -126,19 +79,12 @@ public class metodosReserva extends JFrame {
         // Hora de recogida
         JPanel panelHoraRec = new JPanel();
             //En este pedazo de código se saca el día de la semana...
-        String fechaRecSelected = anioBox.getSelectedItem().toString() + date1.getText();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate fecha = LocalDate.parse(fechaRecSelected, formatter);
-        DayOfWeek diaSemana = fecha.getDayOfWeek(); // Obtiene el día de la semana (enum DayOfWeek)
-        String nombreDia = diaSemana.getDisplayName(TextStyle.FULL, Locale.getDefault()); // Convierte el enum a una cadena (Lunes, Martes, ..., Domingo)
             // Hasta aquí.
         
         List<Integer> horarioAtencionRec = new ArrayList<>(); //Aquí se define el horario de atención correcto
         
-        if (!nombreDia.toLowerCase().equals("domingo") && !nombreDia.toLowerCase().equals("sabado") && !nombreDia.toLowerCase().equals("sábado")){
-            horarioAtencionRec = eleccionSedeRec.getHorarioAtencionEnSemana();}
-        else {
-            horarioAtencionRec = eleccionSedeRec.getHorarioAtencionFinSemana();}
+        horarioAtencionRec = eleccionSedeRec.getHorarioAtencionEnSemana();
 
         DefaultComboBoxModel<String> opcionesHoraRec = new DefaultComboBoxModel<String>();
         int horaInicio = (int) Math.floor(horarioAtencionRec.get(0)/100);
@@ -165,13 +111,7 @@ public class metodosReserva extends JFrame {
         botonContinuar.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-                System.out.println(fechaRecSelected);
-                if (!fechaRecSelected.equals("")){
-                tabbedPane.setSelectedIndex(1);
-                }
-                else{
-                    VentanaMain.errorDialog("Ingrese una fecha");
-                }
+            tabbedPane.setSelectedIndex(1);
             }
         });
 
@@ -188,65 +128,13 @@ public class metodosReserva extends JFrame {
 
         
         // Fecha devolución
-
         JPanel panelFechaDev = new JPanel();       
-        panelFechaRec.setLayout(new FlowLayout());
-        DefaultComboBoxModel<String> opcionesAnio2 = new DefaultComboBoxModel<>(); //Se crean y se agregan las opciones disponibles para el año de recogida
-        
-        opcionesAnio2.addElement(Integer.toString(anioActual));
-        opcionesAnio2.addElement(Integer.toString(anioActual+1));
-    
-        
-        JComboBox<String> anioBox2 = new JComboBox<String>(opcionesAnio2);
-        anioBox2.setSelectedIndex(0);
-        String anio2 = anioBox2.getSelectedItem().toString();
-        DateComboBoxPanel date2 = new DateComboBoxPanel(Integer.parseInt(anio2));
-        date2.setDefaulDayComboBox();
-        date2.setDefaultMonthComboBox();
-
-        
-        anioBox2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                
-                String anio2 = anioBox2.getSelectedItem().toString();
-                VentanaMain.refresh(panelFechaDev);
-                panelFechaDev.add(anioBox2);
-                anioBox2.setEnabled(false);
-
-                DateComboBoxPanel date2 = new DateComboBoxPanel(Integer.parseInt(anio2));
-                date2.setDefaulDayComboBox();
-                date2.setDefaultMonthComboBox();
-                panelFechaDev.add(date2);
-
-                JButton updateDatebutton = new JButton("Cambiar Fecha");
-                panelFechaDev.add(updateDatebutton);
-                JButton saveDatebutton = new JButton("Guardar Fecha");
-                panelFechaDev.add(saveDatebutton);
-                saveDatebutton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e){
-                        VentanaMain.refresh(panelFechaDev);
-                        panelFechaDev.add(anioBox2);
-                        panelFechaDev.add(updateDatebutton);
-                    }
-                });
-                updateDatebutton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e){
-                        
-                        VentanaMain.refresh(panelFechaDev);
-                        panelFechaDev.add(anioBox2);
-                        anioBox2.setEnabled(true);
-                    }
-                });
-            }
-        });
-        panelFechaDev.add(anioBox2); // Año agregado
-        panel2.add(new JLabel("Fecha de devolución"));
-        panel2.add(new JLabel("Fecha de devolución"));
+        panelFechaDev.setLayout(new GridLayout(0,1));
+        panelFechaDev.add(new JLabel("Ingrese la fecha de devolución del vehículo en formato aaaammdd"));
+        NumericOnlyTextField fecha2= new NumericOnlyTextField(); 
         panel2.add(panelFechaDev);
-        
+        panel2.add(fecha2);
+
         
         // Sede de devolución
         JPanel panelSedeDev = new JPanel();
@@ -267,19 +155,10 @@ public class metodosReserva extends JFrame {
         // Hora de devolución
         JPanel panelHoraDev = new JPanel();
             //En este pedazo de código se saca el día de la semana...
-        String fechaDevSelected = anioBox2.getSelectedItem().toString() + date2.getText();
-        DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate fecha2 = LocalDate.parse(fechaDevSelected, formater);
-        DayOfWeek diaSemana2 = fecha2.getDayOfWeek(); // Obtiene el día de la semana (enum DayOfWeek)
-        String nombreDia2 = diaSemana2.getDisplayName(TextStyle.FULL, Locale.getDefault()); // Convierte el enum a una cadena (Lunes, Martes, ..., Domingo)
             // Hasta aquí.
         
         List<Integer> horarioAtencionDev = new ArrayList<>(); //Aquí se define el horario de atención correcto
-        
-        if (!nombreDia2.toLowerCase().equals("domingo") && !nombreDia.toLowerCase().equals("sabado") && !nombreDia.toLowerCase().equals("sábado")){
-            horarioAtencionDev = eleccionSedeDev.getHorarioAtencionEnSemana();}
-        else {
-            horarioAtencionDev = eleccionSedeDev.getHorarioAtencionFinSemana();}
+        horarioAtencionDev = eleccionSedeDev.getHorarioAtencionEnSemana();
 
         DefaultComboBoxModel<String> opcionesHoraDev = new DefaultComboBoxModel<String>();
         int horaInicio2 = (int) Math.floor(horarioAtencionDev.get(0)/100);
@@ -304,15 +183,8 @@ public class metodosReserva extends JFrame {
         botonContinuar2.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-                System.out.println(fechaDevSelected);
-                System.out.println(fechaRecSelected);
-                if (!fechaDevSelected.equals("") &&
-                ((Integer.parseInt(fechaDevSelected)) > (Integer.parseInt(fechaRecSelected)))){
                 tabbedPane.setSelectedIndex(2);
-                }
-                else{
-                    VentanaMain.errorDialog("Ingrese una fecha válida.");
-                }
+
             }
         });
         
@@ -343,17 +215,17 @@ public class metodosReserva extends JFrame {
                     Categoria categoria= Inventario.assignCategoria(Integer.parseInt(categBox.getSelectedItem().toString().split(":")[0]));
                     int horaRec=Integer.parseInt(horaRecBox.getSelectedItem().toString()+minRecBox.getSelectedItem().toString());
                     int horaDev=Integer.parseInt(horaDevBox.getSelectedItem().toString()+minDevBox.getSelectedItem().toString());
-                    System.out.println(fechaRecSelected);
+                    System.out.println(fecha1.toString());
                     System.out.println(horaRec);
-                    System.out.println(fechaDevSelected);
+                    System.out.println(fecha2.toString());
                     System.out.println(horaDev);
                     System.out.println(eleccionSedeRec.getID());
                     System.out.println(eleccionSedeDev.getID());
                     System.out.println(categoria.getID());
-                    Reserva reserva_u= new Reserva(Integer.parseInt(fechaRecSelected),Integer.parseInt(fechaDevSelected) ,horaRec ,horaDev ,reservaEnSede , eleccionSedeRec, eleccionSedeDev,categoria , cliente);
+                    Reserva reserva_u= new Reserva(Integer.parseInt(fecha1.toString()),Integer.parseInt(fecha2.toString()) ,horaRec ,horaDev ,reservaEnSede , eleccionSedeRec, eleccionSedeDev,categoria , cliente);
                     reserva_u.setVehiculoAsignado();
                     if (reserva_u.getVehiculoAsignado()!=null){
-                        reserva_u.setPagoReserva(Integer.parseInt(fechaRecSelected),Integer.parseInt(fechaDevSelected) ,horaRec ,horaDev);
+                        reserva_u.setPagoReserva(Integer.parseInt(fecha2.toString()),Integer.parseInt(fecha2.toString()) ,horaRec ,horaDev);
                         Reserva.addReserva(reserva_u);
                         VentanaMain.Dialog("Se debitaron COP "+ Double.toString(reserva_u.getPagoReserva())+".");
                         VentanaMain.Dialog("Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_u.getID()));
@@ -375,16 +247,6 @@ public class metodosReserva extends JFrame {
         tabbedPane.add("Selección de categoría", panel3);
 
         return tabbedPane;
-    }
-    
-    public static void main(String[] args) {
-        Inventario.loadSistema();
-        JFrame frame = new JFrame();
-        frame.setSize(400,400);
-        metodosReserva metodos = new metodosReserva();
-        //frame.add(metodos.menuReserva());
-        frame.setVisible(true);
-        
     }
     
 }
