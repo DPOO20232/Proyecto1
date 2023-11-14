@@ -67,7 +67,7 @@ public class MonthlyCalendarPanel extends JPanel {
 
 
 
-                SimpleDateFormat fecha = new SimpleDateFormat("ddMMyyyy");
+                SimpleDateFormat fecha = new SimpleDateFormat("yyyyMMdd");
                 int fechaInt = Integer.parseInt(fecha.format(cal.getTime()));
 
                 int numAlquileres=0;
@@ -75,6 +75,7 @@ public class MonthlyCalendarPanel extends JPanel {
                 for (alquiler i: alquileresSede){
                     int fechaInicio= i.getReserva().getFechaRecoger();
                     int fechaFin=i.getReserva().getFechaEntregar();
+
                     if (fechaInt>= fechaInicio && fechaInt<=fechaFin){
                         numAlquileres+=1;
                     }

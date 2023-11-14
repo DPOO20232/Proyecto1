@@ -88,7 +88,7 @@ public class Consola {
                 else{System.out.println("Por favor seleccione una opción válida.");}
                 }
                 catch(NumberFormatException e){System.out.println("Ingrese solo números en los campos correspondientes");}}}
-            //MENU ADMIN LOCAL
+            //MENU ADMIN LOCAL -> DONE
             else if (personal.checkLoginPersonal(login, password)!=null){
                 perfil=(personal.checkLoginPersonal(login, password)).getTipoPersonal();
                 Sede sedePersonal= personal.checkLoginPersonal(login, password).getSede();
@@ -121,8 +121,8 @@ public class Consola {
                 System.out.println("\n\t\t>>>Hola, gracias por colaborarnos en el área de atención!");
                 while (continuarPersonal1==true){
                     System.out.println("\nOpciones de la aplicación\n");
-                    System.out.println("1. Registrar un alquiler");//CHECKED
-                    System.out.println("2. Completar un alquiler");
+                    System.out.println("1. Registrar un alquiler");//CHECKED?
+                    System.out.println("2. Completar un alquiler");//CHECKED
                     System.out.println("3. Registrar una reserva");
                     System.out.println("4. Modificar una reserva");
                     System.out.println("5. Cerrar sesión\n");

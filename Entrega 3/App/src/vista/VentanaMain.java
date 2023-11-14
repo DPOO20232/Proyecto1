@@ -7,7 +7,6 @@ import modelo.Cliente;
 import modelo.Inventario;
 import modelo.Sede;
 import modelo.Usuario;
-import modelo.alquiler;
 import modelo.personal;
 
 import java.awt.*;
@@ -329,10 +328,6 @@ public class VentanaMain {
             public void actionPerformed(ActionEvent e){
                 try {Inventario.updateSistema();} catch (IOException e1) {e1.printStackTrace();}
                 frame.dispose();
-                //TODO quitar
-                for (alquiler alq: alquiler.getListaAlquileres()){
-                    System.out.println(alq.getID());
-                }
                 try {
                     Inventario.updateSistema();
                 } catch (IOException e1) {

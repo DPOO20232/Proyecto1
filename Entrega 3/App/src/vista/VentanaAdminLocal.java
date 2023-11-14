@@ -211,7 +211,6 @@ public class VentanaAdminLocal {
             // Crear espacios para mostrar al administrador local, empleados técnicos y empleados de atención
             String empleados=personal.printRegistroEmpleados(sede);
             String administradorLocal = EditorObjetos.extraerInformacion("Administrador Local", empleados);
-            System.out.println(administradorLocal);
             String empleadosAtencion = EditorObjetos.extraerInformacion("Empleado(s) de atención", empleados);
             String empleadosTecnicos = EditorObjetos.extraerInformacion("Empleado(s) técnico(s)", empleados);
             
