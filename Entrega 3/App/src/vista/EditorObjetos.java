@@ -144,16 +144,12 @@ public class EditorObjetos {
         encontro_carro_i=false;
 
         crearPasoPregunta("PreguntaSede", "¿Desea modificar las sedes de recogida y devolución del vehículo?", "InputSedes", "PreguntaCategorias");
-        crearPasoSede("InputSedes", "sedes","InputFechas",reserva);
-       
-        //crearPasoFecha("InputFechas",reserva);
-        crearPasoHorario("InputHoras", "Horarios para la reserva", "PreguntaCategoria",reserva);
+        crearPasoSede("InputSedes", "sedes para la reserva","InputFechas",reserva);
+        crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva);
+        crearPasoHora("InputHoras", "Horarios para la reserva", "PreguntaCategoria",reserva);
         //PREGUNTARME SI HAY VEHÍCULOS DISPONIBLES
-
-        crearPasoPregunta("PreguntaCategoria", "¿Desea cambiar de categoría?", "InputCategoria", "InputFechas");
-        crearPasoCategoria("InputCategoria", "categorias", "pregunta Fecha", reserva);
-        //crearPasoVehiculo(reserva);
-        crearPasoPregunta("PreguntaFecha", "¿Desea modificar las sedes de recogida y devolución del vehículo?", "InputConductor", "PreguntaFecha");
+        crearPasoPregunta("PreguntaCategoria", "¿Desea cambiar de categoría?", "InputCategoria", "Fin");
+        crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva);
         crearPasoFin("Fin");
     }
 
