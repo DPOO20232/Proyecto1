@@ -92,6 +92,7 @@ public class VentanaCliente {
         panel3.add(crearReserva(false));
         
         JTabbedPane panel4= new JTabbedPane();
+        panel4.add(modificarReserva());
 
         JTabbedPane panel5= new JTabbedPane();
         panel5.add(cancelarReserva());
@@ -124,6 +125,7 @@ public class VentanaCliente {
                 }
                 else if (selectedIndex==4){
                     VentanaMain.refresh(panel4);
+                    panel4.add(modificarReserva());
                 }
                 else if (selectedIndex==5){
                     VentanaMain.refresh(panel5);
@@ -133,6 +135,50 @@ public class VentanaCliente {
         }});
         return panelInferior;
     }
+    private static JPanel modificarReserva(){
+        JPanel panel = new JPanel();
+        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        DefaultComboBoxModel<String> modeloReservas= new DefaultComboBoxModel<>();
+        int numReservas=0;
+        for(Reserva i: Reserva.getListaReservas()){
+            if (alquiler.assignAlquiler(i.getID())==null){
+            if(i.getCliente().equals(cliente_i)&& i.getFechaRecoger()>=fechaActual){
+            numReservas+=1;
+            String idreseva = Integer.toString(i.getID());
+            String categoria = i.getCategoria().getnombreCategoria();
+            String fechaRecoger = Integer.toString(i.getFechaRecoger());
+            String fechaEntregar = Integer.toString(i.getFechaEntregar());
+            modeloReservas.addElement("id: "+idreseva+" / Categoría:" +categoria+" ("+fechaRecoger+"->"+fechaEntregar+")" );
+        }}
+        }
+        if (numReservas>0){
+        JComboBox<String> comboBoxReservas= new JComboBox<>(modeloReservas);
+        comboBoxReservas.setSelectedIndex(0);
+        panel.add(Box.createRigidArea(new Dimension(0,100)));
+        panel.add(new JLabel("Elija la reserva que desea modificar"));
+        panel.add(comboBoxReservas);
+        JButton avanzar= new JButton("Modificar reserva");
+        panel.add(avanzar);
+        avanzar.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                VentanaMain.refresh(panel);
+                String opcion= comboBoxReservas.getSelectedItem().toString();
+                String[] partes=opcion.split("/");
+                String[] idreserva= partes[0].split(":");
+                int id= Integer.parseInt(idreserva[1].trim());
+                Reserva reservaElejida= Reserva.assignReserva(id);
+                EditorObjetos editor= new EditorObjetos();
+                editor.editorReserva(panel, reservaElejida);
+                }});
+        }
+    else{
+        panel.add(new JLabel("No se encontraron reservas para editar."));
+    }
+    panel.add(Box.createRigidArea(new Dimension(0,100)));
+    return panel;
+    }
+
     private static JPanel cambiarClave(){
         JPanel panel = new JPanel();
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
@@ -555,7 +601,7 @@ public class VentanaCliente {
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
     }
     else{
-        panel.add(new JLabel());
+        panel.add(new JLabel("No se encontraron reservas para editar."));
     }
     panel.add(Box.createRigidArea(new Dimension(0,100)));
     return panel;
