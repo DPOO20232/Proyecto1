@@ -217,12 +217,6 @@ public class VentanaRegistro extends JFrame {
                 mail = campoCorreo.getText();
                 telefono = Long.parseLong(campoTelefono.getText());
                 nacionalidad = campoNacionalidad.getText();
-                System.out.println(nombre);
-                System.out.println(numeroCedula);
-                System.out.println(mail);
-                System.out.println(telefono);
-                System.out.println(inputFechaNacimiento);
-                System.out.println(nacionalidad);
 
                 crearUsuario();
                 botonContinuar.setEnabled(false);
@@ -311,8 +305,6 @@ public class VentanaRegistro extends JFrame {
                 } else {
                     login = campoUsuario.getText();
                     password = new String(campoContraseña.getPassword());
-                    System.out.println(login);
-                    System.out.println(password);
                     clienteNuevo = new Cliente(login, password, numeroCedula, nombre, mail, telefono, fnacimiento, nacionalidad);
                 }
             }
@@ -522,10 +514,6 @@ public class VentanaRegistro extends JFrame {
                         pais = campoPais.getText();
                         int expedicionL = Integer.parseInt(inputFechaL1);
                         int vencimientoL = Integer.parseInt(inputFechaL2);
-                        System.out.println(numerolicencia);
-                        System.out.println(pais);
-                        System.out.println(expedicionL);
-                        System.out.println(vencimientoL);
                         Licencia licenciaNueva = new Licencia(numerolicencia, expedicionL, vencimientoL, pais);
                         clienteNuevo.setLicencia(licenciaNueva);
                         guardarLicencia = true;
@@ -649,10 +637,6 @@ public class VentanaRegistro extends JFrame {
                 marca = campoMarca.getText();
                 titular = campoNombreT.getText();
                 int vencimientoT = Integer.parseInt(inputFechaT);
-                System.out.println(numeroT);
-                System.out.println(marca);
-                System.out.println(titular);
-                System.out.println(vencimientoT);
                 Tarjeta tarjetaNueva = new Tarjeta(numeroT, vencimientoT, marca, titular);
                 clienteNuevo.setTarjeta(tarjetaNueva);
                 guardarTarjeta = true;

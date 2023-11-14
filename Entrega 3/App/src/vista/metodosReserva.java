@@ -325,6 +325,7 @@ public class metodosReserva extends JFrame {
 
         return tabbedPane;
     }
+    /*
     public static void main(String[] args) {
         Inventario.loadSistema();
         JFrame frame = new JFrame();
@@ -334,4 +335,5 @@ public class metodosReserva extends JFrame {
         frame.setVisible(true);
         
     }
+    */
 }
