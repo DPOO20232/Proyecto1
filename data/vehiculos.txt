@@ -11,8 +11,13 @@ HHD129;ford;explorer;blanco;automatico;disponible;false;4;1;[];[];[]
 AUK104;opel;crossland;verde;automatico;disponible;false;4;2;[];[];[]
 ORK286;renault;captur;rojo;automatico;disponible;false;4;3;[];[];[]
 IBM975;kia;soul;gris;automatico;disponible;false;5;1;[];[];[]
+<<<<<<< HEAD
+XIW128;mazda;cx-5;celeste;automatico;disponible;false;5;2;[];[7];[7]
+HEX419;jeep;compass;azul;automatico;disponible;false;5;3;[8];[];[]
+=======
 XIW128;mazda;cx-5;celeste;automatico;disponible;false;5;2;[8,9];[];[7]
 HEX419;jeep;compass;azul;automatico;disponible;false;5;3;[];[];[]
+>>>>>>> fc434b59c8e064e2d8f77c7ffb3abb2f4bc7aee1
 YYM342;kia;sportage;blanco;automatico;disponible;false;6;1;[];[];[]
 VJU148;chevrolet;tracker;rosa;automatico;disponible;false;6;2;[];[];[]
 HUG258;dodge;journey;verde;automatico;disponible;false;6;3;[];[];[]
