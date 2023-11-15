@@ -26,9 +26,10 @@ public class Reserva {
     // Constructores
     public Reserva(){
         /**
-         * Personal de atención una reserva vacía
+         * Se inicializa una reserva vacía
          */
         this.vehiculoAsignado=null;
+        this.idReserva=-1;
     }
     public Reserva(int fechaRecoger, int fechaEntregar, int horaRecoger, int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar,Categoria categoria, Cliente cliente) {
         /**

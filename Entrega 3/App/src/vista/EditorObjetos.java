@@ -42,7 +42,8 @@ public class EditorObjetos {
     private String inputFechaL2;
     private Reserva reserva_i;
     private Reserva copiaReserva_i;
-    private boolean encontro_carro_i;
+    JComboBox<String> comboBox1;
+    JComboBox<String> comboBox2;
     protected static int inputFechaFin;
     protected static int inputFechaInicio;
     protected static int inputHoraFin;
@@ -280,12 +281,14 @@ public class EditorObjetos {
                 else{
                     Reserva.addReserva(reserva_i);
                     reserva_i.setPagoReserva(reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getFechaEntregar(),reserva_i.getHoraEntregar());
-                    VentanaMain.Dialog("Se debitaron COP "+ Double.toString(reserva_i.getPagoReserva())+".");
-                    VentanaMain.Dialog("Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_i.getID()));
+                    VentanaMain.Dialog("Reserva registrada exitosamente, Se debitaron COP "+ Double.toString(reserva_i.getPagoReserva())+".");
+                    if (reserva_i.getID()==-1){
+                    reserva_i.setID();
+                    VentanaMain.Dialog("El id de su reserva es: "+Integer.toString(reserva_i.getID()));
+                    }
                 }
                 try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
                 avanzarAlSiguientePaso(siguientePasoKey);
-            VentanaMain.errorDialog("La nueva categoria debe ser distinta");
             }}
         );
         cardPanel.add(panel, pasoKey);
@@ -343,9 +346,25 @@ public class EditorObjetos {
         panel.add(panelFechas);
         cardPanel.add(panel, pasoKey);
     }
-    private static String[] obtenerOpcionesHoras() {
+    private static String[] obtenerOpcionesHoras(Sede sede,int fecha) {
+        int inicio =0;
+        int fin=24;
+        if (fecha>0&& sede!=null){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate localDate = LocalDate.parse( String.valueOf(fecha), formatter);
+        DayOfWeek dayOfWeek = localDate.getDayOfWeek();
+        boolean esDiaLaboralfin = (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY);
+        if (esDiaLaboralfin){
+            inicio=sede.getHorarioAtencionEnSemana().get(0)/100;
+            fin=sede.getHorarioAtencionEnSemana().get(1)/100;
+        }
+        else{
+            inicio=sede.getHorarioAtencionFinSemana().get(0)/100;
+            fin=sede.getHorarioAtencionFinSemana().get(1)/100;
+        }}
+        
         String[] opcionesHoras = new String[24];
-        for (int i = 0; i < 24; i++) {
+        for (int i = inicio; i < fin; i++) {
             opcionesHoras[i] = String.format("%02d", i);
         }
         return opcionesHoras;
@@ -354,9 +373,14 @@ public class EditorObjetos {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Nuevo " + nombreCampo + ":");
         panel.add(label);
-        JComboBox<String> horaInicioComboBox = new JComboBox<>(obtenerOpcionesHoras());
-        JComboBox<String> horaFinComboBox = new JComboBox<>(obtenerOpcionesHoras());
-
+        JComboBox<String> horaFinComboBox = new JComboBox<>(obtenerOpcionesHoras(null,0));
+        JComboBox<String> horaInicioComboBox = new JComboBox<>(obtenerOpcionesHoras(null,0));
+        if (reserva.getSedeRecoger()!=null && reserva.getSedeEntregar()!=null){
+        horaInicioComboBox = new JComboBox<>(obtenerOpcionesHoras(reserva.getSedeRecoger(),reserva.getFechaRecoger()));
+        horaFinComboBox = new JComboBox<>(obtenerOpcionesHoras(reserva.getSedeEntregar(),reserva.getFechaEntregar()));
+        }
+        comboBox1=horaInicioComboBox;
+        comboBox2=horaFinComboBox;
         // Crear Spinners para los minutos de inicio y fin
         DefaultComboBoxModel<String> opcionesmin1 = new DefaultComboBoxModel<>();
         DefaultComboBoxModel<String> opcionesmin2 = new DefaultComboBoxModel<>();
@@ -378,19 +402,31 @@ public class EditorObjetos {
         gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, 5, 5);  // Espaciado entre componentes
 
+        if (reserva.getSedeRecoger()!=null){
+        panel.add(new JLabel("Hora de Inicio (sede "+reserva.getSedeRecoger().getNombre()+":"), gbc);
+        }
+        else{
         panel.add(new JLabel("Hora de Inicio:"), gbc);
+        }
         gbc.gridx = 1;
         panel.add(horaInicioComboBox, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
+
         panel.add(new JLabel("Minutos de Inicio:"), gbc);
+
         gbc.gridx = 1;
         panel.add(minComboBox1, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
+        if (reserva.getSedeEntregar()!=null){
+        panel.add(new JLabel("Hora de Fin (sede "+reserva.getSedeEntregar().getNombre()+":"), gbc);
+        }
+        else{
         panel.add(new JLabel("Hora de Fin:"), gbc);
+        }
         gbc.gridx = 1;
         panel.add(horaFinComboBox, gbc);
 
@@ -412,19 +448,15 @@ public class EditorObjetos {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Obtener las horas y minutos seleccionados
-                String horaInicio = horaInicioComboBox.getSelectedItem().toString();
+                String horaInicio = comboBox1.getSelectedItem().toString();
                 String minutosInicio = minComboBox1.getSelectedItem().toString();
-                String horaFin = horaFinComboBox.getSelectedItem().toString();
+                String horaFin = comboBox2.getSelectedItem().toString();
                 String minutosFin = minComboBox2.getSelectedItem().toString();
-
-                // Validar las horas y minutos ingresados
-                if (VentanaEmpleadoTecnico.validarHoras(horaInicio, minutosInicio, horaFin, minutosFin)) {
-                    inputHoraInicio = Integer.parseInt(horaInicio + minutosInicio);
-                    inputHoraFin = Integer.parseInt(horaFin + minutosFin);
-                    reserva.setHoraRecoger(inputHoraInicio);
-                    reserva.setHoraEntregar(inputHoraFin);
-                    avanzarAlSiguientePaso(siguientePasoKey);
-                }
+                inputHoraInicio = Integer.parseInt(horaInicio + minutosInicio);
+                inputHoraFin = Integer.parseInt(horaFin + minutosFin);
+                reserva.setHoraRecoger(inputHoraInicio);
+                reserva.setHoraEntregar(inputHoraFin);
+                avanzarAlSiguientePaso(siguientePasoKey);
             }
         });
         cardPanel.add(panel, pasoKey);
