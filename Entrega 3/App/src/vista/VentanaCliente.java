@@ -219,9 +219,18 @@ public class VentanaCliente {
     }
     public static JPanel crearReserva(boolean reservaEnSede){
         JPanel panel = new JPanel();
-        metodosReserva metodos= new metodosReserva();
-        panel.add(metodos.menuReserva(cliente_i,  reservaEnSede));
+        panel.add(Box.createRigidArea(new Dimension(0,100)));
+
+        Reserva reserva= new Reserva();
+        reserva.setReservaEnSede(reservaEnSede);
+        EditorObjetos editor= new EditorObjetos();
+        editor.editorReserva(panel, reserva);
+
+        try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
+        panel.add(Box.createRigidArea(new Dimension(0, 200)));
+        panel.add(Box.createRigidArea(new Dimension(0,100)));
         return panel;
+        
     }
     private static JTabbedPane cambiar_datos(){
         JTabbedPane menu = new JTabbedPane(JTabbedPane.LEFT);

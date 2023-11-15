@@ -23,7 +23,13 @@ public class Reserva {
     private static int lastId;
     private static List<Reserva> listaReservas;
 
-    // Constructor
+    // Constructores
+    public Reserva(){
+        /**
+         * Personal de atención una reserva vacía
+         */
+        this.vehiculoAsignado=null;
+    }
     public Reserva(int fechaRecoger, int fechaEntregar, int horaRecoger, int horaEntregar, boolean reservaEnSede, Sede sedeRecoger, Sede sedeEntregar,Categoria categoria, Cliente cliente) {
         /**
          * Crea una nueva reserva de vehículo con la información especificada.

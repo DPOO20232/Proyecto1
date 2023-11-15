@@ -41,7 +41,7 @@ public class EditorObjetos {
     private String inputFechaL1;
     private String inputFechaL2;
     private Reserva reserva_i;
-    private Reserva copiaReserva;
+    private Reserva copiaReserva_i;
     private boolean encontro_carro_i;
     protected static int inputFechaFin;
     protected static int inputFechaInicio;
@@ -85,29 +85,26 @@ public class EditorObjetos {
         this.pasos=pasosSeguro ;
         mainPanel.add(cardPanel);
         reserva_i=reserva;
-        /*
-        Vehiculo vehiculoActual= reserva.getVehiculoAsignado();
-        reserva.setVehiculoAsignado(null);
-        vehiculoActual.eliminarReservaActiva(reserva.getID());
-        Reserva.getListaReservas().remove(reserva);
-        copiaReserva= new Reserva(reserva.getID(),reserva.getFechaRecoger(),reserva.getFechaEntregar(),reserva.getHoraRecoger(),reserva.getHoraEntregar(),reserva.getReservaEnSede(),reserva.getSedeRecoger(),reserva.getSedeEntregar(),reserva.getCategoria(),reserva.getCliente());
-        */
-        SwingUtilities.invokeLater(() -> {
-        crearPasosReserva(reserva_i);
-        });
-        /*
-        reserva.setVehiculoAsignado();
-        if(reserva.getVehiculoAsignado()==null){
-            VentanaMain.errorDialog("No se logró asignar un nuevo vehículo, los cambios no se guardaron");
-            reserva=new Reserva(copiaReserva.getID(),copiaReserva.getFechaRecoger(),copiaReserva.getFechaEntregar(),copiaReserva.getHoraRecoger(),copiaReserva.getHoraEntregar(),copiaReserva.getReservaEnSede(),copiaReserva.getSedeRecoger(),copiaReserva.getSedeEntregar(),copiaReserva.getCategoria(),copiaReserva.getCliente());;
-            Reserva.addReserva(reserva);
-            reserva.setVehiculoAsignado(vehiculoActual);
-            vehiculoActual.addReservaActiva(reserva);
+
+        Reserva copiaReserva= new Reserva();
+        copiaReserva_i=copiaReserva;  
+        if(reserva.getVehiculoAsignado()!=null){
+            Vehiculo vehiculoActual= reserva.getVehiculoAsignado();
+            reserva.setVehiculoAsignado(null);
+            vehiculoActual.eliminarReservaActiva(reserva.getID());
+            Reserva.getListaReservas().remove(reserva);
+            copiaReserva= new Reserva(reserva.getID(),reserva.getFechaRecoger(),reserva.getFechaEntregar(),reserva.getHoraRecoger(),reserva.getHoraEntregar(),reserva.getReservaEnSede(),reserva.getSedeRecoger(),reserva.getSedeEntregar(),reserva.getCategoria(),reserva.getCliente());
+            SwingUtilities.invokeLater(() -> {
+            crearPasosEditarReserva(reserva_i,copiaReserva_i);
+            });
         }
         else{
+            copiaReserva_i.setReservaEnSede(reserva_i.getReservaEnSede());
+            SwingUtilities.invokeLater(() -> {
+            crearPasosNuevaReserva(reserva_i,copiaReserva_i);
+            });
 
         }
-        */
 
     }
     public void agregarConductores(JPanel mainPanel,alquiler alquiler_u) {
@@ -158,13 +155,20 @@ public class EditorObjetos {
     }
 
 
-    private void crearPasosReserva(Reserva reserva) {
+    private void crearPasosEditarReserva(Reserva reserva,Reserva copiaReserva) {
         crearPasoPregunta("PreguntaSede", "¿Desea modificar las sedes de recogida y devolución del vehículo?", "InputSedes", "PreguntaCategoria");
         crearPasoSede("InputSedes", "sedes para la reserva","InputFechas",reserva);
         crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva);
         crearPasoHora("InputHoras", "Horarios para la reserva", "PreguntaCategoria",reserva);
         crearPasoPregunta("PreguntaCategoria", "¿Desea cambiar de categoría?", "InputCategoria", "Fin");
-        crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva);
+        crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva,copiaReserva);
+        crearPasoFin("Fin");
+    }
+    private void crearPasosNuevaReserva(Reserva reserva,Reserva copiaReserva) {
+        crearPasoSede("InputSedes", "sedes para la reserva","InputFechas",reserva);
+        crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva);
+        crearPasoHora("InputHoras", "Horarios para la reserva", "InputCategoria",reserva);
+        crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva,copiaReserva);
         crearPasoFin("Fin");
     }
 
@@ -241,7 +245,7 @@ public class EditorObjetos {
         });
         cardPanel.add(panel, preguntaKey);
     }
-    private void crearPasoCategoria(String pasoKey, String nombreCampo, String siguientePasoKey, Reserva reserva){
+    private void crearPasoCategoria(String pasoKey, String nombreCampo, String siguientePasoKey, Reserva reserva,Reserva copiaReserva){
         JPanel panel = new JPanel();
         JLabel label = new JLabel(nombreCampo);
         panel.add(label);
@@ -258,15 +262,32 @@ public class EditorObjetos {
             @Override
             public void actionPerformed(ActionEvent e) {
             Categoria categoria = Inventario.assignCategoria(Integer.parseInt(categBox.getSelectedItem().toString().split(":")[0]));
-            if (categoria.getID()!=reserva.getCategoria().getID()){
                 reserva.setCategoria(categoria);
+                reserva.setVehiculoAsignado();
+                if(reserva.getVehiculoAsignado()==null){
+                    if (copiaReserva.getVehiculoAsignado()!=null){
+                    VentanaMain.errorDialog("No se logró asignar un nuevo vehículo, los cambios no se guardaron");
+                    reserva_i=new Reserva(copiaReserva.getID(),copiaReserva.getFechaRecoger(),copiaReserva.getFechaEntregar(),copiaReserva.getHoraRecoger(),copiaReserva.getHoraEntregar(),copiaReserva.getReservaEnSede(),copiaReserva.getSedeRecoger(),copiaReserva.getSedeEntregar(),copiaReserva.getCategoria(),copiaReserva.getCliente());
+                    Vehiculo vehiculoAnterior=copiaReserva.getVehiculoAsignado();
+                    Reserva.addReserva(reserva_i);
+                    reserva_i.setVehiculoAsignado(vehiculoAnterior);
+                    vehiculoAnterior.addReservaActiva(reserva_i);
+                    }
+                    else{
+                        VentanaMain.errorDialog("No se encontraron vehículos disponibles para la configuración de reserva dada");
+                    }
+                }
+                else{
+                    Reserva.addReserva(reserva_i);
+                    reserva_i.setPagoReserva(reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getFechaEntregar(),reserva_i.getHoraEntregar());
+                    VentanaMain.Dialog("Se debitaron COP "+ Double.toString(reserva_i.getPagoReserva())+".");
+                    VentanaMain.Dialog("Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_i.getID()));
+                }
+                try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
                 avanzarAlSiguientePaso(siguientePasoKey);
-            }
-            else{
-                VentanaMain.errorDialog("La nueva categoria debe ser distinta");
-            }
-            }
-        });
+            VentanaMain.errorDialog("La nueva categoria debe ser distinta");
+            }}
+        );
         cardPanel.add(panel, pasoKey);
 
         
