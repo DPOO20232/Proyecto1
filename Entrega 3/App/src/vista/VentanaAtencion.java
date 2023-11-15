@@ -76,7 +76,7 @@ public class VentanaAtencion {
         JTabbedPane panel2= new JTabbedPane();
         panel2.add(completarAlquiler());
         JTabbedPane panel3= new JTabbedPane();
-        panel3.add(VentanaCliente.crearReserva(true));
+        panel3.add(VentanaCliente.crearReserva(true,cliente_i));
         JTabbedPane panel4= new JTabbedPane();
         panel4.add(VentanaCliente.modificarReserva(cliente_i));
 
@@ -102,10 +102,11 @@ public class VentanaAtencion {
                 }
                 else if (selectedIndex==3){
                     VentanaMain.refresh(panel3);
-                    panel3.add(VentanaCliente.crearReserva(true));
+                    panel3.add(VentanaCliente.crearReserva(true,cliente_i));
 
                 }
                 else if (selectedIndex==4){
+                    VentanaMain.refresh(panel4);
                     VentanaMain.refresh(panel4);
                     panel4.add(VentanaCliente.modificarReserva(cliente_i));
                 }

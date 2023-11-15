@@ -93,16 +93,16 @@ public class EditorObjetos {
             Vehiculo vehiculoActual= reserva.getVehiculoAsignado();
             reserva.setVehiculoAsignado(null);
             vehiculoActual.eliminarReservaActiva(reserva.getID());
-            Reserva.getListaReservas().remove(reserva);
+            try{Inventario.updateSistema();}catch(IOException e) {e.printStackTrace();}
             copiaReserva= new Reserva(reserva.getID(),reserva.getFechaRecoger(),reserva.getFechaEntregar(),reserva.getHoraRecoger(),reserva.getHoraEntregar(),reserva.getReservaEnSede(),reserva.getSedeRecoger(),reserva.getSedeEntregar(),reserva.getCategoria(),reserva.getCliente());
             SwingUtilities.invokeLater(() -> {
-            crearPasosEditarReserva(reserva_i,copiaReserva_i);
+            crearPasosReserva(true);
             });
         }
         else{
             copiaReserva_i.setReservaEnSede(reserva_i.getReservaEnSede());
             SwingUtilities.invokeLater(() -> {
-            crearPasosNuevaReserva(reserva_i,copiaReserva_i);
+            crearPasosReserva(false);
             });
 
         }
@@ -155,22 +155,26 @@ public class EditorObjetos {
         crearPasoFin("Fin");
     }
 
+    private void crearPasosReserva(boolean esModificacion){
+        System.out.println(esModificacion);
+        if (esModificacion){
+            crearPasoPregunta("PreguntaSede", "¿Desea modificar las sedes de recogida y devolución del vehículo?", "InputSedes", "PreguntaCategoria");
+            crearPasoSede("InputSedes", "sedes para la reserva","InputFechas",reserva_i);
+            crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva_i);
+            crearPasoHora("InputHoras", "Horarios para la reserva", "PreguntaCategoria",reserva_i);
+            crearPasoPregunta("PreguntaCategoria", "¿Desea cambiar de categoría?", "InputCategoria", "Fin");
+            crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva_i,copiaReserva_i);
+            crearPasoFin("Fin");
 
-    private void crearPasosEditarReserva(Reserva reserva,Reserva copiaReserva) {
-        crearPasoPregunta("PreguntaSede", "¿Desea modificar las sedes de recogida y devolución del vehículo?", "InputSedes", "PreguntaCategoria");
-        crearPasoSede("InputSedes", "sedes para la reserva","InputFechas",reserva);
-        crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva);
-        crearPasoHora("InputHoras", "Horarios para la reserva", "PreguntaCategoria",reserva);
-        crearPasoPregunta("PreguntaCategoria", "¿Desea cambiar de categoría?", "InputCategoria", "Fin");
-        crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva,copiaReserva);
-        crearPasoFin("Fin");
-    }
-    private void crearPasosNuevaReserva(Reserva reserva,Reserva copiaReserva) {
-        crearPasoSede("InputSedes", "sedes para la reserva","InputFechas",reserva);
-        crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva);
-        crearPasoHora("InputHoras", "Horarios para la reserva", "InputCategoria",reserva);
-        crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva,copiaReserva);
-        crearPasoFin("Fin");
+        }
+        else{
+            crearPasoSede("InputSedes", "sedes para la reserva","InputFechas",reserva_i);
+            crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva_i);
+            crearPasoHora("InputHoras", "Horarios para la reserva", "InputCategoria",reserva_i);
+            crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva_i,copiaReserva_i);
+            crearPasoFin("Fin");
+        }
+
     }
 
     private void crearPasoPregunta(String preguntaKey, String pregunta, String siguientePasoKeySi, String siguientePasoKeyNo) {
@@ -208,7 +212,6 @@ public class EditorObjetos {
         panel.add(label);
         JButton siButton = new JButton("Avanzar");
         panel.setLayout(new FlowLayout());
-        panel.add(siButton);
         panel.add(new JLabel("Sede entrega:"));
         JComboBox <String>sedeEntrega= new JComboBox<String>();
         sedeEntrega = new JComboBox<>();
@@ -228,6 +231,7 @@ public class EditorObjetos {
         sedeDevolucion.setSelectedIndex(0);
         sedeDevolucion.setPreferredSize(new Dimension(200, 30));
         panel.add(sedeDevolucion);
+        panel.add(siButton);
         sede1=sedeEntrega;
         sede2=sedeDevolucion;
                
@@ -263,10 +267,10 @@ public class EditorObjetos {
             @Override
             public void actionPerformed(ActionEvent e) {
             Categoria categoria = Inventario.assignCategoria(Integer.parseInt(categBox.getSelectedItem().toString().split(":")[0]));
-                reserva.setCategoria(categoria);
-                reserva.setVehiculoAsignado();
-                if(reserva.getVehiculoAsignado()==null){
-                    if (copiaReserva.getVehiculoAsignado()!=null){
+            reserva.setCategoria(categoria);
+            reserva.setVehiculoAsignado();
+            if(reserva.getVehiculoAsignado()==null){
+                if (copiaReserva.getVehiculoAsignado()!=null){
                     VentanaMain.errorDialog("No se logró asignar un nuevo vehículo, los cambios no se guardaron");
                     reserva_i=new Reserva(copiaReserva.getID(),copiaReserva.getFechaRecoger(),copiaReserva.getFechaEntregar(),copiaReserva.getHoraRecoger(),copiaReserva.getHoraEntregar(),copiaReserva.getReservaEnSede(),copiaReserva.getSedeRecoger(),copiaReserva.getSedeEntregar(),copiaReserva.getCategoria(),copiaReserva.getCliente());
                     Vehiculo vehiculoAnterior=copiaReserva.getVehiculoAsignado();
@@ -277,18 +281,28 @@ public class EditorObjetos {
                     else{
                         VentanaMain.errorDialog("No se encontraron vehículos disponibles para la configuración de reserva dada");
                     }
-                }
-                else{
-                    Reserva.addReserva(reserva_i);
-                    reserva_i.setPagoReserva(reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getFechaEntregar(),reserva_i.getHoraEntregar());
-                    VentanaMain.Dialog("Reserva registrada exitosamente, Se debitaron COP "+ Double.toString(reserva_i.getPagoReserva())+".");
-                    if (reserva_i.getID()==-1){
+            }
+            else{
+                reserva_i.setPagoReserva(reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getFechaEntregar(),reserva_i.getHoraEntregar());                    
+                VentanaMain.Dialog("Reserva registrada exitosamente, el nuevo cobro de su reserva fue de COP "+ Double.toString(reserva_i.getPagoReserva())+".");
+                if (reserva_i.getID()==-1){
                     reserva_i.setID();
                     VentanaMain.Dialog("El id de su reserva es: "+Integer.toString(reserva_i.getID()));
+                }
+                boolean yaRegistrado= false;
+                for (Reserva i: Reserva.getListaReservas()){
+                    if (i.getID()==reserva_i.getID())
+                    {
+                        yaRegistrado=true;
+                        break;
                     }
                 }
-                try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
-                avanzarAlSiguientePaso(siguientePasoKey);
+                if (!yaRegistrado){
+                Reserva.addReserva(reserva_i);
+                }
+
+            }
+            avanzarAlSiguientePaso(siguientePasoKey);
             }}
         );
         cardPanel.add(panel, pasoKey);
@@ -336,7 +350,6 @@ public class EditorObjetos {
                         avanzarAlSiguientePaso(siguientePasoKey);
 
                     }   
-                
                 else {
                     JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser anterior a la fecha de fin y mayor o igual a la fecha actual.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -363,9 +376,9 @@ public class EditorObjetos {
             fin=sede.getHorarioAtencionFinSemana().get(1)/100;
         }}
         
-        String[] opcionesHoras = new String[24];
+        String[] opcionesHoras = new String[fin-inicio];
         for (int i = inicio; i < fin; i++) {
-            opcionesHoras[i] = String.format("%02d", i);
+            opcionesHoras[i-inicio] = String.format("%02d", i);
         }
         return opcionesHoras;
     }
@@ -454,9 +467,16 @@ public class EditorObjetos {
                 String minutosFin = minComboBox2.getSelectedItem().toString();
                 inputHoraInicio = Integer.parseInt(horaInicio + minutosInicio);
                 inputHoraFin = Integer.parseInt(horaFin + minutosFin);
+                boolean posibleRecoger=reserva.getSedeRecoger().estaAbierta(reserva.getFechaRecoger(),inputHoraInicio);
+                boolean posibleEntregar=reserva.getSedeEntregar().estaAbierta(reserva.getFechaEntregar(),inputHoraFin);
+                if (posibleEntregar&&posibleRecoger){
                 reserva.setHoraRecoger(inputHoraInicio);
                 reserva.setHoraEntregar(inputHoraFin);
                 avanzarAlSiguientePaso(siguientePasoKey);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Ingrese horas válidas de recogida y devolución", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         cardPanel.add(panel, pasoKey);

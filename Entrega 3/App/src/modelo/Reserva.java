@@ -239,6 +239,15 @@ public class Reserva {
          * @param categoria La nueva categoría del vehículo reservado.
          */
         this.categoria = categoria;}
+
+        public void setCliente(Cliente cliente) {
+        /**
+         * Establece el cliente de la reserva.
+         *
+         * @param cliente El cliente al que se asignará la reserva.
+         */
+        this.cliente = cliente;}
+
     public void setVehiculoAsignado(Vehiculo vehiculo){
         /**
          * Establece el vehículo asignado a la reserva.

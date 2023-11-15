@@ -89,7 +89,7 @@ public class VentanaCliente {
         JTabbedPane panel2= new JTabbedPane();
         panel2.add(cambiar_datos());
         JTabbedPane panel3= new JTabbedPane();
-        panel3.add(crearReserva(false));
+        panel3.add(crearReserva(false,cliente_i));
         
         JTabbedPane panel4= new JTabbedPane();
         panel4.add(modificarReserva(cliente_i));
@@ -121,7 +121,7 @@ public class VentanaCliente {
                 }
                 else if (selectedIndex==3){
                     VentanaMain.refresh(panel3);
-                    panel3.add(crearReserva(false));
+                    panel3.add(crearReserva(false,cliente_i));
                 }
                 else if (selectedIndex==4){
                     VentanaMain.refresh(panel4);
@@ -171,6 +171,7 @@ public class VentanaCliente {
                 EditorObjetos editor= new EditorObjetos();
                 editor.editorReserva(panel, reservaElejida);
                 }});
+        try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
         }
     else{
         panel.add(new JLabel("No se encontraron reservas para editar."));
@@ -217,17 +218,23 @@ public class VentanaCliente {
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
         return panel;
     }
-    public static JPanel crearReserva(boolean reservaEnSede){
-        JPanel panel = new JPanel();
-        panel.add(Box.createRigidArea(new Dimension(0,100)));
-
-        Reserva reserva= new Reserva();
-        reserva.setReservaEnSede(reservaEnSede);
-        EditorObjetos editor= new EditorObjetos();
-        editor.editorReserva(panel, reserva);
-
+    public static JPanel crearReserva(boolean reservaEnSede,Cliente cliente){
+        JPanel panel = new JPanel(new GridLayout(0, 1,0,50));
+        panel.add(new JLabel(">>>Bienvenido al sistema de reservas"));
+        JButton avanzar= new JButton("Crear reserva");
+        panel.add(avanzar);
+        avanzar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                VentanaMain.refresh(panel);
+                Reserva reserva= new Reserva();
+                reserva.setCliente(cliente);
+                reserva.setReservaEnSede(reservaEnSede);
+                EditorObjetos editor= new EditorObjetos();
+                editor.editorReserva(panel, reserva);
+            }
+        });
         try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
-        panel.add(Box.createRigidArea(new Dimension(0, 200)));
         panel.add(Box.createRigidArea(new Dimension(0,100)));
         return panel;
         
