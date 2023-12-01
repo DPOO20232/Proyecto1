@@ -89,7 +89,7 @@ public class VentanaCliente {
         JTabbedPane panel2= new JTabbedPane();
         panel2.add(cambiar_datos());
         JTabbedPane panel3= new JTabbedPane();
-        panel3.add(crearReserva(false,cliente_i));
+        panel3.add(crearReserva(false,cliente_i,false));
         
         JTabbedPane panel4= new JTabbedPane();
         panel4.add(modificarReserva(cliente_i));
@@ -121,7 +121,7 @@ public class VentanaCliente {
                 }
                 else if (selectedIndex==3){
                     VentanaMain.refresh(panel3);
-                    panel3.add(crearReserva(false,cliente_i));
+                    panel3.add(crearReserva(false,cliente_i,false));
                 }
                 else if (selectedIndex==4){
                     VentanaMain.refresh(panel4);
@@ -168,7 +168,7 @@ public class VentanaCliente {
                 String[] idreserva= partes[0].split(":");
                 int id= Integer.parseInt(idreserva[1].trim());
                 Reserva reservaElejida= Reserva.assignReserva(id);
-                EditorObjetos editor= new EditorObjetos();
+                CardsPanels editor= new CardsPanels();
                 editor.editorReserva(panel, reservaElejida,false);
                 }});
         try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
@@ -218,7 +218,7 @@ public class VentanaCliente {
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
         return panel;
     }
-    public static JPanel crearReserva(boolean reservaEnSede,Cliente cliente){
+    public static JPanel crearReserva(boolean reservaEnSede,Cliente cliente,boolean tieneDescuento){
         JPanel panel = new JPanel(new GridLayout(0, 1,0,50));
         panel.add(new JLabel(">>>Bienvenido al sistema de reservas"));
         JButton avanzar= new JButton("Crear reserva");
@@ -230,8 +230,8 @@ public class VentanaCliente {
                 Reserva reserva= new Reserva();
                 reserva.setCliente(cliente);
                 reserva.setReservaEnSede(reservaEnSede);
-                EditorObjetos editor= new EditorObjetos();
-                editor.editorReserva(panel, reserva,false);
+                CardsPanels editor= new CardsPanels();
+                editor.editorReserva(panel, reserva,tieneDescuento);
             }
         });
         try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}

@@ -32,7 +32,7 @@ import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
-public class EditorObjetos {
+public class CardsPanels {
     private  JPanel mainPanel;
     private  CardLayout cardLayout;
     private  JPanel cardPanel;

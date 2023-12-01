@@ -76,7 +76,7 @@ public class VentanaAtencion {
         JTabbedPane panel2= new JTabbedPane();
         panel2.add(completarAlquiler());
         JTabbedPane panel3= new JTabbedPane();
-        panel3.add(VentanaCliente.crearReserva(true,cliente_i));
+        panel3.add(VentanaCliente.crearReserva(true,cliente_i,false));
         JTabbedPane panel4= new JTabbedPane();
         panel4.add(VentanaCliente.modificarReserva(cliente_i));
 
@@ -102,7 +102,7 @@ public class VentanaAtencion {
                 }
                 else if (selectedIndex==3){
                     VentanaMain.refresh(panel3);
-                    panel3.add(VentanaCliente.crearReserva(true,cliente_i));
+                    panel3.add(VentanaCliente.crearReserva(true,cliente_i,false));
 
                 }
                 else if (selectedIndex==4){
@@ -319,7 +319,7 @@ public class VentanaAtencion {
                         panel.add(Box.createRigidArea(new Dimension(0, 100)));                    
                         JPanel panelConductor= new JPanel();
                         panel.add(panelConductor);
-                        EditorObjetos editor = new EditorObjetos();
+                        CardsPanels editor = new CardsPanels();
                         SwingUtilities.invokeLater(() -> {
                             editor.agregarConductores(panel, alquiler_u);
                             editor.editar();});
