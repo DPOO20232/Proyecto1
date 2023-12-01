@@ -78,7 +78,7 @@ public class EditorObjetos {
         mainPanel.add(cardPanel);
         crearPasosPersonal(personal, panel);
     }
-    public void editorReserva(JPanel mainPanel,Reserva reserva) {
+    public void editorReserva(JPanel mainPanel,Reserva reserva, Boolean boolDTO) {
         this.mainPanel = mainPanel;
         this.cardLayout = new CardLayout();
         this.cardPanel = new JPanel(cardLayout);
@@ -96,13 +96,13 @@ public class EditorObjetos {
             try{Inventario.updateSistema();}catch(IOException e) {e.printStackTrace();}
             copiaReserva= new Reserva(reserva.getID(),reserva.getFechaRecoger(),reserva.getFechaEntregar(),reserva.getHoraRecoger(),reserva.getHoraEntregar(),reserva.getReservaEnSede(),reserva.getSedeRecoger(),reserva.getSedeEntregar(),reserva.getCategoria(),reserva.getCliente());
             SwingUtilities.invokeLater(() -> {
-            crearPasosReserva(true);
+            crearPasosReserva(true,boolDTO);
             });
         }
         else{
             copiaReserva_i.setReservaEnSede(reserva_i.getReservaEnSede());
             SwingUtilities.invokeLater(() -> {
-            crearPasosReserva(false);
+            crearPasosReserva(false,boolDTO);
             });
 
         }
@@ -155,7 +155,7 @@ public class EditorObjetos {
         crearPasoFin("Fin");
     }
 
-    private void crearPasosReserva(boolean esModificacion){
+    private void crearPasosReserva(boolean esModificacion, boolean boolDTO){
         System.out.println(esModificacion);
         if (esModificacion){
             crearPasoPregunta("PreguntaSede", "¿Desea modificar las sedes de recogida y devolución del vehículo?", "InputSedes", "PreguntaCategoria");
@@ -163,7 +163,7 @@ public class EditorObjetos {
             crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva_i);
             crearPasoHora("InputHoras", "Horarios para la reserva", "PreguntaCategoria",reserva_i);
             crearPasoPregunta("PreguntaCategoria", "¿Desea cambiar de categoría?", "InputCategoria", "Fin");
-            crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva_i,copiaReserva_i);
+            crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva_i,copiaReserva_i,boolDTO);
             crearPasoFin("Fin");
 
         }
@@ -171,7 +171,7 @@ public class EditorObjetos {
             crearPasoSede("InputSedes", "sedes para la reserva","InputFechas",reserva_i);
             crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva_i);
             crearPasoHora("InputHoras", "Horarios para la reserva", "InputCategoria",reserva_i);
-            crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva_i,copiaReserva_i);
+            crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva_i,copiaReserva_i,boolDTO);
             crearPasoFin("Fin");
         }
 
@@ -250,7 +250,7 @@ public class EditorObjetos {
         });
         cardPanel.add(panel, preguntaKey);
     }
-    private void crearPasoCategoria(String pasoKey, String nombreCampo, String siguientePasoKey, Reserva reserva,Reserva copiaReserva){
+    private void crearPasoCategoria(String pasoKey, String nombreCampo, String siguientePasoKey, Reserva reserva,Reserva copiaReserva, Boolean boolDTO){
         JPanel panel = new JPanel();
         JLabel label = new JLabel(nombreCampo);
         panel.add(label);
@@ -283,8 +283,13 @@ public class EditorObjetos {
                     }
             }
             else{
-                reserva_i.setPagoReserva(reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getFechaEntregar(),reserva_i.getHoraEntregar());                    
+                reserva_i.setPagoReserva(reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getFechaEntregar(),reserva_i.getHoraEntregar(),boolDTO);
+                if (boolDTO){
+                VentanaMain.Dialog("Reserva registrada exitosamente con un 10% de descuento!, el nuevo cobro de su reserva fue de COP "+ Double.toString(reserva_i.getPagoReserva())+".");
+                }       
+                else{            
                 VentanaMain.Dialog("Reserva registrada exitosamente, el nuevo cobro de su reserva fue de COP "+ Double.toString(reserva_i.getPagoReserva())+".");
+                }
                 if (reserva_i.getID()==-1){
                     reserva_i.setID();
                     VentanaMain.Dialog("El id de su reserva es: "+Integer.toString(reserva_i.getID()));

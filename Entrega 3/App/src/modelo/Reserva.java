@@ -299,7 +299,7 @@ public class Reserva {
          */
         pagoReserva = pago;
     }
-    public void setPagoReserva(int fecha1, int hora1, int fecha2, int hora2) {
+    public void setPagoReserva(int fecha1, int hora1, int fecha2, int hora2,boolean BooleanDTO) {
         /**
          * Calcula y establece el monto de pago de la reserva en función de las fechas y horas especificadas.
          *
@@ -307,6 +307,7 @@ public class Reserva {
          * @param hora1 La hora de inicio de la reserva (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
          * @param fecha2 La fecha de finalización de la reserva (en formato numérico, por ejemplo, YYYYMMDD).
          * @param hora2 La hora de finalización de la reserva (en formato 24 horas, por ejemplo, 1500 para las 3:00 PM).
+         * @param BooleanDTO si este boolean es igual a true se realiza un 10% de descuento sobre el valor de la reserva
          */
         Categoria categoria=this.getCategoria();
         int tarifa=categoria.getTarifaDiaria();
@@ -320,6 +321,7 @@ public class Reserva {
         if(esTempAlta){pctg_temporada=categoria.getPctg_temporadaAlta();}
         else if(esTempBaja){pctg_temporada=categoria.getPctg_temporadaBaja();}
         double precio_final=precio_inicial*pctg_temporada;
+        if (BooleanDTO){precio_final=precio_final*0.9;}
         this.pagoReserva= precio_final;
     }
 
