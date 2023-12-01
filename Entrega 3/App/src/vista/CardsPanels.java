@@ -367,21 +367,6 @@ public class CardsPanels {
     private static String[] obtenerOpcionesHoras(Sede sede,int fecha) {
         int inicio =0;
         int fin=24;
-        if (fecha>0&& sede!=null){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate localDate = LocalDate.parse( String.valueOf(fecha), formatter);
-        DayOfWeek dayOfWeek = localDate.getDayOfWeek();
-        boolean esDiaLaboralfin = (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY);}
-        /*
-        if (esDiaLaboralfin){
-            inicio=sede.getHorarioAtencionEnSemana().get(0)/100;
-            fin=sede.getHorarioAtencionEnSemana().get(1)/100;
-        }
-        else{
-            inicio=sede.getHorarioAtencionFinSemana().get(0)/100;
-            fin=sede.getHorarioAtencionFinSemana().get(1)/100;
-        }}
-        */
         String[] opcionesHoras = new String[fin-inicio];
         for (int i = inicio; i < fin; i++) {
             opcionesHoras[i-inicio] = String.format("%02d", i);
@@ -394,12 +379,6 @@ public class CardsPanels {
         panel.add(label);
         JComboBox<String> horaFinComboBox = new JComboBox<>(obtenerOpcionesHoras(null,0));
         JComboBox<String> horaInicioComboBox = new JComboBox<>(obtenerOpcionesHoras(null,0));
-        /*
-        if (reserva.getSedeRecoger()!=null && reserva.getSedeEntregar()!=null){
-        horaInicioComboBox = new JComboBox<>(obtenerOpcionesHoras(reserva.getSedeRecoger(),reserva.getFechaRecoger()));
-        horaFinComboBox = new JComboBox<>(obtenerOpcionesHoras(reserva.getSedeEntregar(),reserva.getFechaEntregar()));
-        }
-        */
         comboBox1=horaInicioComboBox;
         comboBox2=horaFinComboBox;
         // Crear Spinners para los minutos de inicio y fin
@@ -423,12 +402,6 @@ public class CardsPanels {
         gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, 5, 5);  // Espaciado entre componentes
 
-        /*
-        if (reserva.getSedeRecoger()!=null){
-        panel.add(new JLabel("Hora de Inicio (sede "+reserva.getSedeRecoger().getNombre()+":"), gbc);
-        }
-        */
-
         panel.add(new JLabel("Hora de Inicio:"), gbc);
 
         gbc.gridx = 1;
@@ -444,11 +417,7 @@ public class CardsPanels {
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        /*
-        if (reserva.getSedeEntregar()!=null){
-        panel.add(new JLabel("Hora de Fin (sede "+reserva.getSedeEntregar().getNombre()+":"), gbc);
-        }
-        */
+
         panel.add(new JLabel("Hora de Fin:"), gbc);
         gbc.gridx = 1;
         panel.add(horaFinComboBox, gbc);
@@ -701,120 +670,6 @@ public class CardsPanels {
     
         cardPanel.add(panel, pasoKey);
     }
-    /*
-    
-    private void crearPasoFecha(String pasoKey, String nombreCampo, String siguientePasoKey, Object O) {
-        JPanel panelC= new JPanel();
-        panelC.add(new JLabel(nombreCampo));
-        JPanel panelFecha1= new JPanel();
-        panelFecha1.setLayout(new GridLayout(1,0));
-        DefaultComboBoxModel<String> opcionesAnio = new DefaultComboBoxModel<>();
-
-        int anioActual= Calendar.getInstance().get(Calendar.YEAR);
-        for (int i = anioActual; i <= anioActual+2; i++){
-            opcionesAnio.addElement(Integer.toString(i));
-        }
-        JComboBox<String> anioBox= new JComboBox<String>(opcionesAnio);
-        anioBox.setSelectedIndex(0);
-        panelFecha1.add(anioBox);
-        anioBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-            panelC.repaint();
-            String anio=anioBox.getSelectedItem().toString();
-            VentanaMain.refresh(panelFecha1);
-            panelFecha1.add(anioBox);
-            anioBox.setEnabled(false);
-            DateComboBoxPanel date1= new DateComboBoxPanel(Integer.parseInt(anio));
-            date1.setDefaulDayComboBox();
-            date1.setDefaultMonthComboBox();
-            panelFecha1.add(date1);
-            panelFecha1.repaint();
-            JButton updateDatebutton= new JButton("Cambiar Fecha");
-            panelFecha1.add(updateDatebutton);
-            JButton saveDatebutton= new JButton("Guardar Fecha");
-            panelFecha1.add(saveDatebutton);
-            inputFechaL1="";
-
-            saveDatebutton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e){
-                    if (!date1.getText().trim().isEmpty()) {
-                        inputFechaL1 = anio + date1.getText();
-                    }
-                    VentanaMain.refresh(panelFecha1);
-                    panelFecha1.add(anioBox);
-                    panelFecha1.add(updateDatebutton);
-                } 
-            });
-            updateDatebutton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e){
-                    inputFechaL1="";
-                    VentanaMain.refresh(panelFecha1);
-                    panelFecha1.add(anioBox);
-                    anioBox.setEnabled(true);
-                }
-            });
-            }
-        });
-
-        JPanel panelFecha2= new JPanel();
-        panelC.add(panelFecha2);
-        panelFecha2.setLayout(new GridLayout(1,0));
-        DefaultComboBoxModel<String> opcionesAnio2 = new DefaultComboBoxModel<>();
-
-        for (int j = anioActual; j <= anioActual+20; j++){
-            opcionesAnio2.addElement(Integer.toString(j));
-        }
-        JComboBox<String> anioBox2= new JComboBox<String>(opcionesAnio2);
-        anioBox2.setSelectedIndex(0);
-        panelFecha2.add(anioBox2);
-        anioBox2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-            panelC.repaint();
-            String anio=anioBox2.getSelectedItem().toString();
-            VentanaMain.refresh(panelFecha2);
-            panelFecha2.add(anioBox2);
-            anioBox2.setEnabled(false);
-            DateComboBoxPanel date2= new DateComboBoxPanel(Integer.parseInt(anio));
-            date2.setDefaulDayComboBox();
-            date2.setDefaultMonthComboBox();
-            panelFecha2.add(date2);
-            JButton updateDatebutton= new JButton("Cambiar Fecha");
-            panelFecha2.add(updateDatebutton);
-            JButton saveDatebutton= new JButton("Guardar Fecha");
-            panelFecha2.add(saveDatebutton);
-            inputFechaL2="";
-
-            saveDatebutton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e){
-                    if (!date2.getText().trim().isEmpty()) {
-                        inputFechaL2 = anio + date2.getText();
-                    }
-                    VentanaMain.refresh(panelFecha2);
-                    panelFecha2.add(anioBox2);
-                    panelFecha2.add(updateDatebutton);
-                } 
-            });
-            updateDatebutton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e){
-                    inputFechaL2="";
-                    VentanaMain.refresh(panelFecha2);
-                    panelFecha2.add(anioBox2);
-                    anioBox2.setEnabled(true);
-                }
-            });
-            }
-        });
-        panelC.add(panelFecha1);
-        panelC.add(panelFecha2);
-        cardPanel.add(panelC, pasoKey);
-    }
-    */
     
     private void crearPasoDecimales(String pasoKey, String nombreCampo, String siguientePasoKey,Object O) {
         JPanel panel = new JPanel();

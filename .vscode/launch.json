@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "VentanaMain2",
+            "request": "launch",
+            "mainClass": "vista2.VentanaMain2",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
             "name": "VentanaMain",
             "request": "launch",
             "mainClass": "vista.VentanaMain",

@@ -43,7 +43,6 @@ public class VentanaMain2 {
 
         JButton loginButton = new JButton("Iniciar Sesión");
         loginButton.setEnabled(false); // Establecer el botón como deshabilitado inicialmente
-        JButton registerButton = new JButton("Registrarme");
 
         // Agrega un DocumentListener para habilitar/deshabilitar el botón según el contenido de los campos
         DocumentListener documentListener = new DocumentListener() {
@@ -76,7 +75,6 @@ public class VentanaMain2 {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String perfil="";
                 String username = nameField.getText();
                 String password = new String(passwordField.getPassword());
                 boolean found=false;
@@ -92,6 +90,7 @@ public class VentanaMain2 {
             }
         });
         // Centra la ventana en la pantalla
+        formPanel.add(loginButton);
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
