@@ -1,4 +1,9 @@
 package modelo;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -331,4 +336,31 @@ public class alquiler{
         System.out.println("\n\t>Se programaron los eventos correspondientes");
         return saldoFinal;
     }
+    public void facturas(){
+        try {
+            BufferedWriter writer=new BufferedWriter(new FileWriter("./facturas/"+this.getID()+".txt"));
+            writer.write("\t\t" + Inventario.getNombreCompania());
+            writer.write("\t\t Id Factura: "+this.getID());
+            LocalDate fechaActual = LocalDate.now();
+            writer.write("Fecha: "+ fechaActual);
+            writer.write("Direccion: "+this.getReserva().getSedeEntregar());
+            writer.write("Datos CLiente: ");
+            writer.write("Nombre: "+this.getReserva().getCliente().getNombre());
+            writer.write("Telefono: "+this.getReserva().getCliente().getTelefono());
+            writer.write("Mail: " + this.getReserva().getCliente().getMail());
+            writer.newLine();
+            writer.write("Descripcion: ");
+            writer.write("Alquiler vehiculo tipo: "+this.getReserva().getCategoria());
+            writer.write("por "+ Reserva.calcularDuracionRenta(this.getReserva().getFechaRecoger(), this.getReserva().getHoraRecoger(), this.getReserva().getFechaEntregar(), this.getReserva().getHoraEntregar())+"dias.");
+            writer.write("Monto: "+this.getPagoFinal());    
+            writer.close();
+            
+
+        } catch (Exception e) {
+
+            // TODO: handle exception
+        }
+
+    }
+
 }

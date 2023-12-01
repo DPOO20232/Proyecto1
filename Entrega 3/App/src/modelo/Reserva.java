@@ -433,7 +433,7 @@ public class Reserva {
         }
         return retorno;
     }
-    private int calcularDuracionRenta(int fecha1, int hora1, int fecha2, int hora2) {
+    public static int calcularDuracionRenta(int fecha1, int hora1, int fecha2, int hora2) {
         /**
          * Calcula la duración de una renta en días, considerando las fechas y horas de inicio y fin.
          *
