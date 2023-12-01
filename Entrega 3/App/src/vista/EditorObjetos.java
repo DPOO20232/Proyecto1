@@ -241,10 +241,10 @@ public class EditorObjetos {
                 String sedeEntregaS= sede1.getSelectedItem().toString().split(":")[0];
                 String sedeDevolucionS = sede2.getSelectedItem().toString().split(":")[0];
                 Sede nuevaSedeEntrega=Inventario.assignSede(Integer.parseInt(sedeEntregaS));
-                reserva.setSedeRecoger(nuevaSedeEntrega);
+                reserva_i.setSedeRecoger(nuevaSedeEntrega);
 
                 Sede nuevaSedeDevolucion=Inventario.assignSede(Integer.parseInt(sedeDevolucionS));
-                reserva.setSedeEntregar(nuevaSedeDevolucion);
+                reserva_i.setSedeEntregar(nuevaSedeDevolucion);
                 avanzarAlSiguientePaso(siguientePasoKey);
             }
         });
@@ -267,10 +267,10 @@ public class EditorObjetos {
             @Override
             public void actionPerformed(ActionEvent e) {
             Categoria categoria = Inventario.assignCategoria(Integer.parseInt(categBox.getSelectedItem().toString().split(":")[0]));
-            reserva.setCategoria(categoria);
-            reserva.setVehiculoAsignado();
+            reserva_i.setCategoria(categoria);
+            reserva_i.setVehiculoAsignado();
             if(reserva.getVehiculoAsignado()==null){
-                if (copiaReserva.getVehiculoAsignado()!=null){
+                if (copiaReserva_i.getVehiculoAsignado()!=null){
                     VentanaMain.errorDialog("No se logró asignar un nuevo vehículo, los cambios no se guardaron");
                     reserva_i=new Reserva(copiaReserva.getID(),copiaReserva.getFechaRecoger(),copiaReserva.getFechaEntregar(),copiaReserva.getHoraRecoger(),copiaReserva.getHoraEntregar(),copiaReserva.getReservaEnSede(),copiaReserva.getSedeRecoger(),copiaReserva.getSedeEntregar(),copiaReserva.getCategoria(),copiaReserva.getCliente());
                     Vehiculo vehiculoAnterior=copiaReserva.getVehiculoAsignado();
@@ -367,6 +367,7 @@ public class EditorObjetos {
         LocalDate localDate = LocalDate.parse( String.valueOf(fecha), formatter);
         DayOfWeek dayOfWeek = localDate.getDayOfWeek();
         boolean esDiaLaboralfin = (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY);
+        /*
         if (esDiaLaboralfin){
             inicio=sede.getHorarioAtencionEnSemana().get(0)/100;
             fin=sede.getHorarioAtencionEnSemana().get(1)/100;
@@ -375,7 +376,7 @@ public class EditorObjetos {
             inicio=sede.getHorarioAtencionFinSemana().get(0)/100;
             fin=sede.getHorarioAtencionFinSemana().get(1)/100;
         }}
-        
+        */
         String[] opcionesHoras = new String[fin-inicio];
         for (int i = inicio; i < fin; i++) {
             opcionesHoras[i-inicio] = String.format("%02d", i);
@@ -388,16 +389,18 @@ public class EditorObjetos {
         panel.add(label);
         JComboBox<String> horaFinComboBox = new JComboBox<>(obtenerOpcionesHoras(null,0));
         JComboBox<String> horaInicioComboBox = new JComboBox<>(obtenerOpcionesHoras(null,0));
+        /*
         if (reserva.getSedeRecoger()!=null && reserva.getSedeEntregar()!=null){
         horaInicioComboBox = new JComboBox<>(obtenerOpcionesHoras(reserva.getSedeRecoger(),reserva.getFechaRecoger()));
         horaFinComboBox = new JComboBox<>(obtenerOpcionesHoras(reserva.getSedeEntregar(),reserva.getFechaEntregar()));
         }
+        */
         comboBox1=horaInicioComboBox;
         comboBox2=horaFinComboBox;
         // Crear Spinners para los minutos de inicio y fin
         DefaultComboBoxModel<String> opcionesmin1 = new DefaultComboBoxModel<>();
         DefaultComboBoxModel<String> opcionesmin2 = new DefaultComboBoxModel<>();
-
+        
         for (int i = 0; i <= 59; i++) {
             String s="";
             if (i<10){
@@ -415,12 +418,14 @@ public class EditorObjetos {
         gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, 5, 5);  // Espaciado entre componentes
 
+        /*
         if (reserva.getSedeRecoger()!=null){
         panel.add(new JLabel("Hora de Inicio (sede "+reserva.getSedeRecoger().getNombre()+":"), gbc);
         }
-        else{
+        */
+
         panel.add(new JLabel("Hora de Inicio:"), gbc);
-        }
+
         gbc.gridx = 1;
         panel.add(horaInicioComboBox, gbc);
 
@@ -434,12 +439,12 @@ public class EditorObjetos {
 
         gbc.gridx = 0;
         gbc.gridy = 2;
+        /*
         if (reserva.getSedeEntregar()!=null){
         panel.add(new JLabel("Hora de Fin (sede "+reserva.getSedeEntregar().getNombre()+":"), gbc);
         }
-        else{
+        */
         panel.add(new JLabel("Hora de Fin:"), gbc);
-        }
         gbc.gridx = 1;
         panel.add(horaFinComboBox, gbc);
 
@@ -467,15 +472,15 @@ public class EditorObjetos {
                 String minutosFin = minComboBox2.getSelectedItem().toString();
                 inputHoraInicio = Integer.parseInt(horaInicio + minutosInicio);
                 inputHoraFin = Integer.parseInt(horaFin + minutosFin);
-                boolean posibleRecoger=reserva.getSedeRecoger().estaAbierta(reserva.getFechaRecoger(),inputHoraInicio);
-                boolean posibleEntregar=reserva.getSedeEntregar().estaAbierta(reserva.getFechaEntregar(),inputHoraFin);
+                boolean posibleRecoger=reserva_i.getSedeRecoger().estaAbierta(reserva_i.getFechaRecoger(),inputHoraInicio);
+                boolean posibleEntregar=reserva_i.getSedeEntregar().estaAbierta(reserva_i.getFechaEntregar(),inputHoraFin);
                 if (posibleEntregar&&posibleRecoger){
-                reserva.setHoraRecoger(inputHoraInicio);
-                reserva.setHoraEntregar(inputHoraFin);
+                reserva_i.setHoraRecoger(inputHoraInicio);
+                reserva_i.setHoraEntregar(inputHoraFin);
                 avanzarAlSiguientePaso(siguientePasoKey);
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "Ingrese horas válidas de recogida y devolución", "Error", JOptionPane.ERROR_MESSAGE);
+                    DialogHora(reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(), reserva_i.getSedeRecoger(),reserva_i.getSedeEntregar());
                 }
             }
         });
@@ -942,6 +947,79 @@ public class EditorObjetos {
         // Retornamos la subcadena desde startIndex hasta endIndex
         return informacion.substring(startIndex, endIndex);
     }
+    public void DialogHora(int fechaI, int fechaF, Sede sedeI, Sede sedeF){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate localDate1 = LocalDate.parse( String.valueOf(fechaI), formatter);
+        LocalDate localDate2 = LocalDate.parse( String.valueOf(fechaF), formatter);
+
+        DayOfWeek dayOfWeek1 = localDate1.getDayOfWeek();
+        DayOfWeek dayOfWeek2 = localDate12.getDayOfWeek();
+
+        boolean esDiaLaboralfin1 = (dayOfWeek1 != DayOfWeek.SATURDAY && dayOfWeek1 != DayOfWeek.SUNDAY);
+        boolean esDiaLaboralfin2 = (dayOfWeek2 != DayOfWeek.SATURDAY && dayOfWeek2 != DayOfWeek.SUNDAY);
+        String inicio1="";
+        String inicio2="";
+        String fin1="";
+        String fin2="";
+        if (esDiaLaboralfin1){
+            String  inicio= String.format("%04d",sedeI.getHorarioAtencionEnSemana().get(0)/100);
+            String  fin= String.format("%04d",sedeI.getHorarioAtencionEnSemana().get(1)/100);
+            inicio1= inicio.substring(0,inicio.lenght()-2)+":"+inicio.substring(inicio.length()-2);
+            fin1= fin.substring(0,fin.lenght()-2)+":"+fin.substring(fin.length()-2);
+        }
+        else{
+
+            String  inicio= String.format("%04d",sedeI.getHorarioAtencionFinSemana().get(0)/100);
+            String  fin= String.format("%04d",sedeI.getHorarioAtencionFinSemana().get(1)/100);
+            inicio1= inicio.substring(0,inicio.lenght()-2)+":"+inicio.substring(inicio.length()-2);
+            fin1= fin.substring(0,fin.lenght()-2)+":"+fin.substring(fin.length()-2);
+        }
+        if (esDiaLaboralfin2){
+            String  inicio= String.format("%04d",sedeF.getHorarioAtencionEnSemana().get(0)/100);
+            String  fin= String.format("%04d",sedeF.getHorarioAtencionEnSemana().get(1)/100);
+            inicio2= inicio.substring(0,inicio.lenght()-2)+":"+inicio.substring(inicio.length()-2);
+            fin2= fin.substring(0,fin.lenght()-2)+":"+fin.substring(fin.length()-2);
+        }
+        else{
+
+            String  inicio= String.format("%04d",sedeF.getHorarioAtencionFinSemana().get(0)/100);
+            String  fin= String.format("%04d",sedeF.getHorarioAtencionFinSemana().get(1)/100);
+            inicio2= inicio.substring(0,inicio.lenght()-2)+":"+inicio.substring(inicio.length()-2);
+            fin2= fin.substring(0,fin.lenght()-2)+":"+fin.substring(fin.length()-2);
+        }
+        String horarios1="Horario disponible para recogida vehículo: "+inicio1+" -> "+fin1;
+        String horarios1="Horario disponible para devolución vehículo: "+inicio2+" -> "+fin2;
+        
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+
+        // Agregar etiquetas al panel
+        JLabel label1 = new JLabel(horarios1);
+        JLabel label2 = new JLabel(horarios2);
+        panel.add(label1, gbc);
+        
+        gbc.gridy++;
+        panel.add(label2, gbc);
+
+        // Agregar el panel al diálogo
+        add(panel);
+        
+        // Ajustes adicionales del diálogo
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        pack();
+        setLocationRelativeTo(parent);
+        setVisible(true);
+        
+    }
+
+
+
+    
 
 
     public void crearLicencia(JPanel panel,String pasoKey,alquiler alquiler_u,String siguientePasoKey) {
@@ -1038,12 +1116,12 @@ public class EditorObjetos {
             date2.setDefaulDayComboBox();
             date2.setDefaultMonthComboBox();
             panelFecha2.add(date2);
+            panelFecha2.repaint();
             JButton updateDatebutton= new JButton("Cambiar Fecha");
             panelFecha2.add(updateDatebutton);
             JButton saveDatebutton= new JButton("Guardar Fecha");
             panelFecha2.add(saveDatebutton);
             inputFechaL2="";
-
             saveDatebutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e){

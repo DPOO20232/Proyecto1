@@ -412,6 +412,7 @@ public class VentanaAtencion {
                     panel_1.add(uno);
                     panel_1.add(dos);
                     panel_1.add(tres);
+                    panel_1.repaint();
                     JButton avanzar2= new JButton("Concluir alquiler");
                     panel_1.add(avanzar2);
                     panel_1.repaint();
