@@ -366,7 +366,7 @@ public class EditorObjetos {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate localDate = LocalDate.parse( String.valueOf(fecha), formatter);
         DayOfWeek dayOfWeek = localDate.getDayOfWeek();
-        boolean esDiaLaboralfin = (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY);
+        boolean esDiaLaboralfin = (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY);}
         /*
         if (esDiaLaboralfin){
             inicio=sede.getHorarioAtencionEnSemana().get(0)/100;
@@ -953,7 +953,7 @@ public class EditorObjetos {
         LocalDate localDate2 = LocalDate.parse( String.valueOf(fechaF), formatter);
 
         DayOfWeek dayOfWeek1 = localDate1.getDayOfWeek();
-        DayOfWeek dayOfWeek2 = localDate12.getDayOfWeek();
+        DayOfWeek dayOfWeek2 = localDate2.getDayOfWeek();
 
         boolean esDiaLaboralfin1 = (dayOfWeek1 != DayOfWeek.SATURDAY && dayOfWeek1 != DayOfWeek.SUNDAY);
         boolean esDiaLaboralfin2 = (dayOfWeek2 != DayOfWeek.SATURDAY && dayOfWeek2 != DayOfWeek.SUNDAY);
@@ -964,31 +964,31 @@ public class EditorObjetos {
         if (esDiaLaboralfin1){
             String  inicio= String.format("%04d",sedeI.getHorarioAtencionEnSemana().get(0)/100);
             String  fin= String.format("%04d",sedeI.getHorarioAtencionEnSemana().get(1)/100);
-            inicio1= inicio.substring(0,inicio.lenght()-2)+":"+inicio.substring(inicio.length()-2);
-            fin1= fin.substring(0,fin.lenght()-2)+":"+fin.substring(fin.length()-2);
+            inicio1= inicio.substring(inicio.length()-2)+":"+inicio.substring(0,inicio.length()-2);
+            fin1= fin.substring(fin.length()-2)+":"+fin.substring(0,fin.length()-2);
         }
         else{
 
             String  inicio= String.format("%04d",sedeI.getHorarioAtencionFinSemana().get(0)/100);
             String  fin= String.format("%04d",sedeI.getHorarioAtencionFinSemana().get(1)/100);
-            inicio1= inicio.substring(0,inicio.lenght()-2)+":"+inicio.substring(inicio.length()-2);
-            fin1= fin.substring(0,fin.lenght()-2)+":"+fin.substring(fin.length()-2);
+            inicio1= inicio.substring(inicio.length()-2)+":"+inicio.substring(0,inicio.length()-2);
+            fin1=    fin.substring(fin.length()-2)+":"+fin.substring(0,fin.length()-2);
         }
         if (esDiaLaboralfin2){
             String  inicio= String.format("%04d",sedeF.getHorarioAtencionEnSemana().get(0)/100);
             String  fin= String.format("%04d",sedeF.getHorarioAtencionEnSemana().get(1)/100);
-            inicio2= inicio.substring(0,inicio.lenght()-2)+":"+inicio.substring(inicio.length()-2);
-            fin2= fin.substring(0,fin.lenght()-2)+":"+fin.substring(fin.length()-2);
+            inicio2= inicio.substring(inicio.length()-2)+":"+inicio.substring(0,inicio.length()-2);
+            fin2= fin.substring(fin.length()-2)+":"+fin.substring(0,fin.length()-2);
         }
         else{
 
             String  inicio= String.format("%04d",sedeF.getHorarioAtencionFinSemana().get(0)/100);
             String  fin= String.format("%04d",sedeF.getHorarioAtencionFinSemana().get(1)/100);
-            inicio2= inicio.substring(0,inicio.lenght()-2)+":"+inicio.substring(inicio.length()-2);
-            fin2= fin.substring(0,fin.lenght()-2)+":"+fin.substring(fin.length()-2);
+            inicio2= inicio.substring(inicio.length()-2)+":"+inicio.substring(0,inicio.length()-2);
+            fin2= fin.substring(fin.length()-2)+":"+fin.substring(0,fin.length()-2);
         }
         String horarios1="Horario disponible para recogida vehículo: "+inicio1+" -> "+fin1;
-        String horarios1="Horario disponible para devolución vehículo: "+inicio2+" -> "+fin2;
+        String horarios2="Horario disponible para devolución vehículo: "+inicio2+" -> "+fin2;
         
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -1005,15 +1005,15 @@ public class EditorObjetos {
         
         gbc.gridy++;
         panel.add(label2, gbc);
-
+        JDialog dialog= new JDialog();
         // Agregar el panel al diálogo
-        add(panel);
+        dialog.add(panel);
         
         // Ajustes adicionales del diálogo
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        pack();
-        setLocationRelativeTo(parent);
-        setVisible(true);
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
         
     }
 
