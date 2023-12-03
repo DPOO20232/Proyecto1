@@ -202,8 +202,6 @@ public class PayPal extends pasarelaPago implements ActionListener {
         }
     }
     public static void main(String[] args) {
-        PayPal pasarela=new PayPal(new Cliente("", "", 1, "", "", 0, 0, ""),"reserva",1000L,1,"registroPagos\\registroPayPal.log");
-        System.out.println(pasarela.getTransferenciaCompletada());
-        
+        PayPal pasarela=new PayPal(new Cliente("", "", 1, "", "", 0, 0, ""),"reserva",1000L,1,"registroPagos\\registroPayPal.log");        
     }
 }
