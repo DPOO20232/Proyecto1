@@ -637,7 +637,7 @@ public class VentanaRegistro extends JFrame {
                 marca = campoMarca.getText();
                 titular = campoNombreT.getText();
                 int vencimientoT = Integer.parseInt(inputFechaT);
-                Tarjeta tarjetaNueva = new Tarjeta(numeroT, vencimientoT, marca, titular);
+                Tarjeta tarjetaNueva = new Tarjeta(numeroT,false,0L, vencimientoT, marca, titular);
                 clienteNuevo.setTarjeta(tarjetaNueva);
                 guardarTarjeta = true;
                 tabbedPane.remove(panelD);

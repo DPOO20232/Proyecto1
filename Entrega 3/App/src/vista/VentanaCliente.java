@@ -558,7 +558,7 @@ public class VentanaCliente {
                     JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
 
-                    Tarjeta tarjetaNueva = new Tarjeta(numeroT, vencimientoT, marca, titular);
+                    Tarjeta tarjetaNueva = new Tarjeta(numeroT,false,0L, vencimientoT, marca, titular);
                     cliente_i.setTarjeta(tarjetaNueva);
 
 

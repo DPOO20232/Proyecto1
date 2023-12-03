@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import modelo.Categoria;
+import modelo.Cliente;
 import modelo.Conductor;
 import modelo.Inventario;
 import modelo.Licencia;
@@ -29,7 +30,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 
 public class CardsPanels {
@@ -50,6 +58,7 @@ public class CardsPanels {
     protected static int inputHoraInicio;
     private static JComboBox <String> sede1;
     private static JComboBox <String> sede2;
+    private static JComboBox <String> pasarelas;
 
     public void editorSede(JPanel mainPanel,Sede sedeEditar) {
         this.mainPanel = mainPanel;
@@ -96,13 +105,25 @@ public class CardsPanels {
             try{Inventario.updateSistema();}catch(IOException e) {e.printStackTrace();}
             copiaReserva= new Reserva(reserva.getID(),reserva.getFechaRecoger(),reserva.getFechaEntregar(),reserva.getHoraRecoger(),reserva.getHoraEntregar(),reserva.getReservaEnSede(),reserva.getSedeRecoger(),reserva.getSedeEntregar(),reserva.getCategoria(),reserva.getCliente());
             SwingUtilities.invokeLater(() -> {
-            crearPasosReserva(true,boolDTO);
+            try {
+                crearPasosReserva(true,boolDTO);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             });
         }
         else{
             copiaReserva_i.setReservaEnSede(reserva_i.getReservaEnSede());
             SwingUtilities.invokeLater(() -> {
-            crearPasosReserva(false,boolDTO);
+            try {
+                crearPasosReserva(false,boolDTO);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             });
 
         }
@@ -155,7 +176,7 @@ public class CardsPanels {
         crearPasoFin("Fin");
     }
 
-    private void crearPasosReserva(boolean esModificacion, boolean boolDTO){
+    private void crearPasosReserva(boolean esModificacion, boolean boolDTO) throws FileNotFoundException, IOException{
         System.out.println(esModificacion);
         if (esModificacion){
             crearPasoPregunta("PreguntaSede", "¿Desea modificar las sedes de recogida y devolución del vehículo?", "InputSedes", "PreguntaCategoria");
@@ -163,7 +184,8 @@ public class CardsPanels {
             crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva_i);
             crearPasoHora("InputHoras", "Horarios para la reserva", "PreguntaCategoria",reserva_i);
             crearPasoPregunta("PreguntaCategoria", "¿Desea cambiar de categoría?", "InputCategoria", "Fin");
-            crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva_i,copiaReserva_i,boolDTO);
+            crearPasoCategoria("InputCategoria", "categorias","InputPasarelas", "Fin", reserva_i,copiaReserva_i);
+            crearPasoPasarelas("InputPasarelas","Fin",reserva_i,boolDTO);
             crearPasoFin("Fin");
 
         }
@@ -171,7 +193,8 @@ public class CardsPanels {
             crearPasoSede("InputSedes", "sedes para la reserva","InputFechas",reserva_i);
             crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva_i);
             crearPasoHora("InputHoras", "Horarios para la reserva", "InputCategoria",reserva_i);
-            crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva_i,copiaReserva_i,boolDTO);
+            crearPasoCategoria("InputCategoria", "categorias","InputPasarelas", "Fin", reserva_i,copiaReserva_i);
+            crearPasoPasarelas("InputPasarelas","Fin",reserva_i,boolDTO);
             crearPasoFin("Fin");
         }
 
@@ -250,7 +273,8 @@ public class CardsPanels {
         });
         cardPanel.add(panel, preguntaKey);
     }
-    private void crearPasoCategoria(String pasoKey, String nombreCampo, String siguientePasoKey, Reserva reserva,Reserva copiaReserva, Boolean boolDTO){
+    private void crearPasoCategoria(String pasoKey, String nombreCampo, String siguientePasoKeySi,String siguientePasoKeyNo, Reserva reserva,Reserva copiaReserva){
+        
         JPanel panel = new JPanel();
         JLabel label = new JLabel(nombreCampo);
         panel.add(label);
@@ -281,35 +305,13 @@ public class CardsPanels {
                     else{
                         VentanaMain.errorDialog("No se encontraron vehículos disponibles para la configuración de reserva dada");
                     }
-            }
-            else{
-                reserva_i.setPagoReserva(reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getFechaEntregar(),reserva_i.getHoraEntregar(),boolDTO);
-                if (boolDTO){
-                VentanaMain.Dialog("Reserva registrada exitosamente con un 10% de descuento!, el nuevo cobro de su reserva fue de COP "+ Double.toString(reserva_i.getPagoReserva())+".");
-                }       
-                else{            
-                VentanaMain.Dialog("Reserva registrada exitosamente, el nuevo cobro de su reserva fue de COP "+ Double.toString(reserva_i.getPagoReserva())+".");
-                }
-                if (reserva_i.getID()==-1){
-                    reserva_i.setID();
-                    VentanaMain.Dialog("El id de su reserva es: "+Integer.toString(reserva_i.getID()));
-                }
-                boolean yaRegistrado= false;
-                for (Reserva i: Reserva.getListaReservas()){
-                    if (i.getID()==reserva_i.getID())
-                    {
-                        yaRegistrado=true;
-                        break;
-                    }
-                }
-                if (!yaRegistrado){
-                Reserva.addReserva(reserva_i);
-                }
+                    avanzarAlSiguientePaso(siguientePasoKeyNo);
 
             }
-            avanzarAlSiguientePaso(siguientePasoKey);
-            }}
-        );
+            else{
+                    avanzarAlSiguientePaso(siguientePasoKeySi);
+            }
+        }});          
         cardPanel.add(panel, pasoKey);
 
         
@@ -1096,6 +1098,71 @@ public class CardsPanels {
         panel.add(panelC);
         cardPanel.add(panelC, pasoKey);
 
+    }
+    public void crearPasoPasarelas(String preguntaKey,String pasoKey, Reserva reserva_i, Boolean dto ) throws FileNotFoundException, IOException{
+        
+        JPanel panel= new JPanel();
+        VentanaMain.refresh(panel);
+        panel.setLayout(new GridLayout(0, 2));
+        panel.add(Box.createRigidArea(new Dimension(10,50)));
+        panel.add(Box.createRigidArea(new Dimension(10,50)));
+        panel.add(new JLabel("Seleccione con que pasarela de pagos desea realizar el pago"));
+        JComboBox<String> opcionesPasarelas= new JComboBox<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("./registroPagos/config.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split("->");
+                 if (partes.length >= 2){
+                    opcionesPasarelas.addItem(partes[0]);
+                 }}};
+        opcionesPasarelas.setSelectedIndex(0);
+        pasarelas=opcionesPasarelas;
+        JButton continuar= new JButton("Continuar");
+        panel.add(opcionesPasarelas);
+        panel.add(continuar);
+        panel.repaint();
+        panel.revalidate();
+        continuar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nombreClase= pasarelas.getSelectedItem().toString();
+                try {
+                    Class<?> claseElejida= Class.forName(nombreClase);
+                    Constructor<?> constructor = claseElejida.getDeclaredConstructor(Cliente.class);
+                    Object instanciaClase = constructor.newInstance(reserva_i.getCliente());
+                    ((Window) instanciaClase).addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            //lo de abajo se debe ejecutar una vez la pestaña de arriba se cierre
+                            reserva_i.setPagoReserva(reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getFechaEntregar(),reserva_i.getHoraEntregar(),dto);                    
+                            VentanaMain.Dialog("Reserva registrada exitosamente, el nuevo cobro de su reserva fue de COP "+ Double.toString(reserva_i.getPagoReserva())+".");
+                            if (reserva_i.getID()==-1){
+                                reserva_i.setID();
+                                VentanaMain.Dialog("El id de su reserva es: "+Integer.toString(reserva_i.getID()));
+                            }
+                            boolean yaRegistrado= false;
+                            for (Reserva i: Reserva.getListaReservas()){
+                                if (i.getID()==reserva_i.getID())
+                                {
+                                    yaRegistrado=true;
+                                    break;
+                                }
+                            }
+                            if (!yaRegistrado){
+                            Reserva.addReserva(reserva_i);
+                            }
+                        }});
+
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+                    e1.printStackTrace();
+                }
+                avanzarAlSiguientePaso(pasoKey);
+
+
+            }});
+
+
+    cardPanel.add(panel, preguntaKey);
     }
 
 }

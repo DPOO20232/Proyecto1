@@ -5,10 +5,9 @@ import javax.swing.event.DocumentListener;
 
 import modelo.Cliente;
 import modelo.Inventario;
-import modelo.Sede;
 import modelo.Usuario;
-import modelo.personal;
 import vista.PlaceHolderTextField;
+import vista.VentanaRegistro;
 
 import java.awt.*;
 import java.awt.Dialog.ModalityType;
@@ -17,9 +16,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class VentanaMain2 {
-    public static void main(String[] args) {
+    public static void main(String[] args) {        
         Inventario.loadSistema();
-        JFrame frame = new JFrame("Inicio de Sesión");
+        JFrame frame = new JFrame("Inicio de SesiónV2");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
         frame.setLayout(new BorderLayout());
@@ -43,6 +42,7 @@ public class VentanaMain2 {
 
         JButton loginButton = new JButton("Iniciar Sesión");
         loginButton.setEnabled(false); // Establecer el botón como deshabilitado inicialmente
+        JButton registerButton = new JButton("Registrarme");
 
         // Agrega un DocumentListener para habilitar/deshabilitar el botón según el contenido de los campos
         DocumentListener documentListener = new DocumentListener() {
@@ -89,11 +89,52 @@ public class VentanaMain2 {
                 }
             }
         });
+
+        //Acción para el botón de registrarse
+        registerButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                VentanaRegistro ventanaR = new VentanaRegistro();
+                ventanaR.setVisible(true);
+            }
+        });
+
+        // Panel para el texto y el botón "Registrarme"
+     // Crear un panel contenedor con un BoxLayout horizontal
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.X_AXIS));
+
+        // Crear el panel vertical (textPanel) y agregar componentes a él
+        JPanel textPanel = new JPanel();
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+        textPanel.add(loginButton);
+        //textPanel.add(Box.createVerticalStrut(10));
+        textPanel.add(new JLabel("\n"));
+        textPanel.add(new JLabel("¿No tienes cuenta?"));
+        textPanel.add(registerButton);
+
+        // Agregar el panel vertical al panel horizontal (centroPanel)
+        centerPanel.add(Box.createHorizontalGlue()); // Espaciado a la izquierda
+        centerPanel.add(textPanel);
+        centerPanel.add(Box.createHorizontalGlue()); // Espaciado a la derecha
+
+        // Agregar el panel horizontal centrado al contenedor principal
+        frame.add(centerPanel, BorderLayout.SOUTH);
+
+
+        // Acción para el botón "Registrarme"
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Agrega la lógica para abrir una ventana de registro o realizar la acción correspondiente.
+                JOptionPane.showMessageDialog(frame, "La ventana de registro se abrirá aquí.", "Registro", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
         // Centra la ventana en la pantalla
-        formPanel.add(loginButton);
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
+
     }
     public static void CambioGuardadoDialog() {
         JDialog dialog = new JDialog();

@@ -6,6 +6,34 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Payu",
+            "request": "launch",
+            "mainClass": "vista.Payu",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
+            "name": "Sire",
+            "request": "launch",
+            "mainClass": "vista.Sire",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
+            "name": "PayPal",
+            "request": "launch",
+            "mainClass": "vista.PayPal",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
+            "name": "pasarelaDePago",
+            "request": "launch",
+            "mainClass": "vista.pasarelaDePago",
+            "projectName": "Proyecto1_76c48379"
+        },
+        {
+            "type": "java",
             "name": "VentanaMain2",
             "request": "launch",
             "mainClass": "vista2.VentanaMain2",

@@ -1,0 +1,3 @@
+vista.PayPal->registroPagos\\registroPayPal.log
+vista.Payu->registroPagos\\registroPayu.txt
+vista.Sire->registroPagos\\registroSire.json
