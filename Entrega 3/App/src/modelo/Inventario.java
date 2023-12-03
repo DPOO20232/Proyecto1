@@ -610,7 +610,7 @@ public class Inventario {
             tarjet.append(",");
             tarjet.append(Boolean.toString(tarjeta.getCupoBloqueado()));
             tarjet.append(",");
-            tarjet.append(Long.toString(tarjeta.getMontoBloqueo()));
+            tarjet.append(Double.toString(tarjeta.getMontoBloqueo()));
             tarjet.append(",");
             tarjet.append(Integer.toString(tarjeta.getFechaVencimiento()));
             tarjet.append(",");
