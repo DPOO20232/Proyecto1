@@ -881,7 +881,7 @@ public class Inventario {
             Cliente clienteActual= new Cliente(login,password,numeroCedula, nombre, correo, telefono, fechaNacimiento, nacionalidad);
             String partesTarjeta=partes[8].substring(1, partes[8].length() - 1);
             String [] listaTarjeta=partesTarjeta.split(",");
-            clienteActual.setTarjeta(new Tarjeta(Long.parseLong(listaTarjeta[0]), Boolean.parseBoolean(listaTarjeta[1]),Long.parseLong(listaTarjeta[2]),Integer.parseInt(listaTarjeta[3]),listaTarjeta[4], listaTarjeta[5]));
+            clienteActual.setTarjeta(new Tarjeta(Long.parseLong(listaTarjeta[0]), Boolean.parseBoolean(listaTarjeta[1]),Double.parseDouble(listaTarjeta[2]),Integer.parseInt(listaTarjeta[3]),listaTarjeta[4], listaTarjeta[5]));
             clienteActual.setLicencia(Usuario.assignLicencia(Integer.parseInt(partes[9])));
             Usuario.addCliente(clienteActual);
             contador+=1;

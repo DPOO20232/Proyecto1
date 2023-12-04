@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class Sire extends pasarelaPago implements ActionListener {
 
-    public Sire(Cliente cliente,String motivoPago, Long montoPago,int ID,String pathArchivo) {
+    public Sire(Cliente cliente,String motivoPago, double montoPago,int ID,String pathArchivo) {
         super(cliente,motivoPago,montoPago,ID,pathArchivo);
         this.frame= new JFrame();
         this.frame.setTitle("Pasarela de Pago");
@@ -35,7 +35,7 @@ public class Sire extends pasarelaPago implements ActionListener {
         JPanel panelBienvenida = new JPanel();
         panelBienvenida.setLayout(new BoxLayout(panelBienvenida, BoxLayout.Y_AXIS));
         JLabel bienvenidaLabel = new JLabel("Bienvenido a Pasarela "+nombrePasarela);
-        JLabel motivoLabel = new JLabel("Motivo pago: "+motivoPago+". Monto a pagar:"+montoPago);
+        JLabel motivoLabel = new JLabel("Motivo pago: "+motivoPago+". Monto a pagar(COP):"+montoPago);
         bienvenidaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         motivoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         bienvenidaLabel.setFont(fuenteTitulo); // Fuente serif y tamaño 20
@@ -124,6 +124,19 @@ public class Sire extends pasarelaPago implements ActionListener {
         cobroExitosoPanel.setBackground(color); // Color
 
         cards.add(cobroExitosoPanel, "CobroExitoso");
+
+        // Panel 4: Mensaje de cobro NO exitoso
+        JPanel errorPanel = new JPanel();
+        JLabel errorLabel = new JLabel("Transacción no completada");
+        errorLabel.setFont(fuenteTitulo);
+        errorPanel.add(errorLabel);
+        JButton cerrar1Button = new JButton("Continuar");
+        cerrar1Button.setFont(fuenteNormal);
+        cerrar1Button.addActionListener(this);
+        cerrar1Button.setActionCommand("Cerrar");
+        errorPanel.add(cerrar1Button);
+        errorPanel.setBackground(color); // Color
+        cards.add(errorPanel, "NoCompletado");
         
         this.frame.add(cards);
         this.frame.setVisible(true);
@@ -144,11 +157,11 @@ public class Sire extends pasarelaPago implements ActionListener {
                 boolean tarjetaValida= this.tarjetaValida();
 
                 if(tarjetaValida){
-                    cardLayout.show(cards, "CobroExitoso");
                     this.setTarjeta();
                     this.completarTransferencia();
                     System.out.println(this.transferenciaCompletada);
                     if (this.transferenciaCompletada){
+                    cardLayout.show(cards, "CobroExitoso");
                     crearEntrada();
                     }
                     else{
@@ -157,7 +170,7 @@ public class Sire extends pasarelaPago implements ActionListener {
                         // Si hace clic en "Sí"
                     } else if (respuesta == JOptionPane.NO_OPTION) {
                         // Si hace clic en "No"
-                        cardLayout.show(cards, "CobroExitoso");
+                        cardLayout.show(cards, "NoCompletado");
                         System.out.println("No");
                     }                        
                     }
@@ -168,7 +181,7 @@ public class Sire extends pasarelaPago implements ActionListener {
                         // Si hace clic en "Sí"
                     } else if (respuesta == JOptionPane.NO_OPTION) {
                         // Si hace clic en "No"
-                        cardLayout.show(cards, "CobroExitoso");
+                        cardLayout.show(cards, "NoCompletado");
                         System.out.println("No");
                     }
                     
@@ -217,6 +230,6 @@ public class Sire extends pasarelaPago implements ActionListener {
     
 
     public static void main(String[] args) {
-        Sire pasarela=new Sire(new Cliente("", "", 1, "", "", 0, 0, ""),"reserva",1000L,1,"registroPagos\\registroSire.json");        
+        Sire pasarela=new Sire(new Cliente("", "", 1, "", "", 0, 0, ""),"reserva",100.0,1,"registroPagos\\registroSire.json");        
     }
 }

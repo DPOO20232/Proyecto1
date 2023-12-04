@@ -51,7 +51,7 @@ public class VentanaAtencion {
     static JComboBox<String> comboBoxGeneral8Cate;
     static JComboBox<String> comboBoxGeneral1Seg;
     static Sede sede_personal;
-    static Cliente cliente_i;
+    private static Cliente cliente_i;
     public VentanaAtencion(Sede sede_u) {
         sede_personal=sede_u;
         frame = new JFrame("Menu Personal de Atención");
@@ -284,76 +284,30 @@ public class VentanaAtencion {
                 try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
                 VentanaMain.CambioGuardadoDialog();
                 VentanaMain.refresh(panel);
-                panel.add(agregarConductores(alquiler_u));
+                //conductores y pago
+                panel.add(Box.createRigidArea(new Dimension(0, 100)));                    
+                CardsPanels editor = new CardsPanels();
+                SwingUtilities.invokeLater(() -> {
+                try {
+                    editor.crearAlquiler(panel, alquiler_u);
+                    } catch (IOException e1) {
+                    e1.printStackTrace();
+                    }
+                    editor.editar();});
                 panel.repaint();
                 panel.revalidate();
             }
-        });                   
-        return panel;
-    }
-
-    private static JPanel agregarConductores(alquiler alquiler_u){
-        JPanel panel= new JPanel();
-        panel.add(Box.createRigidArea(new Dimension(0, 100)));                    
-        panel.add(new JLabel("El cliente va a agregar conductores al registro del alquiler?"));
-        ButtonGroup opcion= new ButtonGroup();
-        JRadioButton si=new JRadioButton("Si");
-        JRadioButton no= new JRadioButton("No");
-        opcion.add(si);
-        opcion.add(no);
-        si.setActionCommand("si");
-        no.setActionCommand("no");
-        JButton avanzarButton= new JButton("Siguiente");
-        panel.add(si);
-        panel.add(no);
-        panel.add(avanzarButton);
-        avanzarButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                ButtonModel selectedItem = opcion.getSelection();
-                if (selectedItem!=null){
-                    VentanaMain.refresh(panel);
-                    double pagoInicial=0;
-                    String itemStr = selectedItem.getActionCommand(); // Obtener el texto de la opción seleccionada
-                    if (itemStr.equals("si")){
-                        panel.add(Box.createRigidArea(new Dimension(0, 100)));                    
-                        JPanel panelConductor= new JPanel();
-                        panel.add(panelConductor);
-                        CardsPanels editor = new CardsPanels();
-                        SwingUtilities.invokeLater(() -> {
-                            editor.agregarConductores(panel, alquiler_u);
-                            editor.editar();});
-                        pagoInicial=alquiler_u.calcularPagoInicial();
-                        SwingUtilities.invokeLater(() -> {
-                            VentanaMain.Dialog("Se debitaron COP " +Double.toString(alquiler_u.getPagoFinal()) + " de su tarjeta terminada en "+ Long.toString(alquiler_u.getReserva().getCliente().getTarjeta().getNumeroTarjeta()% 10000)+". En este momento se puede entregar el vehículo al cliente");                    
-                        });
-                        
-                    }
-                    else{
-                            pagoInicial=alquiler_u.calcularPagoInicial();
-                            VentanaMain.Dialog("Se debitaron COP " +Double.toString(alquiler_u.getPagoFinal()) + " de su tarjeta terminada en "+ Long.toString(alquiler_u.getReserva().getCliente().getTarjeta().getNumeroTarjeta()% 10000)+". En este momento se puede entregar el vehículo al cliente");                    
-                    }
-
-                    alquiler_u.setPagoFinal(pagoInicial);
-                    alquiler_u.setActivo(true);      
-                    try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
-                }
-                else{
-                    VentanaMain.errorDialog("Seleccione una opción.");
-                }
-            }
+            
         });
-        panel.add(Box.createRigidArea(new Dimension(0, 100)));                  
+        try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}           
         return panel;
     }
+
     private static JPanel completarAlquiler(){
         JPanel panel= new JPanel();
         JPanel panel_1= new JPanel(new FlowLayout());
         panel.add(panel_1);
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
-        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-        LocalTime hora = LocalTime.now();
-        int horaActual = hora.getHour() * 100 + hora.getMinute();
         DefaultComboBoxModel<String> modeloAlquileres= new DefaultComboBoxModel<>();
         int numAlquileres=0;
         for(alquiler i: alquiler.getListaAlquileres()){
@@ -385,71 +339,20 @@ public class VentanaAtencion {
                     String[] idreserva= partes[0].split(":");
                     int id= Integer.parseInt(idreserva[1].trim());
                     alquiler alquiler_u = alquiler.assignAlquiler(id);
-                    alquiler_u.setActivo(false);
-                    Reserva reserva= alquiler_u.getReserva();
-                    double pago70=alquiler_u.getPagoFinal();
-                    Vehiculo vehiculo=reserva.getVehiculoAsignado();
-                    reserva.setSedeEntregar(sede_personal);
-                    reserva.setFechaEntregar(fechaActual);
-                    reserva.setHoraEntregar(horaActual);
                     VentanaMain.refresh(panel_1);
-                    panel_1.add(new JLabel("Seleccione los daños que tenga el vehículo"));
-                    panel_1.add(Box.createRigidArea(new Dimension(0,100)));
-                    ButtonGroup averias= new ButtonGroup();
-                    JRadioButton cero= new JRadioButton("0. Ningún daño ");
-                    JRadioButton uno= new JRadioButton("1. Daño Leve ");
-                    JRadioButton dos= new JRadioButton("2. Daño Moderado ");                        
-                    JRadioButton tres= new JRadioButton("3. Daño Grave ");
-                    cero.setActionCommand("0");
-                    uno.setActionCommand("1");
-                    dos.setActionCommand("2");
-                    tres.setActionCommand("3");
-                    averias.add(cero);
-                    averias.add(uno);
-                    averias.add(dos);
-                    averias.add(tres);
-                    panel_1.add(cero);
-                    panel_1.add(uno);
-                    panel_1.add(dos);
-                    panel_1.add(tres);
-                    panel_1.repaint();
-                    JButton avanzar2= new JButton("Concluir alquiler");
-                    panel_1.add(avanzar2);
-                    panel_1.repaint();
-                    avanzar2.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e){
-                            ButtonModel selectedButtonModel = averias.getSelection();
-                            if (selectedButtonModel != null) {
-                                String opcionElegida = selectedButtonModel.getActionCommand();
-                                int averia= Integer.parseInt(opcionElegida);
-                                double newPago=alquiler_u.calcularPagoFinal(sede_personal,averia);
-                                alquiler_u.setPagoFinal(newPago+pago70);
-                                vehiculo.eliminarReservaActiva(id);
-                                alquiler_u.setActivo(false);
-                                if (newPago>0){
-                                    VentanaMain.Dialog("El vehículo se ha devuelto correctamente y se han debitado COP "+Double.toString(newPago)+" de su tarjeta terminada en "+ Long.toString(cliente_i.getTarjeta().getNumeroTarjeta()% 10000)+".");
-                                    VentanaMain.refresh(panel_1);
-                                    }
-                                    else{
-                                    VentanaMain.Dialog("El vehículo se ha devuelto correctamente y el cliente tiene un saldo a favor de COP "+Double.toString(Math.abs(newPago))+" que se transferirán a su tarjeta terminada en "+ Long.toString(cliente_i.getTarjeta().getNumeroTarjeta()% 10000)+".");
-                                    VentanaMain.refresh(panel_1);
-                                    }
-                                    try {
-                                        Inventario.updateSistema();
-                                    } catch (IOException e1) {
-                                        // TODO Auto-generated catch block
-                                        e1.printStackTrace();
-                                    }
-                            }                            
-                            else{
-                               VentanaMain.errorDialog("Seleccione una opción.");
-                            }
+                    CardsPanels editor = new CardsPanels();
+                    SwingUtilities.invokeLater(() -> {
+                    try {
+                        editor.completarAlquiler(panel_1, sede_personal, alquiler_u);
+                        } catch (IOException e1) {
+                        e1.printStackTrace();
+                        }
+                        editor.editar();});
+                        panel.repaint();
+                        panel.revalidate();
+                    
+       
                         }}); 
-                        
-
-
-            }});
         }
         else{
             panel.add(new JLabel("El usuario no tiene alquileres activos"));
@@ -459,4 +362,3 @@ public class VentanaAtencion {
         return panel;
     }    
 }
-

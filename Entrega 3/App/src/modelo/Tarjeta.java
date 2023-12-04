@@ -98,8 +98,18 @@ public class Tarjeta {
         return vence;
     }
     public boolean realizarCobro(double monto){
+        /**
+         * Realiza el débito simulado tras pasar por pasarela de pago. 
+         * Note: Con el objetivo de experimentar un pago simulado no exitoso, todo pago intentado con tarjeta Discover rebotará.
+         *
+         * @param dia El día para la comprobación. Si se proporciona como 0, se utiliza el día actual.
+         * @param mes El mes para la comprobación. Si se proporciona como 0, se utiliza el mes actual.
+         * @param anio El año para la comprobación. Si se proporciona como 0, se utiliza el año actual.
+         * @return `true` si la tarjeta ha vencido en la fecha proporcionada; de lo contrario, `false`.
+         */
+
         boolean transaccionExitosa=false;
-        if (this.cupoBloqueado==false){
+        if (this.cupoBloqueado==false&&!this.marcaTarjeta.equals("Discover")){
             //Se bloquea el cupo de la tarjeta
             this.montoBloqueo=monto;
             this.cupoBloqueado=true;

@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 import modelo.Cliente;
 import modelo.Tarjeta;
 
-public abstract class pasarelaPago extends JFrame {
+public abstract class pasarelaPago {
     protected static String pathArchivo;
     protected Cliente cliente;
     protected int IDtransaccion;
@@ -50,11 +50,11 @@ public abstract class pasarelaPago extends JFrame {
         return pathArchivo;
     }
     public void setTarjeta(){
-        this.tarjetaCliente= new Tarjeta(Long.parseLong(this.numeroTarjetaInput),false,0L, Integer.parseInt(fechaVencimientoInput),this.marcaTarjetaInput, cliente.getNombre());
+        this.tarjetaCliente= new Tarjeta(Long.parseLong(this.numeroTarjetaInput),false,0L, Integer.parseInt(fechaVencimientoInput),this.marcaTarjetaInput, this.titularTarjetaInput);
         this.cliente.setTarjeta(tarjetaCliente);
     }
     public void completarTransferencia(){
-        this.transferenciaCompletada=this.tarjetaCliente.realizarCobro(this.montoPago);
+        this.setTransferenciaCompletada(this.tarjetaCliente.realizarCobro(this.montoPago));
     }
     public void crearEntrada(){
     }
@@ -74,9 +74,8 @@ public abstract class pasarelaPago extends JFrame {
         this.yyyymmddActual = Integer.parseInt(fechaYYYYMMDD);
         boolean retorno =false;
         try{
-        char primerNumTarjeta=numeroTarjetaInput.charAt(0);
-        boolean numTarjetaBoolean= !Character.toString(primerNumTarjeta).equals("0")&&numeroTarjetaInput.length()>15 && numeroTarjetaInput.length()<17;
-        boolean csvBoolean= !codigoSeguridadInput.equals("000")&&codigoSeguridadInput.length()>2 && codigoSeguridadInput.length()<4;
+        boolean numTarjetaBoolean= Long.parseLong(numeroTarjetaInput)>=1000000000000000L&&numeroTarjetaInput.length()>15 && numeroTarjetaInput.length()<17;
+        boolean codBoolean= codigoSeguridadInput.length()>2 && codigoSeguridadInput.length()<4 && Integer.parseInt(codigoSeguridadInput)>99;
         boolean fechaBooleanMayor = Integer.parseInt(fechaVencimientoInput)>=this.yyyymmddActual;
         boolean fechaBooleanValida=false;
         //Chequeo fecha
@@ -88,8 +87,9 @@ public abstract class pasarelaPago extends JFrame {
         } catch (ParseException e) {
             fechaBooleanValida=false;
         }
-        boolean titularTarjetaBoolean= !titularTarjetaInput.equals("");
-        if (numTarjetaBoolean&&csvBoolean&&fechaBooleanMayor&&fechaBooleanValida&&titularTarjetaBoolean){
+        String patron = "^[^0-9]*$";
+        boolean titularTarjetaBoolean= !titularTarjetaInput.equals("")&&titularTarjetaInput.matches(patron);
+        if (numTarjetaBoolean&&codBoolean&&fechaBooleanMayor&&fechaBooleanValida&&titularTarjetaBoolean){
             retorno=true;
         }
             return retorno;

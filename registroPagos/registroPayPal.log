@@ -1,1 +1,6 @@
-
+Dec 03, 2023 8:59:12 PM vista.PayPal agregarEntrada
+INFO: Fecha: 20231203, Tipo de Pago: Reserva con 10% de dto, IDtransaccion: 29, Cédula Cliente: 1023456789, Número de Tarjeta: 1111222233334444, Monto: 202500.0
+Dec 03, 2023 9:31:30 PM vista.PayPal agregarEntrada
+INFO: Fecha: 20231203, Tipo de Pago: modificación de Reserva, IDtransaccion: 24, Cédula Cliente: 1023456789, Número de Tarjeta: 2222333344445555, Monto: 594000.0
+Dec 03, 2023 9:49:53 PM vista.PayPal agregarEntrada
+INFO: Fecha: 20231203, Tipo de Pago: Reserva, IDtransaccion: 27, Cédula Cliente: 1023456789, Número de Tarjeta: 1111222233334444, Monto: 120000.0
