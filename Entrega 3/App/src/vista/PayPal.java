@@ -156,7 +156,6 @@ public class PayPal extends pasarelaPago implements ActionListener {
                 if(tarjetaValida){
                     this.setTarjeta();
                     this.completarTransferencia();
-                    System.out.println(this.transferenciaCompletada);
                     if (this.transferenciaCompletada){
                     cardLayout.show(cards, "CobroExitoso");
                     crearEntrada();
@@ -213,8 +212,5 @@ public class PayPal extends pasarelaPago implements ActionListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    public static void main(String[] args) {
-        PayPal pasarela=new PayPal(new Cliente("", "", 1, "", "", 0, 0, ""),"reserva",100.0,1,"registroPagos\\registroPayPal.log");        
     }
 }

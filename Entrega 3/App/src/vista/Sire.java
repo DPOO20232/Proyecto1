@@ -226,10 +226,4 @@ public class Sire extends pasarelaPago implements ActionListener {
             e.printStackTrace();
         }
     }
-
-    
-
-    public static void main(String[] args) {
-        Sire pasarela=new Sire(new Cliente("", "", 1, "", "", 0, 0, ""),"reserva",100.0,1,"registroPagos\\registroSire.json");        
-    }
 }

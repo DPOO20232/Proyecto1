@@ -225,8 +225,4 @@ public class Payu extends pasarelaPago implements ActionListener {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) {
-        Payu pasarela=new Payu(new Cliente("", "", 1, "", "", 0, 0, ""),"reserva",100.0,1,"registroPagos\\registroPayu.txt");
-    }
 }
