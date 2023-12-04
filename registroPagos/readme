@@ -18,9 +18,11 @@ Para registrar una nueva pasarela:
 
 3. Ingresar clase NUEVACLASE.java al package vista
 4. Crear archivo en el que se va a guardar el registro de pagos con esa pasarela (NUEVACLASE) con el formato registroNUEVACLASE.___
-5. ingresar en el archivo config.txt la info de la nueva pasarela (NUEVACLASE) con la estructura: NUEVACLASE->registroNUEVACLASE.___
+5. Ingresar archivo registroNUEVACLASE.___ al package registroPagos
+6. ingresar en el archivo config.txt la info de la nueva pasarela (NUEVACLASE) con la estructura: NUEVACLASE->registroNUEVACLASE.___
 
-Nota2: Se recomienda añadir los nombres de nuevas pasarelas con su archivo de registro en la lista de abajo
+        Nota2: Se recomienda añadir los nombres de nuevas pasarelas con su archivo de registro en la lista de abajo
+
 Pasarelas disponibles:
 vista.PayPal.java -> registroPayPal.log
 vista.Payu.java -> registroPayu.txt
