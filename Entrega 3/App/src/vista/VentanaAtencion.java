@@ -319,7 +319,7 @@ public class VentanaAtencion {
                         panel.add(Box.createRigidArea(new Dimension(0, 100)));                    
                         JPanel panelConductor= new JPanel();
                         panel.add(panelConductor);
-                        EditorObjetos editor = new EditorObjetos();
+                        CardsPanels editor = new CardsPanels();
                         SwingUtilities.invokeLater(() -> {
                             editor.agregarConductores(panel, alquiler_u);
                             editor.editar();});

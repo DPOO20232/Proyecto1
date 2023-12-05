@@ -16,7 +16,7 @@ public class VentanaAdminLocal {
         private JTabbedPane tabbedPane; // Declarar tabbedPane como variable miembro
         JPanel panelSuperior;
         JTabbedPane panelInferior;
-        private static EditorObjetos editorObjetos;
+        private static CardsPanels editorObjetos;
         public VentanaAdminLocal(Sede sede) {
             frame = new JFrame("Menu Admin Local");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -164,7 +164,7 @@ public class VentanaAdminLocal {
                         if( esEpleado){
                            
                             VentanaMain.refresh(pestaña2);
-                            editorObjetos = new EditorObjetos();
+                            editorObjetos = new CardsPanels();
                             editorObjetos.editorPersonal(pestaña2,empleado,panelActualizarPersonal);
                             editorObjetos.editar();
                            
@@ -210,9 +210,9 @@ public class VentanaAdminLocal {
             tabbedPane.addTab("acceder al personal", null, pestaña3, "Acceder al Personal");
             // Crear espacios para mostrar al administrador local, empleados técnicos y empleados de atención
             String empleados=personal.printRegistroEmpleados(sede);
-            String administradorLocal = EditorObjetos.extraerInformacion("Administrador Local", empleados);
-            String empleadosAtencion = EditorObjetos.extraerInformacion("Empleado(s) de atención", empleados);
-            String empleadosTecnicos = EditorObjetos.extraerInformacion("Empleado(s) técnico(s)", empleados);
+            String administradorLocal = CardsPanels.extraerInformacion("Administrador Local", empleados);
+            String empleadosAtencion = CardsPanels.extraerInformacion("Empleado(s) de atención", empleados);
+            String empleadosTecnicos = CardsPanels.extraerInformacion("Empleado(s) técnico(s)", empleados);
             
             JPanel panelAdminLocal = new JPanel();
             panelAdminLocal.setLayout(new BoxLayout(panelAdminLocal, BoxLayout.Y_AXIS));

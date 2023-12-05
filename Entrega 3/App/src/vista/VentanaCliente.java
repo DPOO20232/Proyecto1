@@ -168,7 +168,7 @@ public class VentanaCliente {
                 String[] idreserva= partes[0].split(":");
                 int id= Integer.parseInt(idreserva[1].trim());
                 Reserva reservaElejida= Reserva.assignReserva(id);
-                EditorObjetos editor= new EditorObjetos();
+                CardsPanels editor= new CardsPanels();
                 editor.editorReserva(panel, reservaElejida);
                 }});
         try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
@@ -230,7 +230,7 @@ public class VentanaCliente {
                 Reserva reserva= new Reserva();
                 reserva.setCliente(cliente);
                 reserva.setReservaEnSede(reservaEnSede);
-                EditorObjetos editor= new EditorObjetos();
+                CardsPanels editor= new CardsPanels();
                 editor.editorReserva(panel, reserva);
             }
         });

@@ -894,7 +894,7 @@ public class VentanaAdmin {
                 // Agrega panel2a a panel2
                 panel2.add(panel2a);
                 // Agrega panel2b a panel2
-                EditorObjetos editor = new EditorObjetos();
+                CardsPanels editor = new CardsPanels();
                 editor.editorSede(panel2b,sedeEditar);
                 editor.editar();
 
@@ -1006,7 +1006,7 @@ public class VentanaAdmin {
                 // Agrega panel2a a panel2
                 panel2.add(panel2a);
                 // Agrega panel2b a panel2
-                EditorObjetos editor = new EditorObjetos();
+                CardsPanels editor = new CardsPanels();
                 editor.editorSeguro(panel2b,seguroEditar);
                 editor.editar();
                 panel2.add(panel2b);
