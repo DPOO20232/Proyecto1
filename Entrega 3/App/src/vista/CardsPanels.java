@@ -106,12 +106,10 @@ public class CardsPanels {
         copiaReserva_i=copiaReserva;  
         if(reserva.getVehiculoAsignado()!=null){
             vehiculoAnterior= reserva_i.getVehiculoAsignado();
-            System.out.println("aqui");
             reserva_i.setVehiculoAsignado(null);
             vehiculoAnterior.eliminarReservaActiva(reserva_i.getID());
             copiaReserva_i= new Reserva(reserva_i.getID(),reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getHoraRecoger(),reserva_i.getHoraEntregar(),reserva_i.getReservaEnSede(),reserva_i.getSedeRecoger(),reserva_i.getSedeEntregar(),reserva_i.getCategoria(),reserva_i.getCliente());
             copiaReserva_i.setPagoReserva(reserva_i.getPagoReserva());
-            System.out.println(vehiculoAnterior.getPlaca());
             copiaReserva_i.setVehiculoAsignado(vehiculoAnterior);
             try{Inventario.updateSistema();}catch(IOException e) {e.printStackTrace();}
 
@@ -364,10 +362,8 @@ public class CardsPanels {
             reserva_i.setVehiculoAsignado();
             if(reserva.getVehiculoAsignado()==null){
                 if (copiaReserva_i.getVehiculoAsignado()!=null){
-                    System.out.println("aca");
                     VentanaMain.errorDialog("No se logró asignar un nuevo vehículo, los cambios no se guardaron");
                     reserva_i=new Reserva(copiaReserva_i.getID(),copiaReserva_i.getFechaRecoger(),copiaReserva_i.getFechaEntregar(),copiaReserva_i.getHoraRecoger(),copiaReserva_i.getHoraEntregar(),copiaReserva_i.getReservaEnSede(),copiaReserva_i.getSedeRecoger(),copiaReserva_i.getSedeEntregar(),copiaReserva_i.getCategoria(),copiaReserva_i.getCliente());
-                    System.out.println(copiaReserva_i.getVehiculoAsignado().getPlaca());
                     reserva_i.setVehiculoAsignado(copiaReserva_i.getVehiculoAsignado());
                     vehiculoAnterior.addReservaActiva(reserva_i);
                     Reserva.addReserva(reserva_i);
@@ -389,7 +385,6 @@ public class CardsPanels {
                     reserva_i.setPagoReserva(reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getFechaEntregar(),reserva_i.getHoraEntregar(),dto);                 
                     nuevoPago=reserva_i.getPagoReserva();
                     double pagoTotal= nuevoPago-pagoAnterior;
-                    System.out.println(pagoAnterior+"-> "+nuevoPago+"=="+pagoTotal);
                     if (pagoTotal>0){
                         diferenciaPago=pagoTotal;
                         avanzarAlSiguientePaso(siguientePasoKeySi);
@@ -1369,7 +1364,6 @@ public class CardsPanels {
                                 avanzarAlSiguientePaso(pasoKey);
                             }
                             else{
-                                System.out.println("aqui");
                                 alquiler_u.getReserva().getVehiculoAsignado().getHistorialAlquileres().remove(alquiler_u);
                                 alquiler.getListaAlquileres().remove(alquiler_u);
                                 VentanaMain.errorDialog("No se pudo iniciar el alquiler. Intentelo nuevamente");

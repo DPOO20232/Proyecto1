@@ -158,7 +158,6 @@ public class Payu extends pasarelaPago implements ActionListener {
                 if(tarjetaValida){
                     this.setTarjeta();
                     this.completarTransferencia();
-                    System.out.println(this.transferenciaCompletada);
                     if (this.transferenciaCompletada){
                     cardLayout.show(cards, "CobroExitoso");
                     crearEntrada();
@@ -170,7 +169,6 @@ public class Payu extends pasarelaPago implements ActionListener {
                     } else if (respuesta == JOptionPane.NO_OPTION) {
                         transferenciaCompletada=false;
                         cardLayout.show(cards, "NoCompletado");
-                        System.out.println("No");
                     }                        
                     }
                 }
@@ -181,7 +179,6 @@ public class Payu extends pasarelaPago implements ActionListener {
                     } else if (respuesta == JOptionPane.NO_OPTION) {
                         // Si hace clic en "No"
                         cardLayout.show(cards, "NoCompletado");
-                        System.out.println("No");
                     }
                     
                 }

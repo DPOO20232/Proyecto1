@@ -141,9 +141,7 @@ public class VentanaCliente {
         DefaultComboBoxModel<String> modeloReservas= new DefaultComboBoxModel<>();
         int numReservas=0;
         if (Reserva.getListaReservas()!=null){
-            System.out.println(Reserva.getListaReservas().size());
         for(Reserva i: Reserva.getListaReservas()){
-            System.out.println(i.getID()+"-"+i.getFechaRecoger()+"-"+i.getFechaEntregar()+"-"+i.getCategoria().getnombreCategoria()+"_"+i.getVehiculoAsignado().getPlaca());
             if (alquiler.assignAlquiler(i.getID())==null){
             if(i.getCliente().equals(cliente_i)&& i.getFechaRecoger()>=fechaActual){
             numReservas+=1;

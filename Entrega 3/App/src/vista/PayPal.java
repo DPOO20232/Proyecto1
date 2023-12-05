@@ -167,7 +167,6 @@ public class PayPal extends pasarelaPago implements ActionListener {
                     } else if (respuesta == JOptionPane.NO_OPTION) {
                         transferenciaCompletada=false;
                         cardLayout.show(cards, "NoCompletado");
-                        System.out.println("No");
                     }                        
                     }
                 }
@@ -178,7 +177,6 @@ public class PayPal extends pasarelaPago implements ActionListener {
                     } else if (respuesta == JOptionPane.NO_OPTION) {
                         // Si hace clic en "No"
                         cardLayout.show(cards, "NoCompletado");
-                        System.out.println("No");
                     }
                     
                 }

@@ -289,7 +289,6 @@ public class Reserva {
             vehiculoAsignado.addReservaActiva(this);
             this.setVehiculoAsignado(vehiculoAsignado);
             }
-        else{System.out.println("\n\t>No se encontraron vehículos disponibles para la categoría dada en el rango de fechas dado.");}
     }
     public void setPagoReserva(double pago) {
         /**
@@ -311,7 +310,7 @@ public class Reserva {
          */
         Categoria categoria=this.getCategoria();
         int tarifa=categoria.getTarifaDiaria();
-        int dias=this.calcularDuracionRenta(fecha1,hora1,fecha2,hora2);
+        int dias=calcularDuracionRenta(fecha1,hora1,fecha2,hora2);
         double precio_inicial= dias*tarifa*0.3;
         double pctg_temporada=1;
         int mmdd1=fecha1%10000;
@@ -462,7 +461,6 @@ public class Reserva {
             fechaString1=fechaFormateada1.toString();
         }
         else{
-            System.out.println("Ingrese una fecha válida");
         }
         
         String fechaString2="";
@@ -478,7 +476,6 @@ public class Reserva {
             fechaString2=fechaFormateada2.toString();
         }
         else{
-            System.out.println("Ingrese una fecha válida");
         }
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate fechaT1 = LocalDate.parse(fechaString1, formato);

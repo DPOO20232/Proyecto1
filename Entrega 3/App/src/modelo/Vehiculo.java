@@ -313,7 +313,6 @@ public class Vehiculo {
          */
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("./historiales/"+placa+".txt"));
-                System.out.println("\n>Se encontró el vehículo\n");
                 writer.write("Placa: " + this.getPlaca());
                 writer.newLine();
                 writer.write("Marca: " + this.getMarca());
@@ -403,7 +402,6 @@ public class Vehiculo {
          *
          * @throws DateTimeParseException Si ocurre un error al parsear fechas o horas.
          */
-        System.out.println();
         String ubicacion="";
         String infoCliente="";
         String disponibilidad= "";
