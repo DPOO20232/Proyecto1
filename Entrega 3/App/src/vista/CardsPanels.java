@@ -1387,6 +1387,9 @@ public class CardsPanels {
                                 alquiler_u.getReserva().getVehiculoAsignado().eliminarReservaActiva(alquiler_u.getID());
                                 alquiler_u.setActivo(false);
                                 VentanaMain.Dialog("El alquiler ha concluido. En este momento puede solicitar el vehículo al cliente.");
+                                //TODO implementar metodo factura
+                                VentanaMain.Dialog("Factura con el nombre: "+Integer.toString(alquiler_u.getID())+".pdf guardada en la carpeta \"facturas\".");
+
 
                             }
                             else{
