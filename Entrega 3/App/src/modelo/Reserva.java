@@ -344,11 +344,13 @@ public class Reserva {
          * @return La reserva con el identificador especificado, o null si no se encuentra.
          */
         Reserva retorno = null;
+        if(Reserva.getListaReservas()!=null){
         for(Reserva i: Reserva.getListaReservas()){
             if(i.getID()==idReserva){
             retorno= i;
             break;
             }}
+        }
         return retorno;
     }       
 

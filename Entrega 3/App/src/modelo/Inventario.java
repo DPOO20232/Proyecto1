@@ -352,6 +352,7 @@ public class Inventario {
         File archivo = new File("./data/seguros.txt");
         FileWriter escritor2= new FileWriter(archivo);
         List<Seguro> lstseguros=listaSeguros;
+        if (lstseguros!=null){
         for (Seguro i: lstseguros){
             String strid = Integer.toString(i.getID());
             String strpctg_tarifadiaria = Double.toString(i.getPctg_TarifaDiaria());
@@ -360,6 +361,7 @@ public class Inventario {
             escritor2.write(resultado);
         }
         escritor2.close();
+        }
     }
     private static void updateLicencia() throws IOException{
         /**
@@ -370,6 +372,7 @@ public class Inventario {
         File archivo = new File("./data/licencias.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Licencia> lstlicencia=Usuario.getListaLicencias();
+        if (lstlicencia!=null){
         for (Licencia i: lstlicencia){
             String numLicencia=Integer.toString(i.getNumeroLicencia());
             String fechaExpedicion= Integer.toString(i.getFechaExpedicion());
@@ -379,6 +382,7 @@ public class Inventario {
             escritor.write(resultado);
         }
         escritor.close();
+        }
     }
     private static void updateReserva() throws IOException{
         /**
@@ -389,7 +393,9 @@ public class Inventario {
         File archivo = new File("./data/reservas.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Reserva> lstreserva= Reserva.getListaReservas();
+        if (lstreserva!=null){
         for(Reserva i: lstreserva){
+            try{
             String stridReserva= Integer.toString(i.getID());
             String strfechaRecoger= Integer.toString(i.getFechaRecoger());
             String strfechaEntregar=Integer.toString(i.getFechaEntregar());
@@ -407,8 +413,12 @@ public class Inventario {
             String pagoReserva= Double.toString(i.getPagoReserva());
             String resultado = String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s%n", stridReserva, strfechaRecoger, strfechaEntregar, strhoraRecoger, strhoraEntregar, strreservaEnSede, strid_sedeRecoger, strid_sedeEntregar, strid_categoria, strcedula_cliente,pagoReserva);
             escritor.write(resultado);
+            } catch(NullPointerException e){
+                
+            }
         }
         escritor.close();
+        }
     }
     private static void updateVehiculo() throws IOException{
         /**
@@ -419,6 +429,7 @@ public class Inventario {
         File archivo = new File("./data/vehiculos.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Vehiculo> lstvehiculo=listaVehiculos;
+        if (lstvehiculo!=null){
         for(Vehiculo i: lstvehiculo){
             String placa=i.getPlaca();
             String marca=i.getMarca();
@@ -476,6 +487,7 @@ public class Inventario {
 
         }
         escritor.close();
+        }
     }
     private static void updateEvento() throws IOException{
         /**
@@ -487,6 +499,7 @@ public class Inventario {
         FileWriter escritor= new FileWriter(archivo);
         List<Evento> lsteventos=listaEventos;
         List<String> lstrepetido= new ArrayList<String>();
+        if (lsteventos!=null){
         for(Evento i: lsteventos){
             String idEvento=Integer.toString(i.getID());
             String FechaInicio=Integer.toString(i.getFechaInicio());
@@ -509,6 +522,7 @@ public class Inventario {
             }
         }
         escritor.close();
+        }
     }
     private static void updateAlquiler() throws IOException{
         /**
@@ -519,6 +533,7 @@ public class Inventario {
         File archivo = new File("./data/alquileres.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<alquiler> lstAlquiler=alquiler.getListaAlquileres();
+        if (lstAlquiler!=null){
         for (alquiler i: lstAlquiler){
             String idAlquiler=Integer.toString(i.getID());
             String PagoFinal=Double.toString(i.getPagoFinal());
@@ -581,6 +596,7 @@ public class Inventario {
             }
 
             escritor.close();
+        }
 
 
         }
@@ -594,6 +610,7 @@ public class Inventario {
         File archivo = new File("./data/clientes.txt");
         FileWriter escritor= new FileWriter(archivo);
         List<Cliente> clientes=Usuario.getListaClientes();
+        if (clientes!=null){
         for(Cliente i: clientes){
             String login=i.getLogin();
             String password=i.getPassword();
@@ -626,6 +643,7 @@ public class Inventario {
 
         }
         escritor.close();
+        }
     }
     
     private static void loadInfo(){
@@ -1090,10 +1108,12 @@ public class Inventario {
          * @return La instancia de la categoría con el ID especificado, o null si no se encuentra ninguna coincidencia.
          */
         Categoria retorno = null;
+        if ( Inventario.getListaCategorias()!=null){
         for(Categoria i: Inventario.getListaCategorias()){
             if(i.getID()==id_categoria){
             retorno= i;
             }}
+        }
         return retorno;
     }
     public static Seguro assignSeguro(int id_seguro){
@@ -1104,10 +1124,12 @@ public class Inventario {
          * @return La instancia del seguro con el ID especificado, o null si no se encuentra ninguna coincidencia.
          */
         Seguro retorno = null;
+        if (Inventario.getListaSeguros()!=null){
         for(Seguro i: Inventario.getListaSeguros()){
             if(i.getID()==id_seguro){
             retorno= i;
             }}
+        }
         return retorno;
     } 
     public static Sede assignSede(int id_sede){
@@ -1118,11 +1140,13 @@ public class Inventario {
          * @return La instancia de la sede con el ID especificado, o null si no se encuentra ninguna coincidencia.
          */
         Sede retorno = null;
+        if (Inventario.getListaSedes()!=null){
         for(Sede i: Inventario.getListaSedes()){
             if(i.getID()==id_sede){
             retorno= i;
             break;
             }}
+        }
         return retorno;
     } 
     public static Evento assignEvento(int id_evento){
@@ -1133,11 +1157,13 @@ public class Inventario {
          * @return La instancia del evento con el ID especificado, o null si no se encuentra ninguna coincidencia.
          */
         Evento retorno = null;
+        if (Inventario.getListaEventos()!=null){
         for(Evento i: Inventario.getListaEventos()){
             if(i.getID()==id_evento){
             retorno= i;
             break;
             }}
+        }
         return retorno;
     }
 
@@ -1149,11 +1175,13 @@ public class Inventario {
          * @return La instancia del cliente con el número de cédula especificado, o null si no se encuentra ninguna coincidencia.
          */
         Cliente retorno = null;
+        if (Usuario.getListaClientes()!=null){
         for(Cliente i: Usuario.getListaClientes()){
             if(i.getNumeroCedula()==cedula_cliente){
             retorno= i;
             break;
             }}
+        }
         return retorno;
     } 
     public static Vehiculo assignVehiculo(String placa){
@@ -1164,11 +1192,13 @@ public class Inventario {
          * @return La instancia del vehículo con la placa especificada, o null si no se encuentra ninguna coincidencia.
          */
         Vehiculo retorno = null;
+        if (Inventario.getListaVehiculos()!=null){
         for(Vehiculo i: Inventario.getListaVehiculos()){
             if(i.getPlaca().equals(placa)){
             retorno= i;
             break;
             }}
+        }
         return retorno;
     }
 }

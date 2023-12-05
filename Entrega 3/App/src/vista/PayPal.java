@@ -165,7 +165,7 @@ public class PayPal extends pasarelaPago implements ActionListener {
                     if (respuesta == JOptionPane.YES_OPTION) {
                         // Si hace clic en "Sí"
                     } else if (respuesta == JOptionPane.NO_OPTION) {
-                        // Si hace clic en "No"
+                        transferenciaCompletada=false;
                         cardLayout.show(cards, "NoCompletado");
                         System.out.println("No");
                     }                        

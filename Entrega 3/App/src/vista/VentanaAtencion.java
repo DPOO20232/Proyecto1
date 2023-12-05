@@ -174,6 +174,7 @@ public class VentanaAtencion {
         int horaActual = hora.getHour() * 100 + hora.getMinute();
         DefaultComboBoxModel<String> modeloReservas= new DefaultComboBoxModel<>();
         int numReservas=0;
+        if (Reserva.getListaReservas()!=null){
         for(Reserva i: Reserva.getListaReservas()){
             if (alquiler.assignAlquiler(i.getID())==null){
             if(i.getFechaRecoger()==fechaActual&&i.getCliente().getNumeroCedula()==cliente_i.getNumeroCedula()&& sede_personal.getID()==i.getSedeRecoger().getID()){
@@ -239,14 +240,18 @@ public class VentanaAtencion {
                     panel.validate();
 
 
-                    try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
                 }
 
         }});}
         else{
             panel.add(new JLabel("El usuario no tiene reservas activas disponibles para completar el día de hoy"));
         }
+        }
+        else{
+            panel.add(new JLabel("El usuario no tiene reservas activas disponibles para completar el día de hoy"));
+        }
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
+        try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
         return panel;
     }
     private static JPanel agregarSeguros(alquiler alquiler_u){
@@ -310,6 +315,7 @@ public class VentanaAtencion {
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
         DefaultComboBoxModel<String> modeloAlquileres= new DefaultComboBoxModel<>();
         int numAlquileres=0;
+        if (alquiler.getListaAlquileres()!=null){
         for(alquiler i: alquiler.getListaAlquileres()){
             if (i.getReserva().getCliente().getNumeroCedula()==cliente_i.getNumeroCedula()&&i.getActivo()==true){
             numAlquileres+=1;
@@ -357,6 +363,10 @@ public class VentanaAtencion {
         else{
             panel.add(new JLabel("El usuario no tiene alquileres activos"));
             VentanaMain.refresh(panel_1);
+        }
+        }
+        else{
+            panel.add(new JLabel("El usuario no tiene alquileres activos"));
         }
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
         return panel;

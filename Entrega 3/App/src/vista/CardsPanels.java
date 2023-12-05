@@ -105,11 +105,16 @@ public class CardsPanels {
         Reserva copiaReserva= new Reserva();
         copiaReserva_i=copiaReserva;  
         if(reserva.getVehiculoAsignado()!=null){
-            vehiculoAnterior= reserva.getVehiculoAsignado();
-            reserva.setVehiculoAsignado(null);
-            vehiculoAnterior.eliminarReservaActiva(reserva.getID());
+            vehiculoAnterior= reserva_i.getVehiculoAsignado();
+            System.out.println("aqui");
+            reserva_i.setVehiculoAsignado(null);
+            vehiculoAnterior.eliminarReservaActiva(reserva_i.getID());
+            copiaReserva_i= new Reserva(reserva_i.getID(),reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getHoraRecoger(),reserva_i.getHoraEntregar(),reserva_i.getReservaEnSede(),reserva_i.getSedeRecoger(),reserva_i.getSedeEntregar(),reserva_i.getCategoria(),reserva_i.getCliente());
+            copiaReserva_i.setPagoReserva(reserva_i.getPagoReserva());
+            System.out.println(vehiculoAnterior.getPlaca());
+            copiaReserva_i.setVehiculoAsignado(vehiculoAnterior);
             try{Inventario.updateSistema();}catch(IOException e) {e.printStackTrace();}
-            copiaReserva= new Reserva(reserva.getID(),reserva.getFechaRecoger(),reserva.getFechaEntregar(),reserva.getHoraRecoger(),reserva.getHoraEntregar(),reserva.getReservaEnSede(),reserva.getSedeRecoger(),reserva.getSedeEntregar(),reserva.getCategoria(),reserva.getCliente());
+
             SwingUtilities.invokeLater(() -> {
             try {
                 crearPasosReserva(true,boolDTO);
@@ -189,13 +194,13 @@ public class CardsPanels {
     private void crearPasosCrearAlquiler(alquiler alquiler_u) throws FileNotFoundException, IOException {
         crearPasoPregunta("PreguntaConductor", "¿Desea agregar un conductor?", "InputConductor", "InputPasarelas2");
         crearLicencia(new JPanel(),"InputConductor",alquiler_u,"PreguntaConductor");
-        crearPasoPasarelas2("InputPasarelas2","Fin","Pago de alquiler inicial",alquiler_u);
+        crearPasoPasarelas2("InputPasarelas2","Fin","Pago de alquiler inicial",alquiler_u,null);
         crearPasoFin("Fin");
     }
 
     private void crearPasosCompletarAlquiler(Sede sede,alquiler alquiler_u) throws FileNotFoundException, IOException {
         crearPasoAveria("InputAverias", "InputPasarelas2",sede,alquiler_u);
-        crearPasoPasarelas2("InputPasarelas2","Fin","Pago de alquiler final",alquiler_u);
+        crearPasoPasarelas2("InputPasarelas2","Fin","Pago de alquiler final",alquiler_u,sede);
         crearPasoFin("Fin");
     }
 
@@ -258,7 +263,6 @@ public class CardsPanels {
                     if (selectedButtonModel != null) {
                         String opcionElegida = selectedButtonModel.getActionCommand();
                         averia= Integer.parseInt(opcionElegida);
-                        pagoFinalAlquiler=alquiler_u.calcularPagoFinal(sede_personal,averia);
                         avanzarAlSiguientePaso(pasoKey);
                     }}});
         cardPanel.add(panel_1,nombreCampo);
@@ -360,12 +364,14 @@ public class CardsPanels {
             reserva_i.setVehiculoAsignado();
             if(reserva.getVehiculoAsignado()==null){
                 if (copiaReserva_i.getVehiculoAsignado()!=null){
+                    System.out.println("aca");
                     VentanaMain.errorDialog("No se logró asignar un nuevo vehículo, los cambios no se guardaron");
-                    reserva_i=new Reserva(copiaReserva.getID(),copiaReserva.getFechaRecoger(),copiaReserva.getFechaEntregar(),copiaReserva.getHoraRecoger(),copiaReserva.getHoraEntregar(),copiaReserva.getReservaEnSede(),copiaReserva.getSedeRecoger(),copiaReserva.getSedeEntregar(),copiaReserva.getCategoria(),copiaReserva.getCliente());
-                    Vehiculo vehiculoAnterior=copiaReserva.getVehiculoAsignado();
-                    Reserva.addReserva(reserva_i);
-                    reserva_i.setVehiculoAsignado(vehiculoAnterior);
+                    reserva_i=new Reserva(copiaReserva_i.getID(),copiaReserva_i.getFechaRecoger(),copiaReserva_i.getFechaEntregar(),copiaReserva_i.getHoraRecoger(),copiaReserva_i.getHoraEntregar(),copiaReserva_i.getReservaEnSede(),copiaReserva_i.getSedeRecoger(),copiaReserva_i.getSedeEntregar(),copiaReserva_i.getCategoria(),copiaReserva_i.getCliente());
+                    System.out.println(copiaReserva_i.getVehiculoAsignado().getPlaca());
+                    reserva_i.setVehiculoAsignado(copiaReserva_i.getVehiculoAsignado());
                     vehiculoAnterior.addReservaActiva(reserva_i);
+                    Reserva.addReserva(reserva_i);
+
                     }
                     else{
                         VentanaMain.errorDialog("No se encontraron vehículos disponibles para la configuración de reserva dada");
@@ -1245,6 +1251,7 @@ public class CardsPanels {
                             if (pasarela.getTransferenciaCompletada()==true){
                                 VentanaMain.Dialog("El id de su reserva es: "+Integer.toString(reserva_i.getID()));
                                 boolean yaRegistrado= false;
+                                if (Reserva.getListaReservas()!=null){
                                 for (Reserva i: Reserva.getListaReservas()){
                                     if (i.getID()==reserva_i.getID())
                                     {
@@ -1257,12 +1264,25 @@ public class CardsPanels {
                                 }
                                 }
                                 else{
+                                Reserva.addReserva(reserva_i);
+                                }
+                                }
+                                else{
                                     VentanaMain.errorDialog("No se logró completar el pago, los cambios no se guardaron");
-                                    System.out.println(Reserva.getListaReservas().size());
                                     if (esModificacion){
+                                    try{
+                                        reserva_i.getVehiculoAsignado().eliminarReservaActiva(reserva_i.getID());
+                                        Reserva.getListaReservas().remove(reserva_i);
+                                    }
+                                    catch(IndexOutOfBoundsException e3){
+                                    }
+                                    VentanaMain.errorDialog("No se logró asignar un nuevo vehículo, los cambios no se guardaron");
+
+
                                     reserva_i=new Reserva(copiaReserva_i.getID(),copiaReserva_i.getFechaRecoger(),copiaReserva_i.getFechaEntregar(),copiaReserva_i.getHoraRecoger(),copiaReserva_i.getHoraEntregar(),copiaReserva_i.getReservaEnSede(),copiaReserva_i.getSedeRecoger(),copiaReserva_i.getSedeEntregar(),copiaReserva_i.getCategoria(),copiaReserva_i.getCliente());
                                     Reserva.addReserva(reserva_i);
-                                    reserva_i.setVehiculoAsignado(vehiculoAnterior);
+                                    reserva_i.setPagoReserva(copiaReserva_i.getPagoReserva());
+                                    reserva_i.setVehiculoAsignado(copiaReserva_i.getVehiculoAsignado());
                                     vehiculoAnterior.addReservaActiva(reserva_i);
                                     }
                                     else{
@@ -1285,7 +1305,7 @@ public class CardsPanels {
     cardPanel.add(panel, preguntaKey);
     }
 
-    public void crearPasoPasarelas2(String preguntaKey, String pasoKey,String motivoPago,alquiler alquiler_u) throws FileNotFoundException, IOException{
+    public void crearPasoPasarelas2(String preguntaKey, String pasoKey,String motivoPago,alquiler alquiler_u, Sede sede_personal) throws FileNotFoundException, IOException{
         JPanel panel= new JPanel();
         VentanaMain.refresh(panel);
         panel.setLayout(new GridLayout(0, 2));
@@ -1349,14 +1369,16 @@ public class CardsPanels {
                                 avanzarAlSiguientePaso(pasoKey);
                             }
                             else{
-                                alquiler.getListaAlquileres().remove(alquiler_u);
+                                System.out.println("aqui");
                                 alquiler_u.getReserva().getVehiculoAsignado().getHistorialAlquileres().remove(alquiler_u);
+                                alquiler.getListaAlquileres().remove(alquiler_u);
                                 VentanaMain.errorDialog("No se pudo iniciar el alquiler. Intentelo nuevamente");
+                                avanzarAlSiguientePaso(pasoKey);
                             }
                         }});
                     }
                     else{
-
+                        pagoFinalAlquiler=alquiler_u.calcularPagoFinal(sede_personal,averia);
                         if (pagoFinalAlquiler>0){
                         Constructor<?> constructor = claseElejida.getDeclaredConstructor(Cliente.class, String.class,double.class,int.class,String.class);
                         Object instanciaClase = constructor.newInstance(alquiler_u.getReserva().getCliente(),motivoPago,pagoFinalAlquiler,alquiler_u.getReserva().getID(),"registroPagos\\"+pathRegistro);
@@ -1365,7 +1387,8 @@ public class CardsPanels {
                         pasarela.frame.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosed(WindowEvent e) {
-                            if (pasarela.getTransferenciaCompletada()==true){                                
+                            if (pasarela.getTransferenciaCompletada()==true){    
+                                alquiler_u.eventosFinal(sede_personal, averia);                          
                                 alquiler_u.setPagoFinal(pagoFinalAlquiler+alquiler_u.getPagoFinal());
                                 alquiler_u.getReserva().getVehiculoAsignado().eliminarReservaActiva(alquiler_u.getID());
                                 alquiler_u.setActivo(false);
@@ -1374,6 +1397,7 @@ public class CardsPanels {
                             }
                             else{
                                 VentanaMain.errorDialog("No se pudo concluir el alquiler. Intentelo nuevamente");
+                                avanzarAlSiguientePaso(pasoKey);
 
                             }
                         }});
@@ -1381,6 +1405,12 @@ public class CardsPanels {
                         }
                         else{
                             VentanaMain.Dialog("El vehículo se ha devuelto correctamente y el cliente tiene un saldo a favor de COP "+Double.toString(pagoFinalAlquiler*-1)+" que se transferirán a su tarjeta terminada en "+ Long.toString(alquiler_u.getReserva().getCliente().getTarjeta().getNumeroTarjeta()% 10000)+".");
+                            alquiler_u.eventosFinal(sede_personal, averia);                          
+                            alquiler_u.setPagoFinal(pagoFinalAlquiler+alquiler_u.getPagoFinal());
+                            alquiler_u.getReserva().getVehiculoAsignado().eliminarReservaActiva(alquiler_u.getID());
+                            alquiler_u.setActivo(false);
+                            avanzarAlSiguientePaso(pasoKey);
+
                         }
 
                     }

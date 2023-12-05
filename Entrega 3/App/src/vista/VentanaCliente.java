@@ -140,7 +140,10 @@ public class VentanaCliente {
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         DefaultComboBoxModel<String> modeloReservas= new DefaultComboBoxModel<>();
         int numReservas=0;
+        if (Reserva.getListaReservas()!=null){
+            System.out.println(Reserva.getListaReservas().size());
         for(Reserva i: Reserva.getListaReservas()){
+            System.out.println(i.getID()+"-"+i.getFechaRecoger()+"-"+i.getFechaEntregar()+"-"+i.getCategoria().getnombreCategoria()+"_"+i.getVehiculoAsignado().getPlaca());
             if (alquiler.assignAlquiler(i.getID())==null){
             if(i.getCliente().equals(cliente_i)&& i.getFechaRecoger()>=fechaActual){
             numReservas+=1;
@@ -173,6 +176,10 @@ public class VentanaCliente {
                 }});
         try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
         }
+    else{
+        panel.add(new JLabel("No se encontraron reservas para editar."));
+    }
+    }
     else{
         panel.add(new JLabel("No se encontraron reservas para editar."));
     }
@@ -580,6 +587,7 @@ public class VentanaCliente {
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         DefaultComboBoxModel<String> modeloReservas= new DefaultComboBoxModel<>();
         int numReservas=0;
+        if (Reserva.getListaReservas()!=null){
         for(Reserva i: Reserva.getListaReservas()){
             if (alquiler.assignAlquiler(i.getID())==null){
             if(i.getCliente().equals(cliente_i)&& i.getFechaRecoger()>=fechaActual){
@@ -611,10 +619,15 @@ public class VentanaCliente {
                 Vehiculo vehiculoReservaElejida= reservaElejida.getVehiculoAsignado();
                 vehiculoReservaElejida.eliminarReservaActiva(reservaElejida.getID());
                 VentanaMain.Dialog("La reserva con IDreserva "+Integer.toString(id)+" ha sido cancelada, pronto se trasferirá de vuelta el pago del 30% (COP "+Double.toString(reservaElejida.getPagoReserva())+").");
+                VentanaMain.Dialog("Se recomienda reiniciar la APP para tener una buena experiencia de nuestro servicio!");                
                 try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
             }
         });
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
+    }
+    else{
+        panel.add(new JLabel("No se encontraron reservas para editar."));
+    }
     }
     else{
         panel.add(new JLabel("No se encontraron reservas para editar."));

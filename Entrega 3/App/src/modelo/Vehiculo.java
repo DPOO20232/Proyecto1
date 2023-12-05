@@ -222,7 +222,15 @@ public class Vehiculo {
          *
          * @param reserva La reserva activa a agregar.
          */
+        boolean yaIngresado=false;
+        for (Reserva i:this.reservasActivas){
+            if (i.getID()==reserva.getID()){
+                yaIngresado=true;
+            }
+        }
+        if (!yaIngresado){
         this.reservasActivas.add(reserva);}
+    }
     public void addAlquiler(alquiler alquiler){
         /**
          * Agrega una reserva activa al vehículo.
