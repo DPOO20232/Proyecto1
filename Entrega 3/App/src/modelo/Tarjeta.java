@@ -4,11 +4,13 @@ import java.util.Calendar;
 
 public class Tarjeta {
     private long numeroTarjeta;
+    private boolean cupoBloqueado;
+    private double montoBloqueo;
     private int fechaVencimiento;
     private String marcaTarjeta;
     private String nombreTitular;
 
-    public Tarjeta(long numeroTarjeta, int fechaVencimiento,String marcaTarjeta, String nombreTitular) {
+    public Tarjeta(long numeroTarjeta,boolean cupoBloqueado,double montoBloqueo, int fechaVencimiento,String marcaTarjeta, String nombreTitular) {
         /**
          * Constructor de la clase Tarjeta que crea una instancia de tarjeta de crédito con la información proporcionada.
          *
@@ -18,6 +20,8 @@ public class Tarjeta {
          * @param nombreTitular El nombre del titular de la tarjeta de crédito.
          */
         this.numeroTarjeta = numeroTarjeta;
+        this.cupoBloqueado = cupoBloqueado;
+        this.montoBloqueo = montoBloqueo;
         this.fechaVencimiento = fechaVencimiento;
         this.marcaTarjeta= marcaTarjeta;
         this.nombreTitular = nombreTitular;
@@ -30,7 +34,22 @@ public class Tarjeta {
          */
         return this.numeroTarjeta;
     }
-
+    public double getMontoBloqueo() {
+        /**
+         * Obtiene el monto por el que se bloqueó la tarjeta.
+         *
+         * @return el monto por el que se bloqueó la tarjeta..
+         */
+        return this.montoBloqueo;
+    }
+        public boolean getCupoBloqueado() {
+        /**
+         * Obtiene el boolean que simboliza si la tarjeta se encuentra bloqueada o no.
+         *
+         * @return El boolean que simboliza si la tarjeta se encuentra bloqueada o no.
+         */
+        return this.cupoBloqueado;
+    }
     public int getFechaVencimiento() {
         /**
          * Obtiene la fecha de vencimiento de la tarjeta de crédito.
@@ -77,5 +96,29 @@ public class Tarjeta {
             vence= false;
     }
         return vence;
+    }
+    public boolean realizarCobro(double monto){
+        /**
+         * Realiza el débito simulado tras pasar por pasarela de pago. 
+         * Note: Con el objetivo de experimentar un pago simulado no exitoso, todo pago intentado con tarjeta Discover rebotará.
+         *
+         * @param dia El día para la comprobación. Si se proporciona como 0, se utiliza el día actual.
+         * @param mes El mes para la comprobación. Si se proporciona como 0, se utiliza el mes actual.
+         * @param anio El año para la comprobación. Si se proporciona como 0, se utiliza el año actual.
+         * @return `true` si la tarjeta ha vencido en la fecha proporcionada; de lo contrario, `false`.
+         */
+
+        boolean transaccionExitosa=false;
+        if (this.cupoBloqueado==false&&!this.marcaTarjeta.equals("Discover")){
+            //Se bloquea el cupo de la tarjeta
+            this.montoBloqueo=monto;
+            this.cupoBloqueado=true;
+
+            //Se desbloquea el cupo de la tarjeta
+            this.montoBloqueo=0;
+            this.cupoBloqueado=false;
+            transaccionExitosa=true;
+        }
+        return transaccionExitosa;
     }
 }

@@ -1,0 +1,3 @@
+PayPal->registroPayPal.log
+Payu->registroPayu.txt
+Sire->registroSire.json

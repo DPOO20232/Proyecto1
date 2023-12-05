@@ -132,7 +132,7 @@ public class Consola {
                             Inventario.updateSistema();}
                         else if(opcion_empleadoA==2){MenuAlquiler.completarAlquiler(sedePersonal);
                             Inventario.updateSistema();}
-                        else if(opcion_empleadoA==3){ MenuAlquiler.crearReserva(null, true);
+                        else if(opcion_empleadoA==3){ MenuAlquiler.crearReserva(null, true,false);
                             Inventario.updateSistema();}
                         else if(opcion_empleadoA==4){MenuAlquiler.modificarReserva(null);
                             Inventario.updateSistema();}
@@ -179,7 +179,7 @@ public class Consola {
                     Inventario.updateSistema();}
                     if (opcion_cliente==2){MenuUsuario.actualizarCliente(cliente);
                     Inventario.updateSistema();}
-                    else if(opcion_cliente==3){MenuAlquiler.crearReserva(cliente,false);
+                    else if(opcion_cliente==3){MenuAlquiler.crearReserva(cliente,false,false);
                     Inventario.updateSistema();}
                     else if(opcion_cliente==4){MenuAlquiler.modificarReserva(cliente);
                     Inventario.updateSistema();}

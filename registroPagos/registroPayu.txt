@@ -1,0 +1,1 @@
+[{"tipoDePago":"modificación de Reserva","fecha":"20231204","ID":"3","numeroTarjeta":"1111222233334444","cedulaCliente":"1023456789","montoCobrado":"525000.0"},{"tipoDePago":"Pago de alquiler inicial","fecha":"20231204","ID":"1","numeroTarjeta":"9999888899998888","cedulaCliente":"1023456789","montoCobrado":"6168000.0"}]

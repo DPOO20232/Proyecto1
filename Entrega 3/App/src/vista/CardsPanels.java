@@ -8,9 +8,11 @@ import java.util.Date;
 import java.util.List;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import modelo.Categoria;
+import modelo.Cliente;
 import modelo.Conductor;
 import modelo.Inventario;
 import modelo.Licencia;
@@ -29,7 +31,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 
 public class CardsPanels {
@@ -50,6 +59,12 @@ public class CardsPanels {
     protected static int inputHoraInicio;
     private static JComboBox <String> sede1;
     private static JComboBox <String> sede2;
+    private static JComboBox <String> pasarelas;
+    private Vehiculo vehiculoAnterior;
+    private double diferenciaPago;
+    private double pagoFinalAlquiler;
+    private double montoPago;
+    private int averia;
 
     public void editorSede(JPanel mainPanel,Sede sedeEditar) {
         this.mainPanel = mainPanel;
@@ -78,7 +93,7 @@ public class CardsPanels {
         mainPanel.add(cardPanel);
         crearPasosPersonal(personal, panel);
     }
-    public void editorReserva(JPanel mainPanel,Reserva reserva) {
+    public void editorReserva(JPanel mainPanel,Reserva reserva, Boolean boolDTO) {
         this.mainPanel = mainPanel;
         this.cardLayout = new CardLayout();
         this.cardPanel = new JPanel(cardLayout);
@@ -90,32 +105,59 @@ public class CardsPanels {
         Reserva copiaReserva= new Reserva();
         copiaReserva_i=copiaReserva;  
         if(reserva.getVehiculoAsignado()!=null){
-            Vehiculo vehiculoActual= reserva.getVehiculoAsignado();
-            reserva.setVehiculoAsignado(null);
-            vehiculoActual.eliminarReservaActiva(reserva.getID());
+            vehiculoAnterior= reserva_i.getVehiculoAsignado();
+            System.out.println("aqui");
+            reserva_i.setVehiculoAsignado(null);
+            vehiculoAnterior.eliminarReservaActiva(reserva_i.getID());
+            copiaReserva_i= new Reserva(reserva_i.getID(),reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getHoraRecoger(),reserva_i.getHoraEntregar(),reserva_i.getReservaEnSede(),reserva_i.getSedeRecoger(),reserva_i.getSedeEntregar(),reserva_i.getCategoria(),reserva_i.getCliente());
+            copiaReserva_i.setPagoReserva(reserva_i.getPagoReserva());
+            System.out.println(vehiculoAnterior.getPlaca());
+            copiaReserva_i.setVehiculoAsignado(vehiculoAnterior);
             try{Inventario.updateSistema();}catch(IOException e) {e.printStackTrace();}
-            copiaReserva= new Reserva(reserva.getID(),reserva.getFechaRecoger(),reserva.getFechaEntregar(),reserva.getHoraRecoger(),reserva.getHoraEntregar(),reserva.getReservaEnSede(),reserva.getSedeRecoger(),reserva.getSedeEntregar(),reserva.getCategoria(),reserva.getCliente());
+
             SwingUtilities.invokeLater(() -> {
-            crearPasosReserva(true);
+            try {
+                crearPasosReserva(true,boolDTO);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             });
         }
         else{
             copiaReserva_i.setReservaEnSede(reserva_i.getReservaEnSede());
             SwingUtilities.invokeLater(() -> {
-            crearPasosReserva(false);
+            try {
+                crearPasosReserva(false,boolDTO);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             });
 
         }
 
     }
-    public void agregarConductores(JPanel mainPanel,alquiler alquiler_u) {
+    public void crearAlquiler(JPanel mainPanel,alquiler alquiler_u) throws FileNotFoundException, IOException {
         this.mainPanel = mainPanel;
         this.cardLayout = new CardLayout();
         this.cardPanel = new JPanel(cardLayout);
-        String [] pasosConductor ={"PreguntaConductor", "InputConductor","Fin"};
+        String [] pasosConductor ={"PreguntaConductor", "InputConductor","InputPasarelas2","Fin"};
         this.pasos=pasosConductor ;
         mainPanel.add(cardPanel);
-        crearPasosConductor(alquiler_u);
+        crearPasosCrearAlquiler(alquiler_u);
+    }
+
+    public void completarAlquiler(JPanel mainPanel,Sede sedeEmpleado,alquiler alquiler_u) throws FileNotFoundException, IOException {
+        this.mainPanel = mainPanel;
+        this.cardLayout = new CardLayout();
+        this.cardPanel = new JPanel(cardLayout);
+        String [] pasosConductor ={"InputAverias","InputPasarelas2","Fin"};
+        this.pasos=pasosConductor ;
+        mainPanel.add(cardPanel);
+        crearPasosCompletarAlquiler(sedeEmpleado,alquiler_u);
     }
 
     public void editar() {
@@ -149,21 +191,26 @@ public class CardsPanels {
         crearPasoInput("InputSede", "Ingrese el ID de la sede", "Fin",personal);
         crearPasoFin2("Fin", panel);
     }
-    private void crearPasosConductor(alquiler alquiler_u) {
-        crearPasoPregunta("PreguntaConductor", "¿Desea agregar un conductor?", "InputConductor", "Fin");
+    private void crearPasosCrearAlquiler(alquiler alquiler_u) throws FileNotFoundException, IOException {
+        crearPasoPregunta("PreguntaConductor", "¿Desea agregar un conductor?", "InputConductor", "InputPasarelas2");
         crearLicencia(new JPanel(),"InputConductor",alquiler_u,"PreguntaConductor");
+        crearPasoPasarelas2("InputPasarelas2","Fin","Pago de alquiler inicial",alquiler_u,null);
         crearPasoFin("Fin");
     }
 
-    private void crearPasosReserva(boolean esModificacion){
-        System.out.println(esModificacion);
+    private void crearPasosCompletarAlquiler(Sede sede,alquiler alquiler_u) throws FileNotFoundException, IOException {
+        crearPasoAveria("InputAverias", "InputPasarelas2",sede,alquiler_u);
+        crearPasoPasarelas2("InputPasarelas2","Fin","Pago de alquiler final",alquiler_u,sede);
+        crearPasoFin("Fin");
+    }
+
+    private void crearPasosReserva(boolean esModificacion, boolean boolDTO) throws FileNotFoundException, IOException{
         if (esModificacion){
-            crearPasoPregunta("PreguntaSede", "¿Desea modificar las sedes de recogida y devolución del vehículo?", "InputSedes", "PreguntaCategoria");
             crearPasoSede("InputSedes", "sedes para la reserva","InputFechas",reserva_i);
             crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva_i);
-            crearPasoHora("InputHoras", "Horarios para la reserva", "PreguntaCategoria",reserva_i);
-            crearPasoPregunta("PreguntaCategoria", "¿Desea cambiar de categoría?", "InputCategoria", "Fin");
-            crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva_i,copiaReserva_i);
+            crearPasoHora("InputHoras", "Horarios para la reserva", "InputCategoria",reserva_i);
+            crearPasoCategoria("InputCategoria", "categorias","InputPasarelas", "Fin", reserva_i,copiaReserva_i,boolDTO);
+            crearPasoPasarelas("InputPasarelas","modificación de Reserva","Fin",boolDTO,esModificacion);
             crearPasoFin("Fin");
 
         }
@@ -171,9 +218,54 @@ public class CardsPanels {
             crearPasoSede("InputSedes", "sedes para la reserva","InputFechas",reserva_i);
             crearPasoFecha("InputFechas","Fechas para la reserva","InputHoras",reserva_i);
             crearPasoHora("InputHoras", "Horarios para la reserva", "InputCategoria",reserva_i);
-            crearPasoCategoria("InputCategoria", "categorias", "Fin", reserva_i,copiaReserva_i);
+            crearPasoCategoria("InputCategoria", "categorias","InputPasarelas", "Fin", reserva_i,copiaReserva_i,boolDTO);
+            crearPasoPasarelas("InputPasarelas","Reserva","Fin",boolDTO,esModificacion);
             crearPasoFin("Fin");
         }
+
+    }
+
+    private void crearPasoAveria(String nombreCampo,String pasoKey,Sede sede_personal,alquiler alquiler_u){
+        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        LocalTime hora = LocalTime.now();
+        int horaActual = hora.getHour() * 100 + hora.getMinute();
+        alquiler_u.getReserva().setSedeEntregar(sede_personal);
+        alquiler_u.getReserva().setFechaEntregar(fechaActual);
+        alquiler_u.getReserva().setHoraEntregar(horaActual);
+        JPanel panel_1= new JPanel();
+        panel_1.add(new JLabel("Seleccione los daños que tenga el vehículo"));
+        panel_1.add(Box.createRigidArea(new Dimension(0,100)));
+        ButtonGroup averias= new ButtonGroup();
+        JRadioButton cero= new JRadioButton("0. Ningún daño ");
+        JRadioButton uno= new JRadioButton("1. Daño Leve ");
+        JRadioButton dos= new JRadioButton("2. Daño Moderado ");                        
+        JRadioButton tres= new JRadioButton("3. Daño Grave ");
+        cero.setActionCommand("0");
+        uno.setActionCommand("1");
+        dos.setActionCommand("2");
+        tres.setActionCommand("3");
+        averias.add(cero);
+        averias.add(uno);
+        averias.add(dos);
+        averias.add(tres);
+        panel_1.add(cero);
+        panel_1.add(uno);
+        panel_1.add(dos);
+        panel_1.add(tres);
+        panel_1.repaint();
+        JButton avanzar2= new JButton("Concluir alquiler");
+        panel_1.add(avanzar2);
+        panel_1.repaint();
+        avanzar2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                ButtonModel selectedButtonModel = averias.getSelection();
+                    if (selectedButtonModel != null) {
+                        String opcionElegida = selectedButtonModel.getActionCommand();
+                        averia= Integer.parseInt(opcionElegida);
+                        avanzarAlSiguientePaso(pasoKey);
+                    }}});
+        cardPanel.add(panel_1,nombreCampo);
 
     }
 
@@ -250,7 +342,8 @@ public class CardsPanels {
         });
         cardPanel.add(panel, preguntaKey);
     }
-    private void crearPasoCategoria(String pasoKey, String nombreCampo, String siguientePasoKey, Reserva reserva,Reserva copiaReserva){
+    private void crearPasoCategoria(String pasoKey, String nombreCampo, String siguientePasoKeySi,String siguientePasoKeyNo, Reserva reserva,Reserva copiaReserva,boolean dto){
+        
         JPanel panel = new JPanel();
         JLabel label = new JLabel(nombreCampo);
         panel.add(label);
@@ -271,40 +364,43 @@ public class CardsPanels {
             reserva_i.setVehiculoAsignado();
             if(reserva.getVehiculoAsignado()==null){
                 if (copiaReserva_i.getVehiculoAsignado()!=null){
+                    System.out.println("aca");
                     VentanaMain.errorDialog("No se logró asignar un nuevo vehículo, los cambios no se guardaron");
-                    reserva_i=new Reserva(copiaReserva.getID(),copiaReserva.getFechaRecoger(),copiaReserva.getFechaEntregar(),copiaReserva.getHoraRecoger(),copiaReserva.getHoraEntregar(),copiaReserva.getReservaEnSede(),copiaReserva.getSedeRecoger(),copiaReserva.getSedeEntregar(),copiaReserva.getCategoria(),copiaReserva.getCliente());
-                    Vehiculo vehiculoAnterior=copiaReserva.getVehiculoAsignado();
-                    Reserva.addReserva(reserva_i);
-                    reserva_i.setVehiculoAsignado(vehiculoAnterior);
+                    reserva_i=new Reserva(copiaReserva_i.getID(),copiaReserva_i.getFechaRecoger(),copiaReserva_i.getFechaEntregar(),copiaReserva_i.getHoraRecoger(),copiaReserva_i.getHoraEntregar(),copiaReserva_i.getReservaEnSede(),copiaReserva_i.getSedeRecoger(),copiaReserva_i.getSedeEntregar(),copiaReserva_i.getCategoria(),copiaReserva_i.getCliente());
+                    System.out.println(copiaReserva_i.getVehiculoAsignado().getPlaca());
+                    reserva_i.setVehiculoAsignado(copiaReserva_i.getVehiculoAsignado());
                     vehiculoAnterior.addReservaActiva(reserva_i);
+                    Reserva.addReserva(reserva_i);
+
                     }
                     else{
                         VentanaMain.errorDialog("No se encontraron vehículos disponibles para la configuración de reserva dada");
                     }
-            }
-            else{
-                reserva_i.setPagoReserva(reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getFechaEntregar(),reserva_i.getHoraEntregar());                    
-                VentanaMain.Dialog("Reserva registrada exitosamente, el nuevo cobro de su reserva fue de COP "+ Double.toString(reserva_i.getPagoReserva())+".");
-                if (reserva_i.getID()==-1){
-                    reserva_i.setID();
-                    VentanaMain.Dialog("El id de su reserva es: "+Integer.toString(reserva_i.getID()));
-                }
-                boolean yaRegistrado= false;
-                for (Reserva i: Reserva.getListaReservas()){
-                    if (i.getID()==reserva_i.getID())
-                    {
-                        yaRegistrado=true;
-                        break;
-                    }
-                }
-                if (!yaRegistrado){
-                Reserva.addReserva(reserva_i);
-                }
+                    avanzarAlSiguientePaso(siguientePasoKeyNo);
 
             }
-            avanzarAlSiguientePaso(siguientePasoKey);
-            }}
-        );
+            else{
+                    double pagoAnterior=0;
+                    double nuevoPago=0;
+                    try{
+                        pagoAnterior=reserva_i.getPagoReserva();
+                    }
+                    catch (NullPointerException e2){}
+                    reserva_i.setPagoReserva(reserva_i.getFechaRecoger(),reserva_i.getFechaEntregar(),reserva_i.getFechaEntregar(),reserva_i.getHoraEntregar(),dto);                 
+                    nuevoPago=reserva_i.getPagoReserva();
+                    double pagoTotal= nuevoPago-pagoAnterior;
+                    System.out.println(pagoAnterior+"-> "+nuevoPago+"=="+pagoTotal);
+                    if (pagoTotal>0){
+                        diferenciaPago=pagoTotal;
+                        avanzarAlSiguientePaso(siguientePasoKeySi);
+                    }
+                    else{
+                    
+                    VentanaMain.Dialog("Pronto se retornaran COP"+(pagoTotal*-1)+ " a su método de cuenta.");
+                    avanzarAlSiguientePaso(siguientePasoKeyNo);
+                    }
+            }
+        }});          
         cardPanel.add(panel, pasoKey);
 
         
@@ -362,21 +458,6 @@ public class CardsPanels {
     private static String[] obtenerOpcionesHoras(Sede sede,int fecha) {
         int inicio =0;
         int fin=24;
-        if (fecha>0&& sede!=null){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate localDate = LocalDate.parse( String.valueOf(fecha), formatter);
-        DayOfWeek dayOfWeek = localDate.getDayOfWeek();
-        boolean esDiaLaboralfin = (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY);}
-        /*
-        if (esDiaLaboralfin){
-            inicio=sede.getHorarioAtencionEnSemana().get(0)/100;
-            fin=sede.getHorarioAtencionEnSemana().get(1)/100;
-        }
-        else{
-            inicio=sede.getHorarioAtencionFinSemana().get(0)/100;
-            fin=sede.getHorarioAtencionFinSemana().get(1)/100;
-        }}
-        */
         String[] opcionesHoras = new String[fin-inicio];
         for (int i = inicio; i < fin; i++) {
             opcionesHoras[i-inicio] = String.format("%02d", i);
@@ -389,12 +470,6 @@ public class CardsPanels {
         panel.add(label);
         JComboBox<String> horaFinComboBox = new JComboBox<>(obtenerOpcionesHoras(null,0));
         JComboBox<String> horaInicioComboBox = new JComboBox<>(obtenerOpcionesHoras(null,0));
-        /*
-        if (reserva.getSedeRecoger()!=null && reserva.getSedeEntregar()!=null){
-        horaInicioComboBox = new JComboBox<>(obtenerOpcionesHoras(reserva.getSedeRecoger(),reserva.getFechaRecoger()));
-        horaFinComboBox = new JComboBox<>(obtenerOpcionesHoras(reserva.getSedeEntregar(),reserva.getFechaEntregar()));
-        }
-        */
         comboBox1=horaInicioComboBox;
         comboBox2=horaFinComboBox;
         // Crear Spinners para los minutos de inicio y fin
@@ -418,12 +493,6 @@ public class CardsPanels {
         gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, 5, 5);  // Espaciado entre componentes
 
-        /*
-        if (reserva.getSedeRecoger()!=null){
-        panel.add(new JLabel("Hora de Inicio (sede "+reserva.getSedeRecoger().getNombre()+":"), gbc);
-        }
-        */
-
         panel.add(new JLabel("Hora de Inicio:"), gbc);
 
         gbc.gridx = 1;
@@ -439,11 +508,7 @@ public class CardsPanels {
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        /*
-        if (reserva.getSedeEntregar()!=null){
-        panel.add(new JLabel("Hora de Fin (sede "+reserva.getSedeEntregar().getNombre()+":"), gbc);
-        }
-        */
+
         panel.add(new JLabel("Hora de Fin:"), gbc);
         gbc.gridx = 1;
         panel.add(horaFinComboBox, gbc);
@@ -665,8 +730,6 @@ public class CardsPanels {
                 String minutos2 = minutosComboBox2.getSelectedItem().toString();
                 String inicio=(hora1+minutos1);
                 String fin=(hora2+minutos2);
-                System.out.println("inicio:"+inicio);
-                System.out.println("fin:"+fin);
                 if(Integer.parseInt(fin)> Integer.parseInt(inicio)){
 
                     if (O instanceof Sede){
@@ -696,120 +759,6 @@ public class CardsPanels {
     
         cardPanel.add(panel, pasoKey);
     }
-    /*
-    
-    private void crearPasoFecha(String pasoKey, String nombreCampo, String siguientePasoKey, Object O) {
-        JPanel panelC= new JPanel();
-        panelC.add(new JLabel(nombreCampo));
-        JPanel panelFecha1= new JPanel();
-        panelFecha1.setLayout(new GridLayout(1,0));
-        DefaultComboBoxModel<String> opcionesAnio = new DefaultComboBoxModel<>();
-
-        int anioActual= Calendar.getInstance().get(Calendar.YEAR);
-        for (int i = anioActual; i <= anioActual+2; i++){
-            opcionesAnio.addElement(Integer.toString(i));
-        }
-        JComboBox<String> anioBox= new JComboBox<String>(opcionesAnio);
-        anioBox.setSelectedIndex(0);
-        panelFecha1.add(anioBox);
-        anioBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-            panelC.repaint();
-            String anio=anioBox.getSelectedItem().toString();
-            VentanaMain.refresh(panelFecha1);
-            panelFecha1.add(anioBox);
-            anioBox.setEnabled(false);
-            DateComboBoxPanel date1= new DateComboBoxPanel(Integer.parseInt(anio));
-            date1.setDefaulDayComboBox();
-            date1.setDefaultMonthComboBox();
-            panelFecha1.add(date1);
-            panelFecha1.repaint();
-            JButton updateDatebutton= new JButton("Cambiar Fecha");
-            panelFecha1.add(updateDatebutton);
-            JButton saveDatebutton= new JButton("Guardar Fecha");
-            panelFecha1.add(saveDatebutton);
-            inputFechaL1="";
-
-            saveDatebutton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e){
-                    if (!date1.getText().trim().isEmpty()) {
-                        inputFechaL1 = anio + date1.getText();
-                    }
-                    VentanaMain.refresh(panelFecha1);
-                    panelFecha1.add(anioBox);
-                    panelFecha1.add(updateDatebutton);
-                } 
-            });
-            updateDatebutton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e){
-                    inputFechaL1="";
-                    VentanaMain.refresh(panelFecha1);
-                    panelFecha1.add(anioBox);
-                    anioBox.setEnabled(true);
-                }
-            });
-            }
-        });
-
-        JPanel panelFecha2= new JPanel();
-        panelC.add(panelFecha2);
-        panelFecha2.setLayout(new GridLayout(1,0));
-        DefaultComboBoxModel<String> opcionesAnio2 = new DefaultComboBoxModel<>();
-
-        for (int j = anioActual; j <= anioActual+20; j++){
-            opcionesAnio2.addElement(Integer.toString(j));
-        }
-        JComboBox<String> anioBox2= new JComboBox<String>(opcionesAnio2);
-        anioBox2.setSelectedIndex(0);
-        panelFecha2.add(anioBox2);
-        anioBox2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-            panelC.repaint();
-            String anio=anioBox2.getSelectedItem().toString();
-            VentanaMain.refresh(panelFecha2);
-            panelFecha2.add(anioBox2);
-            anioBox2.setEnabled(false);
-            DateComboBoxPanel date2= new DateComboBoxPanel(Integer.parseInt(anio));
-            date2.setDefaulDayComboBox();
-            date2.setDefaultMonthComboBox();
-            panelFecha2.add(date2);
-            JButton updateDatebutton= new JButton("Cambiar Fecha");
-            panelFecha2.add(updateDatebutton);
-            JButton saveDatebutton= new JButton("Guardar Fecha");
-            panelFecha2.add(saveDatebutton);
-            inputFechaL2="";
-
-            saveDatebutton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e){
-                    if (!date2.getText().trim().isEmpty()) {
-                        inputFechaL2 = anio + date2.getText();
-                    }
-                    VentanaMain.refresh(panelFecha2);
-                    panelFecha2.add(anioBox2);
-                    panelFecha2.add(updateDatebutton);
-                } 
-            });
-            updateDatebutton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e){
-                    inputFechaL2="";
-                    VentanaMain.refresh(panelFecha2);
-                    panelFecha2.add(anioBox2);
-                    anioBox2.setEnabled(true);
-                }
-            });
-            }
-        });
-        panelC.add(panelFecha1);
-        panelC.add(panelFecha2);
-        cardPanel.add(panelC, pasoKey);
-    }
-    */
     
     private void crearPasoDecimales(String pasoKey, String nombreCampo, String siguientePasoKey,Object O) {
         JPanel panel = new JPanel();
@@ -1236,6 +1185,240 @@ public class CardsPanels {
         panel.add(panelC);
         cardPanel.add(panelC, pasoKey);
 
+    }
+    public void crearPasoPasarelas(String preguntaKey,String motivoPago,String pasoKey,Boolean dto,Boolean esModificacion ) throws FileNotFoundException, IOException{
+        JPanel panel= new JPanel();
+        VentanaMain.refresh(panel);
+        panel.setLayout(new GridLayout(0, 2));
+        panel.add(Box.createRigidArea(new Dimension(10,50)));
+        panel.add(Box.createRigidArea(new Dimension(10,50)));
+        panel.add(new JLabel("Seleccione con que pasarela de pagos desea realizar el pago"));
+        JComboBox<String> opcionesPasarelas= new JComboBox<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("./registroPagos/config.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split("->");
+                 if (partes.length >= 2){
+                    opcionesPasarelas.addItem(partes[0]);
+                 }}};
+        opcionesPasarelas.setSelectedIndex(0);
+        pasarelas=opcionesPasarelas;
+        JButton continuar= new JButton("Continuar");
+        panel.add(opcionesPasarelas);
+        panel.add(continuar);
+        panel.repaint();
+        panel.revalidate();
+        continuar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nombreClase= pasarelas.getSelectedItem().toString();
+                try {
+                    Class<?> claseElejida= Class.forName("vista."+nombreClase);
+                    String pathRegistro="";
+                    String pathRegistroEsperado="registro"+nombreClase;
+                    //Encontramos path del archivo sobre el que escribir transferencia
+                    try (BufferedReader br = new BufferedReader(new FileReader("./registroPagos/config.txt"))) {
+                    String linea;
+                    while ((linea = br.readLine()) != null) {
+                        String[] partes = linea.split("->");
+                        if (partes.length >= 2){
+                            String rutaCompleta=partes[1];
+                            String rutaDeseada = rutaCompleta.substring(0, rutaCompleta.lastIndexOf("."));
+                            if (rutaDeseada.equals(pathRegistroEsperado)){
+                                pathRegistro=rutaCompleta;
+                                break;
+                            }                           
+                        }}} catch (IOException e1) {
+                            e1.printStackTrace();
+                        };
+                    
+                    Constructor<?> constructor = claseElejida.getDeclaredConstructor(Cliente.class, String.class,double.class,int.class,String.class);
+                    if (reserva_i.getID()==-1){
+                        reserva_i.setID();
+                    }
+                    String motivoPagoStr=motivoPago;
+                    if (dto){
+                        motivoPagoStr=motivoPagoStr+" con 10% de dto";
+                    }
+                    Object instanciaClase = constructor.newInstance(reserva_i.getCliente(),motivoPagoStr,diferenciaPago,reserva_i.getID(),"registroPagos\\"+pathRegistro);
+                    pasarelaPago pasarela= (pasarelaPago)instanciaClase;
+                    VentanaMain.refresh(panel);
+                    
+                    pasarela.frame.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {    
+
+                            if (pasarela.getTransferenciaCompletada()==true){
+                                VentanaMain.Dialog("El id de su reserva es: "+Integer.toString(reserva_i.getID()));
+                                boolean yaRegistrado= false;
+                                if (Reserva.getListaReservas()!=null){
+                                for (Reserva i: Reserva.getListaReservas()){
+                                    if (i.getID()==reserva_i.getID())
+                                    {
+                                        yaRegistrado=true;
+                                        break;
+                                    }
+                                }
+                                if (!yaRegistrado){
+                                Reserva.addReserva(reserva_i);
+                                }
+                                }
+                                else{
+                                Reserva.addReserva(reserva_i);
+                                }
+                                }
+                                else{
+                                    VentanaMain.errorDialog("No se logró completar el pago, los cambios no se guardaron");
+                                    if (esModificacion){
+                                    try{
+                                        reserva_i.getVehiculoAsignado().eliminarReservaActiva(reserva_i.getID());
+                                        Reserva.getListaReservas().remove(reserva_i);
+                                    }
+                                    catch(IndexOutOfBoundsException e3){
+                                    }
+                                    VentanaMain.errorDialog("No se logró asignar un nuevo vehículo, los cambios no se guardaron");
+
+
+                                    reserva_i=new Reserva(copiaReserva_i.getID(),copiaReserva_i.getFechaRecoger(),copiaReserva_i.getFechaEntregar(),copiaReserva_i.getHoraRecoger(),copiaReserva_i.getHoraEntregar(),copiaReserva_i.getReservaEnSede(),copiaReserva_i.getSedeRecoger(),copiaReserva_i.getSedeEntregar(),copiaReserva_i.getCategoria(),copiaReserva_i.getCliente());
+                                    Reserva.addReserva(reserva_i);
+                                    reserva_i.setPagoReserva(copiaReserva_i.getPagoReserva());
+                                    reserva_i.setVehiculoAsignado(copiaReserva_i.getVehiculoAsignado());
+                                    vehiculoAnterior.addReservaActiva(reserva_i);
+                                    }
+                                    else{
+                                        reserva_i.getVehiculoAsignado().eliminarReservaActiva(reserva_i.getID());
+                                    }
+                                }
+                                avanzarAlSiguientePaso(pasoKey);
+                        }});
+                        
+
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+                    e1.printStackTrace();
+                }
+
+
+            }});
+    
+
+
+    cardPanel.add(panel, preguntaKey);
+    }
+
+    public void crearPasoPasarelas2(String preguntaKey, String pasoKey,String motivoPago,alquiler alquiler_u, Sede sede_personal) throws FileNotFoundException, IOException{
+        JPanel panel= new JPanel();
+        VentanaMain.refresh(panel);
+        panel.setLayout(new GridLayout(0, 2));
+        panel.add(Box.createRigidArea(new Dimension(10,50)));
+        panel.add(Box.createRigidArea(new Dimension(10,50)));
+        panel.add(new JLabel("Seleccione con que pasarela de pagos desea realizar el pago"));
+        JComboBox<String> opcionesPasarelas= new JComboBox<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("./registroPagos/config.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split("->");
+                 if (partes.length >= 2){
+                    opcionesPasarelas.addItem(partes[0]);
+                 }}};
+        opcionesPasarelas.setSelectedIndex(0);
+        
+        JButton continuar= new JButton("Continuar");
+        panel.add(opcionesPasarelas);
+        panel.add(continuar);
+        panel.repaint();
+        panel.revalidate();
+        continuar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nombreClase= opcionesPasarelas.getSelectedItem().toString();
+                try {
+                    Class<?> claseElejida= Class.forName("vista."+nombreClase);
+                    String pathRegistro="";
+                    String pathRegistroEsperado="registro"+nombreClase;
+                    //Encontramos path del archivo sobre el que escribir transferencia
+                    try (BufferedReader br = new BufferedReader(new FileReader("./registroPagos/config.txt"))) {
+                    String linea;
+                    while ((linea = br.readLine()) != null) {
+                        String[] partes = linea.split("->");
+                        if (partes.length >= 2){
+                            String rutaCompleta=partes[1];
+                            String rutaDeseada = rutaCompleta.substring(0, rutaCompleta.lastIndexOf("."));
+                            if (rutaDeseada.equals(pathRegistroEsperado)){
+                                pathRegistro=rutaCompleta;
+                                break;
+                            }                           
+                        }}} catch (IOException e1) {
+                            e1.printStackTrace();
+                        };
+                    montoPago=0;
+                    if (motivoPago.equals("Pago de alquiler inicial")){  
+                    
+                    montoPago=alquiler_u.calcularPagoInicial();
+                    Constructor<?> constructor = claseElejida.getDeclaredConstructor(Cliente.class, String.class,double.class,int.class,String.class);
+                    Object instanciaClase = constructor.newInstance(alquiler_u.getReserva().getCliente(),motivoPago,montoPago,alquiler_u.getReserva().getID(),"registroPagos\\"+pathRegistro);
+                    pasarelaPago pasarela= (pasarelaPago)instanciaClase;
+                    VentanaMain.refresh(panel);
+                    
+                    pasarela.frame.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            if (pasarela.getTransferenciaCompletada()==true){                                
+                                alquiler_u.setPagoFinal(montoPago);
+                                alquiler_u.setActivo(true);  
+                                VentanaMain.Dialog("Alquiler iniciado correctamente. En este momento se puede entregar el vehículo al cliente");
+                                avanzarAlSiguientePaso(pasoKey);
+                            }
+                            else{
+                                System.out.println("aqui");
+                                alquiler_u.getReserva().getVehiculoAsignado().getHistorialAlquileres().remove(alquiler_u);
+                                alquiler.getListaAlquileres().remove(alquiler_u);
+                                VentanaMain.errorDialog("No se pudo iniciar el alquiler. Intentelo nuevamente");
+                                avanzarAlSiguientePaso(pasoKey);
+                            }
+                        }});
+                    }
+                    else{
+                        pagoFinalAlquiler=alquiler_u.calcularPagoFinal(sede_personal,averia);
+                        if (pagoFinalAlquiler>0){
+                        Constructor<?> constructor = claseElejida.getDeclaredConstructor(Cliente.class, String.class,double.class,int.class,String.class);
+                        Object instanciaClase = constructor.newInstance(alquiler_u.getReserva().getCliente(),motivoPago,pagoFinalAlquiler,alquiler_u.getReserva().getID(),"registroPagos\\"+pathRegistro);
+                        pasarelaPago pasarela= (pasarelaPago)instanciaClase;
+                        VentanaMain.refresh(panel);
+                        pasarela.frame.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            if (pasarela.getTransferenciaCompletada()==true){    
+                                alquiler_u.eventosFinal(sede_personal, averia);                          
+                                alquiler_u.setPagoFinal(pagoFinalAlquiler+alquiler_u.getPagoFinal());
+                                alquiler_u.getReserva().getVehiculoAsignado().eliminarReservaActiva(alquiler_u.getID());
+                                alquiler_u.setActivo(false);
+                                VentanaMain.Dialog("El alquiler ha concluido. En este momento puede solicitar el vehículo al cliente.");
+
+                            }
+                            else{
+                                VentanaMain.errorDialog("No se pudo concluir el alquiler. Intentelo nuevamente");
+                                avanzarAlSiguientePaso(pasoKey);
+
+                            }
+                        }});
+
+                        }
+                        else{
+                            VentanaMain.Dialog("El vehículo se ha devuelto correctamente y el cliente tiene un saldo a favor de COP "+Double.toString(pagoFinalAlquiler*-1)+" que se transferirán a su tarjeta terminada en "+ Long.toString(alquiler_u.getReserva().getCliente().getTarjeta().getNumeroTarjeta()% 10000)+".");
+                            alquiler_u.eventosFinal(sede_personal, averia);                          
+                            alquiler_u.setPagoFinal(pagoFinalAlquiler+alquiler_u.getPagoFinal());
+                            alquiler_u.getReserva().getVehiculoAsignado().eliminarReservaActiva(alquiler_u.getID());
+                            alquiler_u.setActivo(false);
+                            avanzarAlSiguientePaso(pasoKey);
+
+                        }
+
+                    }
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+                    e1.printStackTrace();
+                }
+            }});
+    cardPanel.add(panel, preguntaKey);
     }
 
 }

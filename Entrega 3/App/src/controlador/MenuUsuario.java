@@ -346,7 +346,7 @@ public class MenuUsuario {
         int vencimiento_2 = Integer.parseInt(input("Por favor ingrese la fecha de vencimiento de su tarjeta de crédito(en formato aaaammdd)"));
         String marca = input("Por favor ingrese la marca de su tarjeta");
         String titular = input("Por favor ingrese el nombre de la persona o entidad titular de la tarjeta");
-        Tarjeta tarjeta = new Tarjeta(numerotarjeta, vencimiento_2, marca, titular);
+        Tarjeta tarjeta = new Tarjeta(numerotarjeta,false,0L, vencimiento_2, marca, titular);
         if (tarjeta.checkVencimientoTarjeta(0,0,0)==false){
         cliente.setTarjeta(tarjeta);
         continuar=false;

@@ -150,11 +150,13 @@ public class alquiler{
          * @return alquiler: El alquiler encontrado o null si no se encuentra un alquiler con el ID especificado.
          */
         alquiler retorno = null;
+        if (alquiler.getListaAlquileres()!=null){
         for(alquiler i: alquiler.getListaAlquileres()){
             if(i.getID()==id_alquiler){
             retorno= i;
             break;
             }}
+        }
         return retorno;
     }
 
@@ -196,8 +198,6 @@ public class alquiler{
         boolean noPagaLeve=false;
         boolean noPagaModerado=false;
         boolean noPagaTotal=false;
-        boolean limpiezaAgendada=false;
-        boolean trasladoAgendado=false;
         for (Seguro i: this.getSeguros()){
             if(i.getID()==1){
                 noPagaLeve=true;noPagaModerado=true;noPagaTotal=true;
@@ -210,16 +210,6 @@ public class alquiler{
             }
         }
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-        int fechaMas1=Integer.parseInt((LocalDate.now()).plusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")));            
-        int fechaMas5=Integer.parseInt((LocalDate.now()).plusDays(5).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-        int fechaMas6=Integer.parseInt((LocalDate.now()).plusDays(6).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-        int fechaMas10=Integer.parseInt((LocalDate.now()).plusDays(10).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-        int fechaMas11=Integer.parseInt((LocalDate.now()).plusDays(11).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-        int fechaMas30=Integer.parseInt((LocalDate.now()).plusDays(30).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-        int fechaMas31=Integer.parseInt((LocalDate.now()).plusDays(31).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-
-        LocalTime hora = LocalTime.now();
-        int horaActual = hora.getHour() * 100 + hora.getMinute();
         double pago30=this.reserva.getPagoReserva();
         double pago70=this.calcularPagoInicial();
         this.reserva.setFechaEntregar(fechaActual);
@@ -230,15 +220,53 @@ public class alquiler{
         int idSedeActual=sedeActual.getID();
         Vehiculo vehiculo=this.getReserva().getVehiculoAsignado();
         if (idSedeActual!=vehiculo.getSede().getID()){
-            saldoFinal+=Inventario.getCostoPorTrasladoSedes();
+            saldoFinal+=Inventario.getCostoPorTrasladoSedes();            
+        }  
+        Categoria categoria=this.reserva.getCategoria();
+        if (averia==1){
+            if (noPagaLeve==false){saldoFinal+=categoria.getCostoAveriaLeve();}
+        }
+        else if (averia==2){
+            if (noPagaModerado==false){saldoFinal+=categoria.getCostoAveriaModerada();}
+        }
+        else if (averia==3){
+            if (noPagaTotal==false){saldoFinal+=categoria.getCostoAveriaTotal();}
+        }
+        return saldoFinal;
+    }
+    public void eventosFinal(Sede sedeActual, int averia){
+        /**
+         * Calcula el monto del pago final de la reserva, teniendo en cuenta múltiples factores, como seguros, averías, limpieza, traslado, y otros eventos programados.
+         *
+         * @param sedeActual La sede actual donde se realizará la devolución del vehículo.
+         * @param averia El nivel de avería del vehículo (1 para leve, 2 para moderada, 3 para total).
+         * @return El monto del pago final de la reserva.
+         */
+        boolean limpiezaAgendada=false;
+        boolean trasladoAgendado=false;
+        int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        int fechaMas1=Integer.parseInt((LocalDate.now()).plusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")));            
+        int fechaMas5=Integer.parseInt((LocalDate.now()).plusDays(5).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        int fechaMas6=Integer.parseInt((LocalDate.now()).plusDays(6).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        int fechaMas10=Integer.parseInt((LocalDate.now()).plusDays(10).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        int fechaMas11=Integer.parseInt((LocalDate.now()).plusDays(11).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        int fechaMas30=Integer.parseInt((LocalDate.now()).plusDays(30).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        int fechaMas31=Integer.parseInt((LocalDate.now()).plusDays(31).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+
+        LocalTime hora = LocalTime.now();
+        int horaActual = hora.getHour() * 100 + hora.getMinute();
+        this.reserva.setFechaEntregar(fechaActual);
+
+        //1. Revisar tema sedes
+        int idSedeActual=sedeActual.getID();
+        Vehiculo vehiculo=this.getReserva().getVehiculoAsignado();
+        if (idSedeActual!=vehiculo.getSede().getID()){
             Evento traslado= new Evento(fechaActual, fechaMas1, horaActual, horaActual, "EnTraslado");
             vehiculo.addEvento(traslado);
             trasladoAgendado=true;
             
         }  
-        Categoria categoria=this.reserva.getCategoria();
         if (averia==1){
-            if (noPagaLeve==false){saldoFinal+=categoria.getCostoAveriaLeve();}
             if(trasladoAgendado==false){
             Evento mantenimiento= new Evento(fechaActual,fechaMas5 ,horaActual ,horaActual , "EnMantenimiento");
             this.getReserva().getVehiculoAsignado().addEvento(mantenimiento);
@@ -246,7 +274,6 @@ public class alquiler{
             
 
             int finLimpieza=Integer.parseInt((LocalDate.now()).plusDays(6).format(DateTimeFormatter.ofPattern("yyyyMMdd")));  
-            //TODO fuera de los if meter mantenimiento en listas          
             Evento limpieza= new Evento(fechaMas5, finLimpieza, horaActual, horaActual, "EnLimpieza");
             this.getReserva().getVehiculoAsignado().addEvento(limpieza);
             Inventario.getListaEventos().add(limpieza);
@@ -267,7 +294,6 @@ public class alquiler{
 
         }
         else if (averia==2){
-            if (noPagaModerado==false){saldoFinal+=categoria.getCostoAveriaModerada();}
             if (trasladoAgendado==false){
             Evento mantenimiento= new Evento(fechaActual,fechaMas10 ,horaActual ,horaActual , "EnMantenimiento");
             this.getReserva().getVehiculoAsignado().addEvento(mantenimiento);
@@ -293,7 +319,6 @@ public class alquiler{
             }
         }
         else if (averia==3){
-            if (noPagaTotal==false){saldoFinal+=categoria.getCostoAveriaTotal();}
             if (trasladoAgendado==false){
             Evento mantenimiento= new Evento(fechaActual,fechaMas30 ,horaActual ,horaActual , "EnMantenimiento");
             this.getReserva().getVehiculoAsignado().addEvento(mantenimiento);
@@ -335,7 +360,6 @@ public class alquiler{
         }
       
         System.out.println("\n\t>Se programaron los eventos correspondientes");
-        return saldoFinal;
     }
     public void facturas(){
         try {

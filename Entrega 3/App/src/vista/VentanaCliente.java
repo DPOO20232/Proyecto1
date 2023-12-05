@@ -89,7 +89,7 @@ public class VentanaCliente {
         JTabbedPane panel2= new JTabbedPane();
         panel2.add(cambiar_datos());
         JTabbedPane panel3= new JTabbedPane();
-        panel3.add(crearReserva(false,cliente_i));
+        panel3.add(crearReserva(false,cliente_i,false));
         
         JTabbedPane panel4= new JTabbedPane();
         panel4.add(modificarReserva(cliente_i));
@@ -121,7 +121,7 @@ public class VentanaCliente {
                 }
                 else if (selectedIndex==3){
                     VentanaMain.refresh(panel3);
-                    panel3.add(crearReserva(false,cliente_i));
+                    panel3.add(crearReserva(false,cliente_i,false));
                 }
                 else if (selectedIndex==4){
                     VentanaMain.refresh(panel4);
@@ -140,7 +140,10 @@ public class VentanaCliente {
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         DefaultComboBoxModel<String> modeloReservas= new DefaultComboBoxModel<>();
         int numReservas=0;
+        if (Reserva.getListaReservas()!=null){
+            System.out.println(Reserva.getListaReservas().size());
         for(Reserva i: Reserva.getListaReservas()){
+            System.out.println(i.getID()+"-"+i.getFechaRecoger()+"-"+i.getFechaEntregar()+"-"+i.getCategoria().getnombreCategoria()+"_"+i.getVehiculoAsignado().getPlaca());
             if (alquiler.assignAlquiler(i.getID())==null){
             if(i.getCliente().equals(cliente_i)&& i.getFechaRecoger()>=fechaActual){
             numReservas+=1;
@@ -169,10 +172,14 @@ public class VentanaCliente {
                 int id= Integer.parseInt(idreserva[1].trim());
                 Reserva reservaElejida= Reserva.assignReserva(id);
                 CardsPanels editor= new CardsPanels();
-                editor.editorReserva(panel, reservaElejida);
+                editor.editorReserva(panel, reservaElejida,false);
                 }});
         try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
         }
+    else{
+        panel.add(new JLabel("No se encontraron reservas para editar."));
+    }
+    }
     else{
         panel.add(new JLabel("No se encontraron reservas para editar."));
     }
@@ -218,7 +225,7 @@ public class VentanaCliente {
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
         return panel;
     }
-    public static JPanel crearReserva(boolean reservaEnSede,Cliente cliente){
+    public static JPanel crearReserva(boolean reservaEnSede,Cliente cliente,boolean tieneDescuento){
         JPanel panel = new JPanel(new GridLayout(0, 1,0,50));
         panel.add(new JLabel(">>>Bienvenido al sistema de reservas"));
         JButton avanzar= new JButton("Crear reserva");
@@ -231,7 +238,7 @@ public class VentanaCliente {
                 reserva.setCliente(cliente);
                 reserva.setReservaEnSede(reservaEnSede);
                 CardsPanels editor= new CardsPanels();
-                editor.editorReserva(panel, reserva);
+                editor.editorReserva(panel, reserva,tieneDescuento);
             }
         });
         try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
@@ -558,7 +565,7 @@ public class VentanaCliente {
                     JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
 
-                    Tarjeta tarjetaNueva = new Tarjeta(numeroT, vencimientoT, marca, titular);
+                    Tarjeta tarjetaNueva = new Tarjeta(numeroT,false,0L, vencimientoT, marca, titular);
                     cliente_i.setTarjeta(tarjetaNueva);
 
 
@@ -580,6 +587,7 @@ public class VentanaCliente {
         int fechaActual= Integer.parseInt(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         DefaultComboBoxModel<String> modeloReservas= new DefaultComboBoxModel<>();
         int numReservas=0;
+        if (Reserva.getListaReservas()!=null){
         for(Reserva i: Reserva.getListaReservas()){
             if (alquiler.assignAlquiler(i.getID())==null){
             if(i.getCliente().equals(cliente_i)&& i.getFechaRecoger()>=fechaActual){
@@ -611,10 +619,15 @@ public class VentanaCliente {
                 Vehiculo vehiculoReservaElejida= reservaElejida.getVehiculoAsignado();
                 vehiculoReservaElejida.eliminarReservaActiva(reservaElejida.getID());
                 VentanaMain.Dialog("La reserva con IDreserva "+Integer.toString(id)+" ha sido cancelada, pronto se trasferirá de vuelta el pago del 30% (COP "+Double.toString(reservaElejida.getPagoReserva())+").");
+                VentanaMain.Dialog("Se recomienda reiniciar la APP para tener una buena experiencia de nuestro servicio!");                
                 try{Inventario.updateSistema();}catch(IOException e1) {e1.printStackTrace();}
             }
         });
         panel.add(Box.createRigidArea(new Dimension(0, 200)));
+    }
+    else{
+        panel.add(new JLabel("No se encontraron reservas para editar."));
+    }
     }
     else{
         panel.add(new JLabel("No se encontraron reservas para editar."));

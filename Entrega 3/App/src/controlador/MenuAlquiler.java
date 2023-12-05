@@ -3,6 +3,7 @@ package controlador;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.SocketTimeoutException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -23,7 +24,7 @@ import modelo.Vehiculo;
 import modelo.alquiler;
 
 public class MenuAlquiler {
-    public static void crearReserva(Cliente cliente,boolean reservaEnSede){
+    public static void crearReserva(Cliente cliente,boolean reservaEnSede,boolean boolDto){
         if (cliente==null){
             int cedulaCliente = Integer.parseInt(input("Ingrese la cédula del cliente"));
             cliente=Usuario.assignCliente(cedulaCliente);}
@@ -94,7 +95,8 @@ public class MenuAlquiler {
                             while(continuar5){
                             int numTarjeta = Integer.parseInt(input("Para debitar el 30% del alquiler de su cuenta, por favor ingrese los últimos 4 dígitos de la tarjeta que tiene registrada"));
                             if (numTarjeta== (cliente.getTarjeta().getNumeroTarjeta())%10000){
-                            reserva_u.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar );
+                            if (boolDto){System.out.println(">Se aplicó un 10% de descuento sobre la reserva.");}
+                            reserva_u.setPagoReserva(frecoger,hrecoger,fentregar ,hentregar,boolDto);
                             System.out.println(">Se debitaron COP "+ Double.toString(reserva_u.getPagoReserva())+".");
                             System.out.println(">Reserva creada exitosamente, el id de su reserva es: "+Integer.toString(reserva_u.getID()));
                                     continuar5=false;
@@ -306,7 +308,7 @@ public class MenuAlquiler {
                 int numTarjeta = Integer.parseInt(input("Para debitar el 30% del alquiler de su cuenta, por favor ingrese los últimos 4 dígitos de la tarjeta que tiene registrada"));
                 if (numTarjeta== (cliente.getTarjeta().getNumeroTarjeta())%10000){
                 Reserva.addReserva(reservaPorModificar);
-                reservaPorModificar.setPagoReserva(reservaPorModificar.getFechaRecoger(),reservaPorModificar.getHoraRecoger(),reservaPorModificar.getFechaEntregar(),reservaPorModificar.getHoraEntregar());
+                reservaPorModificar.setPagoReserva(reservaPorModificar.getFechaRecoger(),reservaPorModificar.getHoraRecoger(),reservaPorModificar.getFechaEntregar(),reservaPorModificar.getHoraEntregar(),false);
                 double newPago=reservaPorModificar.getPagoReserva();
                 double debito= newPago-pagoReservaInicial;
                 if(debito>0){

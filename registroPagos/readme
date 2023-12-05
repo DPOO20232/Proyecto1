@@ -1,0 +1,31 @@
+/*
+Para registrar una nueva pasarela:
+1. Crear clase de la nueva pasarela de pago (NUEVACLASE) con el formato NUEVACLASE.java que extienda de pasarelaPago -> debe ser una ventana de tipo JFrame
+    Paso1: Garantizar que los siguientes atributos se completen a partir del constructor de NUEVACLASE:
+    - numeroTarjetaInput
+    - fechaVencimientoInput
+    - codigoSeguridadInput
+    - marcaTarjetaInput
+    - titularTarjetaInput
+    Paso2: implementar método instancia.nuevaEntrada(); que se ajuste al tipo de archivo en el que guardarán el registro de transacciones para la pasarela de pagos dada 
+    Paso3: implementar método instancia.agregarEntrada(Object nuevaEntrada); que se ajuste al tipo de archivo en el que guardarán el registro de transacciones para la pasarela de pagos dada 
+    Paso4: invocar en el constructor de NUEVACLASE el método de la superClase pasarelaPago instancia.tarjetaValida(); -> si retorna True el método de pago es válido
+    Paso5: invocar en el constructor de NUEVACLASE el método de la superClase pasarelaPago instancia.setTarjeta(); -> crea el método de pago del que se debitará
+    Paso6: invocar en el constructor de NUEVACLASE el método de la superClase pasarelaPago instancia.completarTransferencia(); -> si retorna True la transferencia se completó correctamente
+    Paso7: invocar en el constructor de NUEVACLASE el método de la clase NUEVACLASE instancia.nuevaEntrada();
+
+        Nota1: Se recomienda usar la estructura de las pasarales ya implementadas
+
+3. Ingresar clase NUEVACLASE.java al package vista
+4. Crear archivo en el que se va a guardar el registro de pagos con esa pasarela (NUEVACLASE) con el formato registroNUEVACLASE.___
+5. Ingresar archivo registroNUEVACLASE.___ al package registroPagos
+6. ingresar en el archivo config.txt la info de la nueva pasarela (NUEVACLASE) con la estructura: NUEVACLASE->registroNUEVACLASE.___
+
+        Nota2: Se recomienda añadir los nombres de nuevas pasarelas con su archivo de registro en la lista de abajo
+
+Pasarelas disponibles:
+vista.PayPal.java -> registroPayPal.log
+vista.Payu.java -> registroPayu.txt
+vista.Sire.java -> registroSire.json
+
+*/
