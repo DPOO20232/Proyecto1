@@ -2,6 +2,6 @@
     "java.debug.settings.onBuildFailureProceed": true,
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\Users\\marti\\Downloads\\json-simple-1.1.1.jar"
+        ".vscode/lib/json-simple-1.1.1.jar"
     ]
 }
