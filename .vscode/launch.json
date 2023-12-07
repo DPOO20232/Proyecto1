@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Facturas",
+            "request": "launch",
+            "mainClass": "modelo.Facturas",
+            "projectName": "Proyecto1_dc0c2915"
+        },
+        {
+            "type": "java",
+            "name": "VentanaMain2",
+            "request": "launch",
+            "mainClass": "vista2.VentanaMain2",
+            "projectName": "Proyecto1_dc0c2915"
+        },
+        {
+            "type": "java",
             "name": "Payu",
             "request": "launch",
             "mainClass": "vista.Payu",

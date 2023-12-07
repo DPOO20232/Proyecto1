@@ -10,3 +10,5 @@ Dec 04, 2023 7:32:40 PM vista.PayPal agregarEntrada
 INFO: Fecha: 20231204, Tipo de Pago: Pago de alquiler inicial, IDtransaccion: 2, CÃ©dula Cliente: 1023456789, NÃºmero de Tarjeta: 1111222233334444, Monto: 1120000.0
 Dec 04, 2023 7:34:25 PM vista.PayPal agregarEntrada
 INFO: Fecha: 20231204, Tipo de Pago: Pago de alquiler final, IDtransaccion: 2, CÃ©dula Cliente: 1023456789, NÃºmero de Tarjeta: 8888999988889999, Monto: 2.0E7
+dic 07, 2023 5:40:05 PM vista.PayPal agregarEntrada
+INFORMACIÓN: Fecha: 20231207, Tipo de Pago: Reserva con 10% de dto, IDtransaccion: 3, Cédula Cliente: 1023456789, Número de Tarjeta: 1111222233334444, Monto: 756000.0
