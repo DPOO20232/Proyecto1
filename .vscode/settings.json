@@ -3,7 +3,22 @@
     "java.project.referencedLibraries": {
         "include": [
             "lib/**/*.jar",
-            "c:\\Users\\marti\\Downloads\\json-simple-1.1.1.jar"
+            ".vscode/lib/barcodes-7.1.16.jar",
+        ".vscode/lib/font-asian-7.1.16.jar",
+        ".vscode/lib/forms-7.1.16.jar",
+        ".vscode/lib/hyph-7.1.16.jar",
+        ".vscode/lib/io-7.1.16.jar",
+        ".vscode/lib/json-simple-1.1.1.jar",
+        ".vscode/lib/kernel-7.1.16.jar",
+        ".vscode/lib/layout-7.1.16.jar",
+        ".vscode/lib/log4j-1.2.17.jar",
+        ".vscode/lib/pdfa-7.1.16.jar",
+        ".vscode/lib/pdftest-7.1.16.jar",
+        ".vscode/lib/sign-7.1.16.jar",
+        ".vscode/lib/slf4j-api-1.7.9.jar",
+        ".vscode/lib/slf4j-log4j12-1.7.9.jar",
+        ".vscode/lib/styled-xml-parser-7.1.16.jar",
+        ".vscode/lib/svg-7.1.16.jar"
         ],
         "exclude": [
             "c:\\Users\\USUARIO\\Documents\\iText-Core-8.0.2-only-jars\\hyph-7.1.16.jar",
