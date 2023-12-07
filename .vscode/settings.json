@@ -1,7 +1,15 @@
 {
     "java.debug.settings.onBuildFailureProceed": true,
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "c:\\Users\\marti\\Downloads\\json-simple-1.1.1.jar"
-    ]
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "c:\\Users\\marti\\Downloads\\json-simple-1.1.1.jar"
+        ],
+        "exclude": [
+            "c:\\Users\\USUARIO\\Documents\\iText-Core-8.0.2-only-jars\\hyph-7.1.16.jar",
+            "c:\\Users\\USUARIO\\Documents\\iText-Core-8.0.2-only-jars\\layout-7.1.16.jar",
+            "c:\\Users\\USUARIO\\Documents\\iText-Core-8.0.2-only-jars\\kernel-7.1.16.jar",
+            "c:\\Users\\USUARIO\\Documents\\iText-Core-8.0.2-only-jars\\io-7.1.16.jar"
+        ]
+    }
 }

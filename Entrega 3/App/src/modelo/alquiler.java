@@ -359,52 +359,7 @@ public class alquiler{
         System.out.println("\n\t>Se programaron los eventos correspondientes");
     }
     public void facturas(){
-        try {
-            BufferedWriter writer=new BufferedWriter(new FileWriter("./facturas/"+this.getID()+".txt"));
-            writer.write("\t\t" + Inventario.getNombreCompania());
-            writer.newLine();
-            writer.write("\t\t Id Factura: "+this.getID());
-            writer.newLine();
-            writer.write("------------------------------------------------------------------------ ");
-            writer.newLine();
-            writer.newLine();
-            writer.newLine();
-            LocalDate fechaActual = LocalDate.now();
-            writer.write("Fecha: "+ fechaActual);
-            writer.newLine();
-            writer.write("Direccion: "+this.getReserva().getSedeEntregar());
-            writer.newLine();
-            writer.newLine();
-            writer.write("------------------------------------------------------------------------");
-            writer.newLine();
-            writer.write("Datos CLiente: ");
-            writer.newLine();
-            writer.write("Nombre: "+this.getReserva().getCliente().getNombre());
-            writer.newLine();
-            writer.write("Telefono: "+this.getReserva().getCliente().getTelefono());
-            writer.newLine();
-            writer.write("Mail: " + this.getReserva().getCliente().getMail());
-            writer.newLine();
-            writer.newLine();
-            writer.newLine();
-            writer.write("------------------------------------------------------------------------ ");
-            writer.newLine();
-            writer.write("Descripcion: ");
-            writer.write("\t\t\t\t\t\t\t\t\tMonto: " ); 
-            writer.newLine();
-            writer.write("Alquiler vehiculo tipo: "+this.getReserva().getCategoria());
-            writer.write("\t\t\t"+Double.toString(this.getPagoFinal())); 
-            writer.newLine();
-            writer.write("por "+ Reserva.calcularDuracionRenta(this.getReserva().getFechaRecoger(), this.getReserva().getHoraRecoger(), this.getReserva().getFechaEntregar(), this.getReserva().getHoraEntregar())+"dias.");
-            writer.newLine();
-            writer.write("------------------------------------------------------------------------ ");
-            writer.close();
-            
-
-        } catch (Exception e) {
-
-            // TODO: handle exception
-        }
+      
 
     }
 
