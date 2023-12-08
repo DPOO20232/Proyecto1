@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import modelo.Categoria;
 import modelo.Cliente;
 import modelo.Conductor;
+import modelo.Factura;
 import modelo.Inventario;
 import modelo.Licencia;
 import modelo.Sede;
@@ -1387,7 +1388,8 @@ public class CardsPanels {
                                 alquiler_u.getReserva().getVehiculoAsignado().eliminarReservaActiva(alquiler_u.getID());
                                 alquiler_u.setActivo(false);
                                 VentanaMain.Dialog("El alquiler ha concluido. En este momento puede solicitar el vehículo al cliente.");
-                                //TODO implementar metodo factura
+                                //Facturas
+                                new Factura(alquiler_u);
                                 VentanaMain.Dialog("Factura con el nombre: "+Integer.toString(alquiler_u.getID())+".pdf guardada en la carpeta \"facturas\".");
 
 
@@ -1402,6 +1404,10 @@ public class CardsPanels {
                         }
                         else{
                             VentanaMain.Dialog("El vehículo se ha devuelto correctamente y el cliente tiene un saldo a favor de COP "+Double.toString(pagoFinalAlquiler*-1)+" que se transferirán a su tarjeta terminada en "+ Long.toString(alquiler_u.getReserva().getCliente().getTarjeta().getNumeroTarjeta()% 10000)+".");
+                            //Facturas
+                            new Factura(alquiler_u);
+                            VentanaMain.Dialog("Factura con el nombre: "+Integer.toString(alquiler_u.getID())+".pdf guardada en la carpeta \"facturas\".");
+
                             alquiler_u.eventosFinal(sede_personal, averia);                          
                             alquiler_u.setPagoFinal(pagoFinalAlquiler+alquiler_u.getPagoFinal());
                             alquiler_u.getReserva().getVehiculoAsignado().eliminarReservaActiva(alquiler_u.getID());

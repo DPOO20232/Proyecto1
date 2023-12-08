@@ -1,10 +1,7 @@
 package modelo;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -15,9 +12,9 @@ import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
 
-public class Facturas {
+public class Factura {
 
-    public static void facturas(alquiler alquiler) {
+    public  Factura(alquiler alquiler) {
         try {
             // Crear un documento PDF
             File file=new File("./facturas/" + alquiler.getID() + ".pdf");
@@ -50,11 +47,10 @@ public class Facturas {
                     alquiler.getReserva().getHoraEntregar())) + " días."));
             document.add(new Paragraph("------------------------------------------------------------------------ "));
              // Agregar imagen en la parte inferior de la página
-            String imagePath = "C:\\Users\\USUARIO\\Documents\\Proyecto1\\imagenes\\Firma.png"; // Reemplaza con la ruta de tu imagen
+            String imagePath = "./imagenes/firma_sede.png"; // Reemplaza con la ruta de tu imagen
             Image img = new Image(ImageDataFactory.create(imagePath));
             img.setWidth(100); // Ajusta el ancho de la imagen según tus necesidades
             img.setTextAlignment(TextAlignment.CENTER);
-
             // Obtener la última página del documento
             PdfPage lastPage = pdfDocument.getLastPage();
 
@@ -72,7 +68,7 @@ public class Facturas {
             e.printStackTrace();
         }
     }
-
+    /*
     public static void main(String[] args) {
         Cliente cliente= new Cliente("n.perezr", "10293", 1032382323, "Nicolas", "nperezramos0@gmail.com", 312493238, 20050210, "Colombia");
         // Ejemplo de uso
@@ -90,4 +86,5 @@ public class Facturas {
         alquiler alquiler=new alquiler(reserva);
         factura.facturas(alquiler);
     }
+    */
 }
